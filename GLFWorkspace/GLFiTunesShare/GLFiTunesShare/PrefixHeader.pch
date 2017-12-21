@@ -1,0 +1,71 @@
+//
+//  PrefixHeader.pch
+//  GLFiTunesShare
+//
+//  Created by guolongfei on 2017/10/9.
+//  Copyright © 2017年 GuoLongfei. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* PrefixHeader_pch */
+
+
+
+
+#import "BaseViewController.h"
+#import "GLFTools.h"
+#import "GLFFileManager.h"
+#import "Base64.h"
+#import "UIView+Helper.h"
+#import "UIColor+HexString.h"
+#import "NSDate+Help.h"
+
+#pragma mark 适配
+#define kScreen [[UIScreen mainScreen] bounds]
+#define kScreenWidth [[UIScreen mainScreen] bounds].size.width
+#define kScreenHeight [[UIScreen mainScreen] bounds].size.height
+
+#pragma mark 颜色 | 字体
+// 颜色
+#define ColorWithRGB(r, g, b)  ColorWithRGBA(r,g,b,1.0)
+#define ColorWithRGBA(r, g, b, a)  [UIColor colorWithRed:r/255.0 green:g/255.0 blue:b/255.0 alpha:a]
+#define kSAColorWith0xStr(rgbValue)  [UIColor colorWithRed:((float)((rgbValue & 0xFF0000) >> 16))/255.0 green:((float)((rgbValue & 0xFF00) >> 8))/255.0 blue:((float)(rgbValue & 0xFF))/255.0 alpha:1.0] // kSAColorWith0xStr(0x999999);
+#define kSAColorWithStr(a) [UIColor colorWithHexString:a] // kSAColorWithStr(@"F2F2F2")
+// 字体
+#define KFontBold(a) [UIFont boldSystemFontOfSize:a]
+#define KFontSize(a) [UIFont systemFontOfSize:a]
+#define kFontNameAndSize(fontname, fontsize) [UIFont fontWithName:fontname size:fontsize]
+// 标准色
+#define KNavgationBarColor kSAColorWith0xStr(0x25b0ff) // 导航栏颜色
+#define KColorThree kSAColorWithStr(@"333333") // 字体颜色333333
+#define KColorSix   kSAColorWithStr(@"666666") // 字体颜色666666
+#define KColorNine  kSAColorWithStr(@"999999") // 字体颜色999999
+#define KColorCCC   kSAColorWithStr(@"CCCCCC") // 字体颜色CCCCCC
+
+#pragma mark 键
+#define IsUseBackImagePath  @"UseBackImagePath"
+#define BackImageName       @"BackImageName"
+
+#define kWebContentXuanFu   @"kWebContentXuanFu"
+#define kWebContentImg      @"kWebContentImg"
+#define kWebContentFont     @"kWebContentFont"
+#define kWebContentBorder   @"kWebContentBorder"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
