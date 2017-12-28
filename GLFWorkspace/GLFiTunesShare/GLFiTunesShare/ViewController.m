@@ -20,7 +20,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
   
-    //【本Workspace项目通过Github管理,登陆Github即可看到】
     // 用到的知识点
     // 1. [iTunes共享] 通过iTunes共享文件到Document目录
     // 2. [AirDrop共享] 使用UIActivityViewController分享功能
