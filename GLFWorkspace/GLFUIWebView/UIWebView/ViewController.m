@@ -77,8 +77,7 @@
     // 城市令家庭医生 居民端
     WebViewController *vc = [[WebViewController alloc] init];
     vc.type = 2;
-    vc.urlStr = @"http://192.168.1.14:8080/whserver/home-page!homeWelcome.action"; 
-//    vc.urlStr = @"http://www.z-health.cn:8088/whserver/home-page!homeWelcome.action";
+    vc.urlStr = @"http://www.z-health.cn:8088/whserver/home-page!homeWelcome.action";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
