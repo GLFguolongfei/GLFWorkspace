@@ -111,7 +111,7 @@
                                     <constraint firstAttribute="height" constant="40" id="uSl-Ab-cUW"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                <state key="normal" title="重置">
+                                <state key="normal" title="重置网址">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </state>
                                 <connections>
