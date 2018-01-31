@@ -57,8 +57,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     IpModel *model = myDataArray[indexPath.row];
     // 计算的不太准
-    CGSize size = [GLFTools calculatingStringSizeWithString:model.ipStr ByFont:KFontSize(16) andSize:CGSizeMake(kScreenWidth/3*2-60, kScreenHeight)];
-    return size.height + 30;
+    CGSize size = [GLFTools calculatingStringSizeWithString:model.ipStr ByFont:KFontSize(16) andSize:CGSizeMake(kScreenWidth/4*3-50, kScreenHeight)];
+    return size.height + 35;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
