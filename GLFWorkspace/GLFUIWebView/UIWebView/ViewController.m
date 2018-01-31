@@ -7,8 +7,12 @@
 //
 
 #import "ViewController.h"
+// VCs
 #import "WebViewController.h"
+#import "DeclareViewController.h"
+// Views
 #import "SelectIPView.h"
+// Tools
 #import "LewPopupViewController.h"
 
 @interface ViewController () 
@@ -22,7 +26,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"HTML5";
-    
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"说明" style:UIBarButtonItemStylePlain target:self action:@selector(declareAction)];
+    self.navigationItem.leftBarButtonItem = leftItem;
+
     self.topButton1.layer.cornerRadius = 20;
     self.topButton1.layer.masksToBounds = YES;
     self.topButton2.layer.cornerRadius = 20;
@@ -42,8 +48,6 @@
     // http://61.177.174.10:8082/   芜湖测试服
     // http://www.z-health.cn:8088/ 芜湖正式服
 
-    
-    
     [self resetAction:nil];
 }
 
@@ -51,6 +55,13 @@
     [self.view endEditing:YES];
 }
 
+#pragma mark 说明
+- (void)declareAction {
+    DeclareViewController *vc = [[DeclareViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark 网址操作
 - (IBAction)selectIPAction:(id)sender {
     [self.view endEditing:YES];
     SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
@@ -76,6 +87,7 @@
     self.ipTextView.text = [NSString stringWithFormat:@"http://%@:8080/", ipAdress];
 }
 
+#pragma mark 各个项目
 // 家庭医生居民版
 - (IBAction)buttonAction1:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];

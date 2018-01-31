@@ -39,6 +39,7 @@
 		6F5282281FA322AA006833DA /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5282271FA322AA006833DA /* BaseViewController.m */; };
 		6F53420C1FDA3F1500805808 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F53420A1FDA3F1500805808 /* ViewController.m */; };
 		6F53420D1FDA3F8E00805808 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F5281F71FA318FF006833DA /* Main.storyboard */; };
+		6F9CAFCF202175A300E66E49 /* DeclareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9CAFCE202175A300E66E49 /* DeclareViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -124,6 +125,8 @@
 		6F5282271FA322AA006833DA /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		6F53420A1FDA3F1500805808 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		6F53420B1FDA3F1500805808 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		6F9CAFCD202175A300E66E49 /* DeclareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeclareViewController.h; sourceTree = "<group>"; };
+		6F9CAFCE202175A300E66E49 /* DeclareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeclareViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -303,6 +306,8 @@
 				6F5282271FA322AA006833DA /* BaseViewController.m */,
 				6F5282231FA31B32006833DA /* WebViewController.h */,
 				6F5282241FA31B32006833DA /* WebViewController.m */,
+				6F9CAFCD202175A300E66E49 /* DeclareViewController.h */,
+				6F9CAFCE202175A300E66E49 /* DeclareViewController.m */,
 				6F002F0B1FDA218300A66BFB /* SelectIPView.h */,
 				6F002F0C1FDA218300A66BFB /* SelectIPView.m */,
 				6F002F101FDA232A00A66BFB /* IpModel.h */,
@@ -483,6 +488,7 @@
 				6F002F0D1FDA218300A66BFB /* SelectIPView.m in Sources */,
 				6F002F231FDA28E300A66BFB /* LewPopupViewAnimationFade.m in Sources */,
 				6F0E964F1FA413670029DDD6 /* UIColor+Category.m in Sources */,
+				6F9CAFCF202175A300E66E49 /* DeclareViewController.m in Sources */,
 				6F5282011FA318FF006833DA /* main.m in Sources */,
 				6F0E96541FA413670029DDD6 /* MBProgressHUD+Add.m in Sources */,
 				6F0E96531FA413670029DDD6 /* GLFTools.m in Sources */,
