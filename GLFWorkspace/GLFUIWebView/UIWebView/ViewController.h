@@ -12,5 +12,14 @@
 
 @property (weak, nonatomic) IBOutlet UITextView *ipTextView;
 
+@property (weak, nonatomic) IBOutlet UIButton *topButton1;
+@property (weak, nonatomic) IBOutlet UIButton *topButton2;
+@property (weak, nonatomic) IBOutlet UIButton *topButton3;
+
+@property (weak, nonatomic) IBOutlet UIButton *button1;
+@property (weak, nonatomic) IBOutlet UIButton *button2;
+@property (weak, nonatomic) IBOutlet UIButton *button3;
+@property (weak, nonatomic) IBOutlet UIButton *button4;
+
 @end
 

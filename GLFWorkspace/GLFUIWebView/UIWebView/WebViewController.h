@@ -10,9 +10,8 @@
 
 @interface WebViewController : BaseViewController
 
-// 1 健康大本营
-// 2 城市令家庭医生 居民端
-// 3 健康1+1家庭医生 医生端
+// 1 城市令扫码信息
+// 2 医生端账号密码
 @property (nonatomic, assign) NSUInteger type;
 @property (nonatomic, strong) NSString *urlStr;
 

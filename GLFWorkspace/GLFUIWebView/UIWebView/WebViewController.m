@@ -27,14 +27,6 @@
     _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight-64)];
     _webView.scalesPageToFit = YES;
     _webView.delegate = self;
-    if (self.type == 1) {
-//        _webView.scrollView.bounces = NO;
-        _webView.scrollView.scrollEnabled = YES;
-    } else if (self.type == 2) {
-        _webView.scrollView.scrollEnabled = YES;
-    } else if (self.type == 3) {
-        _webView.scrollView.scrollEnabled = NO;
-    }
     [self.view addSubview:_webView];
     
     NSURL *url = [NSURL URLWithString:self.urlStr];
@@ -63,26 +55,24 @@
 }
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
-    [self showHUD];
     NSLog(@"webViewDidStartLoad");
+    [self showHUD];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    [self hideAllHUD];
     NSLog(@"webViewDidFinishLoad");
+    [self hideAllHUD];
     [self setup:webView];
     if (self.type == 1) {
-        [self setHTMLInfo1:webView];
+        [self setHTMLInfo:webView];
     } else if (self.type == 2) {
-        [self setHTMLInfo2:webView];
-    } else if (self.type == 3) {
         [self setHTMLAccount:webView];
     }
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-    [self hideAllHUD];
     NSLog(@"didFailLoadWithError: %@", error.localizedDescription);
+    [self hideAllHUD];
 }
 
 #pragma mark WebView Events
@@ -96,7 +86,7 @@
     UIBarButtonItem *item2 = self.navigationItem.rightBarButtonItems[1];
     item1.enabled = webView.canGoForward;
     item2.enabled = webView.canGoBack;
-    // 保存
+    // 保存网址
     if (webView.canGoBack) {
         return; // 能返回,就表示不是第一个页面,就不必再保存了
     }
@@ -132,24 +122,7 @@
     [self showStringHUD:@"已保存" second:1.5];
 }
 
-- (void)setHTMLInfo1:(UIWebView *)webView {
-    // 设置扫码需要的信息
-    NSDictionary *dict = @{
-                           @"idCard" : @"34260119950409463",
-                           @"isAuth" : @"1",
-                           @"phoneNum" : @"18301930275",
-                           @"source" : @"iOS",
-                           @"userId" : @"2321a7ab-b0ef-4f20-b9e3-5fee45bd9143",
-                           @"userName" : @"沈文华",
-                           @"versionNumber" : @"2.0.1",
-                           @"zjType" : @"1"
-                           };
-    NSString *str = [GLFTools dictionaryToJson:dict];
-    NSString *jsStr = [NSString stringWithFormat:@"getUserInfo(%@)", str];
-    [webView stringByEvaluatingJavaScriptFromString:jsStr];
-}
-
-- (void)setHTMLInfo2:(UIWebView *)webView {
+- (void)setHTMLInfo:(UIWebView *)webView {
     // 设置扫码需要的信息
 //    NSDictionary *dict = @{
 //                           @"idCard" : @"34260119950409463",
