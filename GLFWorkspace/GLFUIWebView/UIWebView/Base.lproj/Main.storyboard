@@ -147,6 +147,21 @@
                                     <action selector="buttonAction4:" destination="BYZ-38-t0r" eventType="touchUpInside" id="XF9-6x-f35"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sKb-aC-MQl">
+                                <rect key="frame" x="100" y="573" width="175" height="40"/>
+                                <color key="backgroundColor" red="0.92156862750000001" green="0.49019607840000001" blue="0.23529411759999999" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="175" id="MFc-11-P2f"/>
+                                    <constraint firstAttribute="height" constant="40" id="x3E-g0-vAp"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                <state key="normal" title="测试">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="testAction:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fbH-3u-bpy"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -154,6 +169,8 @@
                             <constraint firstItem="ZlM-zr-vN6" firstAttribute="top" secondItem="iLK-3r-fid" secondAttribute="bottom" constant="15" id="3wG-BS-Z6v"/>
                             <constraint firstItem="eGp-uo-nES" firstAttribute="top" secondItem="pl1-XF-cLf" secondAttribute="bottom" constant="30" id="4lC-Tk-wnA"/>
                             <constraint firstAttribute="trailing" secondItem="xLc-y6-GVW" secondAttribute="trailing" constant="100" id="7Fd-Ia-eYQ"/>
+                            <constraint firstItem="sKb-aC-MQl" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="AV0-6o-dx5"/>
+                            <constraint firstItem="KET-rn-JL1" firstAttribute="top" secondItem="sKb-aC-MQl" secondAttribute="bottom" constant="54" id="CSz-bV-hVg"/>
                             <constraint firstItem="iLK-3r-fid" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="100" id="IV0-zv-yOf"/>
                             <constraint firstItem="vkO-c3-HgX" firstAttribute="top" secondItem="kqn-fb-FTg" secondAttribute="bottom" constant="20" id="Kmw-ep-a9i"/>
                             <constraint firstItem="ZlM-zr-vN6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="100" id="Mje-0u-eNz"/>

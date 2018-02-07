@@ -120,6 +120,14 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+// 测试
+- (IBAction)testAction:(id)sender {
+    WebViewController *vc = [[WebViewController alloc] init];
+    vc.type = 1;
+    vc.urlStr = @"http://61.177.174.10:8082/whserver/healthyHome/my-park!myPackIndexV2.action";
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 @end
 
