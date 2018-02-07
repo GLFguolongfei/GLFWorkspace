@@ -43,6 +43,8 @@
     self.button3.layer.masksToBounds = YES;
     self.button4.layer.cornerRadius = 20;
     self.button4.layer.masksToBounds = YES;
+    self.testButton.layer.cornerRadius = 20;
+    self.testButton.layer.masksToBounds = YES;
     
     // http://192.168.1.59:8083/    上海测试服
     // http://61.177.174.10:8082/   芜湖测试服

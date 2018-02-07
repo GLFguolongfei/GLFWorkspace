@@ -198,6 +198,7 @@
                         <outlet property="button3" destination="ZlM-zr-vN6" id="M2n-nQ-9VK"/>
                         <outlet property="button4" destination="xLc-y6-GVW" id="Lbp-iT-t3p"/>
                         <outlet property="ipTextView" destination="kqn-fb-FTg" id="2dL-dO-ago"/>
+                        <outlet property="testButton" destination="sKb-aC-MQl" id="wqY-aP-Dlj"/>
                         <outlet property="topButton1" destination="vkO-c3-HgX" id="TU0-gu-zyc"/>
                         <outlet property="topButton2" destination="pl1-XF-cLf" id="Eie-X5-Oku"/>
                         <outlet property="topButton3" destination="S4j-qN-HkH" id="Usy-bw-c4F"/>
