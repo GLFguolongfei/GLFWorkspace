@@ -10,8 +10,8 @@
 
 @interface WebViewController : BaseViewController
 
-// 1 城市令扫码信息
-// 2 医生端账号密码
+// type=1 城市令扫码信息
+// type=2 医生端账号密码
 @property (nonatomic, assign) NSUInteger type;
 @property (nonatomic, strong) NSString *urlStr;
 
