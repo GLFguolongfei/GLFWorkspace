@@ -126,8 +126,8 @@
 - (IBAction)testAction:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
     vc.type = 1;
-//    vc.urlStr = @"http://61.177.174.10:8082/whserver/healthyHome/my-park!myPackIndexV2.action";
-    vc.urlStr = @"http://192.168.1.51:8080/whserver/yhwApp/home-page!homeWelcome.action";
+    vc.urlStr = @"http://192.168.1.51:8080/whserver/healthyHome/my-park!myPackIndexV2.action?serviceTicket=fb3b613a-970f-4111-aa4c-a3ba1c20e390";
+//    vc.urlStr = @"http://192.168.1.51:8080/whserver/yhwApp/home-page!homeWelcome.action";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
