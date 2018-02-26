@@ -125,7 +125,7 @@
 // 测试
 - (IBAction)testAction:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
-    vc.type = 1;
+    vc.type = 2;
     // 健康小驿（园区健康）（serviceTicket 只有5分钟时效，即每5分钟就要更换）
 //    vc.urlStr = @"http://192.168.1.51:8080/whserver/healthyHome/my-park!myPackIndexV2.action?serviceTicket=fb3b613a-970f-4111-aa4c-a3ba1c20e390";
     // 家庭医生居民端

@@ -53,7 +53,7 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
 #if FirstTarget
-    UIImage *image = [UIImage imageNamed:@"lunch2"];
+    UIImage *image = [UIImage imageNamed:@"lunch7"];
 #elif SecondTarget
     UIImage *image = [UIImage imageNamed:@"lunch0"];
 
