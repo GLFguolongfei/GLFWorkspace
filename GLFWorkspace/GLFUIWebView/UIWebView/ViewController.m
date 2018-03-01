@@ -43,6 +43,8 @@
     self.button3.layer.masksToBounds = YES;
     self.button4.layer.cornerRadius = 20;
     self.button4.layer.masksToBounds = YES;
+    self.button5.layer.cornerRadius = 20;
+    self.button5.layer.masksToBounds = YES;
     self.testButton.layer.cornerRadius = 20;
     self.testButton.layer.masksToBounds = YES;
     
@@ -106,7 +108,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-// 健康小驿
+// 健康大本营（新）
 - (IBAction)buttonAction3:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
     vc.type = 1;
@@ -114,11 +116,19 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-// 健康大本营
+// 健康大本营（旧）
 - (IBAction)buttonAction4:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
     vc.type = 1;
     vc.urlStr = @"http://61.177.174.10:8082/whserver/healthy-home-v2!home.action";
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+// 健康小驿
+- (IBAction)buttonAction5:(id)sender {
+    WebViewController *vc = [[WebViewController alloc] init];
+    vc.type = 1;
+    vc.urlStr = @"http://61.177.174.10:8082/whserver/healthyHome/my-park!myPackIndexV2.action?serviceTicket=ec1e1e29-3a66-466e-bbe5-106c212bd259";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
