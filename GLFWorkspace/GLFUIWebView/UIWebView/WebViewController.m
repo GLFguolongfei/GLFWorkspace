@@ -31,6 +31,8 @@
     
     NSURL *url = [NSURL URLWithString:self.urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    // 加载请求的时候忽略缓存
+    request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:3.0];
     [_webView loadRequest:request];
 }
 
