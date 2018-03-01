@@ -47,6 +47,8 @@
     self.button5.layer.masksToBounds = YES;
     self.testButton.layer.cornerRadius = 20;
     self.testButton.layer.masksToBounds = YES;
+    self.clearCache.layer.cornerRadius = 20;
+    self.clearCache.layer.masksToBounds = YES;
     
     // http://192.168.1.59:8083/    上海测试服
     // http://61.177.174.10:8082/   芜湖测试服
@@ -132,6 +134,7 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+#pragma mark 特殊
 // 测试
 - (IBAction)testAction:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
@@ -144,6 +147,11 @@
     // 家庭医生医生端
 //    vc.urlStr = @"http://192.168.1.51:8080/whserver/appDoc/doc-login!loginIndex.action";
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+// 清除Webview缓存
+- (IBAction)clearCache:(id)sender {
+    
 }
 
 
