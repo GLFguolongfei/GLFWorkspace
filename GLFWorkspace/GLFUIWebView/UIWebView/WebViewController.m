@@ -143,13 +143,23 @@
 //                           @"versionNumber" : @"2.0.1",
 //                           @"zjType" : @"1"
 //                           };
+//    NSDictionary *dict = @{
+//                           @"idCard" : @"342426199304214611",
+//                           @"isAuth" : @"1",
+//                           @"phoneNum" : @"17681332329",
+//                           @"source" : @"iOS",
+//                           @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
+//                           @"userName" : @"汪磊",
+//                           @"versionNumber" : @"2.0.1",
+//                           @"zjType" : @"1"
+//                           };
     NSDictionary *dict = @{
-                           @"idCard" : @"342426199304214611",
+                           @"idCard" : @"411081199104051555",
                            @"isAuth" : @"1",
-                           @"phoneNum" : @"17681332329",
+                           @"phoneNum" : @"15618632831",
                            @"source" : @"iOS",
                            @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
-                           @"userName" : @"汪磊",
+                           @"userName" : @"郭龙飞",
                            @"versionNumber" : @"2.0.1",
                            @"zjType" : @"1"
                            };
