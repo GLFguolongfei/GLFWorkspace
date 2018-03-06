@@ -32,7 +32,7 @@
     NSURL *url = [NSURL URLWithString:self.urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     // 加载请求的时候忽略缓存
-    request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:3.0];
+//    request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:3.0];
     [_webView loadRequest:request];
 }
 
@@ -133,36 +133,26 @@
     //    * userName:用户姓名
     //    * versionNumber:版本号
     //    * zjType:证件类型  1：身份证 （目前仅有“1”类型）
-//    NSDictionary *dict = @{
-//                           @"idCard" : @"34260119950409463",
-//                           @"isAuth" : @"1",
-//                           @"phoneNum" : @"18301930275",
-//                           @"source" : @"iOS",
-//                           @"userId" : @"2321a7ab-b0ef-4f20-b9e3-5fee45bd9143",
-//                           @"userName" : @"沈文华",
-//                           @"versionNumber" : @"2.0.1",
-//                           @"zjType" : @"1"
-//                           };
-//    NSDictionary *dict = @{
-//                           @"idCard" : @"342426199304214611",
-//                           @"isAuth" : @"1",
-//                           @"phoneNum" : @"17681332329",
-//                           @"source" : @"iOS",
-//                           @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
-//                           @"userName" : @"汪磊",
-//                           @"versionNumber" : @"2.0.1",
-//                           @"zjType" : @"1"
-//                           };
     NSDictionary *dict = @{
-                           @"idCard" : @"411081199104051555",
+                           @"idCard" : @"342426199304214611",
                            @"isAuth" : @"1",
-                           @"phoneNum" : @"15618632831",
+                           @"phoneNum" : @"17681332329",
                            @"source" : @"iOS",
                            @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
-                           @"userName" : @"郭龙飞",
+                           @"userName" : @"汪磊",
                            @"versionNumber" : @"2.0.1",
                            @"zjType" : @"1"
                            };
+//    NSDictionary *dict = @{
+//                           @"idCard" : @"411081199104051555",
+//                           @"isAuth" : @"1",
+//                           @"phoneNum" : @"15618632831",
+//                           @"source" : @"iOS",
+//                           @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
+//                           @"userName" : @"郭龙飞",
+//                           @"versionNumber" : @"2.0.1",
+//                           @"zjType" : @"1"
+//                           };
     NSString *str = [GLFTools dictionaryToJson:dict];
     NSString *jsStr = [NSString stringWithFormat:@"getUserInfo(%@)", str];
     [webView stringByEvaluatingJavaScriptFromString:jsStr];
