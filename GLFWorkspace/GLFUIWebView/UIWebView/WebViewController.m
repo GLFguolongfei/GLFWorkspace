@@ -133,26 +133,26 @@
     //    * userName:用户姓名
     //    * versionNumber:版本号
     //    * zjType:证件类型  1：身份证 （目前仅有“1”类型）
-    NSDictionary *dict = @{
-                           @"idCard" : @"342426199304214611",
-                           @"isAuth" : @"1",
-                           @"phoneNum" : @"17681332329",
-                           @"source" : @"iOS",
-                           @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
-                           @"userName" : @"汪磊",
-                           @"versionNumber" : @"2.0.1",
-                           @"zjType" : @"1"
-                           };
 //    NSDictionary *dict = @{
-//                           @"idCard" : @"411081199104051555",
+//                           @"idCard" : @"342426199304214611",
 //                           @"isAuth" : @"1",
-//                           @"phoneNum" : @"15618632831",
+//                           @"phoneNum" : @"17681332329",
 //                           @"source" : @"iOS",
 //                           @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
-//                           @"userName" : @"郭龙飞",
+//                           @"userName" : @"汪磊",
 //                           @"versionNumber" : @"2.0.1",
 //                           @"zjType" : @"1"
 //                           };
+    NSDictionary *dict = @{
+                           @"idCard" : @"411081199104051555",
+                           @"isAuth" : @"1",
+                           @"phoneNum" : @"15618632831",
+                           @"source" : @"iOS",
+                           @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
+                           @"userName" : @"郭龙飞",
+                           @"versionNumber" : @"2.0.1",
+                           @"zjType" : @"1"
+                           };
     NSString *str = [GLFTools dictionaryToJson:dict];
     NSString *jsStr = [NSString stringWithFormat:@"getUserInfo(%@)", str];
     [webView stringByEvaluatingJavaScriptFromString:jsStr];
