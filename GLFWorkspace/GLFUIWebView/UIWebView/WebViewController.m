@@ -143,26 +143,26 @@
 //                           @"versionNumber" : @"2.0.1",
 //                           @"zjType" : @"1"
 //                           };
-//    NSDictionary *dict = @{
-//                           @"idCard" : @"411081199104051555",
-//                           @"isAuth" : @"1",
-//                           @"phoneNum" : @"15618632831",
-//                           @"source" : @"iOS",
-//                           @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
-//                           @"userName" : @"郭龙飞",
-//                           @"versionNumber" : @"2.0.1",
-//                           @"zjType" : @"1"
-//                           };
     NSDictionary *dict = @{
-                           @"idCard" : @"321323199011196713",
+                           @"idCard" : @"411081199104051555",
                            @"isAuth" : @"1",
-                           @"phoneNum" : @"185501005",
+                           @"phoneNum" : @"15618632831",
                            @"source" : @"iOS",
                            @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
-                           @"userName" : @"苗双",
+                           @"userName" : @"郭龙飞",
                            @"versionNumber" : @"2.0.1",
                            @"zjType" : @"1"
                            };
+//    NSDictionary *dict = @{
+//                           @"idCard" : @"321323199011196713",
+//                           @"isAuth" : @"1",
+//                           @"phoneNum" : @"185501005",
+//                           @"source" : @"iOS",
+//                           @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
+//                           @"userName" : @"苗双",
+//                           @"versionNumber" : @"2.0.1",
+//                           @"zjType" : @"1"
+//                           };
     NSString *str = [GLFTools dictionaryToJson:dict];
     NSString *jsStr = [NSString stringWithFormat:@"getUserInfo(%@)", str];
     [webView stringByEvaluatingJavaScriptFromString:jsStr];
