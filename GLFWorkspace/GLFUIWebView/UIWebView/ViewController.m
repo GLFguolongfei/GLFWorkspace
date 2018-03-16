@@ -142,8 +142,8 @@
     // 健康小驿（园区健康）（serviceTicket 只有5分钟时效，即每5分钟就要更换）
 //    vc.urlStr = @"http://192.168.1.51:8080/whserver/healthyHome/my-park!myPackIndexV2.action?serviceTicket=fb3b613a-970f-4111-aa4c-a3ba1c20e390";
     // 家庭医生居民端
-    vc.urlStr = @"http://192.168.1.51:8080/whserver/yhwApp/home-page!homeWelcome.action";
-//    vc.urlStr = @"http://192.168.1.51:8080/whserver/yhwApp/home-page!homeWelcome.action?serviceTicket=a7cff6f4-8592-42d5-ab5b-ca624c190767";
+    vc.urlStr = @"http://192.168.1.51:8080/whserver/yhwApp/home-page!homeWelcome.action?serviceTicket=a8c16d18-657e-4823-a435-2b534770f2bc";
+//    vc.urlStr = @"http://61.177.174.10:8082/whserver/yhwApp/home-page!homeWelcome.action?serviceTicket=4fbf2911-c0b1-4ecb-8829-2336cfb93510";
     // 家庭医生医生端
 //    vc.urlStr = @"http://192.168.1.51:8080/whserver/appDoc/doc-login!loginIndex.action";
     [self.navigationController pushViewController:vc animated:YES];
