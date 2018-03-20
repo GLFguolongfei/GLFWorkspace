@@ -40,7 +40,7 @@
     label.backgroundColor = [UIColor clearColor];
     [self.view addSubview:label];
     
-    label.text = @"新年快乐, 大吉大利";
+    label.text = @"大吉大利, 今晚吃鸡";
     label.textColor = [UIColor redColor];
     label.textAlignment = NSTextAlignmentCenter;
     

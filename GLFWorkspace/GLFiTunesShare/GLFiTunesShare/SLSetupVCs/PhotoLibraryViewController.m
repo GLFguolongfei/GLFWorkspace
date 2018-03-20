@@ -65,11 +65,11 @@ static NSString *cellID = @"cellID";
     [collectionViewArray removeAllObjects];
     [nameArray removeAllObjects];
     if (isSuccess) {
-        for (NSInteger i = 0; i < 11; i++) {
+        for (NSInteger i = 0; i < 10; i++) {
             NSString *name = [NSString stringWithFormat:@"bgview%ld", i];
             [nameArray addObject:name];
         }
-        for (NSInteger i = 0; i < 6; i++) {
+        for (NSInteger i = 0; i < 12; i++) {
             NSString *name = [NSString stringWithFormat:@"lunch%ld", i];
             [nameArray addObject:name];
         }
