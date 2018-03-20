@@ -65,7 +65,7 @@ static NSString *cellID = @"cellID";
     [collectionViewArray removeAllObjects];
     [nameArray removeAllObjects];
     if (isSuccess) {
-        for (NSInteger i = 0; i < 10; i++) {
+        for (NSInteger i = 0; i < 9; i++) {
             NSString *name = [NSString stringWithFormat:@"bgview%ld", i];
             [nameArray addObject:name];
         }
