@@ -69,11 +69,7 @@ static NSString *cellID = @"cellID";
             NSString *name = [NSString stringWithFormat:@"bgview%ld", i];
             [nameArray addObject:name];
         }
-        for (NSInteger i = 0; i < 12; i++) {
-            NSString *name = [NSString stringWithFormat:@"lunch%ld", i];
-            [nameArray addObject:name];
-        }
-        for (NSInteger i = 0; i < 21; i++) {
+        for (NSInteger i = 0; i < 14; i++) {
             NSString *name = [NSString stringWithFormat:@"mv%ld", i];
             [nameArray addObject:name];
         }
@@ -82,7 +78,7 @@ static NSString *cellID = @"cellID";
             [collectionViewArray addObject:image];
         }
     } else {
-        for (NSInteger i = 0; i < 26; i++) {
+        for (NSInteger i = 0; i < 32; i++) {
             NSString *name = [NSString stringWithFormat:@"nv%ld", i];
             [nameArray addObject:name];
         }

@@ -53,9 +53,9 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
 #if FirstTarget
-    UIImage *image = [UIImage imageNamed:@"lunch7"];
+    UIImage *image = [UIImage imageNamed:@"lunch5"];
 #elif SecondTarget
-    UIImage *image = [UIImage imageNamed:@"lunch0"];
+    UIImage *image = [UIImage imageNamed:@"lunch2"];
 
     LoginViewController *loginVC = [[LoginViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:loginVC];
