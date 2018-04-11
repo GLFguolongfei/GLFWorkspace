@@ -49,7 +49,7 @@
     [str appendString:@" \n"];
     [str appendString:@" \n"];
 
-    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(15, 15, kScreenWidth-30, kScreenHeight-30)];
+    UITextView *textView = [[UITextView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
     textView.text = str;
     textView.editable = NO;
     textView.font = [UIFont systemFontOfSize:14];
