@@ -98,7 +98,8 @@
 - (IBAction)buttonAction1:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
     vc.type = 1;
-    vc.urlStr = @"http://61.177.174.10:8082/whserver/yhwApp/home-page!homeWelcome.action?serviceTicket=556ae6e7-1996-4846-a806-ccf5fabaf150";
+//    vc.urlStr = @"http://61.177.174.10:8082/whserver/yhwApp/home-page!homeWelcome.action?serviceTicket=0e3828ef-9bbd-4ef3-8e3c-68aaacf9e68f";
+    vc.urlStr = @"http://192.168.1.51:8080/whserver/yhwApp/home-page!homeWelcome.action?serviceTicket=926f9f6b-bff7-4a19-b203-3c0ed1d31d47";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
