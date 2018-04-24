@@ -131,7 +131,7 @@
 - (IBAction)buttonAction5:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
     vc.type = 1;
-    vc.urlStr = @"http://61.177.174.10:8082/whserver/healthyHome/my-park!myPackIndexV2.action?serviceTicket=ec1e1e29-3a66-466e-bbe5-106c212bd259";
+    vc.urlStr = @"http://61.177.174.10:8082/whserver/healthyHome/my-park!myPackIndexV2.action?serviceTicket=f1ffc64c-3ee6-47a0-89fd-51daacab59cd";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
