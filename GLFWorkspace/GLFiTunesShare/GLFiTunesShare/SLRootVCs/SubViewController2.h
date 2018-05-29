@@ -17,7 +17,5 @@ typedef void (^SetTitleBlock) (NSString *);
 
 @property (nonatomic, assign) NSInteger currentIndex;
 @property (nonatomic, strong) FileModel *model;
-@property (nonatomic, strong) BackBlock backBlock;
-@property (nonatomic, strong) SetTitleBlock titleBlock;
 
 @end

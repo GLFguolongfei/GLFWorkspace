@@ -25,8 +25,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    FileModel *currentModel = self.fileArray[self.selectIndex];
-    self.title = currentModel.name;
     
     pageVC = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     pageVC.view.frame = self.view.bounds;
@@ -37,13 +35,8 @@
     
     SubViewController2 *subVC = [[SubViewController2 alloc] init];
     subVC.currentIndex = self.selectIndex;
-    subVC.model = currentModel;
-    subVC.backBlock = ^() {
-        [self.navigationController popViewControllerAnimated:YES];
-    };
-    subVC.titleBlock = ^(NSString *title) {
-        self.title = title;
-    };
+    subVC.model = self.fileArray[self.selectIndex];
+    self.title = subVC.model.name;
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
 }
@@ -61,9 +54,6 @@
     SubViewController2 *subVC = [[SubViewController2 alloc] init];
     subVC.currentIndex = self.selectIndex;
     subVC.model = self.fileArray[self.selectIndex];
-    subVC.backBlock = ^() {
-        [self.navigationController popViewControllerAnimated:YES];
-    };
     return subVC;
 }
 
@@ -79,12 +69,6 @@
     SubViewController2 *subVC = [[SubViewController2 alloc] init];
     subVC.currentIndex = self.selectIndex;
     subVC.model = self.fileArray[self.selectIndex];
-    subVC.backBlock = ^() {
-        [self.navigationController popViewControllerAnimated:YES];
-    };
-    subVC.titleBlock = ^(NSString *title) {
-        self.title = title;
-    };
     return subVC;
 }
 

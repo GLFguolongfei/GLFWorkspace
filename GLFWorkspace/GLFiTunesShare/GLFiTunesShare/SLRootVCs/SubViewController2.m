@@ -24,22 +24,15 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
-    if (self.titleBlock) {
-        self.titleBlock(self.model.name);
-    }
-    [self setupAVPlayer];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    if (player) {
-        isPlaying = YES;
-        [player play];
-    }
+    [self setupAVPlayer];
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     isPlaying = NO;
     [player pause];
 }
@@ -53,13 +46,14 @@
     player = [AVPlayer playerWithPlayerItem:item];
     // 4-添加AVPlayerLayer
     AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player];
-    layer.frame = CGRectMake(10, 80, kScreenWidth-20, 400);
+    layer.frame = CGRectMake(10, 80, kScreenWidth-20, kScreenHeight-100);
     [self.view.layer addSublayer:layer];
     isPlaying = YES;
     [player play];
     
     // 点按手势
     UIView *view = [[UIView alloc] initWithFrame:layer.frame];
+//    view.backgroundColor = [UIColor clearColor];
     view.backgroundColor = [UIColor redColor];
     view.alpha = 0.3;
     [self.view addSubview:view];
@@ -70,11 +64,12 @@
 
 - (void)tapAction:(UITapGestureRecognizer *)gesture {
     if (isPlaying) {
+        isPlaying = NO;
         [player pause];
     } else {
+        isPlaying = YES;
         [player play];
     }
-    isPlaying = !isPlaying;
 }
 
 
