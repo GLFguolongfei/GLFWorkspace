@@ -77,6 +77,10 @@
 		6F1EEB321FB1ADEF0046389D /* FileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAE61FB1A4060046389D /* FileModel.m */; };
 		6F2A40D01FB8006400866D06 /* WebSetupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F1EEB1D1FB1A86A0046389D /* WebSetupViewController.xib */; };
 		6F393F8E1FA1B3E90049CF49 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F393F8D1FA1B3E90049CF49 /* CloudKit.framework */; };
+		6F58F45620BDB0E1003E0911 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45520BDB0E1003E0911 /* DetailViewController2.m */; };
+		6F58F45720BDB0E1003E0911 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45520BDB0E1003E0911 /* DetailViewController2.m */; };
+		6F58F45A20BDB0FC003E0911 /* SubViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45920BDB0FC003E0911 /* SubViewController2.m */; };
+		6F58F45B20BDB0FC003E0911 /* SubViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45920BDB0FC003E0911 /* SubViewController2.m */; };
 		6F62A2961F877FCD0049DE3B /* LaunchScreen2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */; };
 		6F62A2971F8783B80049DE3B /* LaunchScreen2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */; };
 		6F8072B21F7E436E007D7B26 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072B11F7E436E007D7B26 /* AppDelegate.m */; };
@@ -186,6 +190,10 @@
 		6F1EEB1D1FB1A86A0046389D /* WebSetupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebSetupViewController.xib; sourceTree = "<group>"; };
 		6F393F8C1FA1B3D50049CF49 /* GLFiTunesShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GLFiTunesShare.entitlements; sourceTree = "<group>"; };
 		6F393F8D1FA1B3E90049CF49 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		6F58F45420BDB0E1003E0911 /* DetailViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController2.h; sourceTree = "<group>"; };
+		6F58F45520BDB0E1003E0911 /* DetailViewController2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController2.m; sourceTree = "<group>"; };
+		6F58F45820BDB0FC003E0911 /* SubViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubViewController2.h; sourceTree = "<group>"; };
+		6F58F45920BDB0FC003E0911 /* SubViewController2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SubViewController2.m; sourceTree = "<group>"; };
 		6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen2.storyboard; sourceTree = "<group>"; };
 		6F8072AD1F7E436E007D7B26 /* GLFiTunesShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLFiTunesShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8072B01F7E436E007D7B26 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -360,8 +368,12 @@
 				6F1EEAEA1FB1A4060046389D /* RootViewController.m */,
 				6F1EEAD81FB1A4060046389D /* DetailViewController.h */,
 				6F1EEAD91FB1A4060046389D /* DetailViewController.m */,
+				6F58F45420BDB0E1003E0911 /* DetailViewController2.h */,
+				6F58F45520BDB0E1003E0911 /* DetailViewController2.m */,
 				6F1EEAED1FB1A4060046389D /* SubViewController.h */,
 				6F1EEAEE1FB1A4060046389D /* SubViewController.m */,
+				6F58F45820BDB0FC003E0911 /* SubViewController2.h */,
+				6F58F45920BDB0FC003E0911 /* SubViewController2.m */,
 				6F1EEADD1FB1A4060046389D /* EditViewController.h */,
 				6F1EEADE1FB1A4060046389D /* EditViewController.m */,
 				6F1EEADF1FB1A4060046389D /* FileInfoViewController.h */,
@@ -699,6 +711,7 @@
 				6F8072B51F7E436E007D7B26 /* ViewController.m in Sources */,
 				6F1EEB121FB1A4060046389D /* BaseViewController.m in Sources */,
 				6F1EEB041FB1A4060046389D /* FileInfoViewController.m in Sources */,
+				6F58F45A20BDB0FC003E0911 /* SubViewController2.m in Sources */,
 				6F1EEB091FB1A4060046389D /* RootViewController.m in Sources */,
 				6F0E960D1FA4135B0029DDD6 /* Base64.m in Sources */,
 				6F0E96211FA4135B0029DDD6 /* PhotoStackView.m in Sources */,
@@ -718,6 +731,7 @@
 				6F1EEB031FB1A4060046389D /* EditViewController.m in Sources */,
 				6F0E96131FA4135B0029DDD6 /* UIColor+HexString.m in Sources */,
 				6F0E961F1FA4135B0029DDD6 /* MBProgressHUD.m in Sources */,
+				6F58F45620BDB0E1003E0911 /* DetailViewController2.m in Sources */,
 				6F1EEB0F1FB1A4060046389D /* Layout.m in Sources */,
 				6F0E96111FA4135B0029DDD6 /* UIColor+Category.m in Sources */,
 				6F0E96251FA4135B0029DDD6 /* MyView.m in Sources */,
@@ -753,6 +767,7 @@
 				6F1EEB321FB1ADEF0046389D /* FileModel.m in Sources */,
 				6F1EEB271FB1ADD50046389D /* RootViewController.m in Sources */,
 				6F1EEB281FB1ADD50046389D /* DetailViewController.m in Sources */,
+				6F58F45B20BDB0FC003E0911 /* SubViewController2.m in Sources */,
 				6F1EEB291FB1ADD50046389D /* SubViewController.m in Sources */,
 				6F1EEB2A1FB1ADD50046389D /* EditViewController.m in Sources */,
 				6F1EEB2B1FB1ADD50046389D /* FileInfoViewController.m in Sources */,
@@ -772,6 +787,7 @@
 				6F0E96141FA4135B0029DDD6 /* UIColor+HexString.m in Sources */,
 				6F1EEB231FB1AD8C0046389D /* EditTableViewCell.m in Sources */,
 				6F0E96201FA4135B0029DDD6 /* MBProgressHUD.m in Sources */,
+				6F58F45720BDB0E1003E0911 /* DetailViewController2.m in Sources */,
 				6F0E96121FA4135B0029DDD6 /* UIColor+Category.m in Sources */,
 				6F0E96261FA4135B0029DDD6 /* MyView.m in Sources */,
 				6F91B4501F81615B00A9C616 /* ViewController.m in Sources */,

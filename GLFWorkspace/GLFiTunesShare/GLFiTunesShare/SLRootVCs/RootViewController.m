@@ -10,6 +10,7 @@
 #import <MediaPlayer/MediaPlayer.h>
 #import "SetupViewController.h"
 #import "DetailViewController.h"
+#import "DetailViewController2.h"
 #import "EditViewController.h"
 #import "FileInfoViewController.h"
 #import "FileModel.h"
@@ -306,10 +307,13 @@
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld 项  %@", model.count, sizeStr];
     } else {
         NSArray *imgTypeArray = @[@"png", @"jpeg", @"jpg", @"gif"];
+        NSArray *videoTypeArray = @[@"mp4", @"rmvb", @"avi", @"mov"];
         NSArray *array = [model.name componentsSeparatedByString:@"."];
         NSString *lowerType = [array.lastObject lowercaseString];
         if ([imgTypeArray containsObject:lowerType]) {
             cell.imageView.image = [UIImage imageWithContentsOfFile:model.path];
+        } else if ([videoTypeArray containsObject:lowerType]) {
+            cell.imageView.image = [UIImage imageNamed:@"video"];
         } else {
             cell.imageView.image = [UIImage imageNamed:@"wenjian"];
         }
@@ -336,15 +340,6 @@
     
     NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
     if (fileType == 1) {
-        // 判断是否为视频文件
-        NSArray *array = [model.name componentsSeparatedByString:@"."];
-        NSString *lowerType = [array.lastObject lowercaseString];
-        if ([lowerType isEqualToString:@"mp4"]) {
-            NSURL *url = [NSURL fileURLWithPath:model.path];
-            MPMoviePlayerViewController *playVc = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-            [self presentViewController:playVc animated:YES completion:nil];
-            return;
-        }
         // 所有文件类型数组
         NSMutableArray *fileArray = [[NSMutableArray alloc] init];
         for (NSInteger i = 0; i < myDataArray.count; i++) {
@@ -362,10 +357,21 @@
                 index = i;
             }
         }
-        DetailViewController *detailVC = [[DetailViewController alloc] init];
-        detailVC.selectIndex = index;
-        detailVC.fileArray = fileArray;
-        [self.navigationController pushViewController:detailVC animated:YES];
+        // 判断是否为视频文件
+        NSArray *videoTypeArray = @[@"mp4", @"rmvb", @"avi", @"mov"];
+        NSArray *array = [model.name componentsSeparatedByString:@"."];
+        NSString *lowerType = [array.lastObject lowercaseString];
+        if ([videoTypeArray containsObject:lowerType]) { // 视频
+            DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
+            detailVC.selectIndex = index;
+            detailVC.fileArray = fileArray;
+            [self.navigationController pushViewController:detailVC animated:YES];
+        } else { // 图片和其它类型
+            DetailViewController *detailVC = [[DetailViewController alloc] init];
+            detailVC.selectIndex = index;
+            detailVC.fileArray = fileArray;
+            [self.navigationController pushViewController:detailVC animated:YES];
+        }
     } else if (fileType == 2) {
         RootViewController *vc = [[RootViewController alloc] init];
         vc.titleStr = model.name;

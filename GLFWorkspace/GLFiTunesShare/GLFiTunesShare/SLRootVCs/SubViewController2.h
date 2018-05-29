@@ -1,0 +1,23 @@
+//
+//  SubViewController2.h
+//  GLFiTunesShare
+//
+//  Created by guolongfei on 2018/5/30.
+//  Copyright © 2018年 GuoLongfei. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+#import "FileModel.h"
+
+typedef void (^BackBlock) (void);
+typedef void (^SetTitleBlock) (NSString *);
+
+// --- 内容子页
+@interface SubViewController2 : BaseViewController
+
+@property (nonatomic, assign) NSInteger currentIndex;
+@property (nonatomic, strong) FileModel *model;
+@property (nonatomic, strong) BackBlock backBlock;
+@property (nonatomic, strong) SetTitleBlock titleBlock;
+
+@end
