@@ -23,7 +23,7 @@
     
 }
 
-#pragma mark hud
+#pragma mark HUD透明指示器
 // 功能:显示hud
 - (void)showHUD {
     [self hideAllHUD];

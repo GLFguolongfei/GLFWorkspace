@@ -406,13 +406,13 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		6F1EEAFA1FB1A4060046389D /* SLParentVCs */ = {
+		6F1EEAFA1FB1A4060046389D /* Parent */ = {
 			isa = PBXGroup;
 			children = (
 				6F1EEAFB1FB1A4060046389D /* BaseViewController.h */,
 				6F1EEAFC1FB1A4060046389D /* BaseViewController.m */,
 			);
-			path = SLParentVCs;
+			path = Parent;
 			sourceTree = "<group>";
 		};
 		6F1EEAFD1FB1A4060046389D /* SLLogin */ = {
@@ -477,7 +477,7 @@
 				6F1EEAD71FB1A4060046389D /* SLRootVCs */,
 				6F1EEB141FB1A86A0046389D /* SLSetupVCs */,
 				6F1EEAFD1FB1A4060046389D /* SLLogin */,
-				6F1EEAFA1FB1A4060046389D /* SLParentVCs */,
+				6F1EEAFA1FB1A4060046389D /* Parent */,
 				6F8072B61F7E436E007D7B26 /* Main.storyboard */,
 				6F8072BB1F7E436E007D7B26 /* LaunchScreen.storyboard */,
 				6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */,
