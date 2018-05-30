@@ -1,17 +1,17 @@
 //
-//  EditViewController.m
+//  MoveViewController.m
 //  GLFiTunesShare
 //
-//  Created by guolongfei on 2017/10/16.
-//  Copyright © 2017年 GuoLongfei. All rights reserved.
+//  Created by guolongfei on 2018/5/30.
+//  Copyright © 2018年 GuoLongfei. All rights reserved.
 //
 
-#import "EditViewController.h"
+#import "MoveViewController.h"
 #import "EditTableViewCell.h"
 
 static NSString *cellID = @"GLFTableViewCellID";
 
-@interface EditViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface MoveViewController ()<UITableViewDelegate, UITableViewDataSource>
 {
     UIScrollView *scrollView;
     UITableView *myTableView;
@@ -21,7 +21,7 @@ static NSString *cellID = @"GLFTableViewCellID";
 }
 @end
 
-@implementation EditViewController
+@implementation MoveViewController
 
 
 #pragma mark - Life Cycle
@@ -90,7 +90,7 @@ static NSString *cellID = @"GLFTableViewCellID";
     scrollView.contentSize = scrollViewRect.size;    // 内容(如果在某一个方向上,小于控件本身的大小,那个方向不可以滑动)
     scrollView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:scrollView];
-
+    
     CGRect tableViewRect = CGRectMake(0, 0, kScreenWidth, kScreenHeight-100);
     myTableView = [[UITableView alloc] initWithFrame:tableViewRect style:UITableViewStylePlain];
     myTableView.delegate = self;
@@ -104,7 +104,7 @@ static NSString *cellID = @"GLFTableViewCellID";
     UIView *back = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 100)];
     back.backgroundColor = KNavgationBarColor;
     [self.view addSubview:back];
-
+    
     UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, kScreenWidth, 20)];
     label1.text = @"选取添加这些项目的位置。";
     label1.textAlignment = NSTextAlignmentCenter;
@@ -228,7 +228,7 @@ static NSString *cellID = @"GLFTableViewCellID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-
+    
     [self moveTo:myDataArray[indexPath.row]];
     [GLFFileManager updateDocumentPaths];
 }

@@ -11,7 +11,7 @@
 #import "DetailViewController2.h"
 #import "DetailViewController3.h"
 #import "SetupViewController.h"
-#import "EditViewController.h"
+#import "MoveViewController.h"
 #import "FileInfoViewController.h"
 
 @interface RootViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -79,7 +79,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     if (self.moveModel) {
-        EditViewController *editVC = [[EditViewController alloc] init];
+        MoveViewController *editVC = [[MoveViewController alloc] init];
         editVC.modelArray = @[self.moveModel];
         [self presentViewController:editVC animated:YES completion:nil];
         
@@ -214,7 +214,7 @@
 }
 
 - (void)moveAction:(id)sender {
-    EditViewController *editVC = [[EditViewController alloc] init];
+    MoveViewController *editVC = [[MoveViewController alloc] init];
     editVC.modelArray = editArray;
     [self presentViewController:editVC animated:YES completion:nil];
 }
@@ -247,7 +247,7 @@
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
-// 是否恢复如初
+// editing: 是否恢复如初
 - (void)viewEditing:(BOOL)editing {
     UIBarButtonItem *item = self.navigationItem.rightBarButtonItems[0];
     if (editing) {
@@ -484,7 +484,7 @@
 
 - (void)moveAction {
     FileModel *model = myDataArray[editIndexPath.row];
-    EditViewController *editVC = [[EditViewController alloc] init];
+    MoveViewController *editVC = [[MoveViewController alloc] init];
     editVC.modelArray = @[model];
     [self presentViewController:editVC animated:YES completion:nil];
 }

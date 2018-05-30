@@ -10,7 +10,7 @@
 #import "RootViewController.h"
 #import "LoginViewController.h"
 #import "ViewController.h"
-#import "EditViewController.h"
+#import "MoveViewController.h"
 
 @interface AppDelegate ()
 {
@@ -90,7 +90,7 @@
     model.path = path;
     model.name = array.lastObject;
 #if FirstTarget
-    EditViewController *editVC = [[EditViewController alloc] init];
+    MoveViewController *editVC = [[MoveViewController alloc] init];
     editVC.modelArray = @[model];
     [self.window.rootViewController presentViewController:editVC animated:YES completion:nil];
 #elif SecondTarget
