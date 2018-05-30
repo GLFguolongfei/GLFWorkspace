@@ -370,8 +370,6 @@
 		6F1EEAD71FB1A4060046389D /* Root */ = {
 			isa = PBXGroup;
 			children = (
-				6F1EEAE41FB1A4060046389D /* Models */,
-				6F1EEAEF1FB1A4060046389D /* Views */,
 				6F1EEAE91FB1A4060046389D /* RootViewController.h */,
 				6F1EEAEA1FB1A4060046389D /* RootViewController.m */,
 				6F1EEAD81FB1A4060046389D /* DetailViewController.h */,
@@ -386,11 +384,6 @@
 				6F58F45920BDB0FC003E0911 /* SubViewController2.m */,
 				6FE944E320BE4F0A005A46AD /* SubViewController3.h */,
 				6FE944E420BE4F0A005A46AD /* SubViewController3.m */,
-				6F1EEADD1FB1A4060046389D /* EditViewController.h */,
-				6F1EEADE1FB1A4060046389D /* EditViewController.m */,
-				6F1EEADF1FB1A4060046389D /* FileInfoViewController.h */,
-				6F1EEAE01FB1A4060046389D /* FileInfoViewController.m */,
-				6F1EEAE11FB1A4060046389D /* FileInfoViewController.xib */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -486,6 +479,7 @@
 				6F8072B11F7E436E007D7B26 /* AppDelegate.m */,
 				6F8072B31F7E436E007D7B26 /* ViewController.h */,
 				6F8072B41F7E436E007D7B26 /* ViewController.m */,
+				6FE944E720BE58D3005A46AD /* Other */,
 				6F1EEAD71FB1A4060046389D /* Root */,
 				6F1EEB141FB1A86A0046389D /* Setup */,
 				6F1EEAFD1FB1A4060046389D /* Login */,
@@ -530,6 +524,20 @@
 				6F9116DC1F7EB445002C40AC /* MediaPlayer.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6FE944E720BE58D3005A46AD /* Other */ = {
+			isa = PBXGroup;
+			children = (
+				6F1EEAE41FB1A4060046389D /* Models */,
+				6F1EEAEF1FB1A4060046389D /* Views */,
+				6F1EEADD1FB1A4060046389D /* EditViewController.h */,
+				6F1EEADE1FB1A4060046389D /* EditViewController.m */,
+				6F1EEADF1FB1A4060046389D /* FileInfoViewController.h */,
+				6F1EEAE01FB1A4060046389D /* FileInfoViewController.m */,
+				6F1EEAE11FB1A4060046389D /* FileInfoViewController.xib */,
+			);
+			path = Other;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

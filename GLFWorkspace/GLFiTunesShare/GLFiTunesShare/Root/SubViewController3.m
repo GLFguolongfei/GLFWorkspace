@@ -53,7 +53,7 @@
     
     // 点按手势
     UIView *view = [[UIView alloc] initWithFrame:layer.frame];
-    //    view.backgroundColor = [UIColor clearColor];
+//    view.backgroundColor = [UIColor clearColor];
     view.backgroundColor = [UIColor redColor];
     view.alpha = 0.3;
     [self.view addSubview:view];
