@@ -56,7 +56,7 @@
     player = [AVPlayer playerWithPlayerItem:item];
     // 4-添加AVPlayerLayer
     AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player];
-    layer.frame = CGRectMake(10, 80, kScreenWidth-20, kScreenHeight-100);
+    layer.frame = CGRectMake(0, 65, kScreenWidth, kScreenHeight-65);
     [self.view.layer addSublayer:layer];
     
     // 时间

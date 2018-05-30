@@ -50,6 +50,8 @@ static NSString *cellID = @"GLFTableViewCellID";
         } else {
             sliderView.hidden = YES;
         }
+    } else {
+        [GLFFileManager updateDocumentPaths];
     }
 }
 
