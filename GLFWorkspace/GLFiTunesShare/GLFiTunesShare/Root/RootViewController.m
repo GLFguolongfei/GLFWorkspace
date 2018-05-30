@@ -127,7 +127,7 @@
                 if ([CimgTypeArray containsObject:lowerType]) {
                     model.image = [UIImage imageWithContentsOfFile:model.path];
                 } else if ([CvideoTypeArray containsObject:lowerType]) {
-                    model.image = [GLFTools thumbnailImageRequest:arc4random() % 10 andVideoPath:model.path];
+                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
                 }
             } else if (fileType == 2) {
                 model.isDir = YES;
