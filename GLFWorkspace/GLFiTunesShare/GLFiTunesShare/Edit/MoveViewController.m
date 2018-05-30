@@ -40,9 +40,9 @@ static NSString *cellID = @"GLFTableViewCellID";
     documentPath = [paths objectAtIndex:0];
     myDataArray = [[NSMutableArray alloc] init];
     
-    NSString *isUpdating = [[NSUserDefaults standardUserDefaults] objectForKey:DocumentIsSearching];
+    NSString *isSearching = [[NSUserDefaults standardUserDefaults] objectForKey:DocumentIsSearching];
     NSArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:DocumentPathArray];
-    if (isUpdating.integerValue!=1 && array.count!=0) {
+    if (isSearching.integerValue!=1 && array.count!=0) {
         [myDataArray addObjectsFromArray:array];
         [myTableView reloadData];
         if (myDataArray.count > 300) {
@@ -50,7 +50,6 @@ static NSString *cellID = @"GLFTableViewCellID";
         } else {
             sliderView.hidden = YES;
         }
-        return;
     }
 }
 
@@ -205,7 +204,6 @@ static NSString *cellID = @"GLFTableViewCellID";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    
     [self moveTo:myDataArray[indexPath.row]];
     [GLFFileManager updateDocumentPaths];
 }
