@@ -125,7 +125,6 @@
         // 2.LAContext: 本地验证对象上下文
         LAContext *context = [LAContext new];
         context.localizedFallbackTitle = @"";
-
         // 3.判断生物识别技术是否可用
         NSError *error;
         if (![context canEvaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics error:&error]) {
@@ -133,16 +132,14 @@
         }
         // 4.开始使用指纹识别
         [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:@"开启了指纹识别,将打开隐藏功能" reply:^(BOOL success, NSError * _Nullable error) {
-            if (success) {
-                // 指纹识别成功,回主线程更新UI,弹出提示框
+            if (success) { // 指纹识别成功,回主线程更新UI,弹出提示框
                 dispatch_async(dispatch_get_main_queue(), ^{
                     RootViewController *rootVC = [[RootViewController alloc] init];
                     rootVC.moveModel = self.moveModel;
                     [self.navigationController pushViewController:rootVC animated:YES];
                 });
             }
-            if (error) {
-                // 指纹识别出现错误,回主线程更新UI,弹出提示框
+            if (error) { // 指纹识别出现错误,回主线程更新UI,弹出提示框
                 dispatch_async(dispatch_get_main_queue(), ^{
                     [self showStringHUD:error.localizedDescription second:1.5];
                 });
