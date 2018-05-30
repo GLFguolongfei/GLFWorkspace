@@ -266,7 +266,7 @@
     [editArray removeAllObjects];
 }
 
-#pragma mark UITableViewDataSource
+#pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 60;
 }
