@@ -479,11 +479,11 @@
 				6F8072B11F7E436E007D7B26 /* AppDelegate.m */,
 				6F8072B31F7E436E007D7B26 /* ViewController.h */,
 				6F8072B41F7E436E007D7B26 /* ViewController.m */,
-				6FE944E720BE58D3005A46AD /* Other */,
 				6F1EEAD71FB1A4060046389D /* Root */,
 				6F1EEB141FB1A86A0046389D /* Setup */,
 				6F1EEAFD1FB1A4060046389D /* Login */,
 				6F1EEAFA1FB1A4060046389D /* Parent */,
+				6FE944E720BE58D3005A46AD /* Edit */,
 				6F8072B61F7E436E007D7B26 /* Main.storyboard */,
 				6F8072BB1F7E436E007D7B26 /* LaunchScreen.storyboard */,
 				6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */,
@@ -526,7 +526,7 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6FE944E720BE58D3005A46AD /* Other */ = {
+		6FE944E720BE58D3005A46AD /* Edit */ = {
 			isa = PBXGroup;
 			children = (
 				6F1EEAE41FB1A4060046389D /* Models */,
@@ -537,7 +537,7 @@
 				6F1EEAE01FB1A4060046389D /* FileInfoViewController.m */,
 				6F1EEAE11FB1A4060046389D /* FileInfoViewController.xib */,
 			);
-			path = Other;
+			path = Edit;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

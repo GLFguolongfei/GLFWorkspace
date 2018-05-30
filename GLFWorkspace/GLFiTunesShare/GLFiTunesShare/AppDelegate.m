@@ -56,7 +56,7 @@
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:loginVC];
     self.window.rootViewController = navi;
 #else
-
+    str = @"---------------------- 其它Target ----------------------";
 #endif
     imageView = [[UIImageView alloc] initWithFrame:self.window.bounds];
     imageView.image = image;
