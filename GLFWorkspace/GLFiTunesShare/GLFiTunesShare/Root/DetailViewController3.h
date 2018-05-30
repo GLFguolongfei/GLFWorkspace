@@ -1,5 +1,5 @@
 //
-//  DetailViewController2.h
+//  DetailViewController3.h
 //  GLFiTunesShare
 //
 //  Created by guolongfei on 2018/5/30.
@@ -8,8 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-// --- 内容页(图片)
-@interface DetailViewController2 : UIViewController
+// --- 内容页(视频)
+@interface DetailViewController3 : UIViewController
 
 @property (nonatomic, assign) NSInteger selectIndex;
 @property (nonatomic, strong) NSArray *fileArray;

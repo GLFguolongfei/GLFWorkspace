@@ -7,13 +7,12 @@
 //
 
 #import "RootViewController.h"
-#import <MediaPlayer/MediaPlayer.h>
-#import "SetupViewController.h"
 #import "DetailViewController.h"
 #import "DetailViewController2.h"
+#import "DetailViewController3.h"
+#import "SetupViewController.h"
 #import "EditViewController.h"
 #import "FileInfoViewController.h"
-#import "FileModel.h"
 
 @interface RootViewController ()<UITableViewDelegate, UITableViewDataSource>
 {
@@ -311,7 +310,7 @@
             cell.imageView.image = [UIImage imageWithContentsOfFile:model.path];
         } else if ([videoTypeArray containsObject:lowerType]) { // 视频
             cell.imageView.image = [UIImage imageNamed:@"video"];
-        } else {
+        } else { // 其它文件类型
             cell.imageView.image = [UIImage imageNamed:@"wenjian"];
         }
         cell.accessoryType = UITableViewCellAccessoryDetailButton;
@@ -365,12 +364,17 @@
                 index = i;
             }
         }
-        if ([videoTypeArray containsObject:lowerType]) { // 视频
+        if ([imgTypeArray containsObject:lowerType]) { // 图片
             DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
             detailVC.selectIndex = index;
-            detailVC.fileArray = fileArray;
+            detailVC.fileArray = imageArray;
             [self.navigationController pushViewController:detailVC animated:YES];
-        } else { // 图片和其它类型
+        } else if ([videoTypeArray containsObject:lowerType]) { // 视频
+            DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
+            detailVC.selectIndex = index;
+            detailVC.fileArray = videoArray;
+            [self.navigationController pushViewController:detailVC animated:YES];
+        } else { // 其它文件类型
             DetailViewController *detailVC = [[DetailViewController alloc] init];
             detailVC.selectIndex = index;
             detailVC.fileArray = fileArray;

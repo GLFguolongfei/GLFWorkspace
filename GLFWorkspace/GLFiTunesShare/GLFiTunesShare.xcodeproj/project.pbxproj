@@ -104,6 +104,10 @@
 		6FA4620C1FB3383A00DDA77F /* ImageSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA4620B1FB3383A00DDA77F /* ImageSubViewController.m */; };
 		6FA4620D1FB3383A00DDA77F /* ImageSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA4620B1FB3383A00DDA77F /* ImageSubViewController.m */; };
 		6FA4620E1FB342CC00DDA77F /* FileInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F1EEAE11FB1A4060046389D /* FileInfoViewController.xib */; };
+		6FE944E120BE4EF6005A46AD /* DetailViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E020BE4EF6005A46AD /* DetailViewController3.m */; };
+		6FE944E220BE4EF6005A46AD /* DetailViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E020BE4EF6005A46AD /* DetailViewController3.m */; };
+		6FE944E520BE4F0A005A46AD /* SubViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E420BE4F0A005A46AD /* SubViewController3.m */; };
+		6FE944E620BE4F0A005A46AD /* SubViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E420BE4F0A005A46AD /* SubViewController3.m */; };
 		6FF80A9B1F8F9F5800D7B19B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FF80A9A1F8F9F5800D7B19B /* AVFoundation.framework */; };
 /* End PBXBuildFile section */
 
@@ -217,6 +221,10 @@
 		6F9FB5841F8B614B002CD399 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		6FA4620A1FB3383A00DDA77F /* ImageSubViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageSubViewController.h; sourceTree = "<group>"; };
 		6FA4620B1FB3383A00DDA77F /* ImageSubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageSubViewController.m; sourceTree = "<group>"; };
+		6FE944DF20BE4EF6005A46AD /* DetailViewController3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController3.h; sourceTree = "<group>"; };
+		6FE944E020BE4EF6005A46AD /* DetailViewController3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController3.m; sourceTree = "<group>"; };
+		6FE944E320BE4F0A005A46AD /* SubViewController3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubViewController3.h; sourceTree = "<group>"; };
+		6FE944E420BE4F0A005A46AD /* SubViewController3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SubViewController3.m; sourceTree = "<group>"; };
 		6FF80A9A1F8F9F5800D7B19B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -370,10 +378,14 @@
 				6F1EEAD91FB1A4060046389D /* DetailViewController.m */,
 				6F58F45420BDB0E1003E0911 /* DetailViewController2.h */,
 				6F58F45520BDB0E1003E0911 /* DetailViewController2.m */,
+				6FE944DF20BE4EF6005A46AD /* DetailViewController3.h */,
+				6FE944E020BE4EF6005A46AD /* DetailViewController3.m */,
 				6F1EEAED1FB1A4060046389D /* SubViewController.h */,
 				6F1EEAEE1FB1A4060046389D /* SubViewController.m */,
 				6F58F45820BDB0FC003E0911 /* SubViewController2.h */,
 				6F58F45920BDB0FC003E0911 /* SubViewController2.m */,
+				6FE944E320BE4F0A005A46AD /* SubViewController3.h */,
+				6FE944E420BE4F0A005A46AD /* SubViewController3.m */,
 				6F1EEADD1FB1A4060046389D /* EditViewController.h */,
 				6F1EEADE1FB1A4060046389D /* EditViewController.m */,
 				6F1EEADF1FB1A4060046389D /* FileInfoViewController.h */,
@@ -710,6 +722,7 @@
 			files = (
 				6F8072B51F7E436E007D7B26 /* ViewController.m in Sources */,
 				6F1EEB121FB1A4060046389D /* BaseViewController.m in Sources */,
+				6FE944E520BE4F0A005A46AD /* SubViewController3.m in Sources */,
 				6F1EEB041FB1A4060046389D /* FileInfoViewController.m in Sources */,
 				6F58F45A20BDB0FC003E0911 /* SubViewController2.m in Sources */,
 				6F1EEB091FB1A4060046389D /* RootViewController.m in Sources */,
@@ -721,6 +734,7 @@
 				6F0E961B1FA4135B0029DDD6 /* MBProgressHUD+Add.m in Sources */,
 				6F8072C01F7E436E007D7B26 /* main.m in Sources */,
 				6F1EEB211FB1A86A0046389D /* WebSetupViewController.m in Sources */,
+				6FE944E120BE4EF6005A46AD /* DetailViewController3.m in Sources */,
 				6F1EEB0B1FB1A4060046389D /* SubViewController.m in Sources */,
 				6FA4620C1FB3383A00DDA77F /* ImageSubViewController.m in Sources */,
 				6F1EEB201FB1A86A0046389D /* SetupViewController.m in Sources */,
@@ -766,6 +780,7 @@
 			files = (
 				6F1EEB321FB1ADEF0046389D /* FileModel.m in Sources */,
 				6F1EEB271FB1ADD50046389D /* RootViewController.m in Sources */,
+				6FE944E620BE4F0A005A46AD /* SubViewController3.m in Sources */,
 				6F1EEB281FB1ADD50046389D /* DetailViewController.m in Sources */,
 				6F58F45B20BDB0FC003E0911 /* SubViewController2.m in Sources */,
 				6F1EEB291FB1ADD50046389D /* SubViewController.m in Sources */,
@@ -777,6 +792,7 @@
 				6F1EEB2F1FB1ADD50046389D /* WebSetupViewController.m in Sources */,
 				6F1EEB301FB1ADD50046389D /* LoginViewController.m in Sources */,
 				6F1EEB311FB1ADD50046389D /* BaseViewController.m in Sources */,
+				6FE944E220BE4EF6005A46AD /* DetailViewController3.m in Sources */,
 				6F0E960E1FA4135B0029DDD6 /* Base64.m in Sources */,
 				6FA4620D1FB3383A00DDA77F /* ImageSubViewController.m in Sources */,
 				6F0E96221FA4135B0029DDD6 /* PhotoStackView.m in Sources */,

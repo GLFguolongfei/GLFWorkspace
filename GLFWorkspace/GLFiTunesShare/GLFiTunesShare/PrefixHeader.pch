@@ -24,6 +24,8 @@
 #import "Base64.h"
 #import "GLFTools.h"
 #import "GLFFileManager.h"
+// Models
+#import "FileModel.h"
 // Categorys
 #import "UIView+Helper.h"
 #import "UIColor+HexString.h"
