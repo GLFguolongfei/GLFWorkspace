@@ -8,12 +8,10 @@
 
 #import "DetailViewController.h"
 #import "SubViewController.h"
-#import "FileModel.h"
 
 @interface DetailViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 {
     UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
-    
     GLFFileManager *fileManager;
 }
 @end
@@ -25,27 +23,23 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    FileModel *currentModel = self.fileArray[self.selectIndex];
-    self.title = currentModel.name;
     UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"W前进" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"W回退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     
+    fileManager = [GLFFileManager sharedFileManager];
+
     pageVC = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     pageVC.view.frame = self.view.bounds;
     pageVC.delegate = self;
     pageVC.dataSource = self;
     
-    fileManager = [GLFFileManager sharedFileManager];
-
     SubViewController *subVC = [[SubViewController alloc] init];
     subVC.currentIndex = self.selectIndex;
-    subVC.model = currentModel;
+    subVC.model = self.fileArray[self.selectIndex];
+    self.title = subVC.model.name;
     subVC.backBlock = ^() {
         [self.navigationController popViewControllerAnimated:YES];
-    };
-    subVC.titleBlock = ^(NSString *title) {
-        self.title = title;
     };
     subVC.backEnableBlock = ^(BOOL enable) {
         UIBarButtonItem *item = self.navigationItem.rightBarButtonItems[1];
@@ -117,9 +111,6 @@
     subVC.model = self.fileArray[self.selectIndex];
     subVC.backBlock = ^() {
         [self.navigationController popViewControllerAnimated:YES];
-    };
-    subVC.titleBlock = ^(NSString *title) {
-        self.title = title;
     };
     subVC.backEnableBlock = ^(BOOL enable) {
         UIBarButtonItem *item = self.navigationItem.rightBarButtonItems[1];

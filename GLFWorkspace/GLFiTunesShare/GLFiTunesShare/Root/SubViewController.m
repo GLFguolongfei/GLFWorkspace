@@ -67,12 +67,6 @@
 
 #pragma mark WebView Events
 - (void)setVCTitle:(UIWebView *)webView {
-    // 获取网页的title
-    NSString *js = @"document.title";
-    NSString *resultJS = [webView stringByEvaluatingJavaScriptFromString:js];
-    if (self.titleBlock && resultJS.length!=0) {
-        self.titleBlock(resultJS);
-    }
     // 页面能否返回
     if (self.backEnableBlock) {
         self.backEnableBlock(webView.canGoBack);

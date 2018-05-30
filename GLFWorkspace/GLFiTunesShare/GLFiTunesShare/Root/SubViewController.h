@@ -10,7 +10,6 @@
 #import "FileModel.h"
 
 typedef void (^BackBlock) (void);
-typedef void (^SetTitleBlock) (NSString *);
 typedef void (^SetBackEnableBlock) (BOOL);
 typedef void (^SetForwardEnableBlock) (BOOL);
 
@@ -20,7 +19,6 @@ typedef void (^SetForwardEnableBlock) (BOOL);
 @property (nonatomic, assign) NSInteger currentIndex;   
 @property (nonatomic, strong) FileModel *model;
 @property (nonatomic, strong) BackBlock backBlock;
-@property (nonatomic, strong) SetTitleBlock titleBlock;
 @property (nonatomic, strong) SetBackEnableBlock backEnableBlock;
 @property (nonatomic, strong) SetForwardEnableBlock forwardEnableBlock;
 

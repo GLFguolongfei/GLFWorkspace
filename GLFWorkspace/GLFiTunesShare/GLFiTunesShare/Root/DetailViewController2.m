@@ -12,7 +12,6 @@
 @interface DetailViewController2 ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 {
     UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
-    
     GLFFileManager *fileManager;
 }
 @end
@@ -25,12 +24,12 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    fileManager = [GLFFileManager sharedFileManager];
+
     pageVC = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     pageVC.view.frame = self.view.bounds;
     pageVC.delegate = self;
     pageVC.dataSource = self;
-    
-    fileManager = [GLFFileManager sharedFileManager];
     
     SubViewController2 *subVC = [[SubViewController2 alloc] init];
     subVC.currentIndex = self.selectIndex;

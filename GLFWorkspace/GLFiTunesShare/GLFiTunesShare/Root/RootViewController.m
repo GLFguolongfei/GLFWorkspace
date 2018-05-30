@@ -255,8 +255,8 @@
         self.navigationController.toolbarHidden = YES;
         [myTableView setEditing:NO animated:YES];
         
-        UIBarButtonItem *item1 = self.toolbarItems[2];
-        UIBarButtonItem *item2 = self.toolbarItems[4];
+        UIBarButtonItem *item1 = self.toolbarItems[2]; // 移动
+        UIBarButtonItem *item2 = self.toolbarItems[4]; // 删除
         item1.enabled = NO;
         item2.enabled = NO;
     } else {
