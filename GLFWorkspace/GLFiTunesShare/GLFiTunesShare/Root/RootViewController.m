@@ -337,8 +337,6 @@
     if (fileType == 1) {
         NSArray *imgTypeArray = @[@"png", @"jpeg", @"jpg", @"gif"];
         NSArray *videoTypeArray = @[@"mp4", @"rmvb", @"avi", @"mov"];
-        NSArray *array = [model.name componentsSeparatedByString:@"."];
-        NSString *lowerType = [array.lastObject lowercaseString];
         // 获取所有文件类型
         NSMutableArray *imageArray = [[NSMutableArray alloc] init];
         NSMutableArray *videoArray = [[NSMutableArray alloc] init];
@@ -346,6 +344,8 @@
         for (NSInteger i = 0; i < myDataArray.count; i++) {
             FileModel *md = myDataArray[i];
             NSInteger indexType = [GLFFileManager fileExistsAtPath:md.path];
+            NSArray *array = [md.name componentsSeparatedByString:@"."];
+            NSString *lowerType = [array.lastObject lowercaseString];
             if (indexType == 1) {
                 if ([imgTypeArray containsObject:lowerType]) {
                     [imageArray addObject:md];
@@ -356,6 +356,8 @@
                 }
             }
         }
+        NSArray *array = [model.name componentsSeparatedByString:@"."];
+        NSString *lowerType = [array.lastObject lowercaseString];
         if ([imgTypeArray containsObject:lowerType]) { // 图片
             DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
             detailVC.selectIndex = [self returnIndex:imageArray with:model];

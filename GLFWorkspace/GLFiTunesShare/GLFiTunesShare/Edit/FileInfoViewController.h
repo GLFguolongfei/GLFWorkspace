@@ -14,8 +14,8 @@
 
 @property (nonatomic, strong) FileModel *model;
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *nameLabelConstraint;
-@property (weak, nonatomic) IBOutlet UILabel *nameLabel; // 路径
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *pathHeightConstraint;
+@property (weak, nonatomic) IBOutlet UILabel *pathLabel; // 路径
 @property (weak, nonatomic) IBOutlet UILabel *label1;    // 种类
 @property (weak, nonatomic) IBOutlet UILabel *label2;    // 大小
 @property (weak, nonatomic) IBOutlet UILabel *label3;    // 创建日期

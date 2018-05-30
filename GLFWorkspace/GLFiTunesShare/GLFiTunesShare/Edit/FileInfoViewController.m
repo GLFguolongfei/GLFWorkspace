@@ -18,10 +18,11 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = self.model.name;
 
     CGSize size = [GLFTools calculatingStringSizeWithString:self.model.path ByFont:KFontBold(18) andSize:CGSizeMake(kScreenWidth-30, CGFLOAT_MAX)];
-    self.nameLabelConstraint.constant = size.height + 30;
-    self.nameLabel.text = self.model.path;
+    self.pathHeightConstraint.constant = size.height + 30;
+    self.pathLabel.text = self.model.path;
     
     self.label1.text = self.model.attributes[@"NSFileType"];
     self.label2.text = [GLFFileManager returenSizeStr:self.model.size];

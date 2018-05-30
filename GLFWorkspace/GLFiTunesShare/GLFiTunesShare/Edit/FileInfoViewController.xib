@@ -14,8 +14,8 @@
                 <outlet property="label2" destination="72U-xF-Bld" id="f7f-O0-7aP"/>
                 <outlet property="label3" destination="VbB-jw-qOv" id="GnH-GL-lU9"/>
                 <outlet property="label4" destination="fpP-5C-9tB" id="gCm-pd-Xhb"/>
-                <outlet property="nameLabel" destination="GT0-B4-oM2" id="ERn-VV-ELr"/>
-                <outlet property="nameLabelConstraint" destination="yYc-BG-hnK" id="3RG-Zz-FYy"/>
+                <outlet property="pathHeightConstraint" destination="yYc-BG-hnK" id="MRO-ps-brl"/>
+                <outlet property="pathLabel" destination="GT0-B4-oM2" id="4mM-W4-WAz"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -27,7 +27,7 @@
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="bgview2" translatesAutoresizingMaskIntoConstraints="NO" id="lMj-DQ-0Rz">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="name" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GT0-B4-oM2">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="路径" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GT0-B4-oM2">
                     <rect key="frame" x="15" y="100" width="345" height="150"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="150" id="yYc-BG-hnK"/>
