@@ -25,6 +25,8 @@
     
     NSIndexPath *editIndexPath;
     NSMutableArray *editArray;
+    
+    BOOL isShowing; // 风火轮是否正在转(为了解决个小瑕疵)
 }
 @end
 
@@ -51,7 +53,6 @@
         self.navigationItem.rightBarButtonItem = item;
     }
 
-    [self prepareData];
     [self prepareInterface];
 }
 
@@ -75,6 +76,8 @@
     }
     bgImageView.image = backImage;
     fileManager.currentPath = self.path;
+    isShowing = YES;
+    [self showHUD];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -97,39 +100,48 @@
         self.path = [paths objectAtIndex:0];
         fileManager.currentPath = self.path;
     }
-    
+    if (isShowing != YES) {
+        [self showHUD];
+    }
     myDataArray = [[NSMutableArray alloc] init];
     editArray = [[NSMutableArray alloc] init];
-    NSArray *array = [GLFFileManager searchSubFile:self.path andIsDepth:NO];
-    for (int i = 0; i < array.count; i++) {
-        // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
-        // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
-        if ([array[i] isEqualToString:@"Inbox"]) {
-            continue;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSArray *array = [GLFFileManager searchSubFile:self.path andIsDepth:NO];
+        for (int i = 0; i < array.count; i++) {
+            // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
+            // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
+            if ([array[i] isEqualToString:@"Inbox"]) {
+                continue;
+            }
+            FileModel *model = [[FileModel alloc] init];
+            model.name = array[i];
+            model.path = [NSString stringWithFormat:@"%@/%@", self.path,model.name];
+            model.attributes = [GLFFileManager attributesOfItemAtPath:model.path];
+            NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
+            if (fileType == 1) {
+                model.isDir = NO;
+                model.size = [GLFFileManager fileSize:model.path];
+                NSArray *array = [model.name componentsSeparatedByString:@"."];
+                NSString *lowerType = [array.lastObject lowercaseString];
+                if ([CimgTypeArray containsObject:lowerType]) {
+                    model.image = [UIImage imageWithContentsOfFile:model.path];
+                } else if ([CvideoTypeArray containsObject:lowerType]) {
+                    model.image = [GLFTools thumbnailImageRequest:arc4random() % 10 andVideoPath:model.path];
+                }
+            } else if (fileType == 2) {
+                model.isDir = YES;
+                model.size = [GLFFileManager fileSizeForDir:model.path];
+                model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
+            }
+            [myDataArray addObject:model];
         }
-        FileModel *model = [[FileModel alloc] init];
-        model.name = array[i];
-        model.path = [NSString stringWithFormat:@"%@/%@", self.path,model.name];
-        model.attributes = [GLFFileManager attributesOfItemAtPath:model.path];
-        NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
-        if (fileType == 1) {
-            model.isDir = NO;
-            model.size = [GLFFileManager fileSize:model.path];
-            NSArray *array = [model.name componentsSeparatedByString:@"."];
-            NSString *lowerType = [array.lastObject lowercaseString];
-            if ([CimgTypeArray containsObject:lowerType]) {
-                model.image = [UIImage imageWithContentsOfFile:model.path];
-            } else if ([CvideoTypeArray containsObject:lowerType]) {
-                model.image = [GLFTools thumbnailImageRequest:arc4random() % 10 andVideoPath:model.path];
-            } 
-        } else if (fileType == 2) {
-            model.isDir = YES;
-            model.size = [GLFFileManager fileSizeForDir:model.path];
-            model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
-        }
-        [myDataArray addObject:model];
-    }
-    [myTableView reloadData];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            isShowing = NO;
+            [self hideAllHUD];
+            [myTableView reloadData];
+        });
+    });
 }
 
 - (void)prepareInterface {
@@ -312,9 +324,8 @@
         NSArray *array = [model.name componentsSeparatedByString:@"."];
         NSString *lowerType = [array.lastObject lowercaseString];
         if ([CimgTypeArray containsObject:lowerType]) { // 图片
-            cell.imageView.image = [UIImage imageWithContentsOfFile:model.path];
+            cell.imageView.image = model.image;
         } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
-//            cell.imageView.image = [UIImage imageNamed:@"video"];
             cell.imageView.image = model.image;
         } else { // 其它文件类型
             cell.imageView.image = [UIImage imageNamed:@"wenjian"];

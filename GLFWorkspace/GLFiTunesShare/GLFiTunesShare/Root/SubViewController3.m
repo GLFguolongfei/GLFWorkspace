@@ -13,6 +13,7 @@
 {
     AVPlayer *player;
     BOOL isPlaying;
+    UIButton *button;
 }
 @end
 
@@ -28,7 +29,11 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self setupAVPlayer];
+    if (player) {
+        [player play];
+    } else {
+        [self setupAVPlayer];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -46,10 +51,13 @@
     player = [AVPlayer playerWithPlayerItem:item];
     // 4-添加AVPlayerLayer
     AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player];
-    layer.frame = CGRectMake(10, 80, kScreenWidth-20, kScreenHeight-100);
+    layer.frame = CGRectMake(10, 75, kScreenWidth-20, kScreenHeight-120);
     [self.view.layer addSublayer:layer];
-    isPlaying = YES;
-    [player play];
+    
+    button = [[UIButton alloc] initWithFrame:layer.frame];
+    [button setImage:[UIImage imageNamed:@"播放"] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(videoAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
     
     // 点按手势
     UIView *view = [[UIView alloc] initWithFrame:layer.frame];
@@ -63,12 +71,20 @@
 }
 
 - (void)tapAction:(UITapGestureRecognizer *)gesture {
+    [self videoAction];
+}
+
+- (void)videoAction {
     if (isPlaying) {
+        [button setImage:[UIImage imageNamed:@"暂停"] forState:UIControlStateNormal];
         isPlaying = NO;
         [player pause];
+        button.hidden = NO;
     } else {
+        [button setImage:[UIImage imageNamed:@"播放"] forState:UIControlStateNormal];
         isPlaying = YES;
         [player play];
+        button.hidden = YES;
     }
 }
 
