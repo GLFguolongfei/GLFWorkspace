@@ -25,6 +25,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
     UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"W前进" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"W回退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
+    item1.enabled = NO;
+    item2.enabled = NO;
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     
     fileManager = [GLFFileManager sharedFileManager];

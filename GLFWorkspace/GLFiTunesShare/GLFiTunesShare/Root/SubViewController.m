@@ -31,11 +31,6 @@
     [self.myWebView loadRequest:request];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self setVCTitle:self.myWebView];
-}
-
 #pragma mark UIWebViewDelegate
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
@@ -51,32 +46,25 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    if (webView.isLoading) {
-        return;
-    }
     [self hideAllHUD];
     NSLog(@"webViewDidFinishLoad");
-    [self setVCTitle:webView];
     [self setWebView:webView];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     [self hideAllHUD];
+    NSLog(@"didFailLoadWithError: %@", error.localizedDescription);
     [self setWebView:webView andError:error];
 }
 
 #pragma mark WebView Events
-- (void)setVCTitle:(UIWebView *)webView {
-    // 页面能否返回
+- (void)setWebView:(UIWebView *)webView {
     if (self.backEnableBlock) {
         self.backEnableBlock(webView.canGoBack);
     }
     if (self.forwardEnableBlock) {
         self.forwardEnableBlock(webView.canGoForward);
     }
-}
-
-- (void)setWebView:(UIWebView *)webView {
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString *xuanfu = [userDefaults objectForKey:kWebContentXuanFu];
