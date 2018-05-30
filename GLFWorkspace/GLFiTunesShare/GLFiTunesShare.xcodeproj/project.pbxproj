@@ -359,7 +359,7 @@
 			path = WaterVolatility;
 			sourceTree = "<group>";
 		};
-		6F1EEAD71FB1A4060046389D /* SLRootVCs */ = {
+		6F1EEAD71FB1A4060046389D /* Root */ = {
 			isa = PBXGroup;
 			children = (
 				6F1EEAE41FB1A4060046389D /* Models */,
@@ -380,7 +380,7 @@
 				6F1EEAE01FB1A4060046389D /* FileInfoViewController.m */,
 				6F1EEAE11FB1A4060046389D /* FileInfoViewController.xib */,
 			);
-			path = SLRootVCs;
+			path = Root;
 			sourceTree = "<group>";
 		};
 		6F1EEAE41FB1A4060046389D /* Models */ = {
@@ -415,16 +415,16 @@
 			path = Parent;
 			sourceTree = "<group>";
 		};
-		6F1EEAFD1FB1A4060046389D /* SLLogin */ = {
+		6F1EEAFD1FB1A4060046389D /* Login */ = {
 			isa = PBXGroup;
 			children = (
 				6F1EEAFE1FB1A4060046389D /* LoginViewController.h */,
 				6F1EEAFF1FB1A4060046389D /* LoginViewController.m */,
 			);
-			path = SLLogin;
+			path = Login;
 			sourceTree = "<group>";
 		};
-		6F1EEB141FB1A86A0046389D /* SLSetupVCs */ = {
+		6F1EEB141FB1A86A0046389D /* Setup */ = {
 			isa = PBXGroup;
 			children = (
 				6F1EEB191FB1A86A0046389D /* SetupViewController.h */,
@@ -439,7 +439,7 @@
 				6F1EEB1C1FB1A86A0046389D /* WebSetupViewController.m */,
 				6F1EEB1D1FB1A86A0046389D /* WebSetupViewController.xib */,
 			);
-			path = SLSetupVCs;
+			path = Setup;
 			sourceTree = "<group>";
 		};
 		6F8072A41F7E436E007D7B26 = {
@@ -474,9 +474,9 @@
 				6F8072B11F7E436E007D7B26 /* AppDelegate.m */,
 				6F8072B31F7E436E007D7B26 /* ViewController.h */,
 				6F8072B41F7E436E007D7B26 /* ViewController.m */,
-				6F1EEAD71FB1A4060046389D /* SLRootVCs */,
-				6F1EEB141FB1A86A0046389D /* SLSetupVCs */,
-				6F1EEAFD1FB1A4060046389D /* SLLogin */,
+				6F1EEAD71FB1A4060046389D /* Root */,
+				6F1EEB141FB1A86A0046389D /* Setup */,
+				6F1EEAFD1FB1A4060046389D /* Login */,
 				6F1EEAFA1FB1A4060046389D /* Parent */,
 				6F8072B61F7E436E007D7B26 /* Main.storyboard */,
 				6F8072BB1F7E436E007D7B26 /* LaunchScreen.storyboard */,
