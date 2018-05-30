@@ -14,7 +14,7 @@
 
 @interface AppDelegate ()
 {
-    UIImageView *imageView; // 遮罩
+    UIImageView *imageView; // 启动图
 }
 @end
 
@@ -56,14 +56,13 @@
     UIImage *image = [UIImage imageNamed:@"lunch5"];
 #elif SecondTarget
     UIImage *image = [UIImage imageNamed:@"lunch2"];
-
+    // 重新登陆
     LoginViewController *loginVC = [[LoginViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:loginVC];
     self.window.rootViewController = navi;
 #else
 
 #endif
-    
     imageView = [[UIImageView alloc] initWithFrame:self.window.bounds];
     imageView.image = image;
     imageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -71,19 +70,11 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-    [UIView animateWithDuration:2.5 animations:^{
+    [UIView animateWithDuration:2 animations:^{
         imageView.alpha = 0;
     } completion:^(BOOL finished) {
         [imageView removeFromSuperview];
     }];
-}
-
-- (void)applicationDidBecomeActive:(UIApplication *)application {
-    // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
 #pragma mark 共享

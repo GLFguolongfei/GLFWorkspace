@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "MBProgressHUD.h"
 
 // --- 父视图控制器
 @interface BaseViewController : UIViewController

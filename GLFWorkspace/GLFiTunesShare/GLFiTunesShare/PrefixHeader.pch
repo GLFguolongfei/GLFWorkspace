@@ -17,13 +17,18 @@
 
 
 
+// ViewController
 #import "BaseViewController.h"
+// Tools
+#import "MBProgressHUD.h"
+#import "Base64.h"
 #import "GLFTools.h"
 #import "GLFFileManager.h"
-#import "Base64.h"
+// Categorys
 #import "UIView+Helper.h"
 #import "UIColor+HexString.h"
 #import "NSDate+Help.h"
+
 
 #pragma mark 适配
 #define kScreen [[UIScreen mainScreen] bounds]
@@ -55,13 +60,6 @@
 #define kWebContentImg      @"kWebContentImg"
 #define kWebContentFont     @"kWebContentFont"
 #define kWebContentBorder   @"kWebContentBorder"
-
-
-
-
-
-
-
 
 
 

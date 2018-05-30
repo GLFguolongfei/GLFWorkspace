@@ -8,60 +8,6 @@
       location = "group:GLFTools"
       name = "GLFTools">
       <Group
-         location = "group:Base64"
-         name = "Base64">
-         <FileRef
-            location = "group:Base64.h">
-         </FileRef>
-         <FileRef
-            location = "group:Base64.m">
-         </FileRef>
-      </Group>
-      <Group
-         location = "group:Cagetorys"
-         name = "Cagetorys">
-         <FileRef
-            location = "group:NSDate+Help.h">
-         </FileRef>
-         <FileRef
-            location = "group:NSDate+Help.m">
-         </FileRef>
-         <FileRef
-            location = "group:UIColor+Category.h">
-         </FileRef>
-         <FileRef
-            location = "group:UIColor+Category.m">
-         </FileRef>
-         <FileRef
-            location = "group:UIColor+HexString.h">
-         </FileRef>
-         <FileRef
-            location = "group:UIColor+HexString.m">
-         </FileRef>
-         <FileRef
-            location = "group:UIView+Helper.h">
-         </FileRef>
-         <FileRef
-            location = "group:UIView+Helper.m">
-         </FileRef>
-      </Group>
-      <Group
-         location = "group:FileManager"
-         name = "FileManager">
-         <FileRef
-            location = "group:GLFFileManager.h">
-         </FileRef>
-         <FileRef
-            location = "group:GLFFileManager.m">
-         </FileRef>
-      </Group>
-      <FileRef
-         location = "group:GLFTools.h">
-      </FileRef>
-      <FileRef
-         location = "group:GLFTools.m">
-      </FileRef>
-      <Group
          location = "group:MBProgressHUD"
          name = "MBProgressHUD">
          <FileRef
@@ -120,6 +66,60 @@
             location = "group:WaterView2.m">
          </FileRef>
       </Group>
+      <Group
+         location = "group:Base64"
+         name = "Base64">
+         <FileRef
+            location = "group:Base64.h">
+         </FileRef>
+         <FileRef
+            location = "group:Base64.m">
+         </FileRef>
+      </Group>
+      <Group
+         location = "group:Cagetorys"
+         name = "Cagetorys">
+         <FileRef
+            location = "group:NSDate+Help.h">
+         </FileRef>
+         <FileRef
+            location = "group:NSDate+Help.m">
+         </FileRef>
+         <FileRef
+            location = "group:UIColor+Category.h">
+         </FileRef>
+         <FileRef
+            location = "group:UIColor+Category.m">
+         </FileRef>
+         <FileRef
+            location = "group:UIColor+HexString.h">
+         </FileRef>
+         <FileRef
+            location = "group:UIColor+HexString.m">
+         </FileRef>
+         <FileRef
+            location = "group:UIView+Helper.h">
+         </FileRef>
+         <FileRef
+            location = "group:UIView+Helper.m">
+         </FileRef>
+      </Group>
+      <Group
+         location = "group:FileManager"
+         name = "FileManager">
+         <FileRef
+            location = "group:GLFFileManager.h">
+         </FileRef>
+         <FileRef
+            location = "group:GLFFileManager.m">
+         </FileRef>
+      </Group>
+      <FileRef
+         location = "group:GLFTools.h">
+      </FileRef>
+      <FileRef
+         location = "group:GLFTools.m">
+      </FileRef>
    </Group>
    <FileRef
       location = "group:GLFUIWebView/UIWebView.xcodeproj">
