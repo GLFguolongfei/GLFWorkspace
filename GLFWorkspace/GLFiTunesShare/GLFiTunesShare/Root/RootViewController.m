@@ -356,27 +356,19 @@
                 }
             }
         }
-        // 获取当前选中文件下标
-        NSInteger index = 0;
-        for (NSInteger i = 0; i < fileArray.count; i++) {
-            FileModel *md = fileArray[i];
-            if ([model.name isEqualToString:md.name]) {
-                index = i;
-            }
-        }
         if ([imgTypeArray containsObject:lowerType]) { // 图片
             DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
-            detailVC.selectIndex = index;
+            detailVC.selectIndex = [self returnIndex:imageArray with:model];
             detailVC.fileArray = imageArray;
             [self.navigationController pushViewController:detailVC animated:YES];
         } else if ([videoTypeArray containsObject:lowerType]) { // 视频
             DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
-            detailVC.selectIndex = index;
+            detailVC.selectIndex = [self returnIndex:videoArray with:model];
             detailVC.fileArray = videoArray;
             [self.navigationController pushViewController:detailVC animated:YES];
         } else { // 其它文件类型
             DetailViewController *detailVC = [[DetailViewController alloc] init];
-            detailVC.selectIndex = index;
+            detailVC.selectIndex = [self returnIndex:fileArray with:model];
             detailVC.fileArray = fileArray;
             [self.navigationController pushViewController:detailVC animated:YES];
         }
@@ -393,8 +385,8 @@
     if (myTableView.editing == YES) {
         [editArray removeObject:model];
         if (editArray.count == 0) {
-            UIBarButtonItem *item1 = self.toolbarItems[2];
-            UIBarButtonItem *item2 = self.toolbarItems[4];
+            UIBarButtonItem *item1 = self.toolbarItems[2]; // 移动
+            UIBarButtonItem *item2 = self.toolbarItems[4]; // 删除
             item1.enabled = NO;
             item2.enabled = NO;
         }
@@ -503,6 +495,19 @@
     NSArray *objectsToShare = @[url];
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
     [self presentViewController:activityVC animated:YES completion:nil];
+}
+
+#pragma mark Private Method
+// 获取下标
+- (NSInteger)returnIndex:(NSArray *)array with:(FileModel *)model {
+    NSInteger index = 0;
+    for (NSInteger i = 0; i < array.count; i++) {
+        FileModel *md = array[i];
+        if ([model.name isEqualToString:md.name]) {
+            index = i;
+        }
+    }
+    return index;
 }
 
 

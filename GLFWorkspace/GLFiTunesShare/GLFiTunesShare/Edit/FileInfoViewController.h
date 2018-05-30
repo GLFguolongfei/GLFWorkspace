@@ -14,12 +14,11 @@
 
 @property (nonatomic, strong) FileModel *model;
 
-@property (weak, nonatomic) IBOutlet UIImageView *backImageView;
-@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *nameLabelConstraint;
-@property (weak, nonatomic) IBOutlet UILabel *label1;
-@property (weak, nonatomic) IBOutlet UILabel *label2;
-@property (weak, nonatomic) IBOutlet UILabel *label3;
-@property (weak, nonatomic) IBOutlet UILabel *label4;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel; // 路径
+@property (weak, nonatomic) IBOutlet UILabel *label1;    // 种类
+@property (weak, nonatomic) IBOutlet UILabel *label2;    // 大小
+@property (weak, nonatomic) IBOutlet UILabel *label3;    // 创建日期
+@property (weak, nonatomic) IBOutlet UILabel *label4;    // 修改日期
 
 @end

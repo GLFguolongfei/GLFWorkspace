@@ -18,34 +18,10 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // 设置背景图片
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
-    NSString *backName = [userDefaults objectForKey:BackImageName];
-    NSArray *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *cachePath = [cachePaths objectAtIndex:0];
-    NSString *filePath = [cachePath stringByAppendingString:@"/image.png"];
-    UIImage *backImage;
-    if (isUseBackImagePath.integerValue) {
-        backImage = [UIImage imageWithContentsOfFile:filePath];
-    } else {
-        backImage = [UIImage imageNamed:backName];
-    }
-    if (backImage == nil) {
-        backImage = [UIImage imageNamed:@"bgView2"];
-        [userDefaults setObject:@"bgView2" forKey:BackImageName];
-        [userDefaults synchronize];
-    }
-    self.backImageView.image = backImage;
 
-    NSRange range = [self.model.path rangeOfString:@"Documents"];
-    NSString *str1 = [self.model.path substringWithRange:NSMakeRange(0, range.location+range.length)];
-    NSString *str2 = [self.model.path substringWithRange:NSMakeRange(str1.length, self.model.path.length-str1.length)];
-    NSString *name = [NSString stringWithFormat:@"%@\n%@", str1, str2];
-    CGSize size = [GLFTools calculatingStringSizeWithString:name ByFont:KFontBold(18) andSize:CGSizeMake(kScreenWidth-30, CGFLOAT_MAX)];
+    CGSize size = [GLFTools calculatingStringSizeWithString:self.model.path ByFont:KFontBold(18) andSize:CGSizeMake(kScreenWidth-30, CGFLOAT_MAX)];
     self.nameLabelConstraint.constant = size.height + 30;
-    self.nameLabel.text = name;
+    self.nameLabel.text = self.model.path;
     
     self.label1.text = self.model.attributes[@"NSFileType"];
     self.label2.text = [GLFFileManager returenSizeStr:self.model.size];
