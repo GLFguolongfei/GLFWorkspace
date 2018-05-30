@@ -103,6 +103,11 @@
     editArray = [[NSMutableArray alloc] init];
     NSArray *array = [GLFFileManager searchSubFile:self.path andIsDepth:NO];
     for (int i = 0; i < array.count; i++) {
+        // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
+        // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
+        if ([array[i] isEqualToString:@"Inbox"]) {
+            continue;
+        }
         FileModel *model = [[FileModel alloc] init];
         model.name = array[i];
         model.path = [NSString stringWithFormat:@"%@/%@", self.path,model.name];
@@ -116,17 +121,14 @@
             model.size = [GLFFileManager fileSizeForDir:model.path];
             model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
         }
-        // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
-        // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
-        if (![model.name isEqualToString:@"Inbox"]) {
-            [myDataArray addObject:model];
-        }
+        [myDataArray addObject:model];
     }
     [myTableView reloadData];
 }
 
 - (void)prepareInterface {
-    myTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight-64) style:UITableViewStylePlain];
+    CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    myTableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
     myTableView.delegate = self;
     myTableView.dataSource = self;
     myTableView.separatorInset = UIEdgeInsetsMake(0, -20, 0, 0);
@@ -290,16 +292,11 @@
     // 内容样式
     cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
     cell.textLabel.textColor = [UIColor whiteColor];
-#if FirstTarget
     cell.textLabel.numberOfLines = 3; // 写的是X,但其实最多显示X-1行,原因未知
-#elif SecondTarget
-    cell.textLabel.numberOfLines = 3; // 写的是X,但其实最多显示X-1行,原因未知
-#else
-    cell.textLabel.numberOfLines = 0;
-#endif
     cell.detailTextLabel.textColor = [UIColor colorWithWhite:1 alpha:0.7];
 
     FileModel *model = myDataArray[indexPath.row];
+    cell.textLabel.text = model.name;
     if (model.isDir) {
         NSString *sizeStr = [GLFFileManager returenSizeStr:model.size];
         cell.imageView.image = [UIImage imageNamed:@"wenjianjia"];
@@ -310,9 +307,9 @@
         NSArray *videoTypeArray = @[@"mp4", @"rmvb", @"avi", @"mov"];
         NSArray *array = [model.name componentsSeparatedByString:@"."];
         NSString *lowerType = [array.lastObject lowercaseString];
-        if ([imgTypeArray containsObject:lowerType]) {
+        if ([imgTypeArray containsObject:lowerType]) { // 图片
             cell.imageView.image = [UIImage imageWithContentsOfFile:model.path];
-        } else if ([videoTypeArray containsObject:lowerType]) {
+        } else if ([videoTypeArray containsObject:lowerType]) { // 视频
             cell.imageView.image = [UIImage imageNamed:@"video"];
         } else {
             cell.imageView.image = [UIImage imageNamed:@"wenjian"];
@@ -320,7 +317,6 @@
         cell.accessoryType = UITableViewCellAccessoryDetailButton;
         cell.detailTextLabel.text = @"";
     }
-    cell.textLabel.text = model.name;
 
     return cell;
 }
@@ -329,8 +325,8 @@
     FileModel *model = myDataArray[indexPath.row];
     if (myTableView.editing == YES) {
         [editArray addObject:model];
-        UIBarButtonItem *item1 = self.toolbarItems[2];
-        UIBarButtonItem *item2 = self.toolbarItems[4];
+        UIBarButtonItem *item1 = self.toolbarItems[2]; // 移动
+        UIBarButtonItem *item2 = self.toolbarItems[4]; // 删除
         item1.enabled = YES;
         item2.enabled = YES;
         return;
@@ -340,16 +336,28 @@
     
     NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
     if (fileType == 1) {
-        // 所有文件类型数组
+        NSArray *imgTypeArray = @[@"png", @"jpeg", @"jpg", @"gif"];
+        NSArray *videoTypeArray = @[@"mp4", @"rmvb", @"avi", @"mov"];
+        NSArray *array = [model.name componentsSeparatedByString:@"."];
+        NSString *lowerType = [array.lastObject lowercaseString];
+        // 获取所有文件类型
+        NSMutableArray *imageArray = [[NSMutableArray alloc] init];
+        NSMutableArray *videoArray = [[NSMutableArray alloc] init];
         NSMutableArray *fileArray = [[NSMutableArray alloc] init];
         for (NSInteger i = 0; i < myDataArray.count; i++) {
             FileModel *md = myDataArray[i];
             NSInteger indexType = [GLFFileManager fileExistsAtPath:md.path];
             if (indexType == 1) {
-                [fileArray addObject:md];
+                if ([imgTypeArray containsObject:lowerType]) {
+                    [imageArray addObject:md];
+                } else if ([videoTypeArray containsObject:lowerType]) {
+                    [videoArray addObject:md];
+                } else {
+                    [fileArray addObject:md];
+                }
             }
         }
-        // 当前选中文件下标
+        // 获取当前选中文件下标
         NSInteger index = 0;
         for (NSInteger i = 0; i < fileArray.count; i++) {
             FileModel *md = fileArray[i];
@@ -357,10 +365,6 @@
                 index = i;
             }
         }
-        // 判断是否为视频文件
-        NSArray *videoTypeArray = @[@"mp4", @"rmvb", @"avi", @"mov"];
-        NSArray *array = [model.name componentsSeparatedByString:@"."];
-        NSString *lowerType = [array.lastObject lowercaseString];
         if ([videoTypeArray containsObject:lowerType]) { // 视频
             DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
             detailVC.selectIndex = index;
