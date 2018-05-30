@@ -163,7 +163,7 @@ HMSingletonM(FileManager)
         [[NSUserDefaults standardUserDefaults] setObject:documentPathArray forKey:DocumentPathArray];
         [[NSUserDefaults standardUserDefaults] synchronize];
         dispatch_async(dispatch_get_main_queue(), ^{
-
+            [[NSNotificationCenter defaultCenter] postNotificationName:DocumentPathArrayUpdate object:self userInfo:nil];
         });
     });
 }

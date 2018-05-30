@@ -31,6 +31,8 @@ static NSString *cellID = @"GLFTableViewCellID";
     
     [self prepareData];
     [self prepareInterface];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareData) name:DocumentPathArrayUpdate object:nil];
 }
 
 - (void)prepareData {
@@ -39,9 +41,9 @@ static NSString *cellID = @"GLFTableViewCellID";
     myDataArray = [[NSMutableArray alloc] init];
     
     NSString *isUpdating = [[NSUserDefaults standardUserDefaults] objectForKey:DocumentIsSearching];
-    NSArray *documentPathArray = [[NSUserDefaults standardUserDefaults] objectForKey:DocumentPathArray];
-    if (isUpdating.integerValue!=1 && documentPathArray.count!=0) {
-        [myDataArray addObjectsFromArray:documentPathArray];
+    NSArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:DocumentPathArray];
+    if (isUpdating.integerValue!=1 && array.count!=0) {
+        [myDataArray addObjectsFromArray:array];
         [myTableView reloadData];
         if (myDataArray.count > 300) {
             sliderView.hidden = NO;
@@ -50,31 +52,6 @@ static NSString *cellID = @"GLFTableViewCellID";
         }
         return;
     }
-    
-    [self showHUD];
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        NSArray *array = [GLFFileManager searchSubFile:documentPath andIsDepth:YES];
-        for (int i = 0; i < array.count; i++) {
-            NSString *path = [NSString stringWithFormat:@"%@/%@", documentPath, array[i]];
-            NSInteger fileType = [GLFFileManager fileExistsAtPath:path];
-            if (fileType == 2) { // 只显示文件夹
-                [myDataArray addObject:array[i]];
-            }
-        }
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:DocumentIsSearching];
-        [[NSUserDefaults standardUserDefaults] setObject:myDataArray forKey:DocumentPathArray];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideAllHUD];
-            [myTableView reloadData];
-            if (myDataArray.count > 300) {
-                sliderView.hidden = NO;
-            } else {
-                sliderView.hidden = YES;
-            }
-        });
-    });
 }
 
 - (void)prepareInterface {

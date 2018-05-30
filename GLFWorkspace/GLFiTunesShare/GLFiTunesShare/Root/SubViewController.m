@@ -24,7 +24,10 @@
     self.myWebView.scalesPageToFit = YES;
     self.myWebView.delegate = self;
     [self.view addSubview:self.myWebView];
-    
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     // 加载本地资源
     NSURL *url = [NSURL fileURLWithPath:self.model.path];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];

@@ -11,6 +11,7 @@
 
 static NSString *DocumentIsSearching = @"DocumentIsSearching";
 static NSString *DocumentPathArray = @"DocumentPathArray";
+static NSString *DocumentPathArrayUpdate = @"DocumentPathArrayUpdate";
 
 @interface GLFFileManager : NSObject
 
