@@ -69,7 +69,7 @@ static NSString *cellID = @"cellID";
             NSString *name = [NSString stringWithFormat:@"bgview%ld", i];
             [nameArray addObject:name];
         }
-        for (NSInteger i = 0; i < 14; i++) {
+        for (NSInteger i = 0; i < 13; i++) {
             NSString *name = [NSString stringWithFormat:@"mv%ld", i];
             [nameArray addObject:name];
         }
