@@ -115,6 +115,13 @@
         if (fileType == 1) {
             model.isDir = NO;
             model.size = [GLFFileManager fileSize:model.path];
+            NSArray *array = [model.name componentsSeparatedByString:@"."];
+            NSString *lowerType = [array.lastObject lowercaseString];
+            if ([CimgTypeArray containsObject:lowerType]) {
+                model.image = [UIImage imageWithContentsOfFile:model.path];
+            } else if ([CvideoTypeArray containsObject:lowerType]) {
+                model.image = [GLFTools thumbnailImageRequest:arc4random() % 10 andVideoPath:model.path];
+            } 
         } else if (fileType == 2) {
             model.isDir = YES;
             model.size = [GLFFileManager fileSizeForDir:model.path];
@@ -302,14 +309,13 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld 项  %@", model.count, sizeStr];
     } else {
-        NSArray *imgTypeArray = @[@"png", @"jpeg", @"jpg", @"gif"];
-        NSArray *videoTypeArray = @[@"mp4", @"rmvb", @"avi", @"mov"];
         NSArray *array = [model.name componentsSeparatedByString:@"."];
         NSString *lowerType = [array.lastObject lowercaseString];
-        if ([imgTypeArray containsObject:lowerType]) { // 图片
+        if ([CimgTypeArray containsObject:lowerType]) { // 图片
             cell.imageView.image = [UIImage imageWithContentsOfFile:model.path];
-        } else if ([videoTypeArray containsObject:lowerType]) { // 视频
-            cell.imageView.image = [UIImage imageNamed:@"video"];
+        } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
+//            cell.imageView.image = [UIImage imageNamed:@"video"];
+            cell.imageView.image = model.image;
         } else { // 其它文件类型
             cell.imageView.image = [UIImage imageNamed:@"wenjian"];
         }
@@ -335,8 +341,6 @@
     
     NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
     if (fileType == 1) {
-        NSArray *imgTypeArray = @[@"png", @"jpeg", @"jpg", @"gif"];
-        NSArray *videoTypeArray = @[@"mp4", @"rmvb", @"avi", @"mov"];
         // 获取所有文件类型
         NSMutableArray *imageArray = [[NSMutableArray alloc] init];
         NSMutableArray *videoArray = [[NSMutableArray alloc] init];
@@ -347,9 +351,9 @@
             NSArray *array = [md.name componentsSeparatedByString:@"."];
             NSString *lowerType = [array.lastObject lowercaseString];
             if (indexType == 1) {
-                if ([imgTypeArray containsObject:lowerType]) {
+                if ([CimgTypeArray containsObject:lowerType]) {
                     [imageArray addObject:md];
-                } else if ([videoTypeArray containsObject:lowerType]) {
+                } else if ([CvideoTypeArray containsObject:lowerType]) {
                     [videoArray addObject:md];
                 } else {
                     [fileArray addObject:md];
@@ -358,12 +362,12 @@
         }
         NSArray *array = [model.name componentsSeparatedByString:@"."];
         NSString *lowerType = [array.lastObject lowercaseString];
-        if ([imgTypeArray containsObject:lowerType]) { // 图片
+        if ([CimgTypeArray containsObject:lowerType]) { // 图片
             DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
             detailVC.selectIndex = [self returnIndex:imageArray with:model];
             detailVC.fileArray = imageArray;
             [self.navigationController pushViewController:detailVC animated:YES];
-        } else if ([videoTypeArray containsObject:lowerType]) { // 视频
+        } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
             DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
             detailVC.selectIndex = [self returnIndex:videoArray with:model];
             detailVC.fileArray = videoArray;

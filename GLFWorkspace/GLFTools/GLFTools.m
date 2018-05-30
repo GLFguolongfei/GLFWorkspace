@@ -289,6 +289,35 @@
     }
     return [addresses count] ? addresses : nil;
 }
+
+#pragma mark 获取视频缩略图
+// 截取指定时间的视频缩略图
++ (UIImage *)thumbnailImageRequest:(CGFloat )timeBySecond andVideoPath:(NSString *)path {
+    // 创建URL
+    NSURL *url = [NSURL fileURLWithPath:path];
+    // 根据url创建AVURLAsset
+    AVURLAsset *urlAsset = [AVURLAsset assetWithURL:url];
+    // 根据AVURLAsset创建AVAssetImageGenerator
+    AVAssetImageGenerator *imageGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:urlAsset];
+    
+    // 截图
+    // requestTime: 缩略图创建时间
+    // actualTime: 缩略图实际生成的时间
+    // CMTime是表示电影时间信息的结构体，第一个参数表示是视频第几秒，第二个参数表示每秒帧数.(如果要活的某一秒的第几帧可以使用CMTimeMake方法)
+    CMTime time = CMTimeMakeWithSeconds(timeBySecond, 10);
+    CMTime actualTime;
+    NSError *error = nil;
+    CGImageRef cgImage = [imageGenerator copyCGImageAtTime:time actualTime:&actualTime error:&error];
+    if(error){
+        NSLog(@"截取视频缩略图时发生错误，错误信息: %@",error.localizedDescription);
+        return [[UIImage alloc] init];
+    }
+    CMTimeShow(actualTime);
+    
+    UIImage *image = [UIImage imageWithCGImage:cgImage]; // 转化为UIImage
+    CGImageRelease(cgImage);
+    return image;
+}
                                 
 
 @end

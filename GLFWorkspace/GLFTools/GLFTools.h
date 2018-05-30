@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <Accelerate/Accelerate.h>
+#import <AVFoundation/AVFoundation.h>
 
 @interface GLFTools : NSObject
 
@@ -29,5 +30,9 @@
 
 #pragma mark 获取IP地址
 + (NSString *)getIPAddress:(BOOL)preferIPv4;
+#pragma mark 获取视频缩略图
+// 截取指定时间的视频缩略图
++ (UIImage *)thumbnailImageRequest:(CGFloat)timeBySecond andVideoPath:(NSString *)path;
+
     
 @end
