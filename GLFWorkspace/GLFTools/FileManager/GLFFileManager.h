@@ -9,13 +9,16 @@
 #import <Foundation/Foundation.h>
 #import "HMSingleton.h"
 
+static NSString *DocumentIsSearching = @"DocumentIsSearching";
+static NSString *DocumentPathArray = @"DocumentPathArray";
+
 @interface GLFFileManager : NSObject
 
 HMSingletonH(FileManager)
 
 @property (nonatomic, strong) NSString *currentPath;
 
-+ (NSArray *)searchSubFile:(NSString *)path andISDepth:(BOOL)isDepth;
++ (NSArray *)searchSubFile:(NSString *)path andIsDepth:(BOOL)isDepth;
 + (NSInteger)fileExistsAtPath:(NSString *)path;
 + (NSDictionary *)attributesOfItemAtPath:(NSString *)path;
 + (BOOL)createFile:(NSString *)path andData:(NSData *)data;

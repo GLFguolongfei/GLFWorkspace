@@ -38,8 +38,8 @@ static NSString *cellID = @"GLFTableViewCellID";
     documentPath = [paths objectAtIndex:0];
     myDataArray = [[NSMutableArray alloc] init];
     
-    NSString *isUpdating = [[NSUserDefaults standardUserDefaults] objectForKey:@"DocumentPathIsUpdating"];
-    NSArray *documentPathArray = [[NSUserDefaults standardUserDefaults] objectForKey:@"DocumentPathArray"];
+    NSString *isUpdating = [[NSUserDefaults standardUserDefaults] objectForKey:DocumentIsSearching];
+    NSArray *documentPathArray = [[NSUserDefaults standardUserDefaults] objectForKey:DocumentPathArray];
     if (isUpdating.integerValue!=1 && documentPathArray.count!=0) {
         [myDataArray addObjectsFromArray:documentPathArray];
         [myTableView reloadData];
@@ -54,7 +54,7 @@ static NSString *cellID = @"GLFTableViewCellID";
     [self showHUD];
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        NSArray *array = [GLFFileManager searchSubFile:documentPath andISDepth:YES];
+        NSArray *array = [GLFFileManager searchSubFile:documentPath andIsDepth:YES];
         for (int i = 0; i < array.count; i++) {
             NSString *path = [NSString stringWithFormat:@"%@/%@", documentPath, array[i]];
             NSInteger fileType = [GLFFileManager fileExistsAtPath:path];
@@ -62,8 +62,8 @@ static NSString *cellID = @"GLFTableViewCellID";
                 [myDataArray addObject:array[i]];
             }
         }
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"DocumentPathIsUpdating"];
-        [[NSUserDefaults standardUserDefaults] setObject:myDataArray forKey:@"DocumentPathArray"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:DocumentIsSearching];
+        [[NSUserDefaults standardUserDefaults] setObject:myDataArray forKey:DocumentPathArray];
         [[NSUserDefaults standardUserDefaults] synchronize];
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideAllHUD];

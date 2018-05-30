@@ -101,7 +101,7 @@
     
     myDataArray = [[NSMutableArray alloc] init];
     editArray = [[NSMutableArray alloc] init];
-    NSArray *array = [GLFFileManager searchSubFile:self.path andISDepth:NO];
+    NSArray *array = [GLFFileManager searchSubFile:self.path andIsDepth:NO];
     for (int i = 0; i < array.count; i++) {
         FileModel *model = [[FileModel alloc] init];
         model.name = array[i];

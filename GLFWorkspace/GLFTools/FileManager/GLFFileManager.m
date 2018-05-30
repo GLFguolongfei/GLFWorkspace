@@ -14,25 +14,21 @@ HMSingletonM(FileManager)
 
 #pragma mark NSFileManager方法
 // 遍历路径下的文件夹和路径
-+ (NSArray *)searchSubFile:(NSString *)path andISDepth:(BOOL)isDepth {
++ (NSArray *)searchSubFile:(NSString *)path andIsDepth:(BOOL)isDepth {
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *array = [[NSArray alloc] init];
-    if (isDepth) {
-        // 读取路径下的所有内容(文件夹和文件,会深层递归)
+    if (isDepth) { // 读取路径下的所有内容(文件夹和文件,会深层递归)
         array = [fileManager subpathsOfDirectoryAtPath:path error:nil];
-    } else {
-        // 读取路径下的所有内容(文件夹和文件,不会深层递归)
+    } else { // 读取路径下的所有内容(文件夹和文件,不会深层递归)
         array = [fileManager contentsOfDirectoryAtPath:path error:nil];
     }
-    // 删除里面的隐藏文件(.DS_Store)
+    // 不用显示里面的隐藏文件
     NSMutableArray *mutableArray = [[NSMutableArray alloc] init];
     [mutableArray addObjectsFromArray:array];
     for (NSString *str in array) {
         NSString *sss = [str substringToIndex:1];
         if ([sss isEqualToString:@"."]) {
             [mutableArray removeObject:str];
-        } else {
-//            NSLog(@"不会深层递归: %@", str);
         }
     }
     return mutableArray;
@@ -46,15 +42,11 @@ HMSingletonM(FileManager)
     BOOL isDerectary;
     BOOL exist = [fileManager fileExistsAtPath:path isDirectory:&isDerectary];
     if (exist) {
-        if (isDerectary) {
+        if (isDerectary) { // 指定路径是文件夹
             type = 2;
-//            NSLog(@"指定路径是文件夹");
-        } else {
+        } else { 
             type = 1;
-//            NSLog(@"指定路径是文件");
         }
-    } else {
-//        NSLog(@"指定路径不存在");
     }
     return type;
 }
@@ -71,9 +63,8 @@ HMSingletonM(FileManager)
 
 + (BOOL)createFile:(NSString *)path andData:(NSData *)data {
     NSFileManager *fileManager = [NSFileManager defaultManager];
-    // 创建文件
     BOOL success = [fileManager createFileAtPath:path contents:data attributes:nil];
-//    NSLog(@"创建文件: %@", success ? @"成功" : @"失败");
+    NSLog(@"文件创建: %@", success ? @"成功" : @"失败");
     return success;
 }
 
@@ -86,7 +77,7 @@ HMSingletonM(FileManager)
     //   参数4: 创建失败的原因,是一个二级指针
     NSError *error;
     BOOL success = [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
-//    NSLog(@"文件夹创建: %@", success ? @"成功" : @"失败");
+    NSLog(@"文件夹创建: %@", success ? @"成功" : @"失败");
     return success;
 }
 
@@ -100,7 +91,7 @@ HMSingletonM(FileManager)
     // 列toPath @"/Users/qianfeng/Desktop/guo.html"
     NSError *error;
     BOOL success = [fileManager copyItemAtPath:fromePath toPath:toPath error:&error];
-//    NSLog(@"拷贝文件或文件夹: %@", success ? @"成功" : @"失败");
+    NSLog(@"拷贝文件或文件夹: %@", success ? @"成功" : @"失败");
     return success;
 }
 
@@ -109,7 +100,7 @@ HMSingletonM(FileManager)
     // 移动替换(其实也是重命名)
     NSError *error;
     BOOL success = [fileManager moveItemAtPath:fromePath toPath:toPath error:&error];
-//    NSLog(@"移动文件或文件夹: %@", success ? @"成功" : @"失败");
+    NSLog(@"移动文件或文件夹: %@", success ? @"成功" : @"失败");
     return success;
 }
 
@@ -118,7 +109,7 @@ HMSingletonM(FileManager)
     // 删除文件/文件夹
     NSError *error;
     BOOL success = [fileManager removeItemAtPath:path error:&error];
-//    NSLog(@"删除文件或文件夹: %@", success ? @"成功" : @"失败");
+    NSLog(@"删除文件或文件夹: %@", success ? @"成功" : @"失败");
     return success;
 }
 
@@ -131,7 +122,7 @@ HMSingletonM(FileManager)
 
 + (float)fileSizeForDir:(NSString *)path {
     float size = 0;
-    NSArray *array = [self searchSubFile:path andISDepth:YES];
+    NSArray *array = [self searchSubFile:path andIsDepth:YES];
     for(int i = 0; i < array.count; i++) {
         NSString *subPath = array[i];
         NSString *fullPath = [path stringByAppendingPathComponent:subPath];
@@ -149,16 +140,17 @@ HMSingletonM(FileManager)
     NSString *documentPath = [paths objectAtIndex:0];
     
     // 是否正在遍历
-    NSString *isUpdating = [[NSUserDefaults standardUserDefaults] objectForKey:@"DocumentPathIsUpdating"];
+    NSString *isUpdating = [[NSUserDefaults standardUserDefaults] objectForKey:DocumentIsSearching];
     if (isUpdating.integerValue == 1) {
         return;
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:DocumentIsSearching];
     }
-    [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"DocumentPathIsUpdating"];
 
     // 遍历
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        NSArray *array = [self searchSubFile:documentPath andISDepth:YES];
+        NSArray *array = [self searchSubFile:documentPath andIsDepth:YES];
         NSMutableArray *documentPathArray = [[NSMutableArray alloc] init];
         for (int i = 0; i < array.count; i++) {
             NSString *path = [NSString stringWithFormat:@"%@/%@", documentPath, array[i]];
@@ -167,8 +159,8 @@ HMSingletonM(FileManager)
                 [documentPathArray addObject:array[i]];
             }
         }
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"DocumentPathIsUpdating"];
-        [[NSUserDefaults standardUserDefaults] setObject:documentPathArray forKey:@"DocumentPathArray"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:DocumentIsSearching];
+        [[NSUserDefaults standardUserDefaults] setObject:documentPathArray forKey:DocumentPathArray];
         [[NSUserDefaults standardUserDefaults] synchronize];
         dispatch_async(dispatch_get_main_queue(), ^{
 
@@ -177,7 +169,6 @@ HMSingletonM(FileManager)
 }
 
 #pragma mark Method
-// 文件/文件夹大小
 + (NSString *)returenSizeStr:(CGFloat)size {
     if (size / 1000.0 > 1000) {
         if (size / 1000000.0 > 1000) {
