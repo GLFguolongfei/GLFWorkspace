@@ -9,7 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "HMSingleton.h"
 
-static NSString *DocumentIsSearching = @"DocumentIsSearching";
 static NSString *DocumentPathArray = @"DocumentPathArray";
 static NSString *DocumentPathArrayUpdate = @"DocumentPathArrayUpdate";
 
