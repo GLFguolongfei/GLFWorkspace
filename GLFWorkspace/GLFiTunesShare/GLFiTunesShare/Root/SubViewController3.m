@@ -29,6 +29,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+    
     // 进度条和时间没有加上,因为它们有些小瑕疵
     // 但是可以用的
     
@@ -131,6 +133,15 @@
     NSInteger currentTime = (NSInteger)CMTimeGetSeconds(item.currentTime);
     NSInteger duration = (NSInteger)CMTimeGetSeconds(item.duration);
     label.text = [NSString stringWithFormat:@"%ld / %ld", currentTime, duration];
+}
+
+- (void)playerItemDidPlayToEnd:(NSNotification *)notification{
+    isPlaying = YES;
+    [self videoAction];
+    CGFloat a = 0;
+    NSInteger dragedSeconds = floorf(a);
+    CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
+    [player seekToTime:dragedCMTime];
 }
 
 
