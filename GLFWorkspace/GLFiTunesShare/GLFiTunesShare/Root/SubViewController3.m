@@ -16,7 +16,7 @@
     BOOL isPlaying;
     UILabel *label;
     UIButton *button;
-    UISlider *avSlider;
+    UIProgressView *avProgress;
     NSTimer *timer;
 }
 @end
@@ -31,10 +31,8 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     
-    // 进度条和时间没有加上,因为它们有些小瑕疵
-    // 但是可以用的
-    
     [self setupAVPlayer];
+    [self setupAVInfo];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -47,6 +45,7 @@
     [super viewDidDisappear:animated];
     isPlaying = YES;
     [self videoAction];
+    [timer invalidate];
 }
 
 - (void)setupAVPlayer {
@@ -61,42 +60,38 @@
     layer.frame = CGRectMake(0, 65, kScreenWidth, kScreenHeight-65);
     [self.view.layer addSublayer:layer];
     
-    // 时间
-//    label = [[UILabel alloc] initWithFrame:CGRectMake(0, 65, kScreenWidth, 30)];
-//    label.textAlignment = NSTextAlignmentCenter;
-//    [self.view addSubview:label];
-    
-    // 进度条
-//    NSInteger duration = (NSInteger)CMTimeGetSeconds(item.duration);
-//    avSlider = [[UISlider alloc] initWithFrame:CGRectMake(10, kScreenHeight-50, kScreenWidth-20, 50)];
-//    avSlider.backgroundColor = [UIColor lightGrayColor];
-//    avSlider.value = 0;
-//    avSlider.minimumValue = 0;
-//    avSlider.maximumValue = duration;
-//    [self.view addSubview:avSlider];
-//    avSlider.continuous = NO; // 连续滑动是否触发方法,默认值为YES
-//    [avSlider addTarget:self action:@selector(avSliderAction:) forControlEvents:UIControlEventValueChanged];
-    
-    // 定时器
-//    timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(show) userInfo:nil repeats:YES];
-//    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
     // 播放按钮
     button = [[UIButton alloc] initWithFrame:layer.frame];
     [button setImage:[UIImage imageNamed:@"播放"] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(videoAction) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
-    
-    // 点按手势
-    UIView *view = [[UIView alloc] initWithFrame:layer.frame];
-    view.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:view];
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
-    [tapGesture addTarget:self action:@selector(tapAction:)];
-    [view addGestureRecognizer:tapGesture];
 }
 
-- (void)tapAction:(UITapGestureRecognizer *)gesture {
+- (void)setupAVInfo {
+    // 进度条
+    CGRect progressRect = CGRectMake(0, 64, kScreenWidth, 20);
+    avProgress = [[UIProgressView alloc] initWithFrame:progressRect];
+    avProgress.progressViewStyle = UIProgressViewStyleDefault;
+    avProgress.progressTintColor = [UIColor blueColor]; // 前景色
+    avProgress.trackTintColor = [UIColor lightGrayColor]; // 背景色
+    avProgress.progress = 0; // 进度默认为0 - 1
+    avProgress.backgroundColor = [UIColor cyanColor];
+    [self.view addSubview:avProgress];
+    
+    // 时间
+    label = [[UILabel alloc] initWithFrame:CGRectMake(80, 64, kScreenWidth-100, 40)];
+    label.textAlignment = NSTextAlignmentRight;
+    label.textColor = [UIColor blueColor];
+    label.font = KFontSize(16);
+    label.text = @"00/00";
+    [self.view addSubview:label];
+
+    // 定时器
+    timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(show) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self videoAction];
 }
 
@@ -114,33 +109,19 @@
     }
 }
 
-- (void)avSliderAction:(id)sender {
-    UISlider *slider = (UISlider *)sender;
-    // slider的value值为视频的时间
-    float seconds = slider.value;
-    // 让视频从指定的CMTime对象处播放
-    CMTime startTime = CMTimeMakeWithSeconds(seconds, item.currentTime.timescale);
-    // 让视频从指定处播放
-    [player seekToTime:startTime completionHandler:^(BOOL finished) {
-        if (finished) {
-            isPlaying = NO;
-            [self videoAction];
-        }
-    }];
-}
-
 - (void)show {
     NSInteger currentTime = (NSInteger)CMTimeGetSeconds(item.currentTime);
     NSInteger duration = (NSInteger)CMTimeGetSeconds(item.duration);
-    label.text = [NSString stringWithFormat:@"%ld / %ld", currentTime, duration];
+    label.text = [NSString stringWithFormat:@"%ld/%ld", currentTime, duration];
+    CGFloat index = CMTimeGetSeconds(item.currentTime) / CMTimeGetSeconds(item.duration);
+    [avProgress setProgress:index animated:NO];
 }
 
 - (void)playerItemDidPlayToEnd:(NSNotification *)notification{
     isPlaying = YES;
     [self videoAction];
-    CGFloat a = 0;
-    NSInteger dragedSeconds = floorf(a);
-    CMTime dragedCMTime = CMTimeMake(dragedSeconds, 1);
+    // 重新播放
+    CMTime dragedCMTime = CMTimeMake(0, 1);
     [player seekToTime:dragedCMTime];
 }
 
