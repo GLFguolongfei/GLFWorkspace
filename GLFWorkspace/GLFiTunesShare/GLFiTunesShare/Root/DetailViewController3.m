@@ -22,6 +22,9 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"快进" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
+    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"快退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
+    self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.view.backgroundColor = [UIColor whiteColor];
     
     fileManager = [GLFFileManager sharedFileManager];
@@ -37,6 +40,16 @@
     self.title = subVC.model.name;
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
+}
+
+- (void)buttonAction1:(id)sender {
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"avForward",@"key", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"avRadio" object:self userInfo:dic];
+}
+
+- (void)buttonAction2:(id)sender {
+    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"avBackward",@"key", nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"avRadio" object:self userInfo:dic];
 }
 
 #pragma mark UIPageViewControllerDataSource

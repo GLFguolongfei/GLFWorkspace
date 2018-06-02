@@ -28,9 +28,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemPlay:) name:@"avRadio" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
-    
+        
     [self setupAVPlayer];
     [self setupAVInfo];
 }
@@ -48,6 +49,15 @@
     [timer invalidate];
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self videoAction];
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+#pragma mark Setup
 - (void)setupAVPlayer {
     // 1-获取URL(远程/本地)
     NSURL *url = [NSURL fileURLWithPath:self.model.path];
@@ -91,10 +101,7 @@
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self videoAction];
-}
-
+#pragma mark Events
 - (void)videoAction  {
     if (isPlaying) {
         [button setImage:[UIImage imageNamed:@"播放"] forState:UIControlStateNormal];
@@ -123,6 +130,28 @@
     // 重新播放
     CMTime dragedCMTime = CMTimeMake(0, 1);
     [player seekToTime:dragedCMTime];
+}
+
+- (void)playerItemPlay:(NSNotification *)notification {
+    NSInteger currentTime = (NSInteger)CMTimeGetSeconds(item.currentTime);
+    NSInteger duration = (NSInteger)CMTimeGetSeconds(item.duration);
+    NSInteger interval = duration / 30;
+    // 根据总时长,设置每次快进和后退的时间间隔
+    if (interval < 10) {
+        interval = 10;
+    } else if (interval > 180) {
+        interval = 180;
+    }
+    
+    NSDictionary *dict = notification.userInfo;
+    NSString *str = dict[@"key"];
+    if ([str isEqualToString:@"avForward"]) {
+        CMTime dragedCMTime = CMTimeMake(currentTime + interval, 1);
+        [player seekToTime:dragedCMTime];
+    } else if ([str isEqualToString:@"avBackward"]) {
+        CMTime dragedCMTime = CMTimeMake(currentTime - interval, 1);
+        [player seekToTime:dragedCMTime];
+    }
 }
 
 

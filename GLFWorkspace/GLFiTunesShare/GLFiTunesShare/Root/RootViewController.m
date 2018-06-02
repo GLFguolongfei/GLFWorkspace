@@ -76,8 +76,10 @@
     }
     bgImageView.image = backImage;
     fileManager.currentPath = self.path;
-    isShowing = YES;
-    [self showHUD];
+    if (myDataArray.count == 0) {
+        isShowing = YES;
+        [self showHUD];
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -100,7 +102,7 @@
         self.path = [paths objectAtIndex:0];
         fileManager.currentPath = self.path;
     }
-    if (isShowing != YES) {
+    if (isShowing!=YES && myDataArray.count==0) {
         [self showHUD];
     }
     myDataArray = [[NSMutableArray alloc] init];
