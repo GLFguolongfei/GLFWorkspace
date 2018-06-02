@@ -72,6 +72,11 @@
     }];
 }
 
+- (void)applicationDidReceiveMemoryWarning:(UIApplication*)application {
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    NSLog(@"很荣幸,收到内存警告");
+}
+
 #pragma mark 共享
 #if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_9_0
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation
