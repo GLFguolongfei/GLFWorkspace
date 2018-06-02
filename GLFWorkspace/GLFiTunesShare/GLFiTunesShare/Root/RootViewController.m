@@ -323,10 +323,18 @@
     } else {
         NSArray *array = [model.name componentsSeparatedByString:@"."];
         NSString *lowerType = [array.lastObject lowercaseString];
-        if ([CimgTypeArray containsObject:lowerType]) { // 图片
-            cell.imageView.image = model.image;
+        if ([CimgTypeArray containsObject:lowerType] && model.image.size.width > 0) { // 图片
+            if (model.image.size.width > 0) { // 有时image会解析出错
+                cell.imageView.image = model.image;
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"图片"];
+            }
         } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
-            cell.imageView.image = model.image;
+            if (model.image.size.width > 0) { // 有时image会解析出错
+                cell.imageView.image = model.image;
+            } else {
+                cell.imageView.image = [UIImage imageNamed:@"video"];
+            }
         } else { // 其它文件类型
             cell.imageView.image = [UIImage imageNamed:@"wenjian"];
         }
