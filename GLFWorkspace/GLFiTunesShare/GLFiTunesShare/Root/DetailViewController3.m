@@ -25,7 +25,7 @@
     UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"快进" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"快退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     
     fileManager = [GLFFileManager sharedFileManager];
 

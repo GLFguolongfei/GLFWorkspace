@@ -52,6 +52,9 @@
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"选择" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction3:)];
         self.navigationItem.rightBarButtonItem = item;
     }
+    
+    myDataArray = [[NSMutableArray alloc] init];
+    editArray = [[NSMutableArray alloc] init];
 
     [self prepareInterface];
 }
@@ -80,6 +83,7 @@
         isShowing = YES;
         [self showHUD];
     }
+    [editArray removeAllObjects];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -105,10 +109,10 @@
     if (isShowing!=YES && myDataArray.count==0) {
         [self showHUD];
     }
-    myDataArray = [[NSMutableArray alloc] init];
-    editArray = [[NSMutableArray alloc] init];
+
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
+        NSMutableArray *cArray = [[NSMutableArray alloc] init];
         NSArray *array = [GLFFileManager searchSubFile:self.path andIsDepth:NO];
         for (int i = 0; i < array.count; i++) {
             // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
@@ -136,11 +140,13 @@
                 model.size = [GLFFileManager fileSizeForDir:model.path];
                 model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
             }
-            [myDataArray addObject:model];
+            [cArray addObject:model];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             isShowing = NO;
             [self hideAllHUD];
+            [myDataArray removeAllObjects];
+            [myDataArray addObjectsFromArray:cArray];
             [myTableView reloadData];
         });
     });
