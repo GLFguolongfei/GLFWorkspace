@@ -66,7 +66,7 @@
     [self hideAllHUD];
     [self setup:webView];
     if (self.type == 1) {
-        [self setHTMLInfo:webView];
+//        [self setHTMLInfo:webView];
     } else if (self.type == 2) {
         [self setHTMLAccount:webView];
     }
@@ -133,16 +133,6 @@
     //    * userName:用户姓名
     //    * versionNumber:版本号
     //    * zjType:证件类型  1：身份证 （目前仅有“1”类型）
-//    NSDictionary *dict = @{
-//                           @"idCard" : @"342426199304214611",
-//                           @"isAuth" : @"1",
-//                           @"phoneNum" : @"17681332329",
-//                           @"source" : @"iOS",
-//                           @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
-//                           @"userName" : @"汪磊",
-//                           @"versionNumber" : @"2.0.1",
-//                           @"zjType" : @"1"
-//                           };
     NSDictionary *dict = @{
                            @"idCard" : @"411081199104051555",
                            @"isAuth" : @"1",
@@ -153,16 +143,6 @@
                            @"versionNumber" : @"2.0.1",
                            @"zjType" : @"1"
                            };
-//    NSDictionary *dict = @{
-//                           @"idCard" : @"321323199011196713",
-//                           @"isAuth" : @"1",
-//                           @"phoneNum" : @"185501005",
-//                           @"source" : @"iOS",
-//                           @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
-//                           @"userName" : @"苗双",
-//                           @"versionNumber" : @"2.0.1",
-//                           @"zjType" : @"1"
-//                           };
     NSString *str = [GLFTools dictionaryToJson:dict];
     NSString *jsStr = [NSString stringWithFormat:@"getUserInfo(%@)", str];
     [webView stringByEvaluatingJavaScriptFromString:jsStr];
@@ -170,15 +150,11 @@
 
 - (void)setHTMLAccount:(UIWebView *)webView {
     // 设置用户名和密码
-    // 13955391593 陶月英 医师
-    // 18055548068 唐荣刚 医师
-    // 13955382578 朱培金 中心主任
-    // 18949555598 徐应有
     NSMutableString *js2 = [NSMutableString string];
     [js2 appendString:@"var abcuserName = document.getElementById('userName');"];
     [js2 appendString:@"var abcpassword = document.getElementById('password');"];
-    [js2 appendString:@"abcuserName.value = '18949555598';"];
-    [js2 appendString:@"abcpassword.value = '18949555598';"];
+    [js2 appendString:@"abcuserName.value = '13852812033';"];
+    [js2 appendString:@"abcpassword.value = '000000';"];
     [webView stringByEvaluatingJavaScriptFromString:js2];
 }
 

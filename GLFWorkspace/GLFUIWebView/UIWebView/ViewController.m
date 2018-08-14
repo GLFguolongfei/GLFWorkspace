@@ -94,20 +94,19 @@
 }
 
 #pragma mark 各个项目
-// 家庭医生居民版
+// 家庭医生居民版（沭阳家庭医生）
 - (IBAction)buttonAction1:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
     vc.type = 1;
-//    vc.urlStr = @"http://61.177.174.10:8082/whserver/yhwApp/home-page!homeWelcome.action?serviceTicket=a2b45ac5-9fe9-4980-9818-7a26a0f289a6";
-    vc.urlStr = @"http://192.168.1.29:8080/whserver/yhwApp/home-page!homeWelcome.action?serviceTicket=a2b45ac5-9fe9-4980-9818-7a26a0f289a6";
+    vc.urlStr = @"http://112.20.237.76:8087/HealthClientStatic/HTML/tabbar/home.html";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-// 家庭医生医生版
+// 家庭医生医生版（沭阳家庭医生）
 - (IBAction)buttonAction2:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
     vc.type = 2;
-    vc.urlStr = @"http://61.177.174.10:8082/whserver/appDoc/doc-login!loginIndex.action";
+    vc.urlStr = @"http://112.20.237.76:8087/docClient/login";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
