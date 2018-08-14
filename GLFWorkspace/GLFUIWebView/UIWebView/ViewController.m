@@ -130,7 +130,7 @@
 - (IBAction)buttonAction5:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
     vc.type = 1;
-    vc.urlStr = @"http://61.177.174.10:8082/whserver/healthyHome/my-park!myPackIndexV2.action?serviceTicket=f1ffc64c-3ee6-47a0-89fd-51daacab59cd";
+    vc.urlStr = @"http://61.177.174.10:80/HealthHotel/HTML/tabbar/home.html";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -139,13 +139,7 @@
 - (IBAction)testAction:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
     vc.type = 1;
-    // 健康小驿（园区健康）（serviceTicket 只有5分钟时效，即每5分钟就要更换）
-//    vc.urlStr = @"http://192.168.1.51:8080/whserver/healthyHome/my-park!myPackIndexV2.action?serviceTicket=fb3b613a-970f-4111-aa4c-a3ba1c20e390";
-    // 家庭医生居民端
-    vc.urlStr = @"http://192.168.1.51:8080/whserver/yhwApp/home-page!homeWelcome.action?serviceTicket=49c5a3d4-5de2-41e0-9376-df2f6de08084";
-//    vc.urlStr = @"http://61.177.174.10:8082/whserver/yhwApp/home-page!homeWelcome.action?serviceTicket=4fbf2911-c0b1-4ecb-8829-2336cfb93510";
-    // 家庭医生医生端
-//    vc.urlStr = @"http://192.168.1.51:8080/whserver/appDoc/doc-login!loginIndex.action";
+    vc.urlStr = @"http://www.baidu.com";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
