@@ -23,7 +23,6 @@
 
 #pragma mark UIApplicationDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
     BOOL isTestFounction = NO;
     if (isTestFounction) {
         ViewController *testVC = [[ViewController alloc] init];
@@ -39,10 +38,9 @@
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:loginVC];
         self.window.rootViewController = navi;
 #else
-        str = @"---------------------- 其它Target ----------------------";
+        NSLog(@"---------------------- 其它Target ----------------------");
 #endif
     }
-    
     return YES;
 }
 
@@ -56,7 +54,7 @@
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:loginVC];
     self.window.rootViewController = navi;
 #else
-    str = @"---------------------- 其它Target ----------------------";
+    NSLog(@"---------------------- 其它Target ----------------------");
 #endif
     imageView = [[UIImageView alloc] initWithFrame:self.window.bounds];
     imageView.image = image;
@@ -88,7 +86,6 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options
 {
     NSLog(@"%@ , %@", url, options);
-    
     NSString *path = url.relativePath;
     NSArray *array = [path componentsSeparatedByString:@"/"];
     FileModel *model = [[FileModel alloc] init];
@@ -104,9 +101,8 @@
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:loginVC];
     self.window.rootViewController = navi;
 #else
-    str = @"---------------------- 其它Target ----------------------";
+    NSLog(@"---------------------- 其它Target ----------------------");
 #endif
-    
     return YES;
 }
 #endif

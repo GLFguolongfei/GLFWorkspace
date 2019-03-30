@@ -57,13 +57,10 @@
 #pragma mark 键
 #define IsUseBackImagePath  @"UseBackImagePath"
 #define BackImageName       @"BackImageName"
-
 #define kWebContentXuanFu   @"kWebContentXuanFu"
 #define kWebContentImg      @"kWebContentImg"
 #define kWebContentFont     @"kWebContentFont"
 #define kWebContentBorder   @"kWebContentBorder"
-
-
 #define CimgTypeArray    @[@"png", @"jpeg", @"jpg", @"gif"]
 #define CvideoTypeArray  @[@"mp4", @"rmvb", @"avi", @"mov"]
 
