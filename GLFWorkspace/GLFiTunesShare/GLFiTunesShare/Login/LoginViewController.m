@@ -63,7 +63,6 @@
     backImageView.alpha = 0.3;
     backImageView.clipsToBounds = YES;
     [self.view addSubview:backImageView];
-
     // 名言警句
     UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0, 420, kScreenWidth, 120)];
     label.text = @"放下了做诗的笔，拿起了战斗的剑，\n\n民族处于危难，祖国迫切召唤！\n\n耻辱需要用鲜血来洗刷，愤怒只能让死亡去平息！\n\n龙的传人终将砸开锁链，翱翔九天！";
