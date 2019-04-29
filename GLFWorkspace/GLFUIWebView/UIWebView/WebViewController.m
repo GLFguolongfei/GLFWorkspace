@@ -58,7 +58,7 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     NSLog(@"webViewDidStartLoad");
-    [self showHUD];
+//    [self showHUD];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
@@ -74,7 +74,7 @@
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     NSLog(@"didFailLoadWithError: %@", error.localizedDescription);
-    [self hideAllHUD];
+//    [self hideAllHUD];
 }
 
 #pragma mark WebView Events
