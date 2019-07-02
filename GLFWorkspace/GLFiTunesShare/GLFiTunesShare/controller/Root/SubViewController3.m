@@ -65,6 +65,10 @@
     item = [AVPlayerItem playerItemWithURL:url];
     // 3-创建AVPlayer
     player = [AVPlayer playerWithPlayerItem:item];
+    NSString *VoiceMute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
+    if (VoiceMute.integerValue) {
+        player.volume = 0.0; // 控制音量
+    }
     // 4-添加AVPlayerLayer
     AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player];
     layer.frame = CGRectMake(0, 65, kScreenWidth, kScreenHeight-65);

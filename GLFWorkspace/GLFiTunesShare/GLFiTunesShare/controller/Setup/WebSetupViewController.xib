@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,6 +14,7 @@
                 <outlet property="switch2" destination="9EX-G7-HnH" id="86U-5k-Egd"/>
                 <outlet property="switch3" destination="Bvh-7P-b08" id="Y5A-UX-hC3"/>
                 <outlet property="switch4" destination="30U-Vt-nsc" id="H7a-PQ-Kfd"/>
+                <outlet property="switch5" destination="3qy-HJ-AA2" id="WHV-n7-xYS"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -63,6 +63,16 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="是否静音" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qBC-b3-qAd">
+                    <rect key="frame" x="62.5" y="260" width="150" height="40"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="150" id="8W5-9Y-Ycp"/>
+                        <constraint firstAttribute="height" constant="40" id="oGx-hg-5al"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="lJC-39-2MF">
                     <rect key="frame" x="227.5" y="105" width="52" height="30"/>
                     <constraints>
@@ -103,6 +113,16 @@
                         <action selector="switchAction4:" destination="-1" eventType="valueChanged" id="Sxf-ue-4q1"/>
                     </connections>
                 </switch>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="3qy-HJ-AA2">
+                    <rect key="frame" x="227.5" y="265" width="52" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="CFH-Xi-EnD"/>
+                        <constraint firstAttribute="width" constant="50" id="nSB-9A-TDC"/>
+                    </constraints>
+                    <connections>
+                        <action selector="switchAction5:" destination="-1" eventType="valueChanged" id="cme-Ic-UzT"/>
+                    </connections>
+                </switch>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -117,8 +137,12 @@
                 <constraint firstItem="7wN-yg-xHR" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" constant="-50" id="Lwv-cD-Xcs"/>
                 <constraint firstItem="30U-Vt-nsc" firstAttribute="leading" secondItem="o9S-gM-AcS" secondAttribute="trailing" constant="15" id="Plm-em-ubr"/>
                 <constraint firstItem="lJC-39-2MF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="105" id="T6Y-9J-eQa"/>
+                <constraint firstItem="qBC-b3-qAd" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" constant="-50" id="Ta8-ZB-ppv"/>
+                <constraint firstItem="qBC-b3-qAd" firstAttribute="top" secondItem="o9S-gM-AcS" secondAttribute="bottom" id="Vdh-oV-ibP"/>
+                <constraint firstItem="3qy-HJ-AA2" firstAttribute="top" secondItem="30U-Vt-nsc" secondAttribute="bottom" constant="10" id="gIx-e9-rNG"/>
                 <constraint firstItem="vlW-fx-bEO" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" constant="-50" id="gqS-K9-s63"/>
                 <constraint firstItem="lJC-39-2MF" firstAttribute="leading" secondItem="F1k-91-e87" secondAttribute="trailing" constant="15" id="j8D-Pe-wzR"/>
+                <constraint firstItem="3qy-HJ-AA2" firstAttribute="leading" secondItem="qBC-b3-qAd" secondAttribute="trailing" constant="15" id="kXx-Sl-sYa"/>
                 <constraint firstItem="9EX-G7-HnH" firstAttribute="leading" secondItem="vlW-fx-bEO" secondAttribute="trailing" constant="15" id="vaz-Nu-o47"/>
                 <constraint firstItem="vlW-fx-bEO" firstAttribute="top" secondItem="F1k-91-e87" secondAttribute="bottom" id="w3q-16-9UD"/>
                 <constraint firstItem="30U-Vt-nsc" firstAttribute="top" secondItem="Bvh-7P-b08" secondAttribute="bottom" constant="10" id="w4X-h5-OCx"/>

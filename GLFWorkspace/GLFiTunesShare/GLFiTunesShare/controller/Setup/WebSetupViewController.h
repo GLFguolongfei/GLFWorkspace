@@ -15,5 +15,6 @@
 @property (weak, nonatomic) IBOutlet UISwitch *switch2;
 @property (weak, nonatomic) IBOutlet UISwitch *switch3;
 @property (weak, nonatomic) IBOutlet UISwitch *switch4;
+@property (weak, nonatomic) IBOutlet UISwitch *switch5;
 
 @end

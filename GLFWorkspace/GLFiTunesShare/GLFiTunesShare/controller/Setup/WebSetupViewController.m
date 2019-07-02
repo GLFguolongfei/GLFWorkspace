@@ -72,5 +72,14 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (IBAction)switchAction5:(id)sender {
+    UISwitch *sw = (UISwitch *)sender;
+    if (sw.on) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kVoiceMute];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kVoiceMute];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
 
 @end
