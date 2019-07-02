@@ -26,10 +26,12 @@
     NSString *img = [userDefaults objectForKey:kWebContentImg];
     NSString *font = [userDefaults objectForKey:kWebContentFont];
     NSString *border = [userDefaults objectForKey:kWebContentBorder];
+    NSString *mute = [userDefaults objectForKey:kVoiceMute];
     [self.switch1 setOn:xuanfu.integerValue animated:YES];
     [self.switch2 setOn:img.integerValue animated:YES];
     [self.switch3 setOn:font.integerValue animated:YES];
     [self.switch4 setOn:border.integerValue animated:YES];
+    [self.switch5 setOn:mute.integerValue animated:YES];
 }
 
 - (IBAction)switchAction1:(id)sender {
