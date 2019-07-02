@@ -498,7 +498,6 @@
         if (alertVC.textFields.count > 0) {
             UITextField *textField = alertVC.textFields.firstObject;
             NSLog(@"重命名文件夹名称: %@", textField.text);
-            
             NSString *toPath = [NSString stringWithFormat:@"%@/%@", fileManager.currentPath, textField.text];
             BOOL success = [GLFFileManager fileMove:model.path toPath:toPath];
             if (success) {

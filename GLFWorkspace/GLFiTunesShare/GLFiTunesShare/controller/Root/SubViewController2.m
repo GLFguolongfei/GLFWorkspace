@@ -25,8 +25,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     
-    maxScale = 3;
-    minScale = 1;
+    maxScale = 20;
+    minScale = 0.1;
     
     CGRect rect1 = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
     contentScrollView = [[UIScrollView alloc] initWithFrame:rect1];
@@ -52,30 +52,14 @@
 }
 
 - (void)tapImage:(UITapGestureRecognizer *)gesture {
-    // 当前倍数等于最大放大倍数: 双击默认为缩小到原图
-    if (currentScale == maxScale) {
-        currentScale = minScale;
+    // 如果当前为正常大小,双击则放大至三倍大小
+    // 如果当前为放大或缩小,双击则变回正常尺寸
+    if (currentScale == 1) {
+        currentScale = 3;
         [contentScrollView setZoomScale:currentScale animated:YES];
         return;
-    }
-    // 当前等于最小放大倍数: 双击默认为放大到最大倍数
-    if (currentScale == minScale) {
-        currentScale = maxScale;
-        [contentScrollView setZoomScale:currentScale animated:YES];
-        return;
-    }
-    
-    CGFloat aveScale = minScale + (maxScale-minScale)/2.0; // 中间倍数
-    
-    // 当前倍数大于平均倍数: 双击默认为放大最大倍数
-    if (currentScale >= aveScale) {
-        currentScale = maxScale;
-        [contentScrollView setZoomScale:currentScale animated:YES];
-        return;
-    }
-    // 当前倍数小于平均倍数: 双击默认为放大到最小倍数
-    if (currentScale < aveScale) {
-        currentScale = minScale;
+    } else {
+        currentScale = 1;
         [contentScrollView setZoomScale:currentScale animated:YES];
         return;
     }

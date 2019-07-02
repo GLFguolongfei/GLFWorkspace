@@ -35,8 +35,7 @@
 }
 
 #pragma mark UIWebViewDelegate
-- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
+- (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
     // URL格式: 协议头://主机名/路径
     NSLog(@"路径: %@", request.URL.path);
     NSLog(@"完整的URL字符串: %@", request.URL.absoluteString);
