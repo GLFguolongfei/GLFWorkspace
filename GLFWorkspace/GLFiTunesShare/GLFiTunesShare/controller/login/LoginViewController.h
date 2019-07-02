@@ -11,6 +11,7 @@
 
 @interface LoginViewController : BaseViewController
 
-@property (nonatomic, strong) FileModel *moveModel; // 专用于,从iCloud共享过来的数据使用
+// 当从iCloud共享过来数据时使用
+@property (nonatomic, strong) FileModel *moveModel;
 
 @end

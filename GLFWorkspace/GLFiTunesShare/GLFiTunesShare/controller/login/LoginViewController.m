@@ -94,6 +94,7 @@
     [self.view endEditing:YES];
 }
 
+#pragma mark Events
 - (void)loginAction {
     [self.view endEditing:YES];
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"GLF" ofType:@"plist"];

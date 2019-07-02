@@ -77,14 +77,11 @@
 
 #pragma mark 共享
 #if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_9_0
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation
-{
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation {
     return YES;
 }
-
 #else
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options
-{
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options {
     NSLog(@"%@ , %@", url, options);
     NSString *path = url.relativePath;
     NSArray *array = [path componentsSeparatedByString:@"/"];
