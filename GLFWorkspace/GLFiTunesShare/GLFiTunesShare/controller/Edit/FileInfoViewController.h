@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "FileModel.h"
 
-// --- 信息页
+// --- 简介页
 @interface FileInfoViewController : UIViewController
 
 @property (nonatomic, strong) FileModel *model;

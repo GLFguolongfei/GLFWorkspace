@@ -20,13 +20,11 @@
     NSMutableArray *myDataArray;
     
     GLFFileManager *fileManager;
-    
+
     UIImageView *bgImageView;
     
     NSIndexPath *editIndexPath;
     NSMutableArray *editArray;
-    
-    BOOL isShowing; // 风火轮是否正在转(为了解决个小瑕疵)
 }
 @end
 
@@ -37,22 +35,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    if (self.titleStr.length == 0) {
-        self.title = @"NSDocumentDirectory";
-        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
-        self.navigationItem.leftBarButtonItem = item;
-    } else {
-        self.title = self.titleStr;
-    }
-    if (self.navigationController.viewControllers.count > 3) {
-        UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"选择" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction3:)];
-        UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"返回首页" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
-        self.navigationItem.rightBarButtonItems = @[item1, item2];
-    } else {
-        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"选择" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction3:)];
-        self.navigationItem.rightBarButtonItem = item;
-    }
     
+    fileManager = [GLFFileManager sharedFileManager];
     myDataArray = [[NSMutableArray alloc] init];
     editArray = [[NSMutableArray alloc] init];
 
@@ -60,6 +44,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    // 1.设置背景图片
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
     NSString *backName = [userDefaults objectForKey:BackImageName];
@@ -78,12 +63,8 @@
         [userDefaults synchronize];
     }
     bgImageView.image = backImage;
-    fileManager.currentPath = self.path;
-    if (myDataArray.count == 0) {
-        isShowing = YES;
-        [self showHUD];
-    }
-    [editArray removeAllObjects];
+    // 2.设置数据源
+    [self prepareData];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -91,29 +72,25 @@
         MoveViewController *editVC = [[MoveViewController alloc] init];
         editVC.modelArray = @[self.moveModel];
         [self presentViewController:editVC animated:YES completion:nil];
-        
         self.moveModel = nil;
         return;
     }
-    [self viewEditing:YES];
-    [self prepareData];
 }
 
 - (void)prepareData {
-    fileManager = [GLFFileManager sharedFileManager];
-    if (self.path.length == 0) {
+    [myDataArray removeAllObjects];
+    [editArray removeAllObjects];
+    if (self.pathStr.length == 0) {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        self.path = [paths objectAtIndex:0];
-        fileManager.currentPath = self.path;
+        self.pathStr = [paths objectAtIndex:0];
     }
-    if (isShowing!=YES && myDataArray.count==0) {
-        [self showHUD];
-    }
-
+    fileManager.currentPath = self.pathStr;
+    [self showHUD];
+    
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
         NSMutableArray *cArray = [[NSMutableArray alloc] init];
-        NSArray *array = [GLFFileManager searchSubFile:self.path andIsDepth:NO];
+        NSArray *array = [GLFFileManager searchSubFile:self.pathStr andIsDepth:NO];
         for (int i = 0; i < array.count; i++) {
             // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
             // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
@@ -122,10 +99,10 @@
             }
             FileModel *model = [[FileModel alloc] init];
             model.name = array[i];
-            model.path = [NSString stringWithFormat:@"%@/%@", self.path,model.name];
+            model.path = [NSString stringWithFormat:@"%@/%@", self.pathStr,model.name];
             model.attributes = [GLFFileManager attributesOfItemAtPath:model.path];
             NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
-            if (fileType == 1) {
+            if (fileType == 1) { // 文件
                 model.isDir = NO;
                 model.size = [GLFFileManager fileSize:model.path];
                 NSArray *array = [model.name componentsSeparatedByString:@"."];
@@ -135,7 +112,7 @@
                 } else if ([CvideoTypeArray containsObject:lowerType]) {
                     model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
                 }
-            } else if (fileType == 2) {
+            } else if (fileType == 2) { // 文件夹
                 model.isDir = YES;
                 model.size = [GLFFileManager fileSizeForDir:model.path];
                 model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
@@ -143,7 +120,6 @@
             [cArray addObject:model];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-            isShowing = NO;
             [self hideAllHUD];
             [myDataArray removeAllObjects];
             [myDataArray addObjectsFromArray:cArray];
@@ -153,6 +129,34 @@
 }
 
 - (void)prepareInterface {
+    // 导航栏UINavigationBar
+    if (self.titleStr.length > 0) {
+        self.title = self.titleStr;
+    } else {
+        self.title = @"NSDocumentDirectory";
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
+        self.navigationItem.leftBarButtonItem = item;
+    }
+    if (self.navigationController.viewControllers.count > 3) {
+        UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"选择" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction3:)];
+        UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"返回首页" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
+        self.navigationItem.rightBarButtonItems = @[item1, item2];
+    } else {
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"选择" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction3:)];
+        self.navigationItem.rightBarButtonItem = item;
+    }
+    
+    // 工具栏UIToolbar
+    self.navigationController.toolbarHidden = YES;
+    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"新文件夹" style:UIBarButtonItemStylePlain target:self action:@selector(createAction:)];
+    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"移动" style:UIBarButtonItemStylePlain target:self action:@selector(moveAction:)];
+    item2.enabled = NO;
+    UIBarButtonItem *item3 = [[UIBarButtonItem alloc] initWithTitle:@"删除" style:UIBarButtonItemStylePlain target:self action:@selector(deleteAction:)];
+    item3.enabled = NO;
+    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
+    self.toolbarItems = @[item1, space, item2, space, item3];
+    
+    // 数据列表
     CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
     myTableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
     myTableView.delegate = self;
@@ -166,28 +170,21 @@
     bgImageView = [[UIImageView alloc] initWithFrame:myTableView.frame];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     myTableView.backgroundView = bgImageView;
-    
-    // 工具栏UIToolbar
-    self.navigationController.toolbarHidden = YES;
-    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"新文件夹" style:UIBarButtonItemStylePlain target:self action:@selector(createAction:)];
-    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"移动" style:UIBarButtonItemStylePlain target:self action:@selector(moveAction:)];
-    item2.enabled = NO;
-    UIBarButtonItem *item3 = [[UIBarButtonItem alloc] initWithTitle:@"删除" style:UIBarButtonItemStylePlain target:self action:@selector(deleteAction:)];
-    item3.enabled = NO;
-    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
-    self.toolbarItems = @[item1, space, item2, space, item3];
 }
 
 #pragma mark Events
+// 设置
 - (void)buttonAction1:(id)sender {
     SetupViewController *setupVC = [[SetupViewController alloc] init];
     [self.navigationController pushViewController:setupVC animated:YES];
 }
 
+// 返回首页
 - (void)buttonAction2:(id)sender {
     [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
+// 选择
 - (void)buttonAction3:(id)sender {
     UIBarButtonItem *item = sender;
     if ([item.title isEqualToString:@"选择"]) {
@@ -197,6 +194,7 @@
     }
 }
 
+// 新文件夹
 - (void)createAction:(id)sender {
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"新文件夹" message:@"请为此文件夹输入新名称。" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -240,12 +238,14 @@
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
+// 移动
 - (void)moveAction:(id)sender {
     MoveViewController *editVC = [[MoveViewController alloc] init];
     editVC.modelArray = editArray;
     [self presentViewController:editVC animated:YES completion:nil];
 }
 
+// 删除
 - (void)deleteAction:(id)sender {
     NSString *str = [NSString stringWithFormat:@"%ld 个项目将从您的设备存储中删除。此操作不能撤销。",editArray.count];
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"" message:str preferredStyle:UIAlertControllerStyleActionSheet];
@@ -315,20 +315,20 @@
     cell.selectedBackgroundView = view;
     cell.backgroundColor = [UIColor clearColor];
     cell.contentView.backgroundColor = [UIColor clearColor];
-    // 内容样式
+    // 样式
     cell.imageView.contentMode = UIViewContentModeScaleAspectFill;
     cell.textLabel.textColor = [UIColor whiteColor];
     cell.textLabel.numberOfLines = 3; // 写的是X,但其实最多显示X-1行,原因未知
     cell.detailTextLabel.textColor = [UIColor colorWithWhite:1 alpha:0.7];
-
+    // 内容
     FileModel *model = myDataArray[indexPath.row];
     cell.textLabel.text = model.name;
-    if (model.isDir) {
+    if (model.isDir) { // 文件夹
         NSString *sizeStr = [GLFFileManager returenSizeStr:model.size];
         cell.imageView.image = [UIImage imageNamed:@"wenjianjia"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld 项  %@", model.count, sizeStr];
-    } else {
+    } else { // 文件
         NSArray *array = [model.name componentsSeparatedByString:@"."];
         NSString *lowerType = [array.lastObject lowercaseString];
         if ([CimgTypeArray containsObject:lowerType] && model.image.size.width > 0) { // 图片
@@ -349,7 +349,6 @@
         cell.accessoryType = UITableViewCellAccessoryDetailButton;
         cell.detailTextLabel.text = @"";
     }
-
     return cell;
 }
 
@@ -367,8 +366,8 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
-    if (fileType == 1) {
-        // 获取所有文件类型
+    if (fileType == 1) { // 文件
+        // 获取所有类型文件
         NSMutableArray *imageArray = [[NSMutableArray alloc] init];
         NSMutableArray *videoArray = [[NSMutableArray alloc] init];
         NSMutableArray *fileArray = [[NSMutableArray alloc] init];
@@ -387,6 +386,7 @@
                 }
             }
         }
+        // 进入详情页面
         NSArray *array = [model.name componentsSeparatedByString:@"."];
         NSString *lowerType = [array.lastObject lowercaseString];
         if ([CimgTypeArray containsObject:lowerType]) { // 图片
@@ -405,10 +405,10 @@
             detailVC.fileArray = fileArray;
             [self.navigationController pushViewController:detailVC animated:YES];
         }
-    } else if (fileType == 2) {
+    } else if (fileType == 2) { // 文件夹
         RootViewController *vc = [[RootViewController alloc] init];
         vc.titleStr = model.name;
-        vc.path = model.path;
+        vc.pathStr = model.path;
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
@@ -531,7 +531,7 @@
 }
 
 #pragma mark Private Method
-// 获取下标
+// 获取元素在数组中的下标
 - (NSInteger)returnIndex:(NSArray *)array with:(FileModel *)model {
     NSInteger index = 0;
     for (NSInteger i = 0; i < array.count; i++) {
