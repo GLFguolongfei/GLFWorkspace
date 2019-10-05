@@ -120,6 +120,12 @@
       <FileRef
          location = "group:GLFTools.m">
       </FileRef>
+      <FileRef
+         location = "group:/Users/guolongfei/Documents/Project_MySelf/GLFWorkspace/GLFWorkspace/GLFTools/UncaughtExceptionHandler.h">
+      </FileRef>
+      <FileRef
+         location = "group:/Users/guolongfei/Documents/Project_MySelf/GLFWorkspace/GLFWorkspace/GLFTools/UncaughtExceptionHandler.m">
+      </FileRef>
    </Group>
    <FileRef
       location = "group:GLFUIWebView/UIWebView.xcodeproj">

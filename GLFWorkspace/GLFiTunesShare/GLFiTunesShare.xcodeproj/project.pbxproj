@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		6F040F991FAD6EDC00EF4721 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */; };
+		6F0CB5D423485A3600B69807 /* SubViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0CB5D323485A3600B69807 /* SubViewController1.m */; };
+		6F0CB5D623485C0300B69807 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0CB5D523485C0300B69807 /* WebKit.framework */; };
+		6F0CB5D723485D1800B69807 /* SubViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0CB5D323485A3600B69807 /* SubViewController1.m */; };
+		6F0CB5DA2348627E00B69807 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0CB5D82348627D00B69807 /* UncaughtExceptionHandler.m */; };
+		6F0CB5DB2348627E00B69807 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0CB5D82348627D00B69807 /* UncaughtExceptionHandler.m */; };
 		6F0E960D1FA4135B0029DDD6 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E95EC1FA4135B0029DDD6 /* Base64.m */; };
 		6F0E960E1FA4135B0029DDD6 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E95EC1FA4135B0029DDD6 /* Base64.m */; };
 		6F0E960F1FA4135B0029DDD6 /* NSDate+Help.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E95EF1FA4135B0029DDD6 /* NSDate+Help.m */; };
@@ -130,6 +135,11 @@
 
 /* Begin PBXFileReference section */
 		6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		6F0CB5D223485A3600B69807 /* SubViewController1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubViewController1.h; sourceTree = "<group>"; };
+		6F0CB5D323485A3600B69807 /* SubViewController1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SubViewController1.m; sourceTree = "<group>"; };
+		6F0CB5D523485C0300B69807 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		6F0CB5D82348627D00B69807 /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UncaughtExceptionHandler.m; path = /Users/guolongfei/Documents/Project_MySelf/GLFWorkspace/GLFWorkspace/GLFTools/UncaughtExceptionHandler.m; sourceTree = "<absolute>"; };
+		6F0CB5D92348627E00B69807 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UncaughtExceptionHandler.h; path = /Users/guolongfei/Documents/Project_MySelf/GLFWorkspace/GLFWorkspace/GLFTools/UncaughtExceptionHandler.h; sourceTree = "<absolute>"; };
 		6F0E95EB1FA4135B0029DDD6 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		6F0E95EC1FA4135B0029DDD6 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
 		6F0E95EE1FA4135B0029DDD6 /* NSDate+Help.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Help.h"; sourceTree = "<group>"; };
@@ -261,6 +271,7 @@
 			files = (
 				6F124DF41F9F3E0E005605E1 /* MobileCoreServices.framework in Frameworks */,
 				6FF80A9B1F8F9F5800D7B19B /* AVFoundation.framework in Frameworks */,
+				6F0CB5D623485C0300B69807 /* WebKit.framework in Frameworks */,
 				6F91B4571F81615B00A9C616 /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -281,6 +292,8 @@
 				6F0E95F61FA4135B0029DDD6 /* FileManager */,
 				6F0E95F91FA4135B0029DDD6 /* GLFTools.h */,
 				6F0E95FA1FA4135B0029DDD6 /* GLFTools.m */,
+				6F0CB5D92348627E00B69807 /* UncaughtExceptionHandler.h */,
+				6F0CB5D82348627D00B69807 /* UncaughtExceptionHandler.m */,
 			);
 			name = GLFTools;
 			path = ../../GLFTools;
@@ -380,6 +393,8 @@
 				6FE944E020BE4EF6005A46AD /* DetailViewController3.m */,
 				6F1EEAED1FB1A4060046389D /* SubViewController.h */,
 				6F1EEAEE1FB1A4060046389D /* SubViewController.m */,
+				6F0CB5D223485A3600B69807 /* SubViewController1.h */,
+				6F0CB5D323485A3600B69807 /* SubViewController1.m */,
 				6F58F45820BDB0FC003E0911 /* SubViewController2.h */,
 				6F58F45920BDB0FC003E0911 /* SubViewController2.m */,
 				6FE944E320BE4F0A005A46AD /* SubViewController3.h */,
@@ -513,6 +528,7 @@
 		6F9116DB1F7EB445002C40AC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6F0CB5D523485C0300B69807 /* WebKit.framework */,
 				6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */,
 				6F393F8D1FA1B3E90049CF49 /* CloudKit.framework */,
 				6F124DF21F9F3E07005605E1 /* MobileCoreServices.framework */,
@@ -736,6 +752,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F0CB5DB2348627E00B69807 /* UncaughtExceptionHandler.m in Sources */,
 				6F8072B51F7E436E007D7B26 /* ViewController.m in Sources */,
 				6F1EEB121FB1A4060046389D /* BaseViewController.m in Sources */,
 				6FE944E520BE4F0A005A46AD /* SubViewController3.m in Sources */,
@@ -749,6 +766,7 @@
 				6F0E96271FA4135B0029DDD6 /* WaterView2.m in Sources */,
 				6F0E961B1FA4135B0029DDD6 /* MBProgressHUD+Add.m in Sources */,
 				6F8072C01F7E436E007D7B26 /* main.m in Sources */,
+				6F0CB5D423485A3600B69807 /* SubViewController1.m in Sources */,
 				6F1EEB211FB1A86A0046389D /* WebSetupViewController.m in Sources */,
 				6FE944E120BE4EF6005A46AD /* DetailViewController3.m in Sources */,
 				6F1EEB0B1FB1A4060046389D /* SubViewController.m in Sources */,
@@ -794,6 +812,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F0CB5DA2348627E00B69807 /* UncaughtExceptionHandler.m in Sources */,
 				6F1EEB321FB1ADEF0046389D /* FileModel.m in Sources */,
 				6F1EEB271FB1ADD50046389D /* RootViewController.m in Sources */,
 				6FE944E620BE4F0A005A46AD /* SubViewController3.m in Sources */,
@@ -807,6 +826,7 @@
 				6F1EEB2F1FB1ADD50046389D /* WebSetupViewController.m in Sources */,
 				6F1EEB301FB1ADD50046389D /* LoginViewController.m in Sources */,
 				6F1EEB311FB1ADD50046389D /* BaseViewController.m in Sources */,
+				6F0CB5D723485D1800B69807 /* SubViewController1.m in Sources */,
 				6FE944E220BE4EF6005A46AD /* DetailViewController3.m in Sources */,
 				6F0E960E1FA4135B0029DDD6 /* Base64.m in Sources */,
 				6FA4620D1FB3383A00DDA77F /* ImageSubViewController.m in Sources */,

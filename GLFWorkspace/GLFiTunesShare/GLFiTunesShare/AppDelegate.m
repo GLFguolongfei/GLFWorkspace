@@ -11,6 +11,7 @@
 #import "LoginViewController.h"
 #import "ViewController.h"
 #import "MoveViewController.h"
+#import "UncaughtExceptionHandler.h"
 
 @interface AppDelegate ()
 {
@@ -23,6 +24,11 @@
 
 #pragma mark UIApplicationDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    // 让程序从容的崩溃
+    // ----- 好像没起到作用,原因未知 -----
+    InstallUncaughtExceptionHandler();
+    
     BOOL isTestFounction = NO;
     if (isTestFounction) {
         ViewController *testVC = [[ViewController alloc] init];

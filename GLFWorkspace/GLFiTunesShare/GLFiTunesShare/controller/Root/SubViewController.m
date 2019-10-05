@@ -28,10 +28,21 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    // 加载本地资源
-    NSURL *url = [NSURL fileURLWithPath:self.model.path];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
-    [self.myWebView loadRequest:request];
+    
+    @try { 
+        // 加载本地资源
+        NSURL *url = [NSURL fileURLWithPath:self.model.path];
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        [self.myWebView loadRequest:request];
+    }
+   @catch (NSException *exception) { // 捕获抛出的异常
+       NSLog(@"exception.name = %@", exception.name);
+       NSLog(@"exception.reason = %@", exception.reason);
+       NSLog(@"exception.userInfo = %@", exception.userInfo);
+   }
+   @finally {
+       NSLog(@"finally!");
+   }
 }
 
 #pragma mark UIWebViewDelegate
