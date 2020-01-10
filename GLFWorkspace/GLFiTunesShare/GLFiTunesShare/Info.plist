@@ -6,6 +6,27 @@
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
 	<string>郭龙飞</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>com.-GuoLongfei.iTunesShare</string>
+			<key>LSHandlerRank</key>
+			<string>Owner</string>
+			<key>LSItemContentTypes</key>
+			<array>
+				<string>public.item</string>
+				<string>public.image</string>
+				<string>public.content</string>
+				<string>public.composite-content</string>
+				<string>public.archive</string>
+				<string>public.audio</string>
+				<string>public.movie</string>
+				<string>public.text</string>
+				<string>public.data</string>
+			</array>
+		</dict>
+	</array>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -20,6 +41,25 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>LSApplicationCategoryType</key>
+	<dict>
+		<key>CFBundleTypeName</key>
+		<string>com.GuoLongfei.GLFAirDrop</string>
+		<key>LSHandlerRank</key>
+		<string>Owner</string>
+		<key>LSItemContentTypes</key>
+		<array>
+			<string>public.item</string>
+			<string>public.image</string>
+			<string>public.content</string>
+			<string>public.composite-content</string>
+			<string>public.archive</string>
+			<string>public.audio</string>
+			<string>public.movie</string>
+			<string>public.text</string>
+			<string>public.data</string>
+		</array>
+	</dict>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAllowsArbitraryLoadsInWebContent</key>
@@ -65,46 +105,6 @@
 		<string>UIInterfaceOrientationPortraitUpsideDown</string>
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
-	</array>
-	<key>LSApplicationCategoryType</key>
-	<dict>
-		<key>CFBundleTypeName</key>
-		<string>com.GuoLongfei.GLFAirDrop</string>
-		<key>LSHandlerRank</key>
-		<string>Owner</string>
-		<key>LSItemContentTypes</key>
-		<array>
-			<string>public.item</string>
-			<string>public.image</string>
-			<string>public.content</string>
-			<string>public.composite-content</string>
-			<string>public.archive</string>
-			<string>public.audio</string>
-			<string>public.movie</string>
-			<string>public.text</string>
-			<string>public.data</string>
-		</array>
-	</dict>
-	<key>CFBundleDocumentTypes</key>
-	<array>
-		<dict>
-			<key>CFBundleTypeName</key>
-			<string>com.-GuoLongfei.iTunesShare</string>
-			<key>LSHandlerRank</key>
-			<string>Owner</string>
-			<key>LSItemContentTypes</key>
-			<array>
-				<string>public.item</string>
-				<string>public.image</string>
-				<string>public.content</string>
-				<string>public.composite-content</string>
-				<string>public.archive</string>
-				<string>public.audio</string>
-				<string>public.movie</string>
-				<string>public.text</string>
-				<string>public.data</string>
-			</array>
-		</dict>
 	</array>
 </dict>
 </plist>

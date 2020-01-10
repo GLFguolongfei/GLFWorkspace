@@ -11,8 +11,6 @@
 		6F0CB5D423485A3600B69807 /* SubViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0CB5D323485A3600B69807 /* SubViewController1.m */; };
 		6F0CB5D623485C0300B69807 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0CB5D523485C0300B69807 /* WebKit.framework */; };
 		6F0CB5D723485D1800B69807 /* SubViewController1.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0CB5D323485A3600B69807 /* SubViewController1.m */; };
-		6F0CB5DA2348627E00B69807 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0CB5D82348627D00B69807 /* UncaughtExceptionHandler.m */; };
-		6F0CB5DB2348627E00B69807 /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0CB5D82348627D00B69807 /* UncaughtExceptionHandler.m */; };
 		6F0E960D1FA4135B0029DDD6 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E95EC1FA4135B0029DDD6 /* Base64.m */; };
 		6F0E960E1FA4135B0029DDD6 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E95EC1FA4135B0029DDD6 /* Base64.m */; };
 		6F0E960F1FA4135B0029DDD6 /* NSDate+Help.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E95EF1FA4135B0029DDD6 /* NSDate+Help.m */; };
@@ -46,6 +44,8 @@
 		6F124DF31F9F3E07005605E1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F124DF21F9F3E07005605E1 /* MobileCoreServices.framework */; };
 		6F124DF41F9F3E0E005605E1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F124DF21F9F3E07005605E1 /* MobileCoreServices.framework */; };
 		6F124DF51F9F3E1A005605E1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FF80A9A1F8F9F5800D7B19B /* AVFoundation.framework */; };
+		6F1C540223C8F523000122FB /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */; };
+		6F1C540323C8F523000122FB /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */; };
 		6F1EEB001FB1A4060046389D /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAD91FB1A4060046389D /* DetailViewController.m */; };
 		6F1EEB041FB1A4060046389D /* FileInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAE01FB1A4060046389D /* FileInfoViewController.m */; };
 		6F1EEB051FB1A4060046389D /* FileInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F1EEAE11FB1A4060046389D /* FileInfoViewController.xib */; };
@@ -138,8 +138,6 @@
 		6F0CB5D223485A3600B69807 /* SubViewController1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubViewController1.h; sourceTree = "<group>"; };
 		6F0CB5D323485A3600B69807 /* SubViewController1.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SubViewController1.m; sourceTree = "<group>"; };
 		6F0CB5D523485C0300B69807 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
-		6F0CB5D82348627D00B69807 /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = UncaughtExceptionHandler.m; path = /Users/guolongfei/Documents/Project_MySelf/GLFWorkspace/GLFWorkspace/GLFTools/UncaughtExceptionHandler.m; sourceTree = "<absolute>"; };
-		6F0CB5D92348627E00B69807 /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = UncaughtExceptionHandler.h; path = /Users/guolongfei/Documents/Project_MySelf/GLFWorkspace/GLFWorkspace/GLFTools/UncaughtExceptionHandler.h; sourceTree = "<absolute>"; };
 		6F0E95EB1FA4135B0029DDD6 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		6F0E95EC1FA4135B0029DDD6 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
 		6F0E95EE1FA4135B0029DDD6 /* NSDate+Help.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDate+Help.h"; sourceTree = "<group>"; };
@@ -169,6 +167,8 @@
 		6F0E960C1FA4135B0029DDD6 /* WaterView2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaterView2.m; sourceTree = "<group>"; };
 		6F0E965B1FA414840029DDD6 /* GLFiTunesShare copy-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GLFiTunesShare copy-Info.plist"; sourceTree = "<group>"; };
 		6F124DF21F9F3E07005605E1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
+		6F1C540123C8F523000122FB /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
 		6F1EEAD81FB1A4060046389D /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		6F1EEAD91FB1A4060046389D /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		6F1EEADF1FB1A4060046389D /* FileInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileInfoViewController.h; sourceTree = "<group>"; };
@@ -282,6 +282,8 @@
 		6F0E95E91FA4135B0029DDD6 /* GLFTools */ = {
 			isa = PBXGroup;
 			children = (
+				6F1C540123C8F523000122FB /* UncaughtExceptionHandler.h */,
+				6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */,
 				6F0E95FB1FA4135B0029DDD6 /* MBProgressHUD */,
 				6F0E96011FA4135B0029DDD6 /* PhotoStackView */,
 				6F0E96051FA4135B0029DDD6 /* Singleton */,
@@ -292,8 +294,6 @@
 				6F0E95F61FA4135B0029DDD6 /* FileManager */,
 				6F0E95F91FA4135B0029DDD6 /* GLFTools.h */,
 				6F0E95FA1FA4135B0029DDD6 /* GLFTools.m */,
-				6F0CB5D92348627E00B69807 /* UncaughtExceptionHandler.h */,
-				6F0CB5D82348627D00B69807 /* UncaughtExceptionHandler.m */,
 			);
 			name = GLFTools;
 			path = ../../GLFTools;
@@ -752,7 +752,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F0CB5DB2348627E00B69807 /* UncaughtExceptionHandler.m in Sources */,
+				6F1C540223C8F523000122FB /* UncaughtExceptionHandler.m in Sources */,
 				6F8072B51F7E436E007D7B26 /* ViewController.m in Sources */,
 				6F1EEB121FB1A4060046389D /* BaseViewController.m in Sources */,
 				6FE944E520BE4F0A005A46AD /* SubViewController3.m in Sources */,
@@ -812,7 +812,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F0CB5DA2348627E00B69807 /* UncaughtExceptionHandler.m in Sources */,
+				6F1C540323C8F523000122FB /* UncaughtExceptionHandler.m in Sources */,
 				6F1EEB321FB1ADEF0046389D /* FileModel.m in Sources */,
 				6F1EEB271FB1ADD50046389D /* RootViewController.m in Sources */,
 				6FE944E620BE4F0A005A46AD /* SubViewController3.m in Sources */,
@@ -998,7 +998,7 @@
 				CODE_SIGN_ENTITLEMENTS = GLFiTunesShare/GLFiTunesShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6XNJC9QB35;
+				DEVELOPMENT_TEAM = Z93556DRV3;
 				GCC_PREFIX_HEADER = GLFiTunesShare/PrefixHeader.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1008,7 +1008,7 @@
 				INFOPLIST_FILE = GLFiTunesShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.-GuoLongfei.iTunesShare";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1022,12 +1022,12 @@
 				CODE_SIGN_ENTITLEMENTS = GLFiTunesShare/GLFiTunesShare.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6XNJC9QB35;
+				DEVELOPMENT_TEAM = Z93556DRV3;
 				GCC_PREFIX_HEADER = GLFiTunesShare/PrefixHeader.pch;
 				INFOPLIST_FILE = GLFiTunesShare/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.-GuoLongfei.iTunesShare";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1097,7 +1097,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon2;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6XNJC9QB35;
+				DEVELOPMENT_TEAM = Z93556DRV3;
 				GCC_PREFIX_HEADER = GLFiTunesShare/PrefixHeader.pch;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -1107,7 +1107,7 @@
 				INFOPLIST_FILE = "GLFiTunesShare copy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.-GuoLongfei.Password";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1118,12 +1118,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon2;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6XNJC9QB35;
+				DEVELOPMENT_TEAM = Z93556DRV3;
 				GCC_PREFIX_HEADER = GLFiTunesShare/PrefixHeader.pch;
 				INFOPLIST_FILE = "GLFiTunesShare copy-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.-GuoLongfei.Password";
+				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
