@@ -664,12 +664,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6XNJC9QB35;
+				DEVELOPMENT_TEAM = Z93556DRV3;
 				GCC_PREFIX_HEADER = UIWebView/PrefixHeader.pch;
 				INFOPLIST_FILE = UIWebView/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.GuoLongfei.UIWebView;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -680,12 +680,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = 6XNJC9QB35;
+				DEVELOPMENT_TEAM = Z93556DRV3;
 				GCC_PREFIX_HEADER = UIWebView/PrefixHeader.pch;
 				INFOPLIST_FILE = UIWebView/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.GuoLongfei.UIWebView;
+				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
