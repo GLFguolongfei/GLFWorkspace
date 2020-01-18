@@ -108,11 +108,11 @@
     timer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(show) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
-    controlBg = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight-60, kScreenWidth, 60)];
+    controlBg = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight-100, kScreenWidth, 100)];
     [self.view addSubview:controlBg];
     [self playControl];
     for (NSInteger i = 0; i < 3; i++) {
-        CGRect rect = CGRectMake(0 + kScreenWidth / 3 * i, 0, kScreenWidth / 3, 60);
+        CGRect rect = CGRectMake(0 + kScreenWidth / 3 * i, 0, kScreenWidth / 3, 100);
         UIButton *button = [[UIButton alloc] initWithFrame:rect];
         button.tag = i;
         if (i == 0) {
@@ -188,9 +188,7 @@
             interval = duration / 30;
         }  else if (interval > 600) {
             interval = duration / 60;
-        }  else if (interval > 1800) {
-            interval = duration / 100;
-        }
+        } 
         if (interval < 3) {
             interval = 3;
         } else if (interval > 300) {
