@@ -108,11 +108,11 @@
     timer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(show) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
-    controlBg = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight-100, kScreenWidth, 100)];
+    controlBg = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight-100, kScreenWidth, 120)];
     [self.view addSubview:controlBg];
     [self playControl];
     for (NSInteger i = 0; i < 3; i++) {
-        CGRect rect = CGRectMake(0 + kScreenWidth / 3 * i, 0, kScreenWidth / 3, 100);
+        CGRect rect = CGRectMake(0 + kScreenWidth / 3 * i, 0, kScreenWidth / 3, 120);
         UIButton *button = [[UIButton alloc] initWithFrame:rect];
         button.tag = i;
         if (i == 0) {
@@ -123,6 +123,7 @@
             [button setTitle:@"快进" forState:UIControlStateNormal];
         }
         [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
+        [button setTitleEdgeInsets:UIEdgeInsetsMake(20, 0, 0, 0)];
         [button setBackgroundColor:[UIColor clearColor]];
         [button addTarget:self action:@selector(playerItemPlay:) forControlEvents:UIControlEventTouchUpInside];
         [controlBg addSubview:button];
@@ -188,7 +189,7 @@
             interval = duration / 30;
         }  else if (interval > 600) {
             interval = duration / 60;
-        } 
+        }
         if (interval < 3) {
             interval = 3;
         } else if (interval > 300) {
