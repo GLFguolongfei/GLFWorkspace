@@ -27,6 +27,8 @@
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.view.backgroundColor = [UIColor blackColor];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar:) name:@"isHiddenNaviBar" object:nil];
+    
     fileManager = [GLFFileManager sharedFileManager];
 
     pageVC = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
@@ -50,6 +52,16 @@
 - (void)buttonAction2:(id)sender {
     NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"avBackward",@"key", nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"avRadio" object:self userInfo:dic];
+}
+
+- (void)hiddenNaviBar:(NSNotification *)notification {
+    NSDictionary *dict = notification.userInfo;
+    NSString *str = dict[@"key"];
+    if ([str isEqualToString:@"hidden"]) {
+        self.navigationController.navigationBar.hidden = YES;
+    } else if ([str isEqualToString:@"noHidden"]) {
+        self.navigationController.navigationBar.hidden = NO;        
+    }
 }
 
 #pragma mark UIPageViewControllerDataSource
