@@ -112,6 +112,7 @@
 		6FE944EA20BE7D4C005A46AD /* MoveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E920BE7D4C005A46AD /* MoveViewController.m */; };
 		6FE944EB20BE7D4C005A46AD /* MoveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E920BE7D4C005A46AD /* MoveViewController.m */; };
 		6FF80A9B1F8F9F5800D7B19B /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FF80A9A1F8F9F5800D7B19B /* AVFoundation.framework */; };
+		6FFE33A123D3333700D6DBE6 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FFE33A023D3333700D6DBE6 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -232,6 +233,7 @@
 		6FE944E820BE7D4C005A46AD /* MoveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MoveViewController.h; sourceTree = "<group>"; };
 		6FE944E920BE7D4C005A46AD /* MoveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MoveViewController.m; sourceTree = "<group>"; };
 		6FF80A9A1F8F9F5800D7B19B /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		6FFE33A023D3333700D6DBE6 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -241,6 +243,7 @@
 			files = (
 				6F040F991FAD6EDC00EF4721 /* LocalAuthentication.framework in Frameworks */,
 				6F124DF51F9F3E1A005605E1 /* AVFoundation.framework in Frameworks */,
+				6FFE33A123D3333700D6DBE6 /* QuartzCore.framework in Frameworks */,
 				6F393F8E1FA1B3E90049CF49 /* CloudKit.framework in Frameworks */,
 				6F124DF31F9F3E07005605E1 /* MobileCoreServices.framework in Frameworks */,
 				6F9116DD1F7EB445002C40AC /* MediaPlayer.framework in Frameworks */,
@@ -522,6 +525,7 @@
 		6F9116DB1F7EB445002C40AC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6FFE33A023D3333700D6DBE6 /* QuartzCore.framework */,
 				6F0CB5D523485C0300B69807 /* WebKit.framework */,
 				6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */,
 				6F393F8D1FA1B3E90049CF49 /* CloudKit.framework */,

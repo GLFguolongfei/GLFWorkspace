@@ -12,7 +12,9 @@
 @interface DetailViewController3 ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 {
     UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
+    SubViewController3 *currentVC; // 当前显示的VC
     GLFFileManager *fileManager;
+    UIView *gestureView;
 }
 @end
 
@@ -40,8 +42,19 @@
     subVC.currentIndex = self.selectIndex;
     subVC.model = self.fileArray[self.selectIndex];
     self.title = subVC.model.name;
+    currentVC = subVC;
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
+    
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
+    gestureView.backgroundColor = [UIColor clearColor];
+    [self.navigationController.navigationBar addSubview:gestureView];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
+    [tapGesture addTarget:self action:@selector(resetUI)];
+    [gestureView addGestureRecognizer:tapGesture];
 }
 
 - (void)buttonAction1:(id)sender {
@@ -58,10 +71,18 @@
     NSDictionary *dict = notification.userInfo;
     NSString *str = dict[@"key"];
     if ([str isEqualToString:@"hidden"]) {
-        self.navigationController.navigationBar.hidden = YES;
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+//        self.navigationController.navigationBar.hidden = YES;
     } else if ([str isEqualToString:@"noHidden"]) {
-        self.navigationController.navigationBar.hidden = NO;        
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+//        self.navigationController.navigationBar.hidden = NO;
     }
+}
+
+- (void)resetUI {
+    NSLog(@"123");
+//    pageVC.se
+    [currentVC rotatePlayer:!currentVC.isRotate];
 }
 
 #pragma mark UIPageViewControllerDataSource
@@ -77,6 +98,7 @@
     SubViewController3 *subVC = [[SubViewController3 alloc] init];
     subVC.currentIndex = self.selectIndex;
     subVC.model = self.fileArray[self.selectIndex];
+    currentVC = subVC;
     return subVC;
 }
 
@@ -92,6 +114,7 @@
     SubViewController3 *subVC = [[SubViewController3 alloc] init];
     subVC.currentIndex = self.selectIndex;
     subVC.model = self.fileArray[self.selectIndex];
+    currentVC = subVC;
     return subVC;
 }
 

@@ -13,7 +13,7 @@
 {
     AVPlayer *player;
     AVPlayerItem *playerItem;
-
+    AVPlayerLayer *playerLayer;
     BOOL isPlaying;
     UILabel *label;
     UIButton *button;
@@ -32,13 +32,14 @@
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemPlay:) name:@"avRadio" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
-        
+            
     [self setupAVPlayer];
     [self setupAVInfo];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    self.isRotate = false;
     isPlaying = YES;
     [self videoAction:true];
 }
@@ -71,9 +72,10 @@
         player.volume = 0.0; // 控制音量
     }
     // 4-添加AVPlayerLayer
-    AVPlayerLayer *layer = [AVPlayerLayer playerLayerWithPlayer:player];
-    layer.frame = kScreen;
-    [self.view.layer addSublayer:layer];
+    playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
+    playerLayer.frame = kScreen;
+//    playerLayer.backgroundColor = [UIColor redColor].CGColor;
+    [self.view.layer addSublayer:playerLayer];
     
     // 播放按钮
     CGRect rect = CGRectMake((kScreenWidth-60)/2, (kScreenHeight-60)/2, 60, 60);
@@ -95,7 +97,7 @@
     [self.view addSubview:avProgress];
     
     // 时间
-    label = [[UILabel alloc] initWithFrame:CGRectMake(80, 20, kScreenWidth-100, 40)];
+    label = [[UILabel alloc] initWithFrame:CGRectMake(85, 20, kScreenWidth-100, 20)];
     label.textAlignment = NSTextAlignmentRight;
     label.textColor = [UIColor blueColor];
     label.font = KFontSize(16);
@@ -168,6 +170,23 @@
     // 重新播放
     CMTime dragedCMTime = CMTimeMake(0, 1);
     [player seekToTime:dragedCMTime];
+}
+
+// 视频横竖屏
+- (void)rotatePlayer:(BOOL)flag {
+    self.isRotate = !self.isRotate;
+    if (flag) {
+        CATransform3D transform = CATransform3DRotate(playerLayer.transform, -M_PI_2, 0.0f, 0.0f, 1.0f);
+        [UIView animateWithDuration:0.25 animations:^{
+            playerLayer.transform = transform;
+            playerLayer.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+        }];
+    } else {
+        [UIView animateWithDuration:0.25 animations:^{
+            playerLayer.transform = CATransform3DIdentity;
+            playerLayer.frame = kScreen;
+        }];
+    }
 }
 
 #pragma mark Private Method
