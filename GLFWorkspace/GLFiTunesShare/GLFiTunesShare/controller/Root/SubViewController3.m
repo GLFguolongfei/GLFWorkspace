@@ -187,7 +187,7 @@
             interval = duration / 20;
         } else if (duration < 300) {
             interval = duration / 30;
-        }  else if (interval > 600) {
+        } else {
             interval = duration / 60;
         }
         if (interval < 3) {
