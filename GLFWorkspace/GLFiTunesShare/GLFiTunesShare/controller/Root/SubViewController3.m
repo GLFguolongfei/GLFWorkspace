@@ -11,8 +11,9 @@
 
 @interface SubViewController3 ()
 {
-    AVPlayerItem *item;
     AVPlayer *player;
+    AVPlayerItem *playerItem;
+
     BOOL isPlaying;
     UILabel *label;
     UIButton *button;
@@ -62,9 +63,9 @@
     // 1-获取URL(远程/本地)
     NSURL *url = [NSURL fileURLWithPath:self.model.path];
     // 2-创建AVPlayerItem
-    item = [AVPlayerItem playerItemWithURL:url];
+    playerItem = [AVPlayerItem playerItemWithURL:url];
     // 3-创建AVPlayer
-    player = [AVPlayer playerWithPlayerItem:item];
+    player = [AVPlayer playerWithPlayerItem:playerItem];
     NSString *VoiceMute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
     if (VoiceMute.integerValue) {
         player.volume = 0.0; // 控制音量
@@ -101,7 +102,7 @@
     [self.view addSubview:label];
 
     // 定时器
-    timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(show) userInfo:nil repeats:YES];
+    timer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(show) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
@@ -121,11 +122,11 @@
 }
 
 - (void)show {
-    NSInteger currentTime = (NSInteger)CMTimeGetSeconds(item.currentTime);
-    NSInteger duration = (NSInteger)CMTimeGetSeconds(item.duration);
+    NSInteger currentTime = (NSInteger)CMTimeGetSeconds(playerItem.currentTime);
+    NSInteger duration = (NSInteger)CMTimeGetSeconds(playerItem.duration);
     label.text = [NSString stringWithFormat:@"%ld/%ld", currentTime, duration];
-    CGFloat index = CMTimeGetSeconds(item.currentTime) / CMTimeGetSeconds(item.duration);
-    [avProgress setProgress:index animated:NO];
+    CGFloat index = CMTimeGetSeconds(playerItem.currentTime) / CMTimeGetSeconds(playerItem.duration);
+    [avProgress setProgress:index animated:YES];
 }
 
 - (void)playerItemDidPlayToEnd:(NSNotification *)notification{
@@ -137,8 +138,8 @@
 }
 
 - (void)playerItemPlay:(NSNotification *)notification {
-    NSInteger currentTime = (NSInteger)CMTimeGetSeconds(item.currentTime);
-    NSInteger duration = (NSInteger)CMTimeGetSeconds(item.duration);
+    NSInteger currentTime = (NSInteger)CMTimeGetSeconds(playerItem.currentTime);
+    NSInteger duration = (NSInteger)CMTimeGetSeconds(playerItem.duration);
     NSInteger interval = duration / 30;
     // 根据总时长,设置每次快进和后退的时间间隔
     if (interval < 10) {
