@@ -14,7 +14,6 @@
     UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
     SubViewController3 *currentVC; // 当前显示的VC
     GLFFileManager *fileManager;
-    UIView *gestureView;
 }
 @end
 
@@ -24,9 +23,8 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"快进" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
-    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"快退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
-    self.navigationItem.rightBarButtonItems = @[item1, item2];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"显示&隐藏控制栏" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction:)];
+    self.navigationItem.rightBarButtonItems = @[item];
     self.view.backgroundColor = [UIColor blackColor];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar:) name:@"isHiddenNaviBar" object:nil];
@@ -45,26 +43,19 @@
     currentVC = subVC;
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
-    
-    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
-    gestureView.backgroundColor = [UIColor clearColor];
-    [self.navigationController.navigationBar addSubview:gestureView];
-    
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
-    tapGesture.numberOfTapsRequired = 2;
-    tapGesture.numberOfTouchesRequired = 1;
-    [tapGesture addTarget:self action:@selector(resetUI)];
-    [gestureView addGestureRecognizer:tapGesture];
 }
 
-- (void)buttonAction1:(id)sender {
-    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"avForward",@"key", nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"avRadio" object:self userInfo:dic];
-}
-
-- (void)buttonAction2:(id)sender {
-    NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"avBackward",@"key", nil];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"avRadio" object:self userInfo:dic];
+- (void)buttonAction:(id)sender {
+    NSString *isHidden = [[NSUserDefaults standardUserDefaults] objectForKey:@"controlBar"];
+    NSString *saveStr;
+    if ([isHidden isEqualToString:@"1"]) {
+        saveStr = @"0";
+    } else {
+        saveStr = @"1";
+    }
+    [[NSUserDefaults standardUserDefaults] setObject:saveStr forKey:@"controlBar"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"avRadio" object:self userInfo:nil];
 }
 
 - (void)hiddenNaviBar:(NSNotification *)notification {
@@ -72,17 +63,9 @@
     NSString *str = dict[@"key"];
     if ([str isEqualToString:@"hidden"]) {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
-//        self.navigationController.navigationBar.hidden = YES;
     } else if ([str isEqualToString:@"noHidden"]) {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
-//        self.navigationController.navigationBar.hidden = NO;
     }
-}
-
-- (void)resetUI {
-    NSLog(@"123");
-//    pageVC.se
-    [currentVC rotatePlayer:!currentVC.isRotate];
 }
 
 #pragma mark UIPageViewControllerDataSource

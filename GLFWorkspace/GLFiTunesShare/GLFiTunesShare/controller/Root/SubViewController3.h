@@ -13,8 +13,5 @@
 
 @property (nonatomic, assign) NSInteger currentIndex;
 @property (nonatomic, strong) FileModel *model;
-@property (nonatomic, assign) BOOL isRotate;
-
-- (void)rotatePlayer:(BOOL)flag;
 
 @end
