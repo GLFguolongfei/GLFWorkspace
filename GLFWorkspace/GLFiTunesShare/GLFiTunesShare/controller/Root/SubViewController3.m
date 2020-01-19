@@ -53,7 +53,8 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self videoAction:false];
+//    [self videoAction:false];
+    controlBg.hidden = !controlBg.hidden;
 }
 
 - (void)dealloc {
@@ -87,7 +88,7 @@
 
 - (void)setupAVInfo {
     // 进度条
-    CGRect progressRect = CGRectMake(0, 0, kScreenWidth, 20);
+    CGRect progressRect = CGRectMake(0, kScreenHeight-2, kScreenWidth, 20);
     avProgress = [[UIProgressView alloc] initWithFrame:progressRect];
     avProgress.progressViewStyle = UIProgressViewStyleDefault;
     avProgress.progressTintColor = [UIColor blueColor]; // 前景色
@@ -97,7 +98,7 @@
     [self.view addSubview:avProgress];
     
     // 时间
-    label = [[UILabel alloc] initWithFrame:CGRectMake(90, 20, kScreenWidth-100, 20)];
+    label = [[UILabel alloc] initWithFrame:CGRectMake(90, kScreenHeight-25, kScreenWidth-100, 20)];
     label.textAlignment = NSTextAlignmentRight;
     label.textColor = [UIColor blueColor];
     label.font = KFontSize(16);
@@ -116,14 +117,13 @@
         UIButton *button = [[UIButton alloc] initWithFrame:rect];
         button.tag = i;
         if (i == 0) {
-            [button setTitle:@"横屏" forState:UIControlStateNormal];
+            [button setImage:[UIImage imageNamed:@"scale_big"] forState:UIControlStateNormal];
         } else if (i == 1) {
-            [button setTitle:@"快退" forState:UIControlStateNormal];
+            [button setImage:[UIImage imageNamed:@"ai-rew-left"] forState:UIControlStateNormal];
         } else {
-            [button setTitle:@"快进" forState:UIControlStateNormal];
+            [button setImage:[UIImage imageNamed:@"ai-rew-right"] forState:UIControlStateNormal];
         }
-        [button setTitleColor:[UIColor blueColor] forState:UIControlStateNormal];
-        [button setTitleEdgeInsets:UIEdgeInsetsMake(20, 0, 0, 0)];
+        [button setImageEdgeInsets:UIEdgeInsetsMake(20, 0, 0, 0)];
         [button setBackgroundColor:[UIColor clearColor]];
         [button addTarget:self action:@selector(playerItemPlay:) forControlEvents:UIControlEventTouchUpInside];
         [controlBg addSubview:button];
