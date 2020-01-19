@@ -14,6 +14,7 @@
     UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
     SubViewController3 *currentVC; // 当前显示的VC
     GLFFileManager *fileManager;
+    BOOL isPlaying;
 }
 @end
 
@@ -23,11 +24,14 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"显示&隐藏控制栏" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction:)];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"scale_big"] style:UIBarButtonItemStylePlain target:self action:@selector(playViewLandscape)];
     self.navigationItem.rightBarButtonItems = @[item];
     self.view.backgroundColor = [UIColor blackColor];
     
+    isPlaying = NO;
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar:) name:@"isHiddenNaviBar" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     
     fileManager = [GLFFileManager sharedFileManager];
 
@@ -43,19 +47,15 @@
     currentVC = subVC;
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
-}
-
-- (void)buttonAction:(id)sender {
-    NSString *isHidden = [[NSUserDefaults standardUserDefaults] objectForKey:@"controlBar"];
-    NSString *saveStr;
-    if ([isHidden isEqualToString:@"1"]) {
-        saveStr = @"0";
-    } else {
-        saveStr = @"1";
-    }
-    [[NSUserDefaults standardUserDefaults] setObject:saveStr forKey:@"controlBar"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"avRadio" object:self userInfo:nil];
+    
+    self.navigationController.toolbarHidden = NO;
+    
+    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(playerRewind)];
+    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(playOrPauseVideo)];
+    UIBarButtonItem *item3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:self action:@selector(playerForward)];
+    UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
+    
+    self.toolbarItems = @[space, item1, space, item2, space, item3, space];
 }
 
 - (void)hiddenNaviBar:(NSNotification *)notification {
@@ -63,8 +63,47 @@
     NSString *str = dict[@"key"];
     if ([str isEqualToString:@"hidden"]) {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
+        [self.navigationController setToolbarHidden:YES animated:YES];
     } else if ([str isEqualToString:@"noHidden"]) {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self.navigationController setToolbarHidden:NO animated:YES];
+    }
+}
+
+- (void)playOrPauseVideo {
+    isPlaying = !isPlaying;
+    [currentVC playOrPauseVideo:isPlaying];
+    [self setButtonPlayState];
+}
+
+- (void)playerForward {
+    [currentVC playerForwardOrRewind:YES];
+}
+
+- (void)playerRewind {
+    [currentVC playerForwardOrRewind:NO];
+}
+
+- (void)playViewLandscape {
+    [currentVC playViewLandscape];
+}
+
+- (void)playerItemDidPlayToEnd:(NSNotification *)notification{
+    isPlaying = false;
+    [self setButtonPlayState];
+}
+
+- (void)setButtonPlayState {
+    if (isPlaying) {
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(playOrPauseVideo)];
+        NSMutableArray *array = [self.toolbarItems mutableCopy];
+        [array replaceObjectAtIndex:3 withObject:item];
+        self.toolbarItems = array;
+    } else {
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(playOrPauseVideo)];
+        NSMutableArray *array = [self.toolbarItems mutableCopy];
+        [array replaceObjectAtIndex:3 withObject:item];
+        self.toolbarItems = array;
     }
 }
 
@@ -81,7 +120,6 @@
     SubViewController3 *subVC = [[SubViewController3 alloc] init];
     subVC.currentIndex = self.selectIndex;
     subVC.model = self.fileArray[self.selectIndex];
-    currentVC = subVC;
     return subVC;
 }
 
@@ -97,21 +135,30 @@
     SubViewController3 *subVC = [[SubViewController3 alloc] init];
     subVC.currentIndex = self.selectIndex;
     subVC.model = self.fileArray[self.selectIndex];
-    currentVC = subVC;
     return subVC;
 }
 
 #pragma mark UIPageViewControllerDelegate
 // 开始滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
-    NSInteger currentIndex = ((SubViewController3 *) pendingViewControllers[0]).currentIndex;
+    // 获取当前控制器
+    currentVC = (SubViewController3 *)pendingViewControllers[0];
+    // 获取当前控制器标题
+    NSInteger currentIndex = currentVC.currentIndex;
     FileModel *currentModel = self.fileArray[currentIndex];
     self.title = currentModel.name;
 }
 
 // 结束滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
-    
+    if (previousViewControllers.count > 0 && completed) {
+        // 停止播放
+        SubViewController3 *playVC = (SubViewController3 *)previousViewControllers[0];
+        [playVC playOrPauseVideo:NO];
+        // ToolBar设为暂停状态
+        isPlaying = NO;
+        [self setButtonPlayState];
+    }
 }
 
 

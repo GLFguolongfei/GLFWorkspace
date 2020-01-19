@@ -14,4 +14,10 @@
 @property (nonatomic, assign) NSInteger currentIndex;
 @property (nonatomic, strong) FileModel *model;
 
+//@property (nonatomic, assign) u
+
+- (void)playOrPauseVideo:(BOOL)isPlay;
+- (void)playerForwardOrRewind:(BOOL)isForward;
+- (void)playViewLandscape;
+
 @end

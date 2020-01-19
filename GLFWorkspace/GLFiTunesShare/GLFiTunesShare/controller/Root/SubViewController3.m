@@ -14,13 +14,11 @@
     AVPlayer *player;
     AVPlayerItem *playerItem;
     AVPlayerLayer *playerLayer;
-    BOOL isPlaying;
+    BOOL isHiddenBar;
     BOOL isRotate;
     UILabel *label;
-    UIButton *button;
-    UIProgressView *avProgress;
+    UIProgressView *progressView;
     NSTimer *timer;
-    UIView *controlBg;
 }
 @end
 
@@ -32,7 +30,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playControl) name:@"avRadio" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
             
     [self setupAVPlayer];
@@ -41,20 +38,29 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    isPlaying = YES;
-    [self videoAction:true];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
-    isPlaying = YES;
-    [self videoAction:true];
     [timer invalidate];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-//    [self videoAction:false];
-    controlBg.hidden = !controlBg.hidden;
+    if (isHiddenBar) {
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"noHidden",@"key", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:dic];
+    } else {
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"hidden",@"key", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:dic];
+    }
+    isHiddenBar = !isHiddenBar;
+    if (isHiddenBar) {
+        progressView.hidden = isHiddenBar;
+    } else {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            progressView.hidden = isHiddenBar;
+        });
+    }
 }
 
 - (void)dealloc {
@@ -77,80 +83,104 @@
     playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
     playerLayer.frame = kScreen;
     [self.view.layer addSublayer:playerLayer];
-    
-    // 播放按钮
-    CGRect rect = CGRectMake((kScreenWidth-60)/2, (kScreenHeight-60)/2, 60, 60);
-    button = [[UIButton alloc] initWithFrame:rect];
-    [button setImage:[UIImage imageNamed:@"播放"] forState:UIControlStateNormal];
-    [button addTarget:self action:@selector(videoAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:button];
 }
 
 - (void)setupAVInfo {
     // 进度条
-    CGRect progressRect = CGRectMake(0, kScreenHeight-2, kScreenWidth, 20);
-    avProgress = [[UIProgressView alloc] initWithFrame:progressRect];
-    avProgress.progressViewStyle = UIProgressViewStyleDefault;
-    avProgress.progressTintColor = [UIColor blueColor]; // 前景色
-    avProgress.trackTintColor = [UIColor lightGrayColor]; // 背景色
-    avProgress.progress = 0; // 进度默认为0 - 1
-    avProgress.backgroundColor = [UIColor cyanColor];
-    [self.view addSubview:avProgress];
+    CGRect progressRect = CGRectMake(0, 64, kScreenWidth, 20);
+    progressView = [[UIProgressView alloc] initWithFrame:progressRect];
+    progressView.progressViewStyle = UIProgressViewStyleDefault;
+    progressView.progressTintColor = [UIColor colorWithHexString:@"2C84E8"]; // 前景色
+    progressView.trackTintColor = [UIColor clearColor]; // 背景色
+    progressView.progress = 0; // 进度默认为0 - 1
+    [self.view addSubview:progressView];
     
     // 时间
-    label = [[UILabel alloc] initWithFrame:CGRectMake(90, kScreenHeight-25, kScreenWidth-100, 20)];
+    CGRect labelRect = CGRectMake(10, 74, kScreenWidth-20, 20);
+    label = [[UILabel alloc] initWithFrame:labelRect];
     label.textAlignment = NSTextAlignmentRight;
-    label.textColor = [UIColor blueColor];
+    label.textColor = [UIColor colorWithHexString:@"2C84E8"];
     label.font = KFontSize(16);
-    label.text = @"00/00";
+    label.text = @"00 / 00";
     [self.view addSubview:label];
-
-    // 定时器
-    timer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(show) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    
-    controlBg = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight-100, kScreenWidth, 120)];
-    [self.view addSubview:controlBg];
-    [self playControl];
-    for (NSInteger i = 0; i < 3; i++) {
-        CGRect rect = CGRectMake(0 + kScreenWidth / 3 * i, 0, kScreenWidth / 3, 120);
-        UIButton *button = [[UIButton alloc] initWithFrame:rect];
-        button.tag = i;
-        if (i == 0) {
-            [button setImage:[UIImage imageNamed:@"scale_big"] forState:UIControlStateNormal];
-        } else if (i == 1) {
-            [button setImage:[UIImage imageNamed:@"ai-rew-left"] forState:UIControlStateNormal];
-        } else {
-            [button setImage:[UIImage imageNamed:@"ai-rew-right"] forState:UIControlStateNormal];
-        }
-        [button setImageEdgeInsets:UIEdgeInsetsMake(20, 0, 0, 0)];
-        [button setBackgroundColor:[UIColor clearColor]];
-        [button addTarget:self action:@selector(playerItemPlay:) forControlEvents:UIControlEventTouchUpInside];
-        [controlBg addSubview:button];
-    }
 }
 
 #pragma mark Events
-- (void)videoAction: (BOOL)isNotNotification  {
-    if (isPlaying) {
-        [button setImage:[UIImage imageNamed:@"播放"] forState:UIControlStateNormal];
-        button.hidden = NO;
-        isPlaying = NO;
-        [player pause];
-        if (!isNotNotification) {
-            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"noHidden",@"key", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:dic];
-        }
-    } else {
-        [button setImage:[UIImage imageNamed:@"暂停"] forState:UIControlStateNormal];
-        button.hidden = YES;
-        isPlaying = YES;
+// 视频播放暂停
+- (void)playOrPauseVideo: (BOOL)isPlay  {
+    if (isPlay) {
         [player play];
-        if (!isNotNotification) {
-            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"hidden",@"key", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:dic];
-        }
+        // 定时器
+        timer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(show) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    } else {
+        [player pause];
     }
+}
+
+// 视频横竖屏
+- (void)playViewLandscape {
+    if (isRotate) {
+        [UIView animateWithDuration:0.25 animations:^{
+            playerLayer.transform = CATransform3DIdentity;
+            playerLayer.frame = kScreen;
+//            progressView.transform = CGAffineTransformIdentity;
+//            progressView.frame = CGRectMake(0, 64, 20, kScreenWidth);
+            label.transform = CGAffineTransformIdentity;
+            label.frame = CGRectMake(90, 74, kScreenWidth-100, 20);
+        }];
+    } else {
+        CATransform3D transform = CATransform3DRotate(playerLayer.transform, -M_PI_2, 0.0f, 0.0f, 1.0f);
+        CGAffineTransform transform2 = CGAffineTransformRotate(progressView.transform, -M_PI_2);
+        CGAffineTransform transform3 = CGAffineTransformRotate(label.transform, -M_PI_2);
+        [UIView animateWithDuration:0.25 animations:^{
+            playerLayer.transform = transform;
+            playerLayer.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+//            progressView.transform = transform2;
+//            progressView.frame = CGRectMake(0, 64, 20, kScreenWidth);
+            label.transform = transform3;
+            label.frame = CGRectMake(10, 30, 20, kScreenHeight - 40);
+        }];
+    }
+    isRotate = !isRotate;
+}
+
+// 视频快进快退
+- (void)playerForwardOrRewind:(BOOL)isForward {
+    NSInteger currentTime = (NSInteger)CMTimeGetSeconds(playerItem.currentTime);
+    NSInteger duration = (NSInteger)CMTimeGetSeconds(playerItem.duration);
+    NSInteger interval = 10;
+    // 根据总时长,设置每次快进和后退的时间间隔
+    if (duration < 60) {
+        interval = duration / 20;
+    } else if (duration < 300) {
+        interval = duration / 30;
+    } else {
+        interval = duration / 60;
+    }
+    if (interval < 5) {
+        interval = 5;
+    } else if (interval > 300) {
+        interval = 300;
+    }
+    NSInteger time = 0;
+    if (isForward) {
+        time = currentTime + interval;
+    } else {
+        time = currentTime - interval;
+    }
+    if (time > duration) {
+        time = duration;
+    } else if (time < 0) {
+        time = 0;
+    }
+    CMTime dragedCMTime = CMTimeMake(time, 1);
+    [player seekToTime:dragedCMTime];
+}
+
+- (void)playerItemDidPlayToEnd:(NSNotification *)notification{
+    CMTime dragedCMTime = CMTimeMake(0, 1);
+    [player seekToTime:dragedCMTime];
 }
 
 - (void)show {
@@ -160,72 +190,7 @@
     NSString *durationStr = [self timeFormatted:duration];
     label.text = [NSString stringWithFormat:@"%@ / %@", currentTimeStr, durationStr];
     CGFloat index = CMTimeGetSeconds(playerItem.currentTime) / CMTimeGetSeconds(playerItem.duration);
-    [avProgress setProgress:index animated:YES];
-}
-
-- (void)playerItemPlay:(UIButton *)button {
-    if (button.tag == 0) { // 视频横竖屏
-        if (isRotate) {
-            [UIView animateWithDuration:0.25 animations:^{
-                playerLayer.transform = CATransform3DIdentity;
-                playerLayer.frame = kScreen;
-            }];
-        } else {
-            CATransform3D transform = CATransform3DRotate(playerLayer.transform, -M_PI_2, 0.0f, 0.0f, 1.0f);
-            [UIView animateWithDuration:0.25 animations:^{
-                playerLayer.transform = transform;
-                playerLayer.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
-            }];
-        }
-        isRotate = !isRotate;
-    } else { // 快进快退
-        NSInteger currentTime = (NSInteger)CMTimeGetSeconds(playerItem.currentTime);
-        NSInteger duration = (NSInteger)CMTimeGetSeconds(playerItem.duration);
-        NSInteger interval = 10;
-        // 根据总时长,设置每次快进和后退的时间间隔
-        if (duration < 60) {
-            interval = duration / 20;
-        } else if (duration < 300) {
-            interval = duration / 30;
-        } else {
-            interval = duration / 60;
-        }
-        if (interval < 3) {
-            interval = 3;
-        } else if (interval > 300) {
-            interval = 300;
-        }
-        NSInteger time = 0;
-        if (button.tag == 1) {
-            time = currentTime - interval;
-        } else if (button.tag == 2) {
-            time = currentTime + interval;
-        }
-        if (time > duration) {
-            time = duration;
-        } else if (time < 0) {
-            time = 0;
-        }
-        CMTime dragedCMTime = CMTimeMake(time, 1);
-        [player seekToTime:dragedCMTime];
-    }
-}
-
-- (void)playerItemDidPlayToEnd:(NSNotification *)notification{
-    isPlaying = YES;
-    [self videoAction:false];
-    // 重新播放
-    CMTime dragedCMTime = CMTimeMake(0, 1);
-    [player seekToTime:dragedCMTime];
-}
-
-- (void)playControl {
-    NSString *isHidden = [[NSUserDefaults standardUserDefaults] objectForKey:@"controlBar"];
-    if ([isHidden isEqualToString:@"1"]) {
-        controlBg.hidden = YES;
-    } else {
-        controlBg.hidden = NO;
-    }
+    [progressView setProgress:index animated:YES];
 }
 
 #pragma mark Private Method
