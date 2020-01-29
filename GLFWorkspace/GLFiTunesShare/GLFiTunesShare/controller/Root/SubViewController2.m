@@ -30,7 +30,7 @@
     maxScale = 20;
     minScale = 1;
     
-    CGRect rect1 = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20);
+    CGRect rect1 = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
     contentScrollView = [[UIScrollView alloc] initWithFrame:rect1];
     contentScrollView.showsHorizontalScrollIndicator = NO; // 隐藏滚动条(横向的)
     contentScrollView.showsVerticalScrollIndicator = NO;   // 隐藏滚动条(纵向的)
@@ -39,7 +39,7 @@
     contentScrollView.delegate = self;
     [self.view addSubview:contentScrollView];
     
-    CGRect rect2 = CGRectMake(0, 0, kScreenWidth, kScreenHeight-20);
+    CGRect rect2 = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
     contentImageView = [[UIImageView alloc] initWithFrame:rect2];
     contentImageView.contentMode = UIViewContentModeScaleAspectFit;
     contentImageView.image = [UIImage imageWithContentsOfFile:self.model.path];
