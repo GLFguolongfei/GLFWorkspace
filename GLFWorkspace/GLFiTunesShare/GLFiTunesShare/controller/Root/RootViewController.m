@@ -86,7 +86,9 @@
         self.pathStr = [paths objectAtIndex:0];
     }
     fileManager.currentPath = self.pathStr;
-    [self showHUD];
+    if ([myTableView numberOfRowsInSection:0] == 0) {
+        [self showHUD];
+    }
     
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
