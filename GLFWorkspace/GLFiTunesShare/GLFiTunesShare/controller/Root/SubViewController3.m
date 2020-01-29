@@ -30,14 +30,10 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
             
     [self setupAVPlayer];
     [self setupAVInfo];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -123,38 +119,11 @@
     if (isPlay) {
         [player play];
         // 定时器
-        timer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(show) userInfo:nil repeats:YES];
+        timer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(showTimer) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     } else {
         [player pause];
     }
-}
-
-// 视频横竖屏
-- (void)playViewLandscape {
-    if (isRotate) {
-        [UIView animateWithDuration:0.25 animations:^{
-            playerLayer.transform = CATransform3DIdentity;
-            playerLayer.frame = kScreen;
-//            progressView.transform = CGAffineTransformIdentity;
-//            progressView.frame = CGRectMake(0, 64, 20, kScreenWidth);
-            label.transform = CGAffineTransformIdentity;
-            label.frame = CGRectMake(90, 74, kScreenWidth-100, 20);
-        }];
-    } else {
-        CATransform3D transform = CATransform3DRotate(playerLayer.transform, M_PI_2, 0.0f, 0.0f, 1.0f);
-//        CGAffineTransform transform2 = CGAffineTransformRotate(progressView.transform, M_PI_2);
-        CGAffineTransform transform3 = CGAffineTransformRotate(label.transform, M_PI_2);
-        [UIView animateWithDuration:0.25 animations:^{
-            playerLayer.transform = transform;
-            playerLayer.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
-//            progressView.transform = transform2;
-//            progressView.frame = CGRectMake(0, 0, 20, kScreenHeight);
-            label.transform = transform3;
-            label.frame = CGRectMake(kScreenWidth - 30, 30, 20, kScreenHeight - 40);
-        }];
-    }
-    isRotate = !isRotate;
 }
 
 // 视频快进快退
@@ -190,12 +159,39 @@
     [player seekToTime:dragedCMTime];
 }
 
-- (void)playerItemDidPlayToEnd:(NSNotification *)notification{
+// 视频横竖屏
+- (void)playViewLandscape {
+    if (isRotate) {
+        [UIView animateWithDuration:0.25 animations:^{
+            playerLayer.transform = CATransform3DIdentity;
+            playerLayer.frame = kScreen;
+//            progressView.transform = CGAffineTransformIdentity;
+//            progressView.frame = CGRectMake(0, 64, 20, kScreenWidth);
+            label.transform = CGAffineTransformIdentity;
+            label.frame = CGRectMake(90, 74, kScreenWidth-100, 20);
+        }];
+    } else {
+        CATransform3D transform = CATransform3DRotate(playerLayer.transform, M_PI_2, 0.0f, 0.0f, 1.0f);
+//        CGAffineTransform transform2 = CGAffineTransformRotate(progressView.transform, M_PI_2);
+        CGAffineTransform transform3 = CGAffineTransformRotate(label.transform, M_PI_2);
+        [UIView animateWithDuration:0.25 animations:^{
+            playerLayer.transform = transform;
+            playerLayer.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+//            progressView.transform = transform2;
+//            progressView.frame = CGRectMake(0, 0, 20, kScreenHeight);
+            label.transform = transform3;
+            label.frame = CGRectMake(kScreenWidth - 30, 30, 20, kScreenHeight - 40);
+        }];
+    }
+    isRotate = !isRotate;
+}
+
+- (void)playeEnd:(NSNotification *)notification {
     CMTime dragedCMTime = CMTimeMake(0, 1);
     [player seekToTime:dragedCMTime];
 }
 
-- (void)show {
+- (void)showTimer {
     NSInteger currentTime = (NSInteger)CMTimeGetSeconds(playerItem.currentTime);
     NSInteger duration = (NSInteger)CMTimeGetSeconds(playerItem.duration);
     NSString *currentTimeStr = [self timeFormatted:currentTime];

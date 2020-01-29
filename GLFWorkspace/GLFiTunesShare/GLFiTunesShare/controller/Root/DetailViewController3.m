@@ -31,7 +31,7 @@
     isPlaying = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar:) name:@"isHiddenNaviBar" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playerItemDidPlayToEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     
     fileManager = [GLFFileManager sharedFileManager];
 
@@ -58,18 +58,7 @@
     self.toolbarItems = @[space, item1, space, item2, space, item3, space];
 }
 
-- (void)hiddenNaviBar:(NSNotification *)notification {
-    NSDictionary *dict = notification.userInfo;
-    NSString *str = dict[@"key"];
-    if ([str isEqualToString:@"hidden"]) {
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
-        [self.navigationController setToolbarHidden:YES animated:YES];
-    } else if ([str isEqualToString:@"noHidden"]) {
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-        [self.navigationController setToolbarHidden:NO animated:YES];
-    }
-}
-
+#pragma mark Events
 - (void)playOrPauseVideo {
     isPlaying = !isPlaying;
     [currentVC playOrPauseVideo:isPlaying];
@@ -88,7 +77,19 @@
     [currentVC playViewLandscape];
 }
 
-- (void)playerItemDidPlayToEnd:(NSNotification *)notification{
+- (void)hiddenNaviBar:(NSNotification *)notification {
+    NSDictionary *dict = notification.userInfo;
+    NSString *str = dict[@"key"];
+    if ([str isEqualToString:@"hidden"]) {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        [self.navigationController setToolbarHidden:YES animated:YES];
+    } else if ([str isEqualToString:@"noHidden"]) {
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self.navigationController setToolbarHidden:NO animated:YES];
+    }
+}
+
+- (void)playeEnd:(NSNotification *)notification {
     isPlaying = false;
     [self setButtonPlayState];
 }
@@ -152,8 +153,9 @@
 // 结束滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
     if (previousViewControllers.count > 0 && completed) {
-        // 停止播放
+        // 获取之前控制器
         SubViewController3 *playVC = (SubViewController3 *)previousViewControllers[0];
+        // 停止播放
         [playVC playOrPauseVideo:NO];
         // ToolBar设为暂停状态
         isPlaying = NO;

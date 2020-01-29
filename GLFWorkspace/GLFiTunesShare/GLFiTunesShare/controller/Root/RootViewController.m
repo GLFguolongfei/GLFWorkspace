@@ -75,7 +75,6 @@
         editVC.modelArray = @[self.moveModel];
         [self presentViewController:editVC animated:YES completion:nil];
         self.moveModel = nil;
-        return;
     }
 }
 
