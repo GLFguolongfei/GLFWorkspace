@@ -123,6 +123,7 @@
             }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
+            // 显示文件夹排在前面
             [cArray addObjectsFromArray:bArray];
             [self hideAllHUD];
             [myDataArray removeAllObjects];
