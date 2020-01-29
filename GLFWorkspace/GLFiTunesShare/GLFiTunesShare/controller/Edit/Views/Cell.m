@@ -22,7 +22,7 @@
         self.label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, frame.size.width/2, 25)];
         self.label.textAlignment = NSTextAlignmentCenter;
         self.label.font = [UIFont boldSystemFontOfSize:17];
-        self.label.textColor = [UIColor blueColor];
+        self.label.textColor = [UIColor colorWithHexString:@"2C84E8"];
         [self.contentView addSubview:self.label];
 
 //        self.contentView.layer.borderWidth = 1;

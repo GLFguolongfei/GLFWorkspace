@@ -86,6 +86,28 @@
     }
 }
 
+- (void)setBgImage {
+    // 将图片copy在沙盒的documents文件夹中,并保存为image.png
+    NSData *data;
+    if (UIImagePNGRepresentation(contentImageView.image) == nil) {
+        data = UIImageJPEGRepresentation(contentImageView.image, 1.0);
+    } else {
+        data = UIImagePNGRepresentation(contentImageView.image);
+    }
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    // 获取Library目录下的Cache目录
+    NSArray *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cachePath = [cachePaths objectAtIndex:0];
+    NSString *filePath = [cachePath stringByAppendingString:@"/image.png"];
+    [fileManager createFileAtPath:filePath contents:data attributes:nil];
+    NSLog(@"-------- 图片的路径为 ------------ %@", filePath);
+    // 存储
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:@"1" forKey:IsUseBackImagePath];
+    [userDefaults synchronize];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 #pragma mark UIScrollViewDelegate
 // 设置放大缩小的视图
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView; {

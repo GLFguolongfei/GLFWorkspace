@@ -14,4 +14,7 @@
 @property (nonatomic, assign) NSInteger currentIndex;
 @property (nonatomic, strong) FileModel *model;
 
+// 设置为背景图
+- (void)setBgImage;
+
 @end

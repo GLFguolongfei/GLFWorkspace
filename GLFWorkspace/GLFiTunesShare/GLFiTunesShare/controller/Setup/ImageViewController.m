@@ -11,7 +11,7 @@
 
 @interface ImageViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 {
-    UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
+    UIPageViewController *pageVC; 
 }
 @end
 

@@ -23,6 +23,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"设为背景" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction:)];
+    self.navigationItem.rightBarButtonItem = item;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar:) name:@"isHiddenNaviBar" object:nil];
     
@@ -49,6 +51,20 @@
     } else if ([str isEqualToString:@"noHidden"]) {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
     }
+}
+
+- (void)buttonAction:(id)sender {
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"" message:@"确定将此图片设为背景图？" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"再想想" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+
+    }];
+    [alertVC addAction:cancelAction];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        SubViewController2 *subVC = (SubViewController2 *)pageVC.viewControllers[0];
+        [subVC setBgImage];
+    }];
+    [alertVC addAction:okAction];
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 #pragma mark UIPageViewControllerDataSource
