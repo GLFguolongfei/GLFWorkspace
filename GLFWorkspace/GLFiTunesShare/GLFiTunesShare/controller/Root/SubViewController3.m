@@ -55,11 +55,23 @@
     }
     isHiddenBar = !isHiddenBar;
     if (isHiddenBar) {
-        progressView.hidden = isHiddenBar;
+        progressView.hidden = YES;
+        if (!isRotate) {
+            CGRect labelRect = CGRectMake(10, 20, kScreenWidth-20, 20);
+            [UIView animateWithDuration:0.25 animations:^{
+                label.frame = labelRect;
+            }];
+        }
     } else {
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            progressView.hidden = isHiddenBar;
+            progressView.hidden = NO;
         });
+        if (!isRotate) {
+            CGRect labelRect = CGRectMake(10, 74, kScreenWidth-20, 20);
+            [UIView animateWithDuration:0.25 animations:^{
+                label.frame = labelRect;
+            }];
+        }
     }
 }
 
@@ -130,16 +142,16 @@
             label.frame = CGRectMake(90, 74, kScreenWidth-100, 20);
         }];
     } else {
-        CATransform3D transform = CATransform3DRotate(playerLayer.transform, -M_PI_2, 0.0f, 0.0f, 1.0f);
-        CGAffineTransform transform2 = CGAffineTransformRotate(progressView.transform, -M_PI_2);
-        CGAffineTransform transform3 = CGAffineTransformRotate(label.transform, -M_PI_2);
+        CATransform3D transform = CATransform3DRotate(playerLayer.transform, M_PI_2, 0.0f, 0.0f, 1.0f);
+//        CGAffineTransform transform2 = CGAffineTransformRotate(progressView.transform, M_PI_2);
+        CGAffineTransform transform3 = CGAffineTransformRotate(label.transform, M_PI_2);
         [UIView animateWithDuration:0.25 animations:^{
             playerLayer.transform = transform;
             playerLayer.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
 //            progressView.transform = transform2;
-//            progressView.frame = CGRectMake(0, 64, 20, kScreenWidth);
+//            progressView.frame = CGRectMake(0, 0, 20, kScreenHeight);
             label.transform = transform3;
-            label.frame = CGRectMake(10, 30, 20, kScreenHeight - 40);
+            label.frame = CGRectMake(kScreenWidth - 30, 30, 20, kScreenHeight - 40);
         }];
     }
     isRotate = !isRotate;
