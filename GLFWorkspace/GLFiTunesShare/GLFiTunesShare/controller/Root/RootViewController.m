@@ -91,6 +91,7 @@
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
         NSMutableArray *cArray = [[NSMutableArray alloc] init];
+        NSMutableArray *bArray = [[NSMutableArray alloc] init];
         NSArray *array = [GLFFileManager searchSubFile:self.pathStr andIsDepth:NO];
         for (int i = 0; i < array.count; i++) {
             // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
@@ -113,14 +114,16 @@
                 } else if ([CvideoTypeArray containsObject:lowerType]) {
                     model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
                 }
+                [bArray addObject:model];
             } else if (fileType == 2) { // 文件夹
                 model.isDir = YES;
                 model.size = [GLFFileManager fileSizeForDir:model.path];
                 model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
+                [cArray addObject:model];
             }
-            [cArray addObject:model];
         }
         dispatch_async(dispatch_get_main_queue(), ^{
+            [cArray addObjectsFromArray:bArray];
             [self hideAllHUD];
             [myDataArray removeAllObjects];
             [myDataArray addObjectsFromArray:cArray];
