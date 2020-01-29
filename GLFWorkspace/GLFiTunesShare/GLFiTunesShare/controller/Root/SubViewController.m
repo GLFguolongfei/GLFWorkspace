@@ -28,7 +28,6 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
     @try {
         // 加载本地资源
         NSURL *url = [NSURL fileURLWithPath:self.model.path];
