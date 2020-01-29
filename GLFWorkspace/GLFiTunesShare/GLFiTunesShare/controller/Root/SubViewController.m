@@ -87,7 +87,7 @@
         if (xuanfu.integerValue) {
             // 删除页面上的广告悬浮框
             [js appendString:@"var mmmDivArray = document.getElementsByTagName('div');"];
-            [js appendString:@"for(var i=0;i<mmmDivArray.length;i++) {"];
+            [js appendString:@"for(var i=0; i<mmmDivArray.length; i++) {"];
             [js appendString:@"    var element = mmmDivArray[i];"];
             [js appendString:@"    if (element.style.zIndex>0 || element.style.position=='fixed') {"];
             [js appendString:@"        element.style.display = 'none';"];
