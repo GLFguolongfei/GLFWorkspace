@@ -24,6 +24,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar:) name:@"isHiddenNaviBar" object:nil];
+    
     fileManager = [GLFFileManager sharedFileManager];
 
     pageVC = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
@@ -37,6 +39,16 @@
     self.title = subVC.model.name;
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
+}
+
+- (void)hiddenNaviBar:(NSNotification *)notification {
+    NSDictionary *dict = notification.userInfo;
+    NSString *str = dict[@"key"];
+    if ([str isEqualToString:@"hidden"]) {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+    } else if ([str isEqualToString:@"noHidden"]) {
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+    }
 }
 
 #pragma mark UIPageViewControllerDataSource

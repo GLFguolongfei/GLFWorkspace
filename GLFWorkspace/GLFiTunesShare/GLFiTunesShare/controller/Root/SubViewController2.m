@@ -14,6 +14,7 @@
     CGFloat currentScale;
     CGFloat maxScale;
     CGFloat minScale;
+    BOOL isHiddenBar;
 }
 @end
 
@@ -45,10 +46,29 @@
     contentImageView.tag = 22;
     [contentScrollView addSubview:contentImageView];
     
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapImage:)];
-    tapGesture.numberOfTapsRequired = 2;    // 设置点按次数,默认为1,注意在iOS中很少用双击操作
-    tapGesture.numberOfTouchesRequired = 1; // 点按的手指数
-    [contentScrollView addGestureRecognizer:tapGesture];
+    UITapGestureRecognizer *tapGesture1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hiddenNaviBar)];
+    tapGesture1.numberOfTapsRequired = 1;    // 设置点按次数,默认为1,注意在iOS中很少用双击操作
+    tapGesture1.numberOfTouchesRequired = 1; // 点按的手指数
+    [contentScrollView addGestureRecognizer:tapGesture1];
+    
+    UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(tapImage:)];
+    tapGesture2.numberOfTapsRequired = 2;    // 设置点按次数,默认为1,注意在iOS中很少用双击操作
+    tapGesture2.numberOfTouchesRequired = 1; // 点按的手指数
+    [contentScrollView addGestureRecognizer:tapGesture2];
+    
+    // 指定一个手势需要另一个手势执行失败才会执行
+    [tapGesture1 requireGestureRecognizerToFail:tapGesture2];
+}
+
+- (void)hiddenNaviBar {
+    if (isHiddenBar) {
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"noHidden",@"key", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:dic];
+    } else {
+        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"hidden",@"key", nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:dic];
+    }
+    isHiddenBar = !isHiddenBar;
 }
 
 - (void)tapImage:(UITapGestureRecognizer *)gesture {
