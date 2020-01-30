@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 // --- 设置页
-@interface SetupViewController : UIViewController
+@interface SetupViewController : BaseViewController
 
 @end

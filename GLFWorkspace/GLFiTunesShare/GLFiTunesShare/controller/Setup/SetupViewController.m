@@ -13,6 +13,8 @@
 #import "ImageSubViewController.h"
 #import "WebSetupViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
+#import "TestViewController.h"
+#import "UIKitViewController.h"
 
 @interface SetupViewController ()<UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
@@ -27,6 +29,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"测试" style:UIBarButtonItemStylePlain target:self action:@selector(button2)];
+    self.navigationItem.rightBarButtonItem = item;
     self.title = @"设置";
 
     // 设置背景图片
@@ -72,6 +76,11 @@
         button.tag = 100 + i;
         [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
+    
+    UIBarButtonItem *pictureItem = [[UIBarButtonItem alloc] initWithTitle:@"图片" style:UIBarButtonItemStylePlain target:self action:@selector(button1)];
+    UIBarButtonItem *toolBarSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
+    
+    self.toolbarItems = @[toolBarSpace, pictureItem, toolBarSpace];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -96,6 +105,18 @@
     bgImageView.image = backImage;
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [self.navigationController setToolbarHidden:YES animated:YES];
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    if (self.navigationController.toolbar.hidden ) {
+        [self.navigationController setToolbarHidden:NO animated:YES];
+    } else {
+        [self.navigationController setToolbarHidden:YES animated:YES];
+    }
+}
+
 - (void)buttonAction:(id)sender {
     UIButton *button = (UIButton *)sender;
     if (button.tag == 100) {
@@ -105,6 +126,16 @@
         WebSetupViewController *webSetupVC = [[WebSetupViewController alloc] init];
         [self.navigationController pushViewController:webSetupVC animated:YES];
     }
+}
+
+- (void)button1 {
+    UIKitViewController *uikitVC = [[UIKitViewController alloc] init];
+    [self.navigationController pushViewController:uikitVC animated:YES];
+}
+
+- (void)button2 {
+    TestViewController *testVC = [[TestViewController alloc] init];
+    [self.navigationController pushViewController:testVC animated:YES];
 }
 
 #pragma mark UIActionSheetDelegate
