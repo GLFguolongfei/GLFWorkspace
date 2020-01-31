@@ -58,6 +58,11 @@
     self.toolbarItems = @[space, item1, space, item2, space, item3, space];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.toolbar.hidden = NO;
+}
+
 #pragma mark Events
 - (void)playOrPauseVideo {
     isPlaying = !isPlaying;

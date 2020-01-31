@@ -29,6 +29,11 @@
     [self prepareView];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.toolbar.hidden = YES;
+}
+
 - (void)prepareData {
     [self showHUD];
     
