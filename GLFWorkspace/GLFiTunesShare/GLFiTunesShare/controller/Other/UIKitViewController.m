@@ -159,7 +159,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     imageView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight / 2.0);
     [self.view addSubview:imageView];
     // 3秒后回到主线程执行Block中的代码
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // 为重力仿真行为添加动力学元素
         [gravityBeahvior addItem:imageView];
     });
