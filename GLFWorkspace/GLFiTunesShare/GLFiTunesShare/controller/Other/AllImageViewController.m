@@ -6,14 +6,14 @@
 //  Copyright © 2020 GuoLongfei. All rights reserved.
 //
 
-#import "UIKitViewController.h"
+#import "AllImageViewController.h"
 #import "ShowTableViewCell.h"
 
 static NSString *cellID1 = @"ShowTableViewCell1";
 static NSString *cellID2 = @"ShowTableViewCell2";
 static NSString *cellID3 = @"ShowTableViewCell3";
 
-@interface UIKitViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface AllImageViewController ()<UITableViewDataSource, UITableViewDelegate>
 {
     UIDynamicAnimator *animator;          // 动画者
     UIGravityBehavior *gravityBeahvior;   // 仿真行为_重力
@@ -33,7 +33,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 @end
 
-@implementation UIKitViewController
+@implementation AllImageViewController
 
 
 #pragma mark - Life Cycle
@@ -42,7 +42,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     self.view.backgroundColor = [UIColor whiteColor];
     item = [[UIBarButtonItem alloc] initWithTitle:@"自动播放" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
     self.navigationItem.rightBarButtonItem = item;
-    self.title = @"UIKit动力学";
+    self.title = @"所有图片";
     
     _dataArray1 = [[NSMutableArray alloc] init];
     _dataArray2 = [[NSMutableArray alloc] init];
@@ -92,6 +92,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideAllHUD];
             imageArray = resultArray;
+            self.title = [NSString stringWithFormat:@"所有图片(%lu)", (unsigned long)resultArray.count];
             for (NSInteger i = 0; i < resultArray.count; i++) {
                 FileModel *model = resultArray[i];
                 if (i % 3 == 0) {

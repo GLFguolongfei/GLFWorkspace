@@ -82,6 +82,8 @@
 		6F58F45720BDB0E1003E0911 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45520BDB0E1003E0911 /* DetailViewController2.m */; };
 		6F58F45A20BDB0FC003E0911 /* SubViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45920BDB0FC003E0911 /* SubViewController2.m */; };
 		6F58F45B20BDB0FC003E0911 /* SubViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45920BDB0FC003E0911 /* SubViewController2.m */; };
+		6F5D7C6D23E47FE2005954F0 /* AllVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */; };
+		6F5D7C6E23E47FE8005954F0 /* AllVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */; };
 		6F62A2961F877FCD0049DE3B /* LaunchScreen2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */; };
 		6F62A2971F8783B80049DE3B /* LaunchScreen2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */; };
 		6F8072B21F7E436E007D7B26 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072B11F7E436E007D7B26 /* AppDelegate.m */; };
@@ -102,8 +104,8 @@
 		6F91B45B1F81615B00A9C616 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8072B61F7E436E007D7B26 /* Main.storyboard */; };
 		6F96B69C23E34A46006A2D00 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F96B69B23E34A46006A2D00 /* TestViewController.m */; };
 		6F96B69D23E34A46006A2D00 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F96B69B23E34A46006A2D00 /* TestViewController.m */; };
-		6F96B6A123E35257006A2D00 /* UIKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F96B6A023E35257006A2D00 /* UIKitViewController.m */; };
-		6F96B6A223E35257006A2D00 /* UIKitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F96B6A023E35257006A2D00 /* UIKitViewController.m */; };
+		6F96B6A123E35257006A2D00 /* AllImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F96B6A023E35257006A2D00 /* AllImageViewController.m */; };
+		6F96B6A223E35257006A2D00 /* AllImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F96B6A023E35257006A2D00 /* AllImageViewController.m */; };
 		6F96B6A723E4269E006A2D00 /* ShowTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F96B6A523E4269E006A2D00 /* ShowTableViewCell.m */; };
 		6F96B6A823E4269E006A2D00 /* ShowTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F96B6A523E4269E006A2D00 /* ShowTableViewCell.m */; };
 		6F96B6A923E4269E006A2D00 /* ShowTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F96B6A623E4269E006A2D00 /* ShowTableViewCell.xib */; };
@@ -211,6 +213,8 @@
 		6F58F45520BDB0E1003E0911 /* DetailViewController2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController2.m; sourceTree = "<group>"; };
 		6F58F45820BDB0FC003E0911 /* SubViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubViewController2.h; sourceTree = "<group>"; };
 		6F58F45920BDB0FC003E0911 /* SubViewController2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SubViewController2.m; sourceTree = "<group>"; };
+		6F5D7C6B23E47FE2005954F0 /* AllVideoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AllVideoViewController.h; sourceTree = "<group>"; };
+		6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AllVideoViewController.m; sourceTree = "<group>"; };
 		6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen2.storyboard; sourceTree = "<group>"; };
 		6F8072AD1F7E436E007D7B26 /* GLFiTunesShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLFiTunesShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8072B01F7E436E007D7B26 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -232,8 +236,8 @@
 		6F91B45F1F81615B00A9C616 /* GLFiTunesShare copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GLFiTunesShare copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F96B69A23E34A46006A2D00 /* TestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		6F96B69B23E34A46006A2D00 /* TestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
-		6F96B69F23E35257006A2D00 /* UIKitViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = UIKitViewController.h; sourceTree = "<group>"; };
-		6F96B6A023E35257006A2D00 /* UIKitViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = UIKitViewController.m; sourceTree = "<group>"; };
+		6F96B69F23E35257006A2D00 /* AllImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AllImageViewController.h; sourceTree = "<group>"; };
+		6F96B6A023E35257006A2D00 /* AllImageViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AllImageViewController.m; sourceTree = "<group>"; };
 		6F96B6A423E4269E006A2D00 /* ShowTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShowTableViewCell.h; sourceTree = "<group>"; };
 		6F96B6A523E4269E006A2D00 /* ShowTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ShowTableViewCell.m; sourceTree = "<group>"; };
 		6F96B6A623E4269E006A2D00 /* ShowTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowTableViewCell.xib; sourceTree = "<group>"; };
@@ -557,8 +561,10 @@
 			isa = PBXGroup;
 			children = (
 				6F96B6A323E4267A006A2D00 /* Views */,
-				6F96B69F23E35257006A2D00 /* UIKitViewController.h */,
-				6F96B6A023E35257006A2D00 /* UIKitViewController.m */,
+				6F96B69F23E35257006A2D00 /* AllImageViewController.h */,
+				6F96B6A023E35257006A2D00 /* AllImageViewController.m */,
+				6F5D7C6B23E47FE2005954F0 /* AllVideoViewController.h */,
+				6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */,
 			);
 			path = Other;
 			sourceTree = "<group>";
@@ -796,7 +802,7 @@
 				6FE944E520BE4F0A005A46AD /* SubViewController3.m in Sources */,
 				6F96B6A723E4269E006A2D00 /* ShowTableViewCell.m in Sources */,
 				6F1EEB041FB1A4060046389D /* FileInfoViewController.m in Sources */,
-				6F96B6A123E35257006A2D00 /* UIKitViewController.m in Sources */,
+				6F96B6A123E35257006A2D00 /* AllImageViewController.m in Sources */,
 				6F58F45A20BDB0FC003E0911 /* SubViewController2.m in Sources */,
 				6F1EEB091FB1A4060046389D /* RootViewController.m in Sources */,
 				6F0E960D1FA4135B0029DDD6 /* Base64.m in Sources */,
@@ -808,6 +814,7 @@
 				6F8072C01F7E436E007D7B26 /* main.m in Sources */,
 				6F1EEB211FB1A86A0046389D /* WebSetupViewController.m in Sources */,
 				6FE944E120BE4EF6005A46AD /* DetailViewController3.m in Sources */,
+				6F5D7C6D23E47FE2005954F0 /* AllVideoViewController.m in Sources */,
 				6F1EEB0B1FB1A4060046389D /* SubViewController.m in Sources */,
 				6FA4620C1FB3383A00DDA77F /* ImageSubViewController.m in Sources */,
 				6F1EEB201FB1A86A0046389D /* SetupViewController.m in Sources */,
@@ -858,7 +865,7 @@
 				6FE944E620BE4F0A005A46AD /* SubViewController3.m in Sources */,
 				6F96B6A823E4269E006A2D00 /* ShowTableViewCell.m in Sources */,
 				6F1EEB281FB1ADD50046389D /* DetailViewController.m in Sources */,
-				6F96B6A223E35257006A2D00 /* UIKitViewController.m in Sources */,
+				6F96B6A223E35257006A2D00 /* AllImageViewController.m in Sources */,
 				6F58F45B20BDB0FC003E0911 /* SubViewController2.m in Sources */,
 				6F1EEB291FB1ADD50046389D /* SubViewController.m in Sources */,
 				6F1EEB2B1FB1ADD50046389D /* FileInfoViewController.m in Sources */,
@@ -870,6 +877,7 @@
 				6F1EEB311FB1ADD50046389D /* BaseViewController.m in Sources */,
 				6FE944E220BE4EF6005A46AD /* DetailViewController3.m in Sources */,
 				6F0E960E1FA4135B0029DDD6 /* Base64.m in Sources */,
+				6F5D7C6E23E47FE8005954F0 /* AllVideoViewController.m in Sources */,
 				6FA4620D1FB3383A00DDA77F /* ImageSubViewController.m in Sources */,
 				6F0E96221FA4135B0029DDD6 /* PhotoStackView.m in Sources */,
 				6F0E96281FA4135B0029DDD6 /* WaterView2.m in Sources */,

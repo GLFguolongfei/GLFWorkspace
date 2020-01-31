@@ -14,7 +14,8 @@
 #import "WebSetupViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "TestViewController.h"
-#import "UIKitViewController.h"
+#import "AllImageViewController.h"
+#import "AllVideoViewController.h"
 
 @interface SetupViewController ()<UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
@@ -29,7 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"测试" style:UIBarButtonItemStylePlain target:self action:@selector(button2)];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"测试" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
     self.navigationItem.rightBarButtonItem = item;
     self.title = @"设置";
 
@@ -77,10 +78,11 @@
         [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
     
-    UIBarButtonItem *pictureItem = [[UIBarButtonItem alloc] initWithTitle:@"图片" style:UIBarButtonItemStylePlain target:self action:@selector(button1)];
+    UIBarButtonItem *pictureItem = [[UIBarButtonItem alloc] initWithTitle:@"所有图片" style:UIBarButtonItemStylePlain target:self action:@selector(button1)];
+    UIBarButtonItem *videoItem = [[UIBarButtonItem alloc] initWithTitle:@"所有视频" style:UIBarButtonItemStylePlain target:self action:@selector(button2)];
     UIBarButtonItem *toolBarSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
     
-    self.toolbarItems = @[toolBarSpace, pictureItem, toolBarSpace];
+    self.toolbarItems = @[toolBarSpace, pictureItem, toolBarSpace, videoItem, toolBarSpace];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -129,11 +131,16 @@
 }
 
 - (void)button1 {
-    UIKitViewController *uikitVC = [[UIKitViewController alloc] init];
-    [self.navigationController pushViewController:uikitVC animated:YES];
+    AllImageViewController *imageVC = [[AllImageViewController alloc] init];
+    [self.navigationController pushViewController:imageVC animated:YES];
 }
 
 - (void)button2 {
+    AllVideoViewController *videoVC = [[AllVideoViewController alloc] init];
+    [self.navigationController pushViewController:videoVC animated:YES];
+}
+
+- (void)button3 {
     TestViewController *testVC = [[TestViewController alloc] init];
     [self.navigationController pushViewController:testVC animated:YES];
 }
