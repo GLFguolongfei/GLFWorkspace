@@ -289,8 +289,12 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     }
     imageView = [[UIImageView alloc] initWithImage:image];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
-    imageView.frame = CGRectMake(0, 0, kScreenWidth, 200);
+    imageView.frame = CGRectMake(0, 0, 10, 10);
     imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
+    [UIView animateWithDuration:0.5 animations:^{
+        imageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+        imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
+    }];
     imageView.userInteractionEnabled = YES;
     [self.view addSubview:imageView];
     
