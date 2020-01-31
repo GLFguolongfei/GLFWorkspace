@@ -19,10 +19,13 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UIGravityBehavior *gravityBeahvior;   // 仿真行为_重力
     NSArray *imageArray;
     
+    UIBarButtonItem *item;
+    UIView *background;
+    BOOL isPlaying;
+    
     UITableView *_tableView1;
     UITableView *_tableView2;
     UITableView *_tableView3;
-    
     NSMutableArray *_dataArray1;
     NSMutableArray *_dataArray2;
     NSMutableArray *_dataArray3;
@@ -36,7 +39,13 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    item = [[UIBarButtonItem alloc] initWithTitle:@"自动播放" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
+    self.navigationItem.rightBarButtonItem = item;
     self.title = @"UIKit动力学";
+    
+    _dataArray1 = [[NSMutableArray alloc] init];
+    _dataArray2 = [[NSMutableArray alloc] init];
+    _dataArray3 = [[NSMutableArray alloc] init];
 
     // 1-动画者
     animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -44,14 +53,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     gravityBeahvior = [[UIGravityBehavior alloc] init];
     // 3-添加重力仿真行为
     [animator addBehavior:gravityBeahvior];
-    
-    // 点击手势
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
-    [self.view addGestureRecognizer:tapGesture];
-    
-    _dataArray1 = [[NSMutableArray alloc] init];
-    _dataArray2 = [[NSMutableArray alloc] init];
-    _dataArray3 = [[NSMutableArray alloc] init];
     
     [self prepareData];
     [self prepareView];
@@ -114,6 +115,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [self.view addSubview:_tableView1];
     _tableView1.showsVerticalScrollIndicator = NO;
     _tableView1.tableFooterView = [UIView new];
+    _tableView1.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     _tableView2 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
     _tableView2.delegate = self;
@@ -121,19 +123,41 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [self.view addSubview:_tableView2];
     _tableView2.showsVerticalScrollIndicator = NO;
     _tableView2.tableFooterView = [UIView new];
+    _tableView2.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     _tableView3 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3*2, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
     _tableView3.delegate = self;
     _tableView3.dataSource = self;
     [self.view addSubview:_tableView3];
     _tableView3.tableFooterView = [UIView new];
+    _tableView3.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     [_tableView1 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID1];
     [_tableView2 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID2];
     [_tableView3 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID3];
+    
+    background = [[UIView alloc] initWithFrame:kScreen];
+    background.backgroundColor = [UIColor lightGrayColor];
+    background.alpha = 0;
+    [self.view addSubview:background];
 }
 
-- (void)tapped:(UITapGestureRecognizer *)gesture {
+- (void)buttonAction {
+    isPlaying = !isPlaying;
+    if (isPlaying) {
+        item.title = @"停止播放";
+        background.alpha = 0.7;
+    } else {
+        item.title = @"自动播放";
+        background.alpha = 0;
+    }
+    [self playImage];
+}
+
+- (void)playImage {
+    if (!isPlaying) {
+        return;
+    }
     NSInteger mmm = arc4random() % 3;
     NSString *name = @"bgview1";
     if (mmm == 0) {
@@ -155,13 +179,16 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.frame = CGRectMake(0, 0, kScreenWidth, 200);
-    imageView.center = [gesture locationInView:gesture.view];
-    imageView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight / 2.0);
+    imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
+    imageView.userInteractionEnabled = YES;
     [self.view addSubview:imageView];
     // 3秒后回到主线程执行Block中的代码
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // 为重力仿真行为添加动力学元素
         [gravityBeahvior addItem:imageView];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self playImage];
+        });
     });
 }
 
@@ -200,18 +227,47 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == _tableView1) {
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1 forIndexPath:indexPath];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.imageView.image = _dataArray1[indexPath.row];
         return cell;
     } else if (tableView == _tableView2) {
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID2 forIndexPath:indexPath];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.imageView.image = _dataArray2[indexPath.row];
         return cell;
     } else if (tableView == _tableView3) {
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID3 forIndexPath:indexPath];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.imageView.image = _dataArray3[indexPath.row];
         return cell;
     }
     return nil;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    background.alpha = 0.7;
+
+    UIImage *image = [[UIImage alloc] init];
+    if (tableView == _tableView1) {
+        image = _dataArray1[indexPath.row];
+    } else if (tableView == _tableView2) {
+        image = _dataArray2[indexPath.row];
+    } else if (tableView == _tableView3) {
+        image = _dataArray3[indexPath.row];
+    }
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.frame = CGRectMake(0, 0, kScreenWidth, 200);
+    imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
+    [self.view addSubview:imageView];
+    // 3秒后回到主线程执行Block中的代码
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // 为重力仿真行为添加动力学元素
+        [gravityBeahvior addItem:imageView];
+        [UIView animateWithDuration:1 animations:^{
+            background.alpha = 0;
+        }];
+    });
 }
 
 #pragma mark UIScrollViewDelegate
