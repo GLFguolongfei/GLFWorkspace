@@ -54,7 +54,7 @@
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.frame = CGRectMake(0, 0, kScreenWidth, 200);
     imageView.center = [gesture locationInView:gesture.view];
-    imageView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight / 2.0);
+    imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
     [self.view addSubview:imageView];
     // 3秒后回到主线程执行Block中的代码
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

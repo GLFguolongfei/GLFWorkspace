@@ -154,7 +154,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         }
     } else {
         item.title = @"自动播放";
-        [UIView animateWithDuration:2 animations:^{
+        [UIView animateWithDuration:3 animations:^{
             background.alpha = 0;
         }];
     }

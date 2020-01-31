@@ -171,16 +171,16 @@
             label.frame = CGRectMake(90, 74, kScreenWidth-100, 20);
         }];
     } else {
-        CATransform3D transform = CATransform3DRotate(playerLayer.transform, M_PI_2, 0.0f, 0.0f, 1.0f);
+        CATransform3D transform = CATransform3DRotate(playerLayer.transform, -M_PI_2, 0.0f, 0.0f, 1.0f);
 //        CGAffineTransform transform2 = CGAffineTransformRotate(progressView.transform, M_PI_2);
-        CGAffineTransform transform3 = CGAffineTransformRotate(label.transform, M_PI_2);
+        CGAffineTransform transform3 = CGAffineTransformRotate(label.transform, -M_PI_2);
         [UIView animateWithDuration:0.25 animations:^{
             playerLayer.transform = transform;
             playerLayer.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
 //            progressView.transform = transform2;
 //            progressView.frame = CGRectMake(0, 0, 20, kScreenHeight);
             label.transform = transform3;
-            label.frame = CGRectMake(kScreenWidth - 30, 30, 20, kScreenHeight - 40);
+            label.frame = CGRectMake(10, 30, 20, kScreenHeight - 40);
         }];
     }
     isRotate = !isRotate;

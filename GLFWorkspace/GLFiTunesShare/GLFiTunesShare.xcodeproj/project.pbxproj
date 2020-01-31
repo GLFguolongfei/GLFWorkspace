@@ -401,6 +401,7 @@
 		6F1EEAD71FB1A4060046389D /* Root */ = {
 			isa = PBXGroup;
 			children = (
+				6F96B6A323E4267A006A2D00 /* Views */,
 				6F1EEAE91FB1A4060046389D /* RootViewController.h */,
 				6F1EEAEA1FB1A4060046389D /* RootViewController.m */,
 				6F1EEAD81FB1A4060046389D /* DetailViewController.h */,
@@ -415,6 +416,10 @@
 				6F58F45920BDB0FC003E0911 /* SubViewController2.m */,
 				6FE944E320BE4F0A005A46AD /* SubViewController3.h */,
 				6FE944E420BE4F0A005A46AD /* SubViewController3.m */,
+				6F96B69F23E35257006A2D00 /* AllImageViewController.h */,
+				6F96B6A023E35257006A2D00 /* AllImageViewController.m */,
+				6F5D7C6B23E47FE2005954F0 /* AllVideoViewController.h */,
+				6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -557,18 +562,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		6F96B69E23E35215006A2D00 /* Other */ = {
-			isa = PBXGroup;
-			children = (
-				6F96B6A323E4267A006A2D00 /* Views */,
-				6F96B69F23E35257006A2D00 /* AllImageViewController.h */,
-				6F96B6A023E35257006A2D00 /* AllImageViewController.m */,
-				6F5D7C6B23E47FE2005954F0 /* AllVideoViewController.h */,
-				6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */,
-			);
-			path = Other;
-			sourceTree = "<group>";
-		};
 		6F96B6A323E4267A006A2D00 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -601,7 +594,6 @@
 				6FE944E720BE58D3005A46AD /* Edit */,
 				6F1EEAFA1FB1A4060046389D /* base */,
 				6F1EEAFD1FB1A4060046389D /* login */,
-				6F96B69E23E35215006A2D00 /* Other */,
 			);
 			path = controller;
 			sourceTree = "<group>";
