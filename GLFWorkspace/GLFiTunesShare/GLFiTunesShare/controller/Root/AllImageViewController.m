@@ -245,17 +245,32 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     if (tableView == _tableView1) {
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.imageView.image = _dataArray1[indexPath.row];
+        UIImage *image = _dataArray1[indexPath.row];
+        if (image.size.width > 2000) {
+            cell.imageView.image = [self scaleImage:image toScale:0.1];
+        } else {
+            cell.imageView.image = image;
+        }
         return cell;
     } else if (tableView == _tableView2) {
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID2 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.imageView.image = _dataArray2[indexPath.row];
+        UIImage *image = _dataArray2[indexPath.row];
+        if (image.size.width > 2000) {
+            cell.imageView.image = [self scaleImage:image toScale:0.1];
+        } else {
+            cell.imageView.image = image;
+        }
         return cell;
     } else if (tableView == _tableView3) {
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID3 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.imageView.image = _dataArray3[indexPath.row];
+        UIImage *image = _dataArray3[indexPath.row];
+        if (image.size.width > 2000) {
+            cell.imageView.image = [self scaleImage:image toScale:0.1];
+        } else {
+            cell.imageView.image = image;
+        }
         return cell;
     }
     return nil;
@@ -301,5 +316,18 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         _tableView2.contentOffset = _tableView3.contentOffset;
     }
 }
+
+#pragma mark Private Method
+// 压缩图片
+- (UIImage *)scaleImage:(UIImage *)image toScale:(float)scaleSize {
+    CGFloat imageW = image.size.width * scaleSize;
+    CGFloat imageH = image.size.height * scaleSize;
+    UIGraphicsBeginImageContext(CGSizeMake(imageW, imageH));
+    [image drawInRect:CGRectMake(0, 0, imageW, imageH)];
+    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return scaledImage;
+}
+
 
 @end
