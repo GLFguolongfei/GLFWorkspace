@@ -7,6 +7,11 @@
 //
 
 #import "UIKitViewController.h"
+#import "ShowTableViewCell.h"
+
+static NSString *cellID1 = @"ShowTableViewCell1";
+static NSString *cellID2 = @"ShowTableViewCell2";
+static NSString *cellID3 = @"ShowTableViewCell3";
 
 @interface UIKitViewController ()<UITableViewDataSource, UITableViewDelegate>
 {
@@ -108,17 +113,24 @@
     _tableView1.dataSource=self;
     [self.view addSubview:_tableView1];
     _tableView1.showsVerticalScrollIndicator = NO;
+    _tableView1.tableFooterView = [UIView new];
     
     _tableView2 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
     _tableView2.delegate = self;
     _tableView2.dataSource = self;
     [self.view addSubview:_tableView2];
     _tableView2.showsVerticalScrollIndicator = NO;
+    _tableView2.tableFooterView = [UIView new];
     
     _tableView3 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3*2, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
     _tableView3.delegate = self;
     _tableView3.dataSource = self;
     [self.view addSubview:_tableView3];
+    _tableView3.tableFooterView = [UIView new];
+    
+    [_tableView1 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID1];
+    [_tableView2 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID2];
+    [_tableView3 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID3];
 }
 
 - (void)tapped:(UITapGestureRecognizer *)gesture {
@@ -146,23 +158,27 @@
     imageView.center = [gesture locationInView:gesture.view];
     imageView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight / 2.0);
     [self.view addSubview:imageView];
-    // 为重力仿真行为添加动力学元素
-    [gravityBeahvior addItem:imageView];
+    // 3秒后回到主线程执行Block中的代码
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // 为重力仿真行为添加动力学元素
+        [gravityBeahvior addItem:imageView];
+    });
 }
 
-#pragma mark - 表视图代理协议方法
+#pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    CGFloat width = kScreenWidth/3;
     if (tableView == _tableView1) {
         UIImage *image = _dataArray1[indexPath.row];
-        int height = kScreenWidth/3 * image.size.height / image.size.width;
+        int height = width * image.size.height / image.size.width;
         return height;
     } else if (tableView == _tableView2) {
         UIImage *image = _dataArray2[indexPath.row];
-        int height = kScreenWidth/3 * image.size.height / image.size.width;
+        int height = width * image.size.height / image.size.width;
         return height;
     } else if (tableView == _tableView3) {
         UIImage *image = _dataArray3[indexPath.row];
-        int height = kScreenWidth/3 * image.size.height / image.size.width;
+        int height = width * image.size.height / image.size.width;
         return height;
     } else {
         return 0;
@@ -181,29 +197,17 @@
     }
 }
 
-- (UITableViewCell*)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == _tableView1) {
-        static NSString *cellid = @"cellid1";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellid];
-        if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
-        }
+        ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1 forIndexPath:indexPath];
         cell.imageView.image = _dataArray1[indexPath.row];
         return cell;
-    }else if (tableView == _tableView2) {
-        static NSString *cellid = @"cellid2";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellid];
-        if (!cell) {
-            cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
-        }
+    } else if (tableView == _tableView2) {
+        ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID2 forIndexPath:indexPath];
         cell.imageView.image = _dataArray2[indexPath.row];
         return cell;
-    }else if (tableView == _tableView3) {
-        static NSString *cellid = @"cellid3";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellid];
-        if (!cell) {
-            cell=[[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
-        }
+    } else if (tableView == _tableView3) {
+        ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID3 forIndexPath:indexPath];
         cell.imageView.image = _dataArray3[indexPath.row];
         return cell;
     }
@@ -211,7 +215,7 @@
 }
 
 #pragma mark UIScrollViewDelegate
-// 在滚动的时候 时时调用
+// 在滚动的时候调用
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     // 如果1产生偏移 那么让2和3也产生偏移
     if (scrollView == _tableView1) { // 设置开始内容偏移量
