@@ -19,6 +19,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UIGravityBehavior *gravityBeahvior;   // 仿真行为_重力
     NSArray *imageArray;
     
+    UIImageView *imageView;
     UIBarButtonItem *item;
     UIView *background;
     BOOL isPlaying;
@@ -147,9 +148,14 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     if (isPlaying) {
         item.title = @"停止播放";
         background.alpha = 0.7;
+        if (imageView) {
+            [gravityBeahvior addItem:imageView];
+        }
     } else {
         item.title = @"自动播放";
-        background.alpha = 0;
+        [UIView animateWithDuration:2 animations:^{
+            background.alpha = 0;
+        }];
     }
     [self playImage];
 }
@@ -179,17 +185,27 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.frame = CGRectMake(0, 0, kScreenWidth, 200);
-    imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
-    imageView.userInteractionEnabled = YES;
+    imageView.center = CGPointMake(kScreenWidth / 2.0, -kScreenHeight);
+    [UIView animateWithDuration:1 animations:^{
+        imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
+    }];
     [self.view addSubview:imageView];
     // 3秒后回到主线程执行Block中的代码
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // 为重力仿真行为添加动力学元素
         [gravityBeahvior addItem:imageView];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self playImage];
         });
     });
+}
+
+- (void)hiddenImage {
+    // 为重力仿真行为添加动力学元素
+    [gravityBeahvior addItem:imageView];
+    [UIView animateWithDuration:1 animations:^{
+        background.alpha = 0;
+    }];
 }
 
 #pragma mark UITableViewDelegate
@@ -255,19 +271,16 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     } else if (tableView == _tableView3) {
         image = _dataArray3[indexPath.row];
     }
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView = [[UIImageView alloc] initWithImage:image];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.frame = CGRectMake(0, 0, kScreenWidth, 200);
     imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
+    imageView.userInteractionEnabled = YES;
     [self.view addSubview:imageView];
-    // 3秒后回到主线程执行Block中的代码
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        // 为重力仿真行为添加动力学元素
-        [gravityBeahvior addItem:imageView];
-        [UIView animateWithDuration:1 animations:^{
-            background.alpha = 0;
-        }];
-    });
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    [tapGesture addTarget:self action:@selector(hiddenImage)];
+    [imageView addGestureRecognizer:tapGesture];
 }
 
 #pragma mark UIScrollViewDelegate
