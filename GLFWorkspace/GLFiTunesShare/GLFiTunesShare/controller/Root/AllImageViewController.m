@@ -154,7 +154,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         }
     } else {
         item.title = @"自动播放";
-        [UIView animateWithDuration:3 animations:^{
+        [UIView animateWithDuration:4 animations:^{
             background.alpha = 0;
         }];
     }
@@ -184,10 +184,10 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         image = [UIImage imageWithContentsOfFile:model.path];
     }
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
-    imageView.frame = CGRectMake(0, 0, kScreenWidth, 200);
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
     imageView.center = CGPointMake(kScreenWidth / 2.0, -kScreenHeight);
-    [UIView animateWithDuration:1 animations:^{
+    [UIView animateWithDuration:1.2 animations:^{
         imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
     }];
     [self.view addSubview:imageView];
@@ -195,9 +195,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         // 为重力仿真行为添加动力学元素
         [gravityBeahvior addItem:imageView];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self playImage];
-        });
+        [self playImage];
     });
 }
 
@@ -247,7 +245,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         UIImage *image = _dataArray1[indexPath.row];
         if (image.size.width > 2000) {
-            cell.imageView.image = [self scaleImage:image toScale:0.1];
+            cell.imageView.image = [self scaleImage:image toScale:0.2];
         } else {
             cell.imageView.image = image;
         }
@@ -257,7 +255,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         UIImage *image = _dataArray2[indexPath.row];
         if (image.size.width > 2000) {
-            cell.imageView.image = [self scaleImage:image toScale:0.1];
+            cell.imageView.image = [self scaleImage:image toScale:0.2];
         } else {
             cell.imageView.image = image;
         }
@@ -267,7 +265,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         UIImage *image = _dataArray3[indexPath.row];
         if (image.size.width > 2000) {
-            cell.imageView.image = [self scaleImage:image toScale:0.1];
+            cell.imageView.image = [self scaleImage:image toScale:0.2];
         } else {
             cell.imageView.image = image;
         }
@@ -288,12 +286,14 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         image = _dataArray3[indexPath.row];
     }
     imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
-    imageView.frame = CGRectMake(0, 0, 10, 10);
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.frame = CGRectMake(0, 64, 10, 10);
     imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
+    imageView.alpha = 0;
     [UIView animateWithDuration:0.5 animations:^{
-        imageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+        imageView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
         imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
+        imageView.alpha = 1;
     }];
     imageView.userInteractionEnabled = YES;
     [self.view addSubview:imageView];
