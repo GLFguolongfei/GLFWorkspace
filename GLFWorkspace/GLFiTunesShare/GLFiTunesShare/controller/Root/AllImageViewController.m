@@ -8,6 +8,7 @@
 
 #import "AllImageViewController.h"
 #import "ShowTableViewCell.h"
+#import "DetailViewController2.h"
 
 static NSString *cellID1 = @"ShowTableViewCell1";
 static NSString *cellID2 = @"ShowTableViewCell2";
@@ -23,6 +24,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UIBarButtonItem *item;
     UIView *background;
     BOOL isPlaying;
+    
+    UIView *gestureView;
+    BOOL isSuccess;
     
     UITableView *_tableView1;
     UITableView *_tableView2;
@@ -96,11 +100,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
             for (NSInteger i = 0; i < resultArray.count; i++) {
                 FileModel *model = resultArray[i];
                 if (i % 3 == 0) {
-                    [_dataArray1 addObject:model.image];
+                    [_dataArray1 addObject:model];
                 } else if (i % 3 == 1) {
-                    [_dataArray2 addObject:model.image];
+                    [_dataArray2 addObject:model];
                 } else if (i % 3 == 2) {
-                    [_dataArray3 addObject:model.image];
+                    [_dataArray3 addObject:model];
                 }
             }
             [_tableView1 reloadData];
@@ -142,6 +146,16 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     background.backgroundColor = [UIColor lightGrayColor];
     background.alpha = 0;
     [self.view addSubview:background];
+    
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
+    gestureView.backgroundColor = [UIColor clearColor];
+    [self.navigationController.navigationBar addSubview:gestureView];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
+    [tapGesture addTarget:self action:@selector(setState)];
+    [gestureView addGestureRecognizer:tapGesture];
 }
 
 - (void)buttonAction {
@@ -185,7 +199,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     }
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
-    imageView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    imageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
     imageView.center = CGPointMake(kScreenWidth / 2.0, -kScreenHeight);
     [UIView animateWithDuration:1.2 animations:^{
         imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
@@ -207,19 +221,26 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     }];
 }
 
+- (void)setState {
+    isSuccess = !isSuccess;
+}
+
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat width = kScreenWidth/3;
     if (tableView == _tableView1) {
-        UIImage *image = _dataArray1[indexPath.row];
+        FileModel *model = _dataArray1[indexPath.row];
+        UIImage *image = model.image;
         int height = width * image.size.height / image.size.width;
         return height;
     } else if (tableView == _tableView2) {
-        UIImage *image = _dataArray2[indexPath.row];
+        FileModel *model = _dataArray2[indexPath.row];
+        UIImage *image = model.image;
         int height = width * image.size.height / image.size.width;
         return height;
     } else if (tableView == _tableView3) {
-        UIImage *image = _dataArray3[indexPath.row];
+        FileModel *model = _dataArray3[indexPath.row];
+        UIImage *image = model.image;
         int height = width * image.size.height / image.size.width;
         return height;
     } else {
@@ -241,31 +262,34 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (tableView == _tableView1) {
+        FileModel *model = _dataArray1[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UIImage *image = _dataArray1[indexPath.row];
+        UIImage *image = model.image;
         if (image.size.width > 2000) {
-            cell.imageView.image = [self scaleImage:image toScale:0.2];
+            cell.imageView.image = [self scaleImage:image toScale:0.1];
         } else {
             cell.imageView.image = image;
         }
         return cell;
     } else if (tableView == _tableView2) {
+        FileModel *model = _dataArray2[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID2 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UIImage *image = _dataArray2[indexPath.row];
+        UIImage *image = model.image;
         if (image.size.width > 2000) {
-            cell.imageView.image = [self scaleImage:image toScale:0.2];
+            cell.imageView.image = [self scaleImage:image toScale:0.1];
         } else {
             cell.imageView.image = image;
         }
         return cell;
     } else if (tableView == _tableView3) {
+        FileModel *model = _dataArray3[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID3 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UIImage *image = _dataArray3[indexPath.row];
+        UIImage *image = model.image;
         if (image.size.width > 2000) {
-            cell.imageView.image = [self scaleImage:image toScale:0.2];
+            cell.imageView.image = [self scaleImage:image toScale:0.1];
         } else {
             cell.imageView.image = image;
         }
@@ -275,32 +299,40 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    background.alpha = 0.7;
-
-    UIImage *image = [[UIImage alloc] init];
+    FileModel *model;
     if (tableView == _tableView1) {
-        image = _dataArray1[indexPath.row];
+        model = _dataArray1[indexPath.row];
     } else if (tableView == _tableView2) {
-        image = _dataArray2[indexPath.row];
+        model = _dataArray2[indexPath.row];
     } else if (tableView == _tableView3) {
-        image = _dataArray3[indexPath.row];
+        model = _dataArray3[indexPath.row];
     }
-    imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
-    imageView.frame = CGRectMake(0, 64, 10, 10);
-    imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
-    imageView.alpha = 0;
-    [UIView animateWithDuration:0.5 animations:^{
-        imageView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
-        imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
-        imageView.alpha = 1;
-    }];
-    imageView.userInteractionEnabled = YES;
-    [self.view addSubview:imageView];
     
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
-    [tapGesture addTarget:self action:@selector(hiddenImage)];
-    [imageView addGestureRecognizer:tapGesture];
+    if (isSuccess) {
+         DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
+         detailVC.selectIndex = [self returnIndex:imageArray with:model];
+         detailVC.fileArray = imageArray;
+         [self.navigationController pushViewController:detailVC animated:YES];
+    } else {
+        background.alpha = 0.7;
+
+        imageView = [[UIImageView alloc] initWithImage:model.image];
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+        imageView.frame = CGRectMake(0, 0, 10, 10);
+        imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
+        imageView.alpha = 0;
+        [UIView animateWithDuration:0.5 animations:^{
+            imageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+            imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
+            imageView.alpha = 1;
+        }];
+        imageView.userInteractionEnabled = YES;
+        [self.view addSubview:imageView];
+
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+        [tapGesture addTarget:self action:@selector(hiddenImage)];
+        [imageView addGestureRecognizer:tapGesture];
+    }
 }
 
 #pragma mark UIScrollViewDelegate
@@ -331,6 +363,18 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return scaledImage;
+}
+
+// 获取元素在数组中的下标
+- (NSInteger)returnIndex:(NSArray *)array with:(FileModel *)model {
+    NSInteger index = 0;
+    for (NSInteger i = 0; i < array.count; i++) {
+        FileModel *md = array[i];
+        if ([model.name isEqualToString:md.name]) {
+            index = i;
+        }
+    }
+    return index;
 }
 
 
