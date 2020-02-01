@@ -30,7 +30,7 @@
     
     isPlaying = NO;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar:) name:@"isHiddenNaviBar" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"isHiddenNaviBar" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     
     fileManager = [GLFFileManager sharedFileManager];
@@ -82,15 +82,13 @@
     [currentVC playViewLandscape];
 }
 
-- (void)hiddenNaviBar:(NSNotification *)notification {
-    NSDictionary *dict = notification.userInfo;
-    NSString *str = dict[@"key"];
-    if ([str isEqualToString:@"hidden"]) {
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
-        [self.navigationController setToolbarHidden:YES animated:YES];
-    } else if ([str isEqualToString:@"noHidden"]) {
+- (void)hiddenNaviBar {
+    if (self.navigationController.navigationBar.hidden == YES) {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
         [self.navigationController setToolbarHidden:NO animated:YES];
+    } else {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        [self.navigationController setToolbarHidden:YES animated:YES];
     }
 }
 
@@ -165,6 +163,9 @@
         // ToolBar设为暂停状态
         isPlaying = NO;
         [self setButtonPlayState];
+        // 显示导航栏
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+        [self.navigationController setToolbarHidden:NO animated:YES];
     }
 }
 

@@ -26,7 +26,7 @@
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"设为背景" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction:)];
     self.navigationItem.rightBarButtonItem = item;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar:) name:@"isHiddenNaviBar" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"isHiddenNaviBar" object:nil];
     
     fileManager = [GLFFileManager sharedFileManager];
 
@@ -43,13 +43,11 @@
     [self.view addSubview:pageVC.view];
 }
 
-- (void)hiddenNaviBar:(NSNotification *)notification {
-    NSDictionary *dict = notification.userInfo;
-    NSString *str = dict[@"key"];
-    if ([str isEqualToString:@"hidden"]) {
-        [self.navigationController setNavigationBarHidden:YES animated:YES];
-    } else if ([str isEqualToString:@"noHidden"]) {
+- (void)hiddenNaviBar {
+    if (self.navigationController.navigationBar.hidden == YES) {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
+    } else {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
     }
 }
 

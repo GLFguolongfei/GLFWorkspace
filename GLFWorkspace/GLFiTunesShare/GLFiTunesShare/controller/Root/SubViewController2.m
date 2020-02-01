@@ -63,11 +63,9 @@
 
 - (void)hiddenNaviBar {
     if (isHiddenBar) {
-        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"noHidden",@"key", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:dic];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:nil];
     } else {
-        NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@"hidden",@"key", nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:dic];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:nil];
     }
     isHiddenBar = !isHiddenBar;
 }
