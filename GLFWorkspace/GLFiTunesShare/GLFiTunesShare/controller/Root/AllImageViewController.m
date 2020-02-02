@@ -103,14 +103,24 @@ static NSString *cellID3 = @"ShowTableViewCell3";
             [self hideAllHUD];
             imageArray = resultArray;
             self.title = [NSString stringWithFormat:@"所有图片(%lu)", (unsigned long)resultArray.count];
+            CGFloat height1 = 0;
+            CGFloat height2 = 0;
+            CGFloat height3 = 0;
+            CGFloat width = kScreenWidth/3;
             for (NSInteger i = 0; i < resultArray.count; i++) {
                 FileModel *model = resultArray[i];
-                if (i % 3 == 0) {
+                if (height1 <= height2 && height1 <= height3) {
                     [_dataArray1 addObject:model];
-                } else if (i % 3 == 1) {
+                    CGFloat height = width * model.image.size.height / model.image.size.width;
+                    height1 += height;
+                } else if (height2 <= height1 && height2 <= height3) {
                     [_dataArray2 addObject:model];
-                } else if (i % 3 == 2) {
+                    CGFloat height = width * model.image.size.height / model.image.size.width;
+                    height2 += height;
+                } else if (height3 <= height1 && height3 <= height2) {
                     [_dataArray3 addObject:model];
+                    CGFloat height = width * model.image.size.height / model.image.size.width;
+                    height3 += height;
                 }
             }
             [_tableView1 reloadData];
@@ -128,7 +138,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _tableView1.showsVerticalScrollIndicator = NO;
     _tableView1.tableFooterView = [UIView new];
     _tableView1.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+    _tableView1.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+
     _tableView2 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
     _tableView2.delegate = self;
     _tableView2.dataSource = self;
@@ -136,14 +147,16 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _tableView2.showsVerticalScrollIndicator = NO;
     _tableView2.tableFooterView = [UIView new];
     _tableView2.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+    _tableView2.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+
     _tableView3 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3*2, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
     _tableView3.delegate = self;
     _tableView3.dataSource = self;
     [self.view addSubview:_tableView3];
     _tableView3.tableFooterView = [UIView new];
     _tableView3.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+    _tableView3.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+
     [_tableView1 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID1];
     [_tableView2 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID2];
     [_tableView3 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID3];
