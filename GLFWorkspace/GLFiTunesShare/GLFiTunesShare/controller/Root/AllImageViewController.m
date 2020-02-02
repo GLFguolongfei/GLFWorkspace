@@ -88,7 +88,13 @@ static NSString *cellID3 = @"ShowTableViewCell3";
                 NSArray *array = [model.name componentsSeparatedByString:@"."];
                 NSString *lowerType = [array.lastObject lowercaseString];
                 if ([CimgTypeArray containsObject:lowerType]) {
+                    model.size = [GLFFileManager fileSize:model.path];
                     model.image = [UIImage imageWithContentsOfFile:model.path];
+                    if (model.size > 1000000) { // 大于1M
+                        model.scaleImage = nil;
+                    } else {
+                        model.scaleImage = model.image;
+                    }
                     [resultArray addObject:model];
                 }
             }
@@ -231,17 +237,17 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     if (tableView == _tableView1) {
         FileModel *model = _dataArray1[indexPath.row];
         UIImage *image = model.image;
-        int height = width * image.size.height / image.size.width;
+        CGFloat height = width * image.size.height / image.size.width;
         return height;
     } else if (tableView == _tableView2) {
         FileModel *model = _dataArray2[indexPath.row];
         UIImage *image = model.image;
-        int height = width * image.size.height / image.size.width;
+        CGFloat height = width * image.size.height / image.size.width;
         return height;
     } else if (tableView == _tableView3) {
         FileModel *model = _dataArray3[indexPath.row];
         UIImage *image = model.image;
-        int height = width * image.size.height / image.size.width;
+        CGFloat height = width * image.size.height / image.size.width;
         return height;
     } else {
         return 0;
@@ -265,34 +271,42 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         FileModel *model = _dataArray1[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UIImage *image = model.image;
-        if (image.size.width > 2000) {
-            cell.imageView.image = [self scaleImage:image toScale:0.1];
+        if (model.scaleImage == nil) {
+            UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
+            cell.imageView.image = scaleImage;
+            model.scaleImage = scaleImage;
+            [_dataArray1 replaceObjectAtIndex:indexPath.row withObject:model];
         } else {
-            cell.imageView.image = image;
+            cell.imageView.image = model.scaleImage;
         }
         return cell;
     } else if (tableView == _tableView2) {
         FileModel *model = _dataArray2[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID2 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UIImage *image = model.image;
-        if (image.size.width > 2000) {
-            cell.imageView.image = [self scaleImage:image toScale:0.1];
+        if (model.scaleImage == nil) {
+            UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
+            cell.imageView.image = scaleImage;
+            model.scaleImage = scaleImage;
+            [_dataArray2 replaceObjectAtIndex:indexPath.row withObject:model];
         } else {
-            cell.imageView.image = image;
+            cell.imageView.image = model.scaleImage;
         }
         return cell;
     } else if (tableView == _tableView3) {
         FileModel *model = _dataArray3[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID3 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        UIImage *image = model.image;
-        if (image.size.width > 2000) {
-            cell.imageView.image = [self scaleImage:image toScale:0.1];
+        if (model.scaleImage == nil) {
+            UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
+            cell.imageView.image = scaleImage;
+            model.scaleImage = scaleImage;
+            [_dataArray3 replaceObjectAtIndex:indexPath.row withObject:model];
         } else {
-            cell.imageView.image = image;
+            cell.imageView.image = model.scaleImage;
         }
+        cell.backgroundColor = [UIColor blueColor];
+        cell.imageView.backgroundColor = [UIColor redColor];
         return cell;
     }
     return nil;

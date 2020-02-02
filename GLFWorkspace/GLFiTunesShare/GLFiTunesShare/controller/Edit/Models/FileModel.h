@@ -22,5 +22,7 @@
 // 如果Model为视频,image就是视频缩略图
 // 如果Model为其它类型(文件夹等),image为nil
 @property (nonatomic, copy) UIImage *image;
+// 缩略图
+@property (nonatomic, copy) UIImage *scaleImage;
 
 @end
