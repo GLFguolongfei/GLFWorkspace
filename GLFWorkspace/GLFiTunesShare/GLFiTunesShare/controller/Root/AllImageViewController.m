@@ -305,11 +305,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         } else {
             cell.scaleImageView.image = model.scaleImage;
         }
-        cell.backgroundColor = [UIColor blueColor];
-        cell.imageView.backgroundColor = [UIColor redColor];
-//        if (cell.contentView.frame.size.width != cell.imageView.frame.size.width) {
-//            NSLog(@"%f, %f", cell.contentView.frame.size.width, cell.imageView.frame.size.width);
-//        }
         return cell;
     }
     return nil;
