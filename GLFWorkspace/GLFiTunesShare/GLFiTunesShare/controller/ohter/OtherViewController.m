@@ -25,8 +25,8 @@
     self.title = @"功能";
 
     for (NSInteger i = 0; i < 10; i++) {
-        CGFloat width = (kScreenWidth - 80) / 3;
-        CGRect frame = CGRectMake(20 * (i % 3 + 1) + width * (i % 3), 100 + 80 * ceil(i / 3), width, 60);
+        CGFloat width = (kScreenWidth - 60) / 2;
+        CGRect frame = CGRectMake(20 * (i % 2 + 1) + width * (i % 2), 100 + 80 * ceil(i / 2), width, 60);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
         [button setTitle:@"测试" forState:UIControlStateNormal];
         [button setBackgroundColor:[UIColor lightGrayColor]];
