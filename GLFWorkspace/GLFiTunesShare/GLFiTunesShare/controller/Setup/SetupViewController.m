@@ -13,7 +13,7 @@
 #import "ImageSubViewController.h"
 #import "WebSetupViewController.h"
 #import <MobileCoreServices/MobileCoreServices.h>
-#import "TestViewController.h"
+#import "OtherViewController.h"
 #import "AllImageViewController.h"
 #import "AllVideoViewController.h"
 
@@ -30,7 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"测试" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"功能" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
     self.navigationItem.rightBarButtonItem = item;
     self.title = @"设置";
 
@@ -141,8 +141,8 @@
 }
 
 - (void)button3 {
-    TestViewController *testVC = [[TestViewController alloc] init];
-    [self.navigationController pushViewController:testVC animated:YES];
+    OtherViewController *otherVC = [[OtherViewController alloc] init];
+    [self.navigationController pushViewController:otherVC animated:YES];
 }
 
 #pragma mark UIActionSheetDelegate

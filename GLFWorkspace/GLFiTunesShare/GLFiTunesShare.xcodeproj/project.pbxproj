@@ -115,6 +115,7 @@
 		6FA4620C1FB3383A00DDA77F /* ImageSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA4620B1FB3383A00DDA77F /* ImageSubViewController.m */; };
 		6FA4620D1FB3383A00DDA77F /* ImageSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA4620B1FB3383A00DDA77F /* ImageSubViewController.m */; };
 		6FA4620E1FB342CC00DDA77F /* FileInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F1EEAE11FB1A4060046389D /* FileInfoViewController.xib */; };
+		6FBA0FA523E80C4400899522 /* OtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA0FA423E80C4400899522 /* OtherViewController.m */; };
 		6FE944E120BE4EF6005A46AD /* DetailViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E020BE4EF6005A46AD /* DetailViewController3.m */; };
 		6FE944E220BE4EF6005A46AD /* DetailViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E020BE4EF6005A46AD /* DetailViewController3.m */; };
 		6FE944E520BE4F0A005A46AD /* SubViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E420BE4F0A005A46AD /* SubViewController3.m */; };
@@ -245,6 +246,8 @@
 		6F9FB5841F8B614B002CD399 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		6FA4620A1FB3383A00DDA77F /* ImageSubViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageSubViewController.h; sourceTree = "<group>"; };
 		6FA4620B1FB3383A00DDA77F /* ImageSubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageSubViewController.m; sourceTree = "<group>"; };
+		6FBA0FA323E80C4400899522 /* OtherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherViewController.h; sourceTree = "<group>"; };
+		6FBA0FA423E80C4400899522 /* OtherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherViewController.m; sourceTree = "<group>"; };
 		6FE944DF20BE4EF6005A46AD /* DetailViewController3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController3.h; sourceTree = "<group>"; };
 		6FE944E020BE4EF6005A46AD /* DetailViewController3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController3.m; sourceTree = "<group>"; };
 		6FE944E320BE4F0A005A46AD /* SubViewController3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubViewController3.h; sourceTree = "<group>"; };
@@ -572,6 +575,15 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		6FBA0FA223E80BA500899522 /* ohter */ = {
+			isa = PBXGroup;
+			children = (
+				6FBA0FA323E80C4400899522 /* OtherViewController.h */,
+				6FBA0FA423E80C4400899522 /* OtherViewController.m */,
+			);
+			path = ohter;
+			sourceTree = "<group>";
+		};
 		6FE944E720BE58D3005A46AD /* Edit */ = {
 			isa = PBXGroup;
 			children = (
@@ -594,6 +606,7 @@
 				6FE944E720BE58D3005A46AD /* Edit */,
 				6F1EEAFA1FB1A4060046389D /* base */,
 				6F1EEAFD1FB1A4060046389D /* login */,
+				6FBA0FA223E80BA500899522 /* ohter */,
 			);
 			path = controller;
 			sourceTree = "<group>";
@@ -821,6 +834,7 @@
 				6F1EEB0F1FB1A4060046389D /* Layout.m in Sources */,
 				6F0E96111FA4135B0029DDD6 /* UIColor+Category.m in Sources */,
 				6F0E96251FA4135B0029DDD6 /* MyView.m in Sources */,
+				6FBA0FA523E80C4400899522 /* OtherViewController.m in Sources */,
 				6F8072B21F7E436E007D7B26 /* AppDelegate.m in Sources */,
 				6F0E960F1FA4135B0029DDD6 /* NSDate+Help.m in Sources */,
 				6F0E96151FA4135B0029DDD6 /* UIView+Helper.m in Sources */,
