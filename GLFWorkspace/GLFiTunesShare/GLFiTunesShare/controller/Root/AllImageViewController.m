@@ -56,6 +56,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     // 2-重力仿真行为
     gravityBeahvior = [[UIGravityBehavior alloc] init];
+    gravityBeahvior.magnitude = 2.0;
     // 3-添加重力仿真行为
     [animator addBehavior:gravityBeahvior];
     
