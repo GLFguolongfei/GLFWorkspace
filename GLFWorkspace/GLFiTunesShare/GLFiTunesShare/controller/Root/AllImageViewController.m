@@ -127,6 +127,32 @@ static NSString *cellID3 = @"ShowTableViewCell3";
             [_tableView1 reloadData];
             [_tableView2 reloadData];
             [_tableView3 reloadData];
+            dispatch_async(queue, ^{
+                for (NSInteger i = _dataArray1.count - 1; i > 0; i--) {
+                    FileModel *model = _dataArray1[i];
+                    if (model.scaleImage == nil) {
+                        UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
+                        model.scaleImage = scaleImage;
+                        [_dataArray1 replaceObjectAtIndex:i withObject:model];
+                    }
+                }
+                for (NSInteger i = _dataArray2.count - 1; i > 0; i--) {
+                    FileModel *model = _dataArray2[i];
+                    if (model.scaleImage == nil) {
+                        UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
+                        model.scaleImage = scaleImage;
+                        [_dataArray2 replaceObjectAtIndex:i withObject:model];
+                    }
+                }
+                for (NSInteger i = _dataArray3.count - 1; i > 0; i--) {
+                    FileModel *model = _dataArray3[i];
+                    if (model.scaleImage == nil) {
+                        UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
+                        model.scaleImage = scaleImage;
+                        [_dataArray3 replaceObjectAtIndex:i withObject:model];
+                    }
+                }
+            });
         });
     });
 }
