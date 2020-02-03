@@ -30,7 +30,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"功能" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"有趣功能" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
     self.navigationItem.rightBarButtonItem = item;
     self.title = @"设置";
 
