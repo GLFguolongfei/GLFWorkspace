@@ -119,6 +119,8 @@
 		6FBA0FA823E8113200899522 /* OneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA0FA723E8113200899522 /* OneViewController.m */; };
 		6FBA0FA923E8113200899522 /* OneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA0FA723E8113200899522 /* OneViewController.m */; };
 		6FBA0FAA23E8113700899522 /* OtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA0FA423E80C4400899522 /* OtherViewController.m */; };
+		6FBA0FAD23E816F900899522 /* TwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA0FAC23E816F900899522 /* TwoViewController.m */; };
+		6FBA0FAE23E816F900899522 /* TwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA0FAC23E816F900899522 /* TwoViewController.m */; };
 		6FE944E120BE4EF6005A46AD /* DetailViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E020BE4EF6005A46AD /* DetailViewController3.m */; };
 		6FE944E220BE4EF6005A46AD /* DetailViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E020BE4EF6005A46AD /* DetailViewController3.m */; };
 		6FE944E520BE4F0A005A46AD /* SubViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E420BE4F0A005A46AD /* SubViewController3.m */; };
@@ -253,6 +255,8 @@
 		6FBA0FA423E80C4400899522 /* OtherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherViewController.m; sourceTree = "<group>"; };
 		6FBA0FA623E8113200899522 /* OneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OneViewController.h; sourceTree = "<group>"; };
 		6FBA0FA723E8113200899522 /* OneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OneViewController.m; sourceTree = "<group>"; };
+		6FBA0FAB23E816F900899522 /* TwoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TwoViewController.h; sourceTree = "<group>"; };
+		6FBA0FAC23E816F900899522 /* TwoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TwoViewController.m; sourceTree = "<group>"; };
 		6FE944DF20BE4EF6005A46AD /* DetailViewController3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController3.h; sourceTree = "<group>"; };
 		6FE944E020BE4EF6005A46AD /* DetailViewController3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController3.m; sourceTree = "<group>"; };
 		6FE944E320BE4F0A005A46AD /* SubViewController3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubViewController3.h; sourceTree = "<group>"; };
@@ -587,6 +591,8 @@
 				6FBA0FA423E80C4400899522 /* OtherViewController.m */,
 				6FBA0FA623E8113200899522 /* OneViewController.h */,
 				6FBA0FA723E8113200899522 /* OneViewController.m */,
+				6FBA0FAB23E816F900899522 /* TwoViewController.h */,
+				6FBA0FAC23E816F900899522 /* TwoViewController.m */,
 			);
 			path = ohter;
 			sourceTree = "<group>";
@@ -833,6 +839,7 @@
 				6F0E96171FA4135B0029DDD6 /* GLFFileManager.m in Sources */,
 				6F1EEB0C1FB1A4060046389D /* Cell.m in Sources */,
 				6F0E96191FA4135B0029DDD6 /* GLFTools.m in Sources */,
+				6FBA0FAD23E816F900899522 /* TwoViewController.m in Sources */,
 				6F1EEB071FB1A4060046389D /* FileModel.m in Sources */,
 				6F0E96131FA4135B0029DDD6 /* UIColor+HexString.m in Sources */,
 				6F0E961F1FA4135B0029DDD6 /* MBProgressHUD.m in Sources */,
@@ -898,6 +905,7 @@
 				6F0E96281FA4135B0029DDD6 /* WaterView2.m in Sources */,
 				6F0E961C1FA4135B0029DDD6 /* MBProgressHUD+Add.m in Sources */,
 				6F0E96181FA4135B0029DDD6 /* GLFFileManager.m in Sources */,
+				6FBA0FAE23E816F900899522 /* TwoViewController.m in Sources */,
 				6F0E961A1FA4135B0029DDD6 /* GLFTools.m in Sources */,
 				6F0E96141FA4135B0029DDD6 /* UIColor+HexString.m in Sources */,
 				6F1EEB231FB1AD8C0046389D /* EditTableViewCell.m in Sources */,

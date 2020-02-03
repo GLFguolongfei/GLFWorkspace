@@ -9,6 +9,7 @@
 #import "OtherViewController.h"
 #import "TestViewController.h"
 #import "OneViewController.h"
+#import "TwoViewController.h"
 
 @interface OtherViewController ()
 
@@ -31,6 +32,8 @@
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
         if (i == 0) {
             [button setTitle:@"UIKit动力学" forState:UIControlStateNormal];
+        } else if (i == 1)  {
+            [button setTitle:@"iOS字体" forState:UIControlStateNormal];
         } else {
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
@@ -50,10 +53,11 @@
 
 - (void)buttonAction:(UIButton *)button {
     if (button.tag == 100) {
-        OneViewController *oneVC = [[OneViewController alloc] init];
-        [self.navigationController pushViewController:oneVC animated:YES];
+        OneViewController *vc = [[OneViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     } else if (button.tag == 101) {
-        
+        TwoViewController *vc = [[TwoViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

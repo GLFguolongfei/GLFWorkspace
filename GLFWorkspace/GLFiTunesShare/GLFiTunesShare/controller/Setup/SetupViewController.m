@@ -45,14 +45,16 @@
     label.backgroundColor = [UIColor clearColor];
     [self.view addSubview:label];
     
-    label.text = @"大吉大利, 今晚吃鸡";
-    label.textColor = [UIColor redColor];
+    label.text = @"凛冬将至";
+    label.textColor = [UIColor colorWithHexString:@"E3170D"];
     label.textAlignment = NSTextAlignmentCenter;
+    label.numberOfLines = 0;
     
     label.font = KFontBold(36);
+    label.font = [UIFont fontWithName:@"Zapfino" size:36];
     
-    label.shadowColor = [UIColor brownColor];
-    label.shadowOffset = CGSizeMake(3, 3);
+    label.shadowColor = [UIColor colorWithHexString:@"FF7F50"];
+    label.shadowOffset = CGSizeMake(2, 2);
     
     // 太极图
     MyView *view = [[MyView alloc]initWithFrame:CGRectMake(50, 90, kScreenWidth-100, kScreenWidth-100)];
