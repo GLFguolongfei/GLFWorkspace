@@ -52,9 +52,6 @@
     } else if (mmm == 1) {
         NSInteger nnn = arc4random() % 13;
         name = [NSString stringWithFormat:@"mv%ld", nnn];
-    } else if (mmm == 2) {
-        NSInteger nnn = arc4random() % 32;
-        name = [NSString stringWithFormat:@"nv%ld", nnn];
     }
     UIImage *image = [UIImage imageNamed:name];
     imageView = [[UIImageView alloc] initWithImage:image];
