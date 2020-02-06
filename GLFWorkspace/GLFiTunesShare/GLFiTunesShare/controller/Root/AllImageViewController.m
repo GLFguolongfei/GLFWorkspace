@@ -14,7 +14,7 @@ static NSString *cellID1 = @"ShowTableViewCell1";
 static NSString *cellID2 = @"ShowTableViewCell2";
 static NSString *cellID3 = @"ShowTableViewCell3";
 
-@interface AllImageViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface AllImageViewController ()<UITableViewDataSource, UITableViewDelegate, UIDocumentInteractionControllerDelegate>
 {
     UIDynamicAnimator *animator;          // 动画者
     UIGravityBehavior *gravityBeahvior;   // 仿真行为_重力
@@ -26,7 +26,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     BOOL isPlaying;
     
     UIView *gestureView;
-    BOOL isSuccess;
+    NSInteger showType;
     
     UITableView *_tableView1;
     UITableView *_tableView2;
@@ -51,6 +51,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _dataArray1 = [[NSMutableArray alloc] init];
     _dataArray2 = [[NSMutableArray alloc] init];
     _dataArray3 = [[NSMutableArray alloc] init];
+    
+    showType = 1;
 
     // 1-动画者
     animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -62,6 +64,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     
     [self prepareData];
     [self prepareView];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    // 放在最上面,否则点击事件没法触发
+    [self.navigationController.navigationBar bringSubviewToFront:gestureView];
 }
 
 - (void)prepareData {
@@ -268,7 +275,10 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)setState {
-    isSuccess = !isSuccess;
+    showType++;
+    if (showType > 3) {
+        showType = 1;
+    }
 }
 
 #pragma mark UITableViewDelegate
@@ -360,12 +370,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         model = _dataArray3[indexPath.row];
     }
     
-    if (isSuccess) {
-         DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
-         detailVC.selectIndex = [self returnIndex:imageArray with:model];
-         detailVC.fileArray = imageArray;
-         [self.navigationController pushViewController:detailVC animated:YES];
-    } else {
+    if (showType == 1) {
         background.alpha = 0.7;
 
         imageView = [[UIImageView alloc] initWithImage:model.image];
@@ -384,6 +389,20 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
         [tapGesture addTarget:self action:@selector(hiddenImage)];
         [imageView addGestureRecognizer:tapGesture];
+    } else if (showType == 2) {
+        DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
+        detailVC.selectIndex = [self returnIndex:imageArray with:model];
+        detailVC.fileArray = imageArray;
+        [self.navigationController pushViewController:detailVC animated:YES];
+    } else {
+        NSURL *url = [NSURL fileURLWithPath:model.path];
+        UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
+        documentController.delegate = self;
+        // 显示预览
+        BOOL canOpen = [documentController presentPreviewAnimated:YES];
+        if (!canOpen) {
+            [self showStringHUD:@"沒有程序可以打开要分享的文件" second:2];
+        }
     }
 }
 
@@ -403,6 +422,18 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         _tableView1.contentOffset = _tableView3.contentOffset;
         _tableView2.contentOffset = _tableView3.contentOffset;
     }
+}
+
+#pragma mark UIDocumentInteractionControllerDelegate(预览分享)
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller {
+    return self;
+}
+- (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller {
+    return self.view;
+}
+
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller {
+    return self.view.frame;
 }
 
 #pragma mark Private Method

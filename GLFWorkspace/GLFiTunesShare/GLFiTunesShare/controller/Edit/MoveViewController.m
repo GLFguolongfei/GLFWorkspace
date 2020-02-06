@@ -86,10 +86,11 @@ static NSString *cellID = @"GLFTableViewCellID";
     back.backgroundColor = KNavgationBarColor;
     [self.view addSubview:back];
     
-    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 20, kScreenWidth, 20)];
+    UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 25, kScreenWidth, 20)];
     label1.text = @"选取添加这些项目的位置。";
     label1.textAlignment = NSTextAlignmentCenter;
     label1.font = [UIFont systemFontOfSize:14];
+    label1.textColor = [UIColor whiteColor];
     [back addSubview:label1];
     
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(15, 40, 60, 60)];
@@ -100,6 +101,7 @@ static NSString *cellID = @"GLFTableViewCellID";
     label3.text = @"NSDocumentDirectory";
     label3.textAlignment = NSTextAlignmentLeft;
     label3.font = [UIFont systemFontOfSize:18];
+    label3.textColor = [UIColor whiteColor];
     [back addSubview:label3];
     
     UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth-85, 20, 85, 60)];
@@ -112,7 +114,7 @@ static NSString *cellID = @"GLFTableViewCellID";
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
     [tapGesture addTarget:self action:@selector(tapAction:)];
     [imageView addGestureRecognizer:tapGesture];
-    
+
     // slider
     sliderView = [[UIView alloc] initWithFrame:CGRectMake(0, 100, 80, kScreenHeight-100)];
     sliderView.backgroundColor = [UIColor clearColor];

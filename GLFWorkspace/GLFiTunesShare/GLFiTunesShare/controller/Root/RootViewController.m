@@ -91,8 +91,8 @@
 }
 
 - (void)prepareData {
-    [myDataArray removeAllObjects];
     [editArray removeAllObjects];
+    [self viewEditing:YES];
     if (self.pathStr.length == 0) {
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         self.pathStr = [paths objectAtIndex:0];
@@ -138,11 +138,14 @@
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideAllHUD];
-            [myDataArray removeAllObjects];
-            // 显示文件夹排在前面
-            [myDataArray addObjectsFromArray:cArray];
-            [myDataArray addObjectsFromArray:bArray];
-            [myTableView reloadData];
+            // 有更新才更新
+            if (cArray.count + bArray.count != myDataArray.count) {
+                [myDataArray removeAllObjects];
+                // 显示文件夹排在前面
+                [myDataArray addObjectsFromArray:cArray];
+                [myDataArray addObjectsFromArray:bArray];
+                [myTableView reloadData];
+            }
         });
     });
 }

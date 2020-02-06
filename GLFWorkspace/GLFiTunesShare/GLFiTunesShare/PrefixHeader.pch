@@ -48,7 +48,7 @@
 #define KFontSize(a) [UIFont systemFontOfSize:a]
 #define kFontNameAndSize(fontname, fontsize) [UIFont fontWithName:fontname size:fontsize]
 // 标准色
-#define KNavgationBarColor kSAColorWith0xStr(0x25b0ff) // 导航栏颜色
+#define KNavgationBarColor kSAColorWith0xStr(0x2C84E8) // 导航栏颜色
 #define KColorThree kSAColorWithStr(@"333333") // 字体颜色333333
 #define KColorSix   kSAColorWithStr(@"666666") // 字体颜色666666
 #define KColorNine  kSAColorWithStr(@"999999") // 字体颜色999999
