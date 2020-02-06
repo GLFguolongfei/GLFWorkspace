@@ -271,14 +271,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     });
 }
 
-- (void)hiddenImage {
-    // 为重力仿真行为添加动力学元素
-    [gravityBeahvior addItem:imageView];
-    [UIView animateWithDuration:1 animations:^{
-        background.alpha = 0;
-    }];
-}
-
 - (void)setState {
     isSuccess = !isSuccess;
     if (isSuccess) {
