@@ -149,7 +149,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     FileModel *model = _dataArray[indexPath.row];
-    if (isSuccess) {
+    NSString *VoiceMute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
+    if (isSuccess && !VoiceMute.integerValue) {
         NSURL *url = [NSURL fileURLWithPath:model.path];
         UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
         documentController.delegate = self;

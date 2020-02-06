@@ -417,7 +417,10 @@
     NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
     if (fileType == 1) { // 文件
         // 预览
-        if (isSuccess) {
+        NSString *VoiceMute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
+        NSArray *array = [model.name componentsSeparatedByString:@"."];
+        NSString *lowerType = [array.lastObject lowercaseString];
+        if (isSuccess && (![CvideoTypeArray containsObject:lowerType] || ([CvideoTypeArray containsObject:lowerType] && !VoiceMute.integerValue))) {
             NSURL *url = [NSURL fileURLWithPath:model.path];
             UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
             documentController.delegate = self;
@@ -447,8 +450,6 @@
                 }
             }
             // 进入详情页面
-            NSArray *array = [model.name componentsSeparatedByString:@"."];
-            NSString *lowerType = [array.lastObject lowercaseString];
             if ([CimgTypeArray containsObject:lowerType]) { // 图片
                 DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
                 detailVC.selectIndex = [self returnIndex:imageArray with:model];
