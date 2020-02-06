@@ -9,10 +9,13 @@
 #import "AllVideoViewController.h"
 #import "DetailViewController3.h"
 
-@interface AllVideoViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface AllVideoViewController ()<UITableViewDataSource, UITableViewDelegate, UIDocumentInteractionControllerDelegate>
 {
     UITableView *_tableView;
     NSMutableArray *_dataArray;
+    
+    UIView *gestureView;
+    BOOL isSuccess;
 }
 @end
 
@@ -25,6 +28,13 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"所有视频";
     
+    NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
+    if ([type isEqualToString:@"1"]) {
+        isSuccess = YES;
+    } else {
+        isSuccess = NO;
+    }
+    
     [self prepareData];
     [self prepareView];
 }
@@ -32,6 +42,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.toolbar.hidden = YES;
+    // 放在最上面,否则点击事件没法触发
+    [self.navigationController.navigationBar bringSubviewToFront:gestureView];
 }
 
 - (void)prepareData {
@@ -81,6 +93,26 @@
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
     _tableView.tableFooterView = [UIView new];
+    
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
+    gestureView.backgroundColor = [UIColor clearColor];
+    [self.navigationController.navigationBar addSubview:gestureView];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
+    [tapGesture addTarget:self action:@selector(setState)];
+    [gestureView addGestureRecognizer:tapGesture];
+}
+
+- (void)setState {
+    isSuccess = !isSuccess;
+    if (isSuccess) {
+        [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"RootShowType"];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark UITableViewDelegate
@@ -117,11 +149,34 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     FileModel *model = _dataArray[indexPath.row];
-    // 进入详情页面
-    DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
-    detailVC.selectIndex = [self returnIndex:_dataArray with:model];
-    detailVC.fileArray = _dataArray;
-    [self.navigationController pushViewController:detailVC animated:YES];
+    if (isSuccess) {
+        NSURL *url = [NSURL fileURLWithPath:model.path];
+        UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
+        documentController.delegate = self;
+        // 显示预览
+        BOOL canOpen = [documentController presentPreviewAnimated:YES];
+        if (!canOpen) {
+            [self showStringHUD:@"沒有程序可以打开要分享的文件" second:2];
+        }
+    } else {
+        // 进入详情页面
+        DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
+        detailVC.selectIndex = [self returnIndex:_dataArray with:model];
+        detailVC.fileArray = _dataArray;
+        [self.navigationController pushViewController:detailVC animated:YES];
+    }
+}
+
+#pragma mark UIDocumentInteractionControllerDelegate(预览分享)
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller {
+    return self;
+}
+- (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller {
+    return self.view;
+}
+
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller {
+    return self.view.frame;
 }
 
 #pragma mark Private Method

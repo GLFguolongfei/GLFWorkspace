@@ -26,8 +26,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     BOOL isPlaying;
     
     UIView *gestureView;
-    NSInteger showType;
-    
+    BOOL isSuccess;
+
     UITableView *_tableView1;
     UITableView *_tableView2;
     UITableView *_tableView3;
@@ -52,7 +52,12 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _dataArray2 = [[NSMutableArray alloc] init];
     _dataArray3 = [[NSMutableArray alloc] init];
     
-    showType = 1;
+    NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
+    if ([type isEqualToString:@"1"]) {
+        isSuccess = YES;
+    } else {
+        isSuccess = NO;
+    }
 
     // 1-动画者
     animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -275,10 +280,13 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)setState {
-    showType++;
-    if (showType > 3) {
-        showType = 1;
+    isSuccess = !isSuccess;
+    if (isSuccess) {
+        [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"RootShowType"];
     }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 #pragma mark UITableViewDelegate
@@ -370,31 +378,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         model = _dataArray3[indexPath.row];
     }
     
-    if (showType == 1) {
-        background.alpha = 0.7;
-
-        imageView = [[UIImageView alloc] initWithImage:model.image];
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
-        imageView.frame = CGRectMake(0, 0, 10, 10);
-        imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
-        imageView.alpha = 0;
-        [UIView animateWithDuration:0.5 animations:^{
-            imageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
-            imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
-            imageView.alpha = 1;
-        }];
-        imageView.userInteractionEnabled = YES;
-        [self.view addSubview:imageView];
-
-        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
-        [tapGesture addTarget:self action:@selector(hiddenImage)];
-        [imageView addGestureRecognizer:tapGesture];
-    } else if (showType == 2) {
-        DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
-        detailVC.selectIndex = [self returnIndex:imageArray with:model];
-        detailVC.fileArray = imageArray;
-        [self.navigationController pushViewController:detailVC animated:YES];
-    } else {
+    if (isSuccess) {
         NSURL *url = [NSURL fileURLWithPath:model.path];
         UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
         documentController.delegate = self;
@@ -403,6 +387,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         if (!canOpen) {
             [self showStringHUD:@"沒有程序可以打开要分享的文件" second:2];
         }
+    } else {
+        DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
+        detailVC.selectIndex = [self returnIndex:imageArray with:model];
+        detailVC.fileArray = imageArray;
+        [self.navigationController pushViewController:detailVC animated:YES];
     }
 }
 
