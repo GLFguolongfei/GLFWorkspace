@@ -10,7 +10,7 @@
 #import "FileModel.h"
 
 // --- 简介页
-@interface FileInfoViewController : UIViewController
+@interface FileInfoViewController : BaseViewController
 
 @property (nonatomic, strong) FileModel *model;
 

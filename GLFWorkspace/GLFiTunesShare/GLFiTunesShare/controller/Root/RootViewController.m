@@ -14,7 +14,7 @@
 #import "MoveViewController.h"
 #import "FileInfoViewController.h"
 
-@interface RootViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface RootViewController ()<UITableViewDelegate, UITableViewDataSource, UIDocumentInteractionControllerDelegate, UIViewControllerPreviewingDelegate>
 {
     UITableView *myTableView;
     NSMutableArray *myDataArray;
@@ -25,6 +25,9 @@
     
     NSIndexPath *editIndexPath;
     NSMutableArray *editArray;
+    
+    UIView *gestureView;
+    BOOL isSuccess;
 }
 @end
 
@@ -39,11 +42,20 @@
     fileManager = [GLFFileManager sharedFileManager];
     myDataArray = [[NSMutableArray alloc] init];
     editArray = [[NSMutableArray alloc] init];
-
+    
+    NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
+    if ([type isEqualToString:@"1"]) {
+        isSuccess = YES;
+    } else {
+        isSuccess = NO;
+    }
+    
     [self prepareInterface];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    // 放在最上面,否则点击事件没法触发
+    [self.navigationController.navigationBar bringSubviewToFront:gestureView];
     self.navigationController.navigationBar.hidden = NO;
     self.navigationController.toolbarHidden = YES;
     // 1.设置背景图片
@@ -177,9 +189,29 @@
     bgImageView = [[UIImageView alloc] initWithFrame:myTableView.frame];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     myTableView.backgroundView = bgImageView;
+    
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
+    gestureView.backgroundColor = [UIColor clearColor];
+    [self.navigationController.navigationBar addSubview:gestureView];
+
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
+    [tapGesture addTarget:self action:@selector(setState)];
+    [gestureView addGestureRecognizer:tapGesture];
 }
 
 #pragma mark Events
+- (void)setState {
+    isSuccess = !isSuccess;
+    if (isSuccess) {
+        [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"RootShowType"];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 // 设置
 - (void)buttonAction1:(id)sender {
     SetupViewController *setupVC = [[SetupViewController alloc] init];
@@ -356,6 +388,13 @@
         cell.accessoryType = UITableViewCellAccessoryDetailButton;
         cell.detailTextLabel.text = @"";
     }
+    
+    // 3D Touch 可用!
+    if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
+        // 给Cell注册3DTouch的peek和pop功能
+        [self registerForPreviewingWithDelegate:self sourceView:cell];
+    }
+    
     return cell;
 }
 
@@ -374,43 +413,55 @@
     
     NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
     if (fileType == 1) { // 文件
-        // 获取所有类型文件
-        NSMutableArray *imageArray = [[NSMutableArray alloc] init];
-        NSMutableArray *videoArray = [[NSMutableArray alloc] init];
-        NSMutableArray *fileArray = [[NSMutableArray alloc] init];
-        for (NSInteger i = 0; i < myDataArray.count; i++) {
-            FileModel *md = myDataArray[i];
-            NSInteger indexType = [GLFFileManager fileExistsAtPath:md.path];
-            NSArray *array = [md.name componentsSeparatedByString:@"."];
-            NSString *lowerType = [array.lastObject lowercaseString];
-            if (indexType == 1) {
-                if ([CimgTypeArray containsObject:lowerType]) {
-                    [imageArray addObject:md];
-                } else if ([CvideoTypeArray containsObject:lowerType]) {
-                    [videoArray addObject:md];
-                } else {
-                    [fileArray addObject:md];
+        // 预览
+        if (isSuccess) {
+            NSURL *url = [NSURL fileURLWithPath:model.path];
+            UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
+            documentController.delegate = self;
+            // 显示预览
+            BOOL canOpen = [documentController presentPreviewAnimated:YES];
+            if (!canOpen) {
+                [self showStringHUD:@"沒有程序可以打开要分享的文件" second:2];
+            }
+        } else {
+            // 获取所有类型文件
+            NSMutableArray *imageArray = [[NSMutableArray alloc] init];
+            NSMutableArray *videoArray = [[NSMutableArray alloc] init];
+            NSMutableArray *fileArray = [[NSMutableArray alloc] init];
+            for (NSInteger i = 0; i < myDataArray.count; i++) {
+                FileModel *md = myDataArray[i];
+                NSInteger indexType = [GLFFileManager fileExistsAtPath:md.path];
+                NSArray *array = [md.name componentsSeparatedByString:@"."];
+                NSString *lowerType = [array.lastObject lowercaseString];
+                if (indexType == 1) {
+                    if ([CimgTypeArray containsObject:lowerType]) {
+                        [imageArray addObject:md];
+                    } else if ([CvideoTypeArray containsObject:lowerType]) {
+                        [videoArray addObject:md];
+                    } else {
+                        [fileArray addObject:md];
+                    }
                 }
             }
-        }
-        // 进入详情页面
-        NSArray *array = [model.name componentsSeparatedByString:@"."];
-        NSString *lowerType = [array.lastObject lowercaseString];
-        if ([CimgTypeArray containsObject:lowerType]) { // 图片
-            DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
-            detailVC.selectIndex = [self returnIndex:imageArray with:model];
-            detailVC.fileArray = imageArray;
-            [self.navigationController pushViewController:detailVC animated:YES];
-        } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
-            DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
-            detailVC.selectIndex = [self returnIndex:videoArray with:model];
-            detailVC.fileArray = videoArray;
-            [self.navigationController pushViewController:detailVC animated:YES];
-        } else { // 其它文件类型
-            DetailViewController *detailVC = [[DetailViewController alloc] init];
-            detailVC.selectIndex = [self returnIndex:fileArray with:model];
-            detailVC.fileArray = fileArray;
-            [self.navigationController pushViewController:detailVC animated:YES];
+            // 进入详情页面
+            NSArray *array = [model.name componentsSeparatedByString:@"."];
+            NSString *lowerType = [array.lastObject lowercaseString];
+            if ([CimgTypeArray containsObject:lowerType]) { // 图片
+                DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
+                detailVC.selectIndex = [self returnIndex:imageArray with:model];
+                detailVC.fileArray = imageArray;
+                [self.navigationController pushViewController:detailVC animated:YES];
+            } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
+                DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
+                detailVC.selectIndex = [self returnIndex:videoArray with:model];
+                detailVC.fileArray = videoArray;
+                [self.navigationController pushViewController:detailVC animated:YES];
+            } else { // 其它文件类型
+                DetailViewController *detailVC = [[DetailViewController alloc] init];
+                detailVC.selectIndex = [self returnIndex:fileArray with:model];
+                detailVC.fileArray = fileArray;
+                [self.navigationController pushViewController:detailVC animated:YES];
+            }
         }
     } else if (fileType == 2) { // 文件夹
         RootViewController *vc = [[RootViewController alloc] init];
@@ -534,6 +585,41 @@
     NSArray *objectsToShare = @[url];
     UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
     [self presentViewController:activityVC animated:YES completion:nil];
+}
+
+#pragma mark UIDocumentInteractionControllerDelegate(预览分享)
+- (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller {
+    return self;
+}
+- (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller {
+    return self.view;
+}
+
+- (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller {
+    return self.view.frame;
+}
+
+#pragma mark UIViewControllerPreviewingDelegate
+// peek(预览)
+- (nullable UIViewController *)previewingContext:(id <UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location
+{
+    // 获取按压的Cell所在行,[previewingContext sourceView]就是按压的那个视图
+    NSIndexPath *indexPath = [myTableView indexPathForCell:(UITableViewCell* )[previewingContext sourceView]];
+    // 设定预览的界面
+    FileInfoViewController *vc = [[FileInfoViewController alloc] init];
+    vc.preferredContentSize = CGSizeMake(0.0f, 400.0f);
+    vc.model = myDataArray[indexPath.row];
+    // 调整不被虚化的范围，按压的那个cell不被虚化（轻轻按压时周边会被虚化，再少用力展示预览，再加力跳页至设定界面）
+    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, 40);
+    previewingContext.sourceRect = rect;
+    // 返回预览界面
+    return vc;
+}
+
+// pop(按用点力进入）
+- (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit
+{
+    [self showViewController:viewControllerToCommit sender:self];
 }
 
 #pragma mark Private Method
