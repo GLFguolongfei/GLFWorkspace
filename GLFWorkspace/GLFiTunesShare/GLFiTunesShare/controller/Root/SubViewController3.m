@@ -85,6 +85,7 @@
     if (VoiceMute.integerValue) {
         player.volume = 0.0; // 控制音量
     }
+//    player.volume = 0.005; // 控制音量
     // 4-添加AVPlayerLayer
     playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
     playerLayer.frame = kScreen;

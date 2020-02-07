@@ -43,17 +43,16 @@
     myDataArray = [[NSMutableArray alloc] init];
     editArray = [[NSMutableArray alloc] init];
     
+    [self prepareInterface];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
     NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
     if ([type isEqualToString:@"1"]) {
         isSuccess = YES;
     } else {
         isSuccess = NO;
     }
-    
-    [self prepareInterface];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
     // 放在最上面,否则点击事件没法触发
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
     self.navigationController.navigationBar.hidden = NO;

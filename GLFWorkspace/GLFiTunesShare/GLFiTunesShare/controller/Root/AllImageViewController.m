@@ -51,13 +51,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _dataArray1 = [[NSMutableArray alloc] init];
     _dataArray2 = [[NSMutableArray alloc] init];
     _dataArray3 = [[NSMutableArray alloc] init];
-    
-    NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
-    if ([type isEqualToString:@"1"]) {
-        isSuccess = YES;
-    } else {
-        isSuccess = NO;
-    }
 
     // 1-动画者
     animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -72,6 +65,12 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
+    if ([type isEqualToString:@"1"]) {
+        isSuccess = YES;
+    } else {
+        isSuccess = NO;
+    }
     // 放在最上面,否则点击事件没法触发
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
 }

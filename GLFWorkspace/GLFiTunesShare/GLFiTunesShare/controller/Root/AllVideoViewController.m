@@ -28,19 +28,18 @@
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"所有视频";
     
-    NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
-    if ([type isEqualToString:@"1"]) {
-        isSuccess = YES;
-    } else {
-        isSuccess = NO;
-    }
-    
     [self prepareData];
     [self prepareView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
+    if ([type isEqualToString:@"1"]) {
+        isSuccess = YES;
+    } else {
+        isSuccess = NO;
+    }
     self.navigationController.toolbar.hidden = YES;
     // 放在最上面,否则点击事件没法触发
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
