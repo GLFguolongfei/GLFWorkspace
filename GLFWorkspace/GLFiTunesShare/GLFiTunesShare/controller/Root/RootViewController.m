@@ -416,10 +416,11 @@
     NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
     if (fileType == 1) { // 文件
         // 预览
-        NSString *VoiceMute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
+        NSString *mute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
+        NSString *min = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMin];
         NSArray *array = [model.name componentsSeparatedByString:@"."];
         NSString *lowerType = [array.lastObject lowercaseString];
-        if (isSuccess && (![CvideoTypeArray containsObject:lowerType] || ([CvideoTypeArray containsObject:lowerType] && !VoiceMute.integerValue))) {
+        if (isSuccess && (![CvideoTypeArray containsObject:lowerType] || ([CvideoTypeArray containsObject:lowerType] && !mute.integerValue && !min.integerValue))) {
             NSURL *url = [NSURL fileURLWithPath:model.path];
             UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
             documentController.delegate = self;
