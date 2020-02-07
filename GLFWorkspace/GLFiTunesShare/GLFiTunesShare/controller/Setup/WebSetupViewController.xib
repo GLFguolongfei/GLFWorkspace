@@ -9,6 +9,7 @@
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="WebSetupViewController">
             <connections>
+                <outlet property="label6" destination="Gxk-Kc-Rft" id="YtY-0I-Bgm"/>
                 <outlet property="switch1" destination="lJC-39-2MF" id="Lqt-LZ-Xwn"/>
                 <outlet property="switch2" destination="9EX-G7-HnH" id="86U-5k-Egd"/>
                 <outlet property="switch3" destination="Bvh-7P-b08" id="Y5A-UX-hC3"/>
@@ -123,7 +124,7 @@
                         <action selector="switchAction5:" destination="-1" eventType="valueChanged" id="cme-Ic-UzT"/>
                     </connections>
                 </switch>
-                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Bx8-OM-Dcj">
+                <switch hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Bx8-OM-Dcj">
                     <rect key="frame" x="227.5" y="305" width="52" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="HsF-R2-aPG"/>
@@ -134,7 +135,7 @@
                         <action selector="switchAction6:" destination="-1" eventType="valueChanged" id="p0M-dk-l0U"/>
                     </connections>
                 </switch>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="是否微音" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gxk-Kc-Rft">
+                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="是否微音" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gxk-Kc-Rft">
                     <rect key="frame" x="62.5" y="300" width="150" height="40"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="40" id="8H5-Tf-Oam"/>
