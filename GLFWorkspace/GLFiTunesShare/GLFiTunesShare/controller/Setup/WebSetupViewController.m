@@ -27,11 +27,13 @@
     NSString *font = [userDefaults objectForKey:kWebContentFont];
     NSString *border = [userDefaults objectForKey:kWebContentBorder];
     NSString *mute = [userDefaults objectForKey:kVoiceMute];
+    NSString *min = [userDefaults objectForKey:kVoiceMin];
     [self.switch1 setOn:xuanfu.integerValue animated:YES];
     [self.switch2 setOn:img.integerValue animated:YES];
     [self.switch3 setOn:font.integerValue animated:YES];
     [self.switch4 setOn:border.integerValue animated:YES];
     [self.switch5 setOn:mute.integerValue animated:YES];
+    [self.switch6 setOn:min.integerValue animated:YES];
 }
 
 - (IBAction)switchAction1:(id)sender {
@@ -80,6 +82,16 @@
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kVoiceMute];
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kVoiceMute];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (IBAction)switchAction6:(id)sender {
+    UISwitch *sw = (UISwitch *)sender;
+    if (sw.on) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kVoiceMin];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kVoiceMin];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

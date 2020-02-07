@@ -81,11 +81,14 @@
     playerItem = [AVPlayerItem playerItemWithURL:url];
     // 3-创建AVPlayer
     player = [AVPlayer playerWithPlayerItem:playerItem];
-    NSString *VoiceMute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
-    if (VoiceMute.integerValue) {
+    NSString *mute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
+    if (mute.integerValue) {
         player.volume = 0.0; // 控制音量
     }
-//    player.volume = 0.005; // 控制音量
+    NSString *min = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMin];
+    if (min.integerValue) {
+        player.volume = 0.01; // 控制音量
+    }
     // 4-添加AVPlayerLayer
     playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
     playerLayer.frame = kScreen;
