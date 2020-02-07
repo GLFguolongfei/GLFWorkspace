@@ -113,6 +113,10 @@
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kVoiceMin];
+        if (self.switch5.on) {
+            self.switch5.on = NO;
+            [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kVoiceMute];
+        }
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kVoiceMin];
     }
