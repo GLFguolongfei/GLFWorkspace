@@ -14,7 +14,7 @@
                 <outlet property="switch2" destination="9EX-G7-HnH" id="86U-5k-Egd"/>
                 <outlet property="switch3" destination="Bvh-7P-b08" id="Y5A-UX-hC3"/>
                 <outlet property="switch4" destination="30U-Vt-nsc" id="H7a-PQ-Kfd"/>
-                <outlet property="switch5" destination="3qy-HJ-AA2" id="WHV-n7-xYS"/>
+                <outlet property="switch5" destination="3qy-HJ-AA2" id="Bd5-E2-Il8"/>
                 <outlet property="switch6" destination="Bx8-OM-Dcj" id="YPA-2D-XfR"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -121,7 +121,7 @@
                         <constraint firstAttribute="width" constant="50" id="nSB-9A-TDC"/>
                     </constraints>
                     <connections>
-                        <action selector="switchAction5:" destination="-1" eventType="valueChanged" id="cme-Ic-UzT"/>
+                        <action selector="switchAction5:" destination="-1" eventType="valueChanged" id="SGH-kg-IrE"/>
                     </connections>
                 </switch>
                 <switch hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Bx8-OM-Dcj">
@@ -131,8 +131,7 @@
                         <constraint firstAttribute="width" constant="50" id="emz-C6-gAj"/>
                     </constraints>
                     <connections>
-                        <action selector="switchAction5:" destination="-1" eventType="valueChanged" id="DWV-6P-DUV"/>
-                        <action selector="switchAction6:" destination="-1" eventType="valueChanged" id="p0M-dk-l0U"/>
+                        <action selector="switchAction6:" destination="-1" eventType="valueChanged" id="E8k-Re-XqY"/>
                     </connections>
                 </switch>
                 <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="是否微音" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gxk-Kc-Rft">
