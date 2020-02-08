@@ -320,7 +320,7 @@
     UIBarButtonItem *item = self.navigationItem.rightBarButtonItems[0];
     if (editing) {
         item.title = @"选择";
-        self.navigationController.toolbarHidden = YES;
+        [self.navigationController setToolbarHidden:YES animated:YES];
         [myTableView setEditing:NO animated:YES];
         
         UIBarButtonItem *item1 = self.toolbarItems[2]; // 移动
@@ -329,7 +329,7 @@
         item2.enabled = NO;
     } else {
         item.title = @"取消";
-        self.navigationController.toolbarHidden = NO;
+        [self.navigationController setToolbarHidden:NO animated:YES];
         [myTableView setEditing:YES animated:YES];
     }
     [editArray removeAllObjects];
