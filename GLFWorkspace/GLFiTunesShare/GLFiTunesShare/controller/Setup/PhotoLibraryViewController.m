@@ -56,13 +56,9 @@ static NSString *cellID = @"cellID";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     // 放在最上面,否则点击事件没法触发
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
-}
-
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
-    [gestureView removeFromSuperview];
 }
 
 - (void)prepareData {

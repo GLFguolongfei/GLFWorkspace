@@ -47,6 +47,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
     if ([type isEqualToString:@"1"]) {
         isSuccess = YES;
@@ -81,6 +82,7 @@
 }
 
 - (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     if (self.moveModel) {
         MoveViewController *editVC = [[MoveViewController alloc] init];
         editVC.modelArray = @[self.moveModel];

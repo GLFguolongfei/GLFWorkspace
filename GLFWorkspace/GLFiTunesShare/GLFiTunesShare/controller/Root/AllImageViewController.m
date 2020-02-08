@@ -65,6 +65,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
     if ([type isEqualToString:@"1"]) {
         isSuccess = YES;
