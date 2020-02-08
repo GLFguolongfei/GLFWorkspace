@@ -55,6 +55,11 @@ static NSString *cellID = @"cellID";
     [self prepareStackView];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    // 放在最上面,否则点击事件没法触发
+    [self.navigationController.navigationBar bringSubviewToFront:gestureView];
+}
+
 - (void)viewDidDisappear:(BOOL)animated {
     [super viewDidDisappear:animated];
     [gestureView removeFromSuperview];
@@ -108,7 +113,7 @@ static NSString *cellID = @"cellID";
     [self.navigationController.navigationBar addSubview:gestureView];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
-    tapGesture.numberOfTapsRequired = 3;
+    tapGesture.numberOfTapsRequired = 2;
     tapGesture.numberOfTouchesRequired = 1;
     [tapGesture addTarget:self action:@selector(prepareData)];
     [gestureView addGestureRecognizer:tapGesture];

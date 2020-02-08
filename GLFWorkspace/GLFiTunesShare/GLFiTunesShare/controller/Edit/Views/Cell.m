@@ -19,8 +19,7 @@
         self.imageView.clipsToBounds = YES;
         [self.contentView addSubview:self.imageView];
         // 2-Label
-        self.label = [[UILabel alloc] initWithFrame:CGRectMake(0.0, 0.0, frame.size.width/2, 25)];
-        self.label.textAlignment = NSTextAlignmentCenter;
+        self.label = [[UILabel alloc] initWithFrame:CGRectMake(10, 0.0, frame.size.width-20, 30)];
         self.label.font = [UIFont boldSystemFontOfSize:17];
         self.label.textColor = [UIColor colorWithHexString:@"2C84E8"];
         [self.contentView addSubview:self.label];
