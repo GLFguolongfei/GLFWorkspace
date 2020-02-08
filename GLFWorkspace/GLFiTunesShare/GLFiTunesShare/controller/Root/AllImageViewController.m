@@ -139,7 +139,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
             [_tableView2 reloadData];
             [_tableView3 reloadData];
             dispatch_async(queue, ^{
-                for (NSInteger i = _dataArray1.count - 1; i > 0; i--) {
+                for (NSInteger i = 0; i < _dataArray1.count; i++) {
                     FileModel *model = _dataArray1[i];
                     if (model.scaleImage == nil) {
                         UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
@@ -147,7 +147,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
                         [_dataArray1 replaceObjectAtIndex:i withObject:model];
                     }
                 }
-                for (NSInteger i = _dataArray2.count - 1; i > 0; i--) {
+                for (NSInteger i = 0; i < _dataArray2.count; i++) {
                     FileModel *model = _dataArray2[i];
                     if (model.scaleImage == nil) {
                         UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
@@ -155,7 +155,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
                         [_dataArray2 replaceObjectAtIndex:i withObject:model];
                     }
                 }
-                for (NSInteger i = _dataArray3.count - 1; i > 0; i--) {
+                for (NSInteger i = 0; i < _dataArray3.count; i++) {
                     FileModel *model = _dataArray3[i];
                     if (model.scaleImage == nil) {
                         UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
@@ -321,10 +321,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.scaleImage == nil) {
-            UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
-            cell.scaleImageView.image = scaleImage;
-            model.scaleImage = scaleImage;
-            [_dataArray1 replaceObjectAtIndex:indexPath.row withObject:model];
+            cell.scaleImageView.image = [self scaleImage:model.image toScale:0.1];
         } else {
             cell.scaleImageView.image = model.scaleImage;
         }
@@ -334,10 +331,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID2 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.scaleImage == nil) {
-            UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
-            cell.scaleImageView.image = scaleImage;
-            model.scaleImage = scaleImage;
-            [_dataArray2 replaceObjectAtIndex:indexPath.row withObject:model];
+            cell.scaleImageView.image = [self scaleImage:model.image toScale:0.1];
         } else {
             cell.scaleImageView.image = model.scaleImage;
         }
@@ -347,10 +341,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID3 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.scaleImage == nil) {
-            UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
-            cell.scaleImageView.image = scaleImage;
-            model.scaleImage = scaleImage;
-            [_dataArray3 replaceObjectAtIndex:indexPath.row withObject:model];
+            cell.scaleImageView.image = [self scaleImage:model.image toScale:0.1];
         } else {
             cell.scaleImageView.image = model.scaleImage;
         }

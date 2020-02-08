@@ -160,7 +160,7 @@
     }
     if (self.navigationController.viewControllers.count > 3) {
         UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"选择" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction3:)];
-        UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"返回首页" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
+        UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"首页" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
         self.navigationItem.rightBarButtonItems = @[item1, item2];
     } else {
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"选择" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction3:)];
