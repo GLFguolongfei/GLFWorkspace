@@ -61,6 +61,7 @@
     NSString *currentFontStr = currentNames[indexPath.row];
     
     cell.textLabel.text = currentFontStr;
+//    cell.textLabel.text = @"Winter Is Coming";
     cell.textLabel.font = [UIFont fontWithName:currentFontStr size:18];
     cell.textLabel.textColor = [UIColor blackColor];
     
