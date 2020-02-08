@@ -98,6 +98,7 @@
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         self.pathStr = [paths objectAtIndex:0];
     }
+    NSLog(@"%@", self.pathStr);
     fileManager.currentPath = self.pathStr;
     if ([myTableView numberOfRowsInSection:0] == 0) {
         [self showHUD];
