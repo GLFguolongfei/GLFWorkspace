@@ -31,15 +31,9 @@
     gravityBeahvior = [[UIGravityBehavior alloc] init];
     // 3-添加重力仿真行为
     [animator addBehavior:gravityBeahvior];
-    
-
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self showImage];
-}
-
-- (void)showImage {
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     if (imageView) {
         // 为重力仿真行为添加动力学元素
         [gravityBeahvior addItem:imageView];
@@ -56,9 +50,14 @@
     UIImage *image = [UIImage imageNamed:name];
     imageView = [[UIImageView alloc] initWithImage:image];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
-    imageView.frame = CGRectMake(0, 0, kScreenWidth, 200);
+    imageView.frame = CGRectMake(0, 0, 0, 0);
     imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
+    imageView.alpha = 0;
     [self.view addSubview:imageView];
+    [UIView animateWithDuration:1 animations:^{
+        imageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+        imageView.alpha = 1;
+    }];
 }
 
 
