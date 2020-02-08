@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6F040F991FAD6EDC00EF4721 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */; };
+		6F06F99023EF1DCB006E5C97 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F06F98F23EF1DCA006E5C97 /* AssetsLibrary.framework */; };
 		6F0CB5D623485C0300B69807 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0CB5D523485C0300B69807 /* WebKit.framework */; };
 		6F0E960D1FA4135B0029DDD6 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E95EC1FA4135B0029DDD6 /* Base64.m */; };
 		6F0E960E1FA4135B0029DDD6 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E95EC1FA4135B0029DDD6 /* Base64.m */; };
@@ -150,6 +151,7 @@
 
 /* Begin PBXFileReference section */
 		6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		6F06F98F23EF1DCA006E5C97 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		6F0CB5D523485C0300B69807 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		6F0E95EB1FA4135B0029DDD6 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		6F0E95EC1FA4135B0029DDD6 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
@@ -274,6 +276,7 @@
 			files = (
 				6F040F991FAD6EDC00EF4721 /* LocalAuthentication.framework in Frameworks */,
 				6F124DF51F9F3E1A005605E1 /* AVFoundation.framework in Frameworks */,
+				6F06F99023EF1DCB006E5C97 /* AssetsLibrary.framework in Frameworks */,
 				6FFE33A123D3333700D6DBE6 /* QuartzCore.framework in Frameworks */,
 				6F393F8E1FA1B3E90049CF49 /* CloudKit.framework in Frameworks */,
 				6F124DF31F9F3E07005605E1 /* MobileCoreServices.framework in Frameworks */,
@@ -563,6 +566,7 @@
 		6F9116DB1F7EB445002C40AC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6F06F98F23EF1DCA006E5C97 /* AssetsLibrary.framework */,
 				6FFE33A023D3333700D6DBE6 /* QuartzCore.framework */,
 				6F0CB5D523485C0300B69807 /* WebKit.framework */,
 				6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */,
