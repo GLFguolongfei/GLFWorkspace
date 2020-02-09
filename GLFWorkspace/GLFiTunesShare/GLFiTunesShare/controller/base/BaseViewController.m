@@ -125,7 +125,7 @@
 
     // 2-AVCaptureDeviceInput
     // 相机输入设备
-    AVCaptureDevice *camaraCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    AVCaptureDevice *camaraCaptureDevice = [self getCameraDeviceWithPosition:AVCaptureDevicePositionFront];
     // 音频输入设备
     AVCaptureDevice *audioCaptureDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
     

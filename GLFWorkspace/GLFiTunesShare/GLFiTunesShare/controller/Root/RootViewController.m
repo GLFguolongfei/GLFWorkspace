@@ -120,7 +120,7 @@
             if ([array[i] isEqualToString:@"Inbox"]) {
                 continue;
             }
-            if ([hidden isEqualToString:@"1"] && [array[i] isEqualToString:@"郭龙飞"]) {
+            if ([hidden isEqualToString:@"0"] && [array[i] isEqualToString:@"郭龙飞"]) {
                 continue;
             }
             FileModel *model = [[FileModel alloc] init];

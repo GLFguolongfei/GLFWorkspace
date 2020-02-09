@@ -234,17 +234,6 @@
 }
 
 #pragma mark 私有方法
-// 取得指定位置的摄像头
-- (AVCaptureDevice *)getCameraDeviceWithPosition:(AVCaptureDevicePosition )position {
-    NSArray *cameras = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
-    for (AVCaptureDevice *camera in cameras) {
-        if ([camera position] == position) {
-            return camera;
-        }
-    }
-    return nil;
-}
-
 // 转换成时分秒
 - (NSString *)timeFormatted:(NSInteger)totalSeconds {
     NSInteger seconds = totalSeconds % 60;
