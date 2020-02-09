@@ -261,11 +261,10 @@
 
 // 生成唯一不重复名称
 - (NSString *)returnName {
-    CFUUIDRef uuidRef =CFUUIDCreate(NULL);
-    CFStringRef uuidStringRef =CFUUIDCreateString(NULL, uuidRef);
-    CFRelease(uuidRef);
-    NSString *uniqueId = (__bridge NSString *)uuidStringRef;
-    return uniqueId;
+    NSDateFormatter *dateFormat2 = [[NSDateFormatter alloc] init];
+    [dateFormat2 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+    NSString *dateStr = [dateFormat2 stringFromDate:[NSDate date]];
+    return dateStr;
 }
 
 

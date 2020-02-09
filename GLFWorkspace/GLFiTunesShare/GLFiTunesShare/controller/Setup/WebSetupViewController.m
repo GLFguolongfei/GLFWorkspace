@@ -32,6 +32,7 @@
     NSString *mute = [userDefaults objectForKey:kVoiceMute];
     NSString *min = [userDefaults objectForKey:kVoiceMin];
     NSString *hidden = [userDefaults objectForKey:kContentHidden];
+    NSString *record = [userDefaults objectForKey:kRecord];
     [self.switch1 setOn:xuanfu.integerValue animated:YES];
     [self.switch2 setOn:img.integerValue animated:YES];
     [self.switch3 setOn:font.integerValue animated:YES];
@@ -39,6 +40,7 @@
     [self.switch5 setOn:mute.integerValue animated:YES];
     [self.switch6 setOn:min.integerValue animated:YES];
     [self.switch7 setOn:hidden.integerValue animated:YES];
+    [self.switch8 setOn:record.integerValue animated:YES];
 
     gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
@@ -61,6 +63,8 @@
     self.label6.hidden = !self.label6.hidden;
     self.switch7.hidden = !self.switch7.hidden;
     self.label7.hidden = !self.label7.hidden;
+    self.switch8.hidden = !self.switch8.hidden;
+    self.label8.hidden = !self.label8.hidden;
 }
 
 - (IBAction)switchAction1:(id)sender {
@@ -137,6 +141,16 @@
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kContentHidden];
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kContentHidden];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (IBAction)switchAction8:(id)sender {
+    UISwitch *sw = (UISwitch *)sender;
+    if (sw.on) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kRecord];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kRecord];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

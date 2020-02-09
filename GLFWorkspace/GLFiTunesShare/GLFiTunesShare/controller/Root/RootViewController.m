@@ -112,6 +112,8 @@
         NSMutableArray *cArray = [[NSMutableArray alloc] init];
         NSMutableArray *bArray = [[NSMutableArray alloc] init];
         NSArray *array = [GLFFileManager searchSubFile:self.pathStr andIsDepth:NO];
+        CGFloat allSize = 0;
+        CGFloat currentSize = 0;
         for (int i = 0; i < array.count; i++) {
             // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
             // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
@@ -137,17 +139,22 @@
                     model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
                 }
                 [bArray addObject:model];
+                allSize += model.size;
             } else if (fileType == 2) { // 文件夹
                 model.isDir = YES;
                 model.size = [GLFFileManager fileSizeForDir:model.path];
                 model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
                 [cArray addObject:model];
+                allSize += model.size;
             }
+        }
+        for (FileModel *model in myDataArray) {
+            currentSize += model.size;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideAllHUD];
             // 有更新才更新
-            if (cArray.count + bArray.count != myDataArray.count) {
+            if (allSize != currentSize) {
                 [myDataArray removeAllObjects];
                 // 显示文件夹排在前面
                 [myDataArray addObjectsFromArray:cArray];

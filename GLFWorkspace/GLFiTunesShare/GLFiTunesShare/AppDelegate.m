@@ -76,6 +76,12 @@
     }];
 }
 
+- (void)applicationWillTerminate:(UIApplication *)application {
+    // 不记录,否则太耗费空间了
+    [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kRecord];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (void)applicationDidReceiveMemoryWarning:(UIApplication*)application {
     [[NSURLCache sharedURLCache] removeAllCachedResponses];
     NSLog(@"很荣幸,收到内存警告");
