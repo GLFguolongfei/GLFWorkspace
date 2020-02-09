@@ -43,7 +43,8 @@
     SubViewController3 *subVC = [[SubViewController3 alloc] init];
     subVC.currentIndex = self.selectIndex;
     subVC.model = self.fileArray[self.selectIndex];
-    self.title = subVC.model.name;
+    NSArray *array = [subVC.model.name componentsSeparatedByString:@"/"];
+    self.title = array.lastObject;
     currentVC = subVC;
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
@@ -150,7 +151,8 @@
     // 获取当前控制器标题
     NSInteger currentIndex = currentVC.currentIndex;
     FileModel *currentModel = self.fileArray[currentIndex];
-    self.title = currentModel.name;
+    NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
+    self.title = array.lastObject;
 }
 
 // 结束滚动或翻页的时候触发
