@@ -14,7 +14,9 @@
 #import "FourViewController.h"
 
 @interface OtherViewController ()
-
+{
+    UIImageView *bgImageView;
+}
 @end
 
 @implementation OtherViewController
@@ -27,6 +29,11 @@
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"测试功能" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
     self.navigationItem.rightBarButtonItem = item;
     self.title = @"有趣功能";
+    
+    // 设置背景图片
+    bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    bgImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [self.view addSubview:bgImageView];
 
     for (NSInteger i = 0; i < 10; i++) {
         CGFloat width = (kScreenWidth - 60) / 2;
@@ -50,6 +57,28 @@
         button.layer.masksToBounds = YES;
         [self.view addSubview:button];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
+    NSString *backName = [userDefaults objectForKey:BackImageName];
+    NSArray *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cachePath = [cachePaths objectAtIndex:0];
+    NSString *filePath = [cachePath stringByAppendingString:@"/image.png"];
+    UIImage *backImage;
+    if (isUseBackImagePath.integerValue) {
+        backImage = [UIImage imageWithContentsOfFile:filePath];
+    } else {
+        backImage = [UIImage imageNamed:backName];
+    }
+    if (backImage == nil) {
+        backImage = [UIImage imageNamed:@"bgView2"];
+        [userDefaults setObject:@"bgView2" forKey:BackImageName];
+        [userDefaults synchronize];
+    }
+    bgImageView.image = backImage;
 }
 
 - (void)button {
