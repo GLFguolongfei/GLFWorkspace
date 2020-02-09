@@ -10,6 +10,8 @@
 #import "TestViewController.h"
 #import "OneViewController.h"
 #import "TwoViewController.h"
+#import "ThreeViewController.h"
+#import "FourViewController.h"
 
 @interface OtherViewController ()
 
@@ -34,7 +36,11 @@
             [button setTitle:@"UIKit动力学" forState:UIControlStateNormal];
         } else if (i == 1)  {
             [button setTitle:@"iOS字体" forState:UIControlStateNormal];
-        } else {
+        } else if (i == 2)  {
+            [button setTitle:@"自定义拍照" forState:UIControlStateNormal];
+        }  else if (i == 3)  {
+            [button setTitle:@"自定义录像" forState:UIControlStateNormal];
+        }  else {
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
         [button setBackgroundColor:[UIColor lightGrayColor]];
@@ -57,6 +63,12 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if (button.tag == 101) {
         TwoViewController *vc = [[TwoViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (button.tag == 102) {
+        ThreeViewController *vc = [[ThreeViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (button.tag == 103) {
+        FourViewController *vc = [[FourViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }
