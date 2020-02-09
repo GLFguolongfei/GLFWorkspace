@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 // --- 内容设置页
-@interface WebSetupViewController : UIViewController
+@interface WebSetupViewController : BaseViewController
 
 @property (weak, nonatomic) IBOutlet UISwitch *switch1;
 @property (weak, nonatomic) IBOutlet UISwitch *switch2;

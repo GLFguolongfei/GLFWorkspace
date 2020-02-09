@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 // --- 内容页
-@interface DetailViewController : UIViewController
+@interface DetailViewController : BaseViewController
 
 @property (nonatomic, assign) NSInteger selectIndex;  
 @property (nonatomic, strong) NSArray *fileArray;

@@ -23,5 +23,7 @@
 - (void)hideHUD;
 - (void)hideHUD:(BOOL)animated;
 - (void)hideAllHUD;
+#pragma mark 是否可以记录
+- (void)canRecord:(BOOL)isYes;
 
 @end

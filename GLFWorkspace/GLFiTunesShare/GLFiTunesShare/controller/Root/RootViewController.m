@@ -146,6 +146,15 @@
                 model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
                 [cArray addObject:model];
                 allSize += model.size;
+                if ([self.title isEqualToString:@"NSDocumentDirectory"] || [self.title isEqualToString:@":NSDocumentDirectory"]) {
+                    if ([model.name isEqualToString:@"郭龙飞"] && model.size > 1000000000) {
+                        if ([self.title isEqualToString:@"NSDocumentDirectory"]) {
+                            self.title = @"【NSDocumentDirectory】";
+                        } else {
+                            self.title = @":【NSDocumentDirectory】";
+                        }
+                    }
+                }
             }
         }
         for (FileModel *model in myDataArray) {

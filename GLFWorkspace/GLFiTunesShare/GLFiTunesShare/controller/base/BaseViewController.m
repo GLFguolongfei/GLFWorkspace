@@ -18,6 +18,7 @@
     AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
     
     BOOL isUseFrontFacingCamera; // 是否使用前置摄像头
+    BOOL isCanRecord;
 }
 @end
 
@@ -30,20 +31,34 @@
     // 不需要添加额外的滚动区域
     self.automaticallyAdjustsScrollViewInsets = NO;
 
+    isCanRecord = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *record = [userDefaults objectForKey:kRecord];
+    if ([record isEqualToString:@"1"] && isCanRecord) {
+        if (![self.title hasPrefix:@":"]) {
+            self.title = [NSString stringWithFormat:@":%@", self.title];
+        }
+    } else {
+        if ([self.title hasPrefix:@":"]) {
+            NSArray *array = [self.title componentsSeparatedByString:@":"];
+            if (array.count >= 2) {
+                self.title = array[1];
+            }
+        }
+    }
 
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        if ([record isEqualToString:@"1"]) {
-            [self configCamara:NO];
+        if ([record isEqualToString:@"1"] && isCanRecord) {
+            [self configCamara:YES];
             [self startRecording];
         } else {
-            [self configCamara:YES];
+            [self configCamara:NO];
             [self stopRecording];
         }
     });
@@ -51,7 +66,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    [self configCamara:YES];
+    [self configCamara:NO];
     [self stopRecording];
 }
 
@@ -109,9 +124,25 @@
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
 
+#pragma mark 是否可以记录
+- (void)canRecord:(BOOL)isYes {
+    isCanRecord = isYes;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *record = [userDefaults objectForKey:kRecord];
+    if ([record isEqualToString:@"1"] && isCanRecord) {
+        if (captureMovieFileOutput && ![captureMovieFileOutput isRecording]) {
+            [self configCamara:YES];
+            [self startRecording];
+        }
+    } else {
+        [self configCamara:NO];
+        [self stopRecording];
+    }
+}
+
 #pragma mark Setup
-- (void)configCamara:(BOOL)isClear {
-    if (isClear) {
+- (void)configCamara:(BOOL)isRecord {
+    if (!isRecord) {
         captureSession = nil;
         captureDeviceInput = nil;
         captureMovieFileOutput = nil;

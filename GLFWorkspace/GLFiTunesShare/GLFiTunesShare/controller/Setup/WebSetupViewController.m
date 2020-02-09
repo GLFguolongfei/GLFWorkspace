@@ -23,6 +23,7 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"设置内容显示";
+    [self canRecord:NO];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *xuanfu = [userDefaults objectForKey:kWebContentXuanFu];
