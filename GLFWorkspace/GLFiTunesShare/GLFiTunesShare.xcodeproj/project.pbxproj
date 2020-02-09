@@ -13,6 +13,8 @@
 		6F06F9E023F04FCF006E5C97 /* ThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F06F9DE23F04FCF006E5C97 /* ThreeViewController.m */; };
 		6F06F9E323F04FF8006E5C97 /* FourViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F06F9E223F04FF8006E5C97 /* FourViewController.m */; };
 		6F06F9E423F04FF8006E5C97 /* FourViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F06F9E223F04FF8006E5C97 /* FourViewController.m */; };
+		6F06F9E823F05721006E5C97 /* NSString+Hash.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F06F9E623F05721006E5C97 /* NSString+Hash.m */; };
+		6F06F9E923F05721006E5C97 /* NSString+Hash.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F06F9E623F05721006E5C97 /* NSString+Hash.m */; };
 		6F0CB5D623485C0300B69807 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0CB5D523485C0300B69807 /* WebKit.framework */; };
 		6F0E960D1FA4135B0029DDD6 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E95EC1FA4135B0029DDD6 /* Base64.m */; };
 		6F0E960E1FA4135B0029DDD6 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E95EC1FA4135B0029DDD6 /* Base64.m */; };
@@ -160,6 +162,8 @@
 		6F06F9DE23F04FCF006E5C97 /* ThreeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreeViewController.m; sourceTree = "<group>"; };
 		6F06F9E123F04FF8006E5C97 /* FourViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FourViewController.h; sourceTree = "<group>"; };
 		6F06F9E223F04FF8006E5C97 /* FourViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FourViewController.m; sourceTree = "<group>"; };
+		6F06F9E623F05721006E5C97 /* NSString+Hash.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+Hash.m"; sourceTree = "<group>"; };
+		6F06F9E723F05721006E5C97 /* NSString+Hash.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+Hash.h"; sourceTree = "<group>"; };
 		6F0CB5D523485C0300B69807 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		6F0E95EB1FA4135B0029DDD6 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		6F0E95EC1FA4135B0029DDD6 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
@@ -320,9 +324,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6F06F9E523F05721006E5C97 /* MD5 */ = {
+			isa = PBXGroup;
+			children = (
+				6F06F9E623F05721006E5C97 /* NSString+Hash.m */,
+				6F06F9E723F05721006E5C97 /* NSString+Hash.h */,
+			);
+			path = MD5;
+			sourceTree = "<group>";
+		};
 		6F0E95E91FA4135B0029DDD6 /* GLFTools */ = {
 			isa = PBXGroup;
 			children = (
+				6F06F9E523F05721006E5C97 /* MD5 */,
 				6F1C540123C8F523000122FB /* UncaughtExceptionHandler.h */,
 				6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */,
 				6F0E95FB1FA4135B0029DDD6 /* MBProgressHUD */,
@@ -845,6 +859,7 @@
 				6F06F9E323F04FF8006E5C97 /* FourViewController.m in Sources */,
 				6F1EEB001FB1A4060046389D /* DetailViewController.m in Sources */,
 				6F0E96271FA4135B0029DDD6 /* WaterView2.m in Sources */,
+				6F06F9E823F05721006E5C97 /* NSString+Hash.m in Sources */,
 				6F0E961B1FA4135B0029DDD6 /* MBProgressHUD+Add.m in Sources */,
 				6F8072C01F7E436E007D7B26 /* main.m in Sources */,
 				6F1EEB211FB1A86A0046389D /* WebSetupViewController.m in Sources */,
@@ -913,6 +928,7 @@
 				6F06F9E423F04FF8006E5C97 /* FourViewController.m in Sources */,
 				6F1EEB2E1FB1ADD50046389D /* ImageViewController.m in Sources */,
 				6F1EEB2F1FB1ADD50046389D /* WebSetupViewController.m in Sources */,
+				6F06F9E923F05721006E5C97 /* NSString+Hash.m in Sources */,
 				6F1EEB301FB1ADD50046389D /* LoginViewController.m in Sources */,
 				6F1EEB311FB1ADD50046389D /* BaseViewController.m in Sources */,
 				6FE944E220BE4EF6005A46AD /* DetailViewController3.m in Sources */,

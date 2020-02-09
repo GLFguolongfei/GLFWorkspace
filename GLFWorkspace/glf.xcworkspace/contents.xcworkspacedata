@@ -7,6 +7,16 @@
    <Group
       location = "group:GLFTools"
       name = "GLFTools">
+      <Group
+         location = "group:MD5"
+         name = "MD5">
+         <FileRef
+            location = "group:NSString+Hash.m">
+         </FileRef>
+         <FileRef
+            location = "group:NSString+Hash.h">
+         </FileRef>
+      </Group>
       <FileRef
          location = "group:UncaughtExceptionHandler.h">
       </FileRef>

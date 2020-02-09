@@ -30,6 +30,8 @@
 #import "UIView+Helper.h"
 #import "UIColor+HexString.h"
 #import "NSDate+Help.h"
+#import "NSString+Hash.h"
+
 
 
 #pragma mark 适配

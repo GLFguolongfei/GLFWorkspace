@@ -149,7 +149,10 @@
     if (![captureMovieFileOutput isRecording]) {
         // 预览图层和视频方向保持一致
         captureConnection.videoOrientation = [captureVideoPreviewLayer connection].videoOrientation;
-        NSString *outputFielPath = [NSTemporaryDirectory() stringByAppendingString:@"myMovie.mov"];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *rootPaht = [paths objectAtIndex:0];
+        NSString *name = [self returnName];
+        NSString *outputFielPath = [NSString stringWithFormat:@"%@/%@.mp4", rootPaht, name];
         NSLog(@"save path is: %@", outputFielPath);
         NSURL *fileUrl = [NSURL fileURLWithPath:outputFielPath];
         [captureMovieFileOutput startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
@@ -254,6 +257,15 @@
     } else {
         return [NSString stringWithFormat:@"%02ld", (long)seconds];
     }
+}
+
+// 生成唯一不重复名称
+- (NSString *)returnName {
+    CFUUIDRef uuidRef =CFUUIDCreate(NULL);
+    CFStringRef uuidStringRef =CFUUIDCreateString(NULL, uuidRef);
+    CFRelease(uuidRef);
+    NSString *uniqueId = (__bridge NSString *)uuidStringRef;
+    return uniqueId;
 }
 
 
