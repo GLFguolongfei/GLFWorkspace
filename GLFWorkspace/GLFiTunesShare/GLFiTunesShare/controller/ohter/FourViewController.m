@@ -152,7 +152,7 @@
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *rootPaht = [paths objectAtIndex:0];
         NSString *name = [self returnName];
-        NSString *outputFielPath = [NSString stringWithFormat:@"%@/%@.mp4", rootPaht, name];
+        NSString *outputFielPath = [NSString stringWithFormat:@"%@/郭龙飞/%@.mp4", rootPaht, name];
         NSLog(@"save path is: %@", outputFielPath);
         NSURL *fileUrl = [NSURL fileURLWithPath:outputFielPath];
         [captureMovieFileOutput startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
