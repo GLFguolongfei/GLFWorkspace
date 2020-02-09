@@ -35,7 +35,7 @@
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:bgImageView];
 
-    for (NSInteger i = 0; i < 10; i++) {
+    for (NSInteger i = 0; i < 4; i++) {
         CGFloat width = (kScreenWidth - 60) / 2;
         CGRect frame = CGRectMake(20 * (i % 2 + 1) + width * (i % 2), 100 + 80 * ceil(i / 2), width, 60);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
@@ -50,7 +50,8 @@
         }  else {
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
-        [button setBackgroundColor:[UIColor lightGrayColor]];
+        [button setBackgroundColor:[UIColor clearColor]];
+        [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i + 100;
         button.layer.cornerRadius = 5;
