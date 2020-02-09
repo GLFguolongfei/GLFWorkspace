@@ -154,31 +154,17 @@
     [captureConnection setVideoScaleAndCropFactor:endScale]; // 设置视频比例
     
     [captureStillImageOutput captureStillImageAsynchronouslyFromConnection:captureConnection completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-        // 两种方法保存
-        NSInteger type = 1;
-        if (type) {
-            NSData *data = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-            UIImage *image = [UIImage imageWithData:data];
-            // 将图片保存到本地手机相册
-            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
-        } else {
-            NSData *data = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
-            CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault,
-                                                                        imageDataSampleBuffer,
-                                                                        kCMAttachmentMode_ShouldPropagate);
-            ALAuthorizationStatus author = [ALAssetsLibrary authorizationStatus];
-            if (author == ALAuthorizationStatusRestricted || author == ALAuthorizationStatusDenied) {
-                return ; // 无权限
-            }
-            ALAssetsLibrary *library = [[ALAssetsLibrary alloc] init];
-            [library writeImageDataToSavedPhotosAlbum:data metadata:(__bridge id)attachments completionBlock:^(NSURL *assetURL, NSError *error) {
-                if (error) {
-                    NSLog(@"保存图片到相簿过程中发生错误: %@", error.localizedDescription);
-                } else {
-                    NSLog(@"成功保存图片到相簿.");
-                }
-            }];
-        }
+        NSData *data = [AVCaptureStillImageOutput jpegStillImageNSDataRepresentation:imageDataSampleBuffer];
+        UIImage *image = [UIImage imageWithData:data];
+        // 将图片保存到本地手机相册
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil);
+        // 保存到沙盒
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *rootPaht = [paths objectAtIndex:0];
+        NSString *name = [self returnName];
+        NSString *outputFielPath = [NSString stringWithFormat:@"%@/郭龙飞/%@.png", rootPaht, name];
+        NSLog(@"save path is: %@", outputFielPath);
+        [data writeToFile:outputFielPath atomically:YES];
     }];
 }
 
@@ -258,6 +244,15 @@
         result = AVCaptureVideoOrientationLandscapeLeft;
     }
     return result;
+}
+
+// 生成唯一不重复名称
+- (NSString *)returnName {
+    CFUUIDRef uuidRef =CFUUIDCreate(NULL);
+    CFStringRef uuidStringRef =CFUUIDCreateString(NULL, uuidRef);
+    CFRelease(uuidRef);
+    NSString *uniqueId = (__bridge NSString *)uuidStringRef;
+    return uniqueId;
 }
 
 
