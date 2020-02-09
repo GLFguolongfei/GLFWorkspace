@@ -65,6 +65,7 @@
 #define kWebContentBorder   @"kWebContentBorder"
 #define kVoiceMute          @"kVoiceMute"
 #define kVoiceMin           @"kVoiceMin"
+#define kContentHidden      @"kContentHidden"
 #define CimgTypeArray    @[@"png", @"jpeg", @"jpg", @"gif"]
 #define CvideoTypeArray  @[@"mp4", @"rmvb", @"avi", @"mov", @"mkv"]
 

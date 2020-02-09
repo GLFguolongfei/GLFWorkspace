@@ -104,6 +104,9 @@
         [self showHUD];
     }
     
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *hidden = [userDefaults objectForKey:kContentHidden];
+    
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
         NSMutableArray *cArray = [[NSMutableArray alloc] init];
@@ -113,6 +116,9 @@
             // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
             // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
             if ([array[i] isEqualToString:@"Inbox"]) {
+                continue;
+            }
+            if ([hidden isEqualToString:@"1"] && [array[i] isEqualToString:@"郭龙飞"]) {
                 continue;
             }
             FileModel *model = [[FileModel alloc] init];
@@ -284,6 +290,15 @@
 
 // 移动
 - (void)moveAction:(id)sender {
+    for (NSInteger i = 0; i < editArray.count; i++) {
+        FileModel *model = editArray[i];
+        if ([model.name isEqualToString:@"郭龙飞"]) {
+            [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:2];
+            [self viewEditing:YES];
+            return;
+        }
+    }
+    
     MoveViewController *editVC = [[MoveViewController alloc] init];
     editVC.modelArray = editArray;
     [self presentViewController:editVC animated:YES completion:nil];
@@ -291,6 +306,15 @@
 
 // 删除
 - (void)deleteAction:(id)sender {
+    for (NSInteger i = 0; i < editArray.count; i++) {
+        FileModel *model = editArray[i];
+        if ([model.name isEqualToString:@"郭龙飞"]) {
+            [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:2];
+            [self viewEditing:YES];
+            return;
+        }
+    }
+    
     NSString *str = [NSString stringWithFormat:@"%ld 个项目将从您的设备存储中删除。此操作不能撤销。",editArray.count];
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"" message:str preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -514,6 +538,11 @@
 
 - (void)deleteAction {
     FileModel *model = myDataArray[editIndexPath.row];
+    if ([model.name isEqualToString:@"郭龙飞"]) {
+        [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:2];
+        [self viewEditing:YES];
+        return;
+    }
     NSString *str = [NSString stringWithFormat:@"[%@] 将从您的设备存储中删除。此操作不能撤销。", model.name];
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"" message:str preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -554,6 +583,11 @@
 
 - (void)renameAction {
     FileModel *model = myDataArray[editIndexPath.row];
+    if ([model.name isEqualToString:@"郭龙飞"]) {
+        [self showStringHUD:@"文件夹【郭龙飞】不可以重命名" second:2];
+        [self viewEditing:YES];
+        return;
+    }
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"给项目重新命名" message:@"为该项目输入新名称" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         [self viewEditing:YES];
@@ -581,6 +615,11 @@
 
 - (void)moveAction {
     FileModel *model = myDataArray[editIndexPath.row];
+    if ([model.name isEqualToString:@"郭龙飞"]) {
+        [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:2];
+        [self viewEditing:YES];
+        return;
+    }
     MoveViewController *editVC = [[MoveViewController alloc] init];
     editVC.modelArray = @[model];
     [self presentViewController:editVC animated:YES completion:nil];
