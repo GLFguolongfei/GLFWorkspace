@@ -8,14 +8,18 @@
 
 #import "AllVideoViewController.h"
 #import "DetailViewController3.h"
+#import "FileInfoViewController.h"
 
-@interface AllVideoViewController ()<UITableViewDataSource, UITableViewDelegate, UIDocumentInteractionControllerDelegate>
+@interface AllVideoViewController ()<UITableViewDataSource, UITableViewDelegate, UIDocumentInteractionControllerDelegate, UIViewControllerPreviewingDelegate>
 {
     UITableView *_tableView;
     NSMutableArray *_dataArray;
     
     UIView *gestureView;
     BOOL isSuccess;
+    
+    BOOL isShowImage;
+    BOOL isStop;
 }
 @end
 
@@ -26,7 +30,12 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"图片" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
+    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"文字" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
+    self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.title = @"所有视频";
+    
+    isShowImage = NO;
     
     [self prepareData];
     [self prepareView];
@@ -43,6 +52,11 @@
     self.navigationController.toolbar.hidden = YES;
     // 放在最上面,否则点击事件没法触发
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    isStop = YES;
 }
 
 - (void)prepareData {
@@ -71,8 +85,10 @@
                 NSString *lowerType = [array.lastObject lowercaseString];
                 if ([CvideoTypeArray containsObject:lowerType]) {
                     // 内存警告崩溃
-//                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-                    model.image = [UIImage imageNamed:@"video"];
+                    if (i % 30 == 1) {
+                        model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
+                    }
+                    model.image = nil;
                     [resultArray addObject:model];
                 }
             }
@@ -92,7 +108,7 @@
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
     _tableView.tableFooterView = [UIView new];
-    
+        
     gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
     [self.navigationController.navigationBar addSubview:gestureView];
@@ -114,15 +130,49 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (void)buttonAction1 {
+    isShowImage = YES;
+    __block NSInteger count = 0;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        for (NSInteger i = 0; i < _dataArray.count; i++) {
+            if (count > 15) {
+                break;
+            }
+            FileModel *model = _dataArray[i];
+            if (model.image == nil) {
+                count++;
+                model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+                [_dataArray replaceObjectAtIndex:i withObject:model];
+            }
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [_tableView reloadData];
+        });
+    });
+}
+
+- (void)buttonAction2 {
+    isShowImage = NO;
+    [_tableView reloadData];
+}
+
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     FileModel *model = _dataArray[indexPath.row];
-    NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
-    CGRect rect = [model.name boundingRectWithSize:CGSizeMake(kScreenWidth, MAXFLOAT)
-                                    options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                 attributes:attrbute
-                                    context:nil];
-    return rect.size.height + 30;
+    if (isShowImage && model.image != nil) {
+        return 90;
+    } else {
+        NSArray *array = [model.name componentsSeparatedByString:@"/"];
+        NSString *name = [array lastObject];
+        
+        NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
+        CGRect rect = [name boundingRectWithSize:CGSizeMake(kScreenWidth, MAXFLOAT)
+                                        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                     attributes:attrbute
+                                        context:nil];
+        return rect.size.height + 30;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -134,13 +184,34 @@
     static NSString *cellIdentifier = @"UITableViewCellIdentifier";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
     if(!cell){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
     }
+    
+    NSArray *array = [model.name componentsSeparatedByString:@"/"];
+    cell.textLabel.text = array.lastObject;
+
+    if (isShowImage && model.image != nil) {
+        cell.imageView.image = model.image;
+//        cell.detailTextLabel.text = @"";
+    } else {
+        cell.imageView.image = nil;
+//        NSString *path = [model.name stringByReplacingOccurrencesOfString:array.lastObject withString:@""];
+//        cell.detailTextLabel.text = path;
+    }
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.text = model.name;
     cell.textLabel.numberOfLines = 0;
     cell.textLabel.font = [UIFont systemFontOfSize:17];
     cell.textLabel.textColor = [UIColor colorWithHexString:@"555555"];
+    cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
+    cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"999999"];
+
+    // 3D Touch 可用!
+    if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
+        // 给Cell注册3DTouch的peek和pop功能
+        [self registerForPreviewingWithDelegate:self sourceView:cell];
+    }
+    
     return cell;
 }
 
@@ -176,6 +247,29 @@
 
 - (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller {
     return self.view.frame;
+}
+
+#pragma mark UIViewControllerPreviewingDelegate
+// peek(预览)
+- (nullable UIViewController *)previewingContext:(id <UIViewControllerPreviewing>)previewingContext viewControllerForLocation:(CGPoint)location
+{
+    // 获取按压的Cell所在行,[previewingContext sourceView]就是按压的那个视图
+    NSIndexPath *indexPath = [_tableView indexPathForCell:(UITableViewCell* )[previewingContext sourceView]];
+    // 设定预览的界面
+    FileInfoViewController *vc = [[FileInfoViewController alloc] init];
+    vc.preferredContentSize = CGSizeMake(0.0f, 400.0f);
+    vc.model = _dataArray[indexPath.row];
+    // 调整不被虚化的范围，按压的那个cell不被虚化（轻轻按压时周边会被虚化，再少用力展示预览，再加力跳页至设定界面）
+    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, 40);
+    previewingContext.sourceRect = rect;
+    // 返回预览界面
+    return vc;
+}
+
+// pop(按用点力进入）
+- (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit
+{
+    [self showViewController:viewControllerToCommit sender:self];
 }
 
 #pragma mark Private Method
