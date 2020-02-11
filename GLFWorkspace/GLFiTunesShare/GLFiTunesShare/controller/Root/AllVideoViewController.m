@@ -85,9 +85,7 @@ static NSString *cellID = @"ShowTableViewCell";
                 NSString *lowerType = [array.lastObject lowercaseString];
                 if ([CvideoTypeArray containsObject:lowerType]) {
                     // 内存警告崩溃
-                    if (i % 30 == 1) {
-                        model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-                    }
+//                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
                     model.image = nil;
                     [resultArray addObject:model];
                 }
@@ -133,6 +131,8 @@ static NSString *cellID = @"ShowTableViewCell";
 }
 
 - (void)buttonAction1 {
+    [self showHUD];
+    
     isShowImage = YES;
     __block NSInteger count = 0;
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -151,7 +151,7 @@ static NSString *cellID = @"ShowTableViewCell";
             if (model.image == nil) {
                 count++;
                 #if FirstTarget
-                    model.image = [GLFTools thumbnailImageRequest:15 andVideoPath:model.path];
+                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
                 #else
                     model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
                 #endif
@@ -159,6 +159,7 @@ static NSString *cellID = @"ShowTableViewCell";
             }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideAllHUD];
             [_tableView reloadData];
         });
     });

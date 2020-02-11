@@ -136,7 +136,11 @@
                 if ([CimgTypeArray containsObject:lowerType]) {
                     model.image = [UIImage imageWithContentsOfFile:model.path];
                 } else if ([CvideoTypeArray containsObject:lowerType]) {
-                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
+                    #if FirstTarget
+                        model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
+                    #else
+                        model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+                    #endif
                 }
                 [bArray addObject:model];
                 allSize += model.size;
