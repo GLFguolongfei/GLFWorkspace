@@ -20,6 +20,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UIGravityBehavior *gravityBeahvior;   // 仿真行为_重力
     NSArray *imageArray;
     
+    UIImageView *bgImageView;
+    
     UIImageView *imageView;
     UIBarButtonItem *item;
     UIView *background;
@@ -74,6 +76,25 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     }
     // 放在最上面,否则点击事件没法触发
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
+    // 1.设置背景图片
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
+    NSString *backName = [userDefaults objectForKey:BackImageName];
+    NSArray *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cachePath = [cachePaths objectAtIndex:0];
+    NSString *filePath = [cachePath stringByAppendingString:@"/image.png"];
+    UIImage *backImage;
+    if (isUseBackImagePath.integerValue) {
+        backImage = [UIImage imageWithContentsOfFile:filePath];
+    } else {
+        backImage = [UIImage imageNamed:backName];
+    }
+    if (backImage == nil) {
+        backImage = [UIImage imageNamed:@"bgview"];
+        [userDefaults setObject:@"bgview" forKey:BackImageName];
+        [userDefaults synchronize];
+    }
+    bgImageView.image = backImage;
 }
 
 - (void)prepareData {
@@ -174,9 +195,14 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)prepareView {
+    // 设置背景图片
+    bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    bgImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [self.view addSubview:bgImageView];
+    
     _tableView1 = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
     _tableView1.delegate = self;
-    _tableView1.dataSource=self;
+    _tableView1.dataSource = self;
     [self.view addSubview:_tableView1];
     _tableView1.showsVerticalScrollIndicator = NO;
     _tableView1.tableFooterView = [UIView new];

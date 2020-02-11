@@ -18,7 +18,6 @@ static NSString *cellID = @"ShowTableViewCell";
     UITableView *_tableView;
     NSMutableArray *_dataArray;
     
-    UIImageView *bgImageView;
     UIView *gestureView;
     BOOL isSuccess;
     BOOL isShowImage;
@@ -53,25 +52,6 @@ static NSString *cellID = @"ShowTableViewCell";
     self.navigationController.toolbar.hidden = YES;
     // 放在最上面,否则点击事件没法触发
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
-    // 1.设置背景图片
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
-    NSString *backName = [userDefaults objectForKey:BackImageName];
-    NSArray *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *cachePath = [cachePaths objectAtIndex:0];
-    NSString *filePath = [cachePath stringByAppendingString:@"/image.png"];
-    UIImage *backImage;
-    if (isUseBackImagePath.integerValue) {
-        backImage = [UIImage imageWithContentsOfFile:filePath];
-    } else {
-        backImage = [UIImage imageNamed:backName];
-    }
-    if (backImage == nil) {
-        backImage = [UIImage imageNamed:@"bgview"];
-        [userDefaults setObject:@"bgview" forKey:BackImageName];
-        [userDefaults synchronize];
-    }
-    bgImageView.image = backImage;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -132,11 +112,6 @@ static NSString *cellID = @"ShowTableViewCell";
     _tableView.tableFooterView = [UIView new];
     
     [_tableView registerNib:[UINib nibWithNibName:@"VideoTableViewCell" bundle:nil] forCellReuseIdentifier:cellID];
-    
-    // 设置背景图片
-    bgImageView = [[UIImageView alloc] initWithFrame:_tableView.frame];
-    bgImageView.contentMode = UIViewContentModeScaleAspectFill;
-    _tableView.backgroundView = bgImageView;
     
     gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
