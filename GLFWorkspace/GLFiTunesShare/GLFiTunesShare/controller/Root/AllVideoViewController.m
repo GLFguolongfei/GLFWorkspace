@@ -168,7 +168,7 @@ static NSString *cellID = @"ShowTableViewCell";
     NSArray *array = [model.name componentsSeparatedByString:@"/"];
     NSString *name = [array lastObject];
     if (isShowImage && model.image != nil && model.image.size.width > 0) {
-        CGFloat width = 90 * model.image.size.width / model.image.size.height;
+        CGFloat width = 100 * model.image.size.width / model.image.size.height;
         if (width > kScreenWidth / 2) {
             width = kScreenWidth / 2;
         }
@@ -177,10 +177,10 @@ static NSString *cellID = @"ShowTableViewCell";
                                         options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                      attributes:attrbute
                                         context:nil];
-        if (rect.size.height + 20 > 80) {
+        if (rect.size.height + 20 > 100) {
             return rect.size.height + 20;
         } else {
-            return 80;
+            return 100;
         }
     } else {
         NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
@@ -197,17 +197,17 @@ static NSString *cellID = @"ShowTableViewCell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    FileModel *model = _dataArray[indexPath.row];
     VideoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
+
+    FileModel *model = _dataArray[indexPath.row];
     NSArray *array = [model.name componentsSeparatedByString:@"/"];
     cell.vTextLabel.text = array.lastObject;
     cell.vTextLabel.numberOfLines = 0;
     
     if (isShowImage && model.image != nil && model.image.size.width > 0) {
         cell.vImageView.image = model.image;
-        CGFloat width = 90 * model.image.size.width / model.image.size.height;
+        CGFloat width = 100 * model.image.size.width / model.image.size.height;
         if (width > kScreenWidth / 2) {
             width = kScreenWidth / 2;
         }
