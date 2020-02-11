@@ -20,7 +20,6 @@ static NSString *cellID = @"ShowTableViewCell";
     
     UIView *gestureView;
     BOOL isSuccess;
-    
     BOOL isShowImage;
     BOOL isStop;
 }
@@ -37,8 +36,6 @@ static NSString *cellID = @"ShowTableViewCell";
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"文字" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.title = @"所有视频";
-    
-    isShowImage = NO;
     
     [self prepareData];
     [self prepareView];
@@ -99,6 +96,9 @@ static NSString *cellID = @"ShowTableViewCell";
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideAllHUD];
             _dataArray = resultArray;
+            if (_dataArray.count > 300) {
+                buttonView.hidden = NO;
+            }
             self.title = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)resultArray.count];
             [_tableView reloadData];
         });
@@ -113,7 +113,13 @@ static NSString *cellID = @"ShowTableViewCell";
     _tableView.tableFooterView = [UIView new];
     
     [_tableView registerNib:[UINib nibWithNibName:@"VideoTableViewCell" bundle:nil] forCellReuseIdentifier:cellID];
-        
+    
+    CGRect rect = CGRectMake(kScreenWidth-120, kScreenHeight-150, 120, 150);
+    buttonView = [[UIView alloc] initWithFrame:rect];
+    buttonView.backgroundColor = [UIColor clearColor];
+    buttonView.hidden = YES;
+    [self.view addSubview:buttonView];
+     
     gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
     [self.navigationController.navigationBar addSubview:gestureView];
@@ -140,14 +146,24 @@ static NSString *cellID = @"ShowTableViewCell";
     __block NSInteger count = 0;
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-        for (NSInteger i = 0; i < _dataArray.count; i++) {
+        NSArray *array = [_tableView indexPathsForVisibleRows];
+        NSInteger first = 0;
+        if (array.count > 0) {
+            NSIndexPath *indexPath = array.firstObject;
+            first = indexPath.row;
+        }
+        for (NSInteger i = first; i < _dataArray.count; i++) {
             if (count > 15) {
                 break;
             }
             FileModel *model = _dataArray[i];
             if (model.image == nil) {
                 count++;
-                model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+                #if FirstTarget
+                    model.image = [GLFTools thumbnailImageRequest:15 andVideoPath:model.path];
+                #else
+                    model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+                #endif
                 [_dataArray replaceObjectAtIndex:i withObject:model];
             }
         }
