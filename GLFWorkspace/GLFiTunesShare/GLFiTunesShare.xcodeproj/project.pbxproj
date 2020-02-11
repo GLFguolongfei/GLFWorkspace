@@ -49,6 +49,10 @@
 		6F124DF31F9F3E07005605E1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F124DF21F9F3E07005605E1 /* MobileCoreServices.framework */; };
 		6F124DF41F9F3E0E005605E1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F124DF21F9F3E07005605E1 /* MobileCoreServices.framework */; };
 		6F124DF51F9F3E1A005605E1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FF80A9A1F8F9F5800D7B19B /* AVFoundation.framework */; };
+		6F14401523F28A5E00C7C201 /* VideoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F14401323F28A5E00C7C201 /* VideoTableViewCell.m */; };
+		6F14401623F28A5E00C7C201 /* VideoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F14401323F28A5E00C7C201 /* VideoTableViewCell.m */; };
+		6F14401723F28A5E00C7C201 /* VideoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F14401423F28A5E00C7C201 /* VideoTableViewCell.xib */; };
+		6F14401823F28A5E00C7C201 /* VideoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F14401423F28A5E00C7C201 /* VideoTableViewCell.xib */; };
 		6F1C540223C8F523000122FB /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */; };
 		6F1C540323C8F523000122FB /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */; };
 		6F1EEB001FB1A4060046389D /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAD91FB1A4060046389D /* DetailViewController.m */; };
@@ -194,6 +198,9 @@
 		6F0E960C1FA4135B0029DDD6 /* WaterView2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaterView2.m; sourceTree = "<group>"; };
 		6F0E965B1FA414840029DDD6 /* GLFiTunesShare copy-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GLFiTunesShare copy-Info.plist"; sourceTree = "<group>"; };
 		6F124DF21F9F3E07005605E1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		6F14401223F28A5E00C7C201 /* VideoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoTableViewCell.h; sourceTree = "<group>"; };
+		6F14401323F28A5E00C7C201 /* VideoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoTableViewCell.m; sourceTree = "<group>"; };
+		6F14401423F28A5E00C7C201 /* VideoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoTableViewCell.xib; sourceTree = "<group>"; };
 		6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
 		6F1C540123C8F523000122FB /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
 		6F1EEAD81FB1A4060046389D /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
@@ -606,6 +613,9 @@
 				6F96B6A423E4269E006A2D00 /* ShowTableViewCell.h */,
 				6F96B6A523E4269E006A2D00 /* ShowTableViewCell.m */,
 				6F96B6A623E4269E006A2D00 /* ShowTableViewCell.xib */,
+				6F14401223F28A5E00C7C201 /* VideoTableViewCell.h */,
+				6F14401323F28A5E00C7C201 /* VideoTableViewCell.m */,
+				6F14401423F28A5E00C7C201 /* VideoTableViewCell.xib */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -793,6 +803,7 @@
 				6F9FB57C1F8B55B9002CD399 /* GLF.plist in Resources */,
 				6F1EEB221FB1A86A0046389D /* WebSetupViewController.xib in Resources */,
 				6F0E961D1FA4135B0029DDD6 /* MBProgressHUD.bundle in Resources */,
+				6F14401723F28A5E00C7C201 /* VideoTableViewCell.xib in Resources */,
 				6F0E965C1FA414840029DDD6 /* GLFiTunesShare copy-Info.plist in Resources */,
 				6F62A2961F877FCD0049DE3B /* LaunchScreen2.storyboard in Resources */,
 				6F96B6A923E4269E006A2D00 /* ShowTableViewCell.xib in Resources */,
@@ -826,6 +837,7 @@
 				6F0E961E1FA4135B0029DDD6 /* MBProgressHUD.bundle in Resources */,
 				6F2A40D01FB8006400866D06 /* WebSetupViewController.xib in Resources */,
 				6F0E965D1FA414840029DDD6 /* GLFiTunesShare copy-Info.plist in Resources */,
+				6F14401823F28A5E00C7C201 /* VideoTableViewCell.xib in Resources */,
 				6F62A2971F8783B80049DE3B /* LaunchScreen2.storyboard in Resources */,
 				6FA4620E1FB342CC00DDA77F /* FileInfoViewController.xib in Resources */,
 				6F96B6AA23E4269E006A2D00 /* ShowTableViewCell.xib in Resources */,
@@ -888,6 +900,7 @@
 				6F0E96151FA4135B0029DDD6 /* UIView+Helper.m in Sources */,
 				6F1EEB1F1FB1A86A0046389D /* PhotoLibraryViewController.m in Sources */,
 				6FE944EA20BE7D4C005A46AD /* MoveViewController.m in Sources */,
+				6F14401523F28A5E00C7C201 /* VideoTableViewCell.m in Sources */,
 				6F1EEB0D1FB1A4060046389D /* EditTableViewCell.m in Sources */,
 				6F1EEB131FB1A4060046389D /* LoginViewController.m in Sources */,
 			);
@@ -957,6 +970,7 @@
 				6F91B4531F81615B00A9C616 /* AppDelegate.m in Sources */,
 				6F1EEB261FB1ADA90046389D /* Layout.m in Sources */,
 				6FE944EB20BE7D4C005A46AD /* MoveViewController.m in Sources */,
+				6F14401623F28A5E00C7C201 /* VideoTableViewCell.m in Sources */,
 				6F0E96101FA4135B0029DDD6 /* NSDate+Help.m in Sources */,
 				6F0E96161FA4135B0029DDD6 /* UIView+Helper.m in Sources */,
 			);

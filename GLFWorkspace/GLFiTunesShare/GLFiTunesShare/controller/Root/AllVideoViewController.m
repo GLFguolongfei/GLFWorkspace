@@ -9,6 +9,9 @@
 #import "AllVideoViewController.h"
 #import "DetailViewController3.h"
 #import "FileInfoViewController.h"
+#import "VideoTableViewCell.h"
+
+static NSString *cellID = @"ShowTableViewCell";
 
 @interface AllVideoViewController ()<UITableViewDataSource, UITableViewDelegate, UIDocumentInteractionControllerDelegate, UIViewControllerPreviewingDelegate>
 {
@@ -30,7 +33,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"图片" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
+    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"图文" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"文字" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.title = @"所有视频";
@@ -108,6 +111,8 @@
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
     _tableView.tableFooterView = [UIView new];
+    
+    [_tableView registerNib:[UINib nibWithNibName:@"VideoTableViewCell" bundle:nil] forCellReuseIdentifier:cellID];
         
     gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
@@ -160,14 +165,26 @@
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     FileModel *model = _dataArray[indexPath.row];
-    if (isShowImage && model.image != nil) {
-        return 90;
-    } else {
-        NSArray *array = [model.name componentsSeparatedByString:@"/"];
-        NSString *name = [array lastObject];
-        
+    NSArray *array = [model.name componentsSeparatedByString:@"/"];
+    NSString *name = [array lastObject];
+    if (isShowImage && model.image != nil && model.image.size.width > 0) {
+        CGFloat width = 90 * model.image.size.width / model.image.size.height;
+        if (width > kScreenWidth / 2) {
+            width = kScreenWidth / 2;
+        }
         NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
-        CGRect rect = [name boundingRectWithSize:CGSizeMake(kScreenWidth, MAXFLOAT)
+        CGRect rect = [name boundingRectWithSize:CGSizeMake(kScreenWidth - 30 - width, MAXFLOAT)
+                                        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                     attributes:attrbute
+                                        context:nil];
+        if (rect.size.height + 20 > 80) {
+            return rect.size.height + 20;
+        } else {
+            return 80;
+        }
+    } else {
+        NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
+        CGRect rect = [name boundingRectWithSize:CGSizeMake(kScreenWidth - 30, MAXFLOAT)
                                         options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                      attributes:attrbute
                                         context:nil];
@@ -181,30 +198,25 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     FileModel *model = _dataArray[indexPath.row];
-    static NSString *cellIdentifier = @"UITableViewCellIdentifier";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if(!cell){
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    }
+    VideoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     NSArray *array = [model.name componentsSeparatedByString:@"/"];
-    cell.textLabel.text = array.lastObject;
-
-    if (isShowImage && model.image != nil) {
-        cell.imageView.image = model.image;
-//        cell.detailTextLabel.text = @"";
+    cell.vTextLabel.text = array.lastObject;
+    cell.vTextLabel.numberOfLines = 0;
+    
+    if (isShowImage && model.image != nil && model.image.size.width > 0) {
+        cell.vImageView.image = model.image;
+        CGFloat width = 90 * model.image.size.width / model.image.size.height;
+        if (width > kScreenWidth / 2) {
+            width = kScreenWidth / 2;
+        }
+        cell.imageViewWidthConstraint.constant = width;
     } else {
-        cell.imageView.image = nil;
-//        NSString *path = [model.name stringByReplacingOccurrencesOfString:array.lastObject withString:@""];
-//        cell.detailTextLabel.text = path;
+        cell.vImageView.image = nil;
+        cell.imageViewWidthConstraint.constant = 0;
     }
     
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    cell.textLabel.numberOfLines = 0;
-    cell.textLabel.font = [UIFont systemFontOfSize:17];
-    cell.textLabel.textColor = [UIColor colorWithHexString:@"555555"];
-    cell.detailTextLabel.font = [UIFont systemFontOfSize:14];
-    cell.detailTextLabel.textColor = [UIColor colorWithHexString:@"999999"];
 
     // 3D Touch 可用!
     if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
