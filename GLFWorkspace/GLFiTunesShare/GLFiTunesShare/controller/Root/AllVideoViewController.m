@@ -96,9 +96,6 @@ static NSString *cellID = @"ShowTableViewCell";
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideAllHUD];
             _dataArray = resultArray;
-            if (_dataArray.count > 300) {
-                buttonView.hidden = NO;
-            }
             self.title = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)resultArray.count];
             [_tableView reloadData];
         });
@@ -114,12 +111,6 @@ static NSString *cellID = @"ShowTableViewCell";
     
     [_tableView registerNib:[UINib nibWithNibName:@"VideoTableViewCell" bundle:nil] forCellReuseIdentifier:cellID];
     
-    CGRect rect = CGRectMake(kScreenWidth-120, kScreenHeight-150, 120, 150);
-    buttonView = [[UIView alloc] initWithFrame:rect];
-    buttonView.backgroundColor = [UIColor clearColor];
-    buttonView.hidden = YES;
-    [self.view addSubview:buttonView];
-     
     gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
     [self.navigationController.navigationBar addSubview:gestureView];
