@@ -185,7 +185,7 @@
 - (void)buttonAction {
     isFile = !isFile;
     if (isFile) {
-        item.title = @"文件 & 文件夹";
+        item.title = @"文件&文件夹";
     } else {
         item.title = @"文件";
     }
