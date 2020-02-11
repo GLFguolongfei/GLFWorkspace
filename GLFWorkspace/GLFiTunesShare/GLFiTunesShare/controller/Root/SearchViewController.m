@@ -25,7 +25,6 @@
     UIBarButtonItem *item;
     
     UIImageView *bgImageView;
-    
     UIView *gestureView;
     BOOL isSuccess;
     BOOL isFile;
@@ -53,6 +52,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:YES animated:YES];
+    // 放在最上面,否则点击事件没法触发
+    [self.navigationController.navigationBar bringSubviewToFront:gestureView];
     // 1.设置背景图片
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
@@ -169,6 +170,16 @@
     tapGesture.numberOfTouchesRequired = 1;
     [tapGesture addTarget:self action:@selector(setState)];
     [gestureView addGestureRecognizer:tapGesture];
+}
+
+- (void)setState {
+    isSuccess = !isSuccess;
+    if (isSuccess) {
+        [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"RootShowType"];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)buttonAction {
