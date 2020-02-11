@@ -65,14 +65,18 @@ static NSString *cellID = @"ShowTableViewCell";
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths objectAtIndex:0];
     
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *hidden = [userDefaults objectForKey:kContentHidden];
+    
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
         NSMutableArray *resultArray = [[NSMutableArray alloc] init];
         NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
         for (int i = 0; i < array.count; i++) {
-            // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
-            // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
             if ([array[i] isEqualToString:@"Inbox"]) {
+                continue;
+            }
+            if ([hidden isEqualToString:@"0"] && [array[i] isEqualToString:@"郭龙飞"]) {
                 continue;
             }
             FileModel *model = [[FileModel alloc] init];

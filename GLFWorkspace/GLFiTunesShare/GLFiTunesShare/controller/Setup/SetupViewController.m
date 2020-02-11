@@ -16,6 +16,7 @@
 #import "OtherViewController.h"
 #import "AllImageViewController.h"
 #import "AllVideoViewController.h"
+#import "SearchViewController.h"
 
 @interface SetupViewController ()<UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
@@ -30,7 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"有趣功能" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"有趣功能" style:UIBarButtonItemStylePlain target:self action:@selector(button4)];
     self.navigationItem.rightBarButtonItem = item;
     self.title = @"设置";
     [self canRecord:NO];
@@ -83,8 +84,9 @@
     
     UIBarButtonItem *pictureItem = [[UIBarButtonItem alloc] initWithTitle:@"所有图片" style:UIBarButtonItemStylePlain target:self action:@selector(button1)];
     UIBarButtonItem *videoItem = [[UIBarButtonItem alloc] initWithTitle:@"所有视频" style:UIBarButtonItemStylePlain target:self action:@selector(button2)];
+    UIBarButtonItem *searchItem = [[UIBarButtonItem alloc] initWithTitle:@"搜索" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
     UIBarButtonItem *toolBarSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
-    self.toolbarItems = @[toolBarSpace, pictureItem, toolBarSpace, videoItem, toolBarSpace];
+    self.toolbarItems = @[toolBarSpace, pictureItem, toolBarSpace, videoItem, toolBarSpace, searchItem, toolBarSpace];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -143,6 +145,11 @@
 }
 
 - (void)button3 {
+    SearchViewController *searchVC = [[SearchViewController alloc] init];
+    [self.navigationController pushViewController:searchVC animated:YES];
+}
+
+- (void)button4 {
     OtherViewController *otherVC = [[OtherViewController alloc] init];
     [self.navigationController pushViewController:otherVC animated:YES];
 }

@@ -53,6 +53,8 @@
 		6F14401623F28A5E00C7C201 /* VideoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F14401323F28A5E00C7C201 /* VideoTableViewCell.m */; };
 		6F14401723F28A5E00C7C201 /* VideoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F14401423F28A5E00C7C201 /* VideoTableViewCell.xib */; };
 		6F14401823F28A5E00C7C201 /* VideoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F14401423F28A5E00C7C201 /* VideoTableViewCell.xib */; };
+		6F19EE0723F3143300C438DE /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F19EE0623F3143300C438DE /* SearchViewController.m */; };
+		6F19EE0823F3143300C438DE /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F19EE0623F3143300C438DE /* SearchViewController.m */; };
 		6F1C540223C8F523000122FB /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */; };
 		6F1C540323C8F523000122FB /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */; };
 		6F1EEB001FB1A4060046389D /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAD91FB1A4060046389D /* DetailViewController.m */; };
@@ -201,6 +203,8 @@
 		6F14401223F28A5E00C7C201 /* VideoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoTableViewCell.h; sourceTree = "<group>"; };
 		6F14401323F28A5E00C7C201 /* VideoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoTableViewCell.m; sourceTree = "<group>"; };
 		6F14401423F28A5E00C7C201 /* VideoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoTableViewCell.xib; sourceTree = "<group>"; };
+		6F19EE0523F3143300C438DE /* SearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
+		6F19EE0623F3143300C438DE /* SearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
 		6F1C540123C8F523000122FB /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
 		6F1EEAD81FB1A4060046389D /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
@@ -464,6 +468,8 @@
 				6F96B6A023E35257006A2D00 /* AllImageViewController.m */,
 				6F5D7C6B23E47FE2005954F0 /* AllVideoViewController.h */,
 				6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */,
+				6F19EE0523F3143300C438DE /* SearchViewController.h */,
+				6F19EE0623F3143300C438DE /* SearchViewController.m */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -882,6 +888,7 @@
 				6F1EEB201FB1A86A0046389D /* SetupViewController.m in Sources */,
 				6F0E96171FA4135B0029DDD6 /* GLFFileManager.m in Sources */,
 				6F1EEB0C1FB1A4060046389D /* Cell.m in Sources */,
+				6F19EE0723F3143300C438DE /* SearchViewController.m in Sources */,
 				6F0E96191FA4135B0029DDD6 /* GLFTools.m in Sources */,
 				6FBA0FAD23E816F900899522 /* TwoViewController.m in Sources */,
 				6F1EEB071FB1A4060046389D /* FileModel.m in Sources */,
@@ -952,6 +959,7 @@
 				6FBA0FA923E8113200899522 /* OneViewController.m in Sources */,
 				6F0E96281FA4135B0029DDD6 /* WaterView2.m in Sources */,
 				6F0E961C1FA4135B0029DDD6 /* MBProgressHUD+Add.m in Sources */,
+				6F19EE0823F3143300C438DE /* SearchViewController.m in Sources */,
 				6F0E96181FA4135B0029DDD6 /* GLFFileManager.m in Sources */,
 				6FBA0FAE23E816F900899522 /* TwoViewController.m in Sources */,
 				6F0E961A1FA4135B0029DDD6 /* GLFTools.m in Sources */,
