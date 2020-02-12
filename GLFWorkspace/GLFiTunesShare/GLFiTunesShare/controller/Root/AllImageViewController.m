@@ -97,6 +97,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     bgImageView.image = backImage;
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [gestureView removeFromSuperview];
+}
+
 - (void)prepareData {
     [self showHUD];
     

@@ -61,6 +61,11 @@ static NSString *cellID = @"cellID";
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [gestureView removeFromSuperview];
+}
+
 - (void)prepareData {
     isSuccess = !isSuccess;
     [collectionViewArray removeAllObjects];

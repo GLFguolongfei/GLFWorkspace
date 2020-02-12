@@ -25,9 +25,8 @@
     UIBarButtonItem *item;
     
     UIImageView *bgImageView;
-    UIView *gestureView;
     BOOL isSuccess;
-    BOOL isFile;
+    BOOL isDir;
 }
 @end
 
@@ -37,7 +36,7 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    item = [[UIBarButtonItem alloc] initWithTitle:@"文件" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
+    item = [[UIBarButtonItem alloc] initWithTitle:@"文件夹" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
     self.navigationItem.rightBarButtonItem = item;
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"搜索";
@@ -52,8 +51,12 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setToolbarHidden:YES animated:YES];
-    // 放在最上面,否则点击事件没法触发
-    [self.navigationController.navigationBar bringSubviewToFront:gestureView];
+    NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
+    if ([type isEqualToString:@"1"]) {
+        isSuccess = YES;
+    } else {
+        isSuccess = NO;
+    }
     // 1.设置背景图片
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
@@ -140,14 +143,14 @@
     // UISearchBar的frame只有高度有效
     searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64, kScreenWidth, 60)];
     searchBar.delegate = self;
-    searchBar.placeholder = @"要搜啥";
+    searchBar.placeholder = @"要搜啥, 就搜啥";
     searchBar.barStyle = UIBarStyleDefault;
     searchBar.searchBarStyle = UISearchBarStyleDefault;
     searchBar.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:searchBar];
+    self.navigationItem.titleView = searchBar;
     
     // 数据列表
-    CGRect rect = CGRectMake(0, 124, kScreenWidth, kScreenHeight-124);
+    CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
     myTableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
     myTableView.delegate = self;
     myTableView.dataSource = self;
@@ -160,34 +163,14 @@
     bgImageView = [[UIImageView alloc] initWithFrame:myTableView.frame];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     myTableView.backgroundView = bgImageView;
-    
-    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
-    gestureView.backgroundColor = [UIColor clearColor];
-    [self.navigationController.navigationBar addSubview:gestureView];
-
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
-    tapGesture.numberOfTapsRequired = 2;
-    tapGesture.numberOfTouchesRequired = 1;
-    [tapGesture addTarget:self action:@selector(setState)];
-    [gestureView addGestureRecognizer:tapGesture];
-}
-
-- (void)setState {
-    isSuccess = !isSuccess;
-    if (isSuccess) {
-        [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
-    } else {
-        [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"RootShowType"];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)buttonAction {
-    isFile = !isFile;
-    if (isFile) {
-        item.title = @"文件&文件夹";
+    isDir = !isDir;
+    if (isDir) {
+        item.title = @"文夹";
     } else {
-        item.title = @"文件";
+        item.title = @"文件夹";
     }
     [self search];
 }
@@ -204,12 +187,14 @@
         }
         FileModel *model = allDataArray[i];
         if ([model.name containsString:searchBar.text]) {
-            if (isFile) {
-                if (!model.isDir) {
+            if (isDir) {
+                if (model.isDir) {
                     [myDataArray addObject:model];
                 }
             } else {
-                [myDataArray addObject:model];
+                if (!model.isDir) {
+                    [myDataArray addObject:model];
+                }
             }
         }
     }

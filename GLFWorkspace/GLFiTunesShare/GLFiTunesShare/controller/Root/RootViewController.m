@@ -91,6 +91,11 @@
     }
 }
 
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
+    [gestureView removeFromSuperview];
+}
+
 - (void)prepareData {
     [editArray removeAllObjects];
     [self viewEditing:YES];

@@ -21,7 +21,6 @@ static NSString *cellID = @"ShowTableViewCell";
     UIView *gestureView;
     BOOL isSuccess;
     BOOL isShowImage;
-    BOOL isStop;
 }
 @end
 
@@ -56,7 +55,7 @@ static NSString *cellID = @"ShowTableViewCell";
 
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
-    isStop = YES;
+    [gestureView removeFromSuperview];
 }
 
 - (void)prepareData {

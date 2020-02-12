@@ -59,6 +59,11 @@
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
 }
 
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [gestureView removeFromSuperview];
+}
+
 - (void)setState {
     self.switch6.hidden = !self.switch6.hidden;
     self.label6.hidden = !self.label6.hidden;
