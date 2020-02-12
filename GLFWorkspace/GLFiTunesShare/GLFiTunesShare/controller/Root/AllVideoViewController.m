@@ -49,6 +49,18 @@ static NSString *cellID = @"ShowTableViewCell";
         isSuccess = NO;
     }
     self.navigationController.toolbar.hidden = YES;
+    
+    // 导航栏bg
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
+    gestureView.backgroundColor = [UIColor redColor];
+    [self.navigationController.navigationBar addSubview:gestureView];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
+    [tapGesture addTarget:self action:@selector(setState)];
+    [gestureView addGestureRecognizer:tapGesture];
+    
     // 放在最上面,否则点击事件没法触发
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
 }
@@ -111,16 +123,6 @@ static NSString *cellID = @"ShowTableViewCell";
     _tableView.tableFooterView = [UIView new];
     
     [_tableView registerNib:[UINib nibWithNibName:@"VideoTableViewCell" bundle:nil] forCellReuseIdentifier:cellID];
-    
-    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
-    gestureView.backgroundColor = [UIColor clearColor];
-    [self.navigationController.navigationBar addSubview:gestureView];
-    
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
-    tapGesture.numberOfTapsRequired = 2;
-    tapGesture.numberOfTouchesRequired = 1;
-    [tapGesture addTarget:self action:@selector(setState)];
-    [gestureView addGestureRecognizer:tapGesture];
 }
 
 - (void)setState {

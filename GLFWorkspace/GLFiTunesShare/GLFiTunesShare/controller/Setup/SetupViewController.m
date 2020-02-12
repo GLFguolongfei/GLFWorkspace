@@ -21,6 +21,8 @@
 @interface SetupViewController ()<UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
     UIImageView *bgImageView;
+    UIView *gestureView;
+    BOOL isSuccess;
 }
 @end
 
@@ -91,6 +93,13 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
+    if ([type isEqualToString:@"1"]) {
+        isSuccess = YES;
+    } else {
+        isSuccess = NO;
+    }
+    // 1.设置背景图片
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
     NSString *backName = [userDefaults objectForKey:BackImageName];
@@ -109,10 +118,25 @@
         [userDefaults synchronize];
     }
     bgImageView.image = backImage;
+    // 导航栏bg
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
+    gestureView.backgroundColor = [UIColor redColor];
+    [self.navigationController.navigationBar addSubview:gestureView];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
+    [tapGesture addTarget:self action:@selector(setState)];
+    [gestureView addGestureRecognizer:tapGesture];
+    
+    // 放在最上面,否则点击事件没法触发
+    [self.navigationController.navigationBar bringSubviewToFront:gestureView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     [self.navigationController setToolbarHidden:YES animated:YES];
+    [gestureView removeFromSuperview];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -132,6 +156,16 @@
         WebSetupViewController *webSetupVC = [[WebSetupViewController alloc] init];
         [self.navigationController pushViewController:webSetupVC animated:YES];
     }
+}
+
+- (void)setState {
+    isSuccess = !isSuccess;
+    if (isSuccess) {
+        [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"RootShowType"];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)button1 {

@@ -43,6 +43,11 @@
     [self.switch7 setOn:hidden.integerValue animated:YES];
     [self.switch8 setOn:record.integerValue animated:YES];
 
+
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    // 导航栏bg
     gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
     [self.navigationController.navigationBar addSubview:gestureView];
@@ -52,9 +57,7 @@
     tapGesture.numberOfTouchesRequired = 1;
     [tapGesture addTarget:self action:@selector(setState)];
     [gestureView addGestureRecognizer:tapGesture];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
+    
     // 放在最上面,否则点击事件没法触发
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
 }

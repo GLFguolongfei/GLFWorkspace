@@ -57,6 +57,17 @@ static NSString *cellID = @"cellID";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    // 导航栏bg
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
+    gestureView.backgroundColor = [UIColor clearColor];
+    [self.navigationController.navigationBar addSubview:gestureView];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
+    [tapGesture addTarget:self action:@selector(prepareData)];
+    [gestureView addGestureRecognizer:tapGesture];
+    
     // 放在最上面,否则点击事件没法触发
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
 }
@@ -108,16 +119,6 @@ static NSString *cellID = @"cellID";
     [self.view addSubview:collectionView];
     
     [collectionView registerClass:[Cell class] forCellWithReuseIdentifier:cellID];
-    
-    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
-    gestureView.backgroundColor = [UIColor clearColor];
-    [self.navigationController.navigationBar addSubview:gestureView];
-    
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
-    tapGesture.numberOfTapsRequired = 2;
-    tapGesture.numberOfTouchesRequired = 1;
-    [tapGesture addTarget:self action:@selector(prepareData)];
-    [gestureView addGestureRecognizer:tapGesture];
 }
 
 - (void)prepareStackView {

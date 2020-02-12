@@ -74,8 +74,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     } else {
         isSuccess = NO;
     }
-    // 放在最上面,否则点击事件没法触发
-    [self.navigationController.navigationBar bringSubviewToFront:gestureView];
     // 1.设置背景图片
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
@@ -95,6 +93,20 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         [userDefaults synchronize];
     }
     bgImageView.image = backImage;
+    
+    // 导航栏bg
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
+    gestureView.backgroundColor = [UIColor redColor];
+    [self.navigationController.navigationBar addSubview:gestureView];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
+    [tapGesture addTarget:self action:@selector(setState)];
+    [gestureView addGestureRecognizer:tapGesture];
+    
+    // 放在最上面,否则点击事件没法触发
+    [self.navigationController.navigationBar bringSubviewToFront:gestureView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -239,16 +251,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     background.backgroundColor = [UIColor lightGrayColor];
     background.alpha = 0;
     [self.view addSubview:background];
-    
-    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
-    gestureView.backgroundColor = [UIColor clearColor];
-    [self.navigationController.navigationBar addSubview:gestureView];
-    
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
-    tapGesture.numberOfTapsRequired = 2;
-    tapGesture.numberOfTouchesRequired = 1;
-    [tapGesture addTarget:self action:@selector(setState)];
-    [gestureView addGestureRecognizer:tapGesture];
 }
 
 - (void)buttonAction {
