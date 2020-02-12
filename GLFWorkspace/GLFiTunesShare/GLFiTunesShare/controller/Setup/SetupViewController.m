@@ -120,7 +120,7 @@
     bgImageView.image = backImage;
     // 导航栏bg
     gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
-    gestureView.backgroundColor = [UIColor redColor];
+    gestureView.backgroundColor = [UIColor clearColor];
     [self.navigationController.navigationBar addSubview:gestureView];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
