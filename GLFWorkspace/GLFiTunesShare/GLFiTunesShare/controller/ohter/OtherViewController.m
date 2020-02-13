@@ -12,6 +12,7 @@
 #import "TwoViewController.h"
 #import "ThreeViewController.h"
 #import "FourViewController.h"
+#import "FiveViewController.h"
 
 @interface OtherViewController ()
 {
@@ -36,7 +37,7 @@
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:bgImageView];
 
-    for (NSInteger i = 0; i < 4; i++) {
+    for (NSInteger i = 0; i < 5; i++) {
         CGFloat width = (kScreenWidth - 60) / 2;
         CGRect frame = CGRectMake(20 * (i % 2 + 1) + width * (i % 2), 100 + 80 * ceil(i / 2), width, 60);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
@@ -46,9 +47,11 @@
             [button setTitle:@"iOS字体" forState:UIControlStateNormal];
         } else if (i == 2)  {
             [button setTitle:@"自定义拍照" forState:UIControlStateNormal];
-        }  else if (i == 3)  {
+        } else if (i == 3)  {
             [button setTitle:@"自定义录像" forState:UIControlStateNormal];
-        }  else {
+        } else if (i == 4)  {
+            [button setTitle:@"抖音短视频" forState:UIControlStateNormal];
+        } else {
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
         [button setBackgroundColor:[UIColor clearColor]];
@@ -63,6 +66,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    self.navigationController.toolbar.hidden = YES;
+    self.navigationController.navigationBar.hidden = NO;
+    // 1.设置背景图片
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
     NSString *backName = [userDefaults objectForKey:BackImageName];
@@ -100,6 +106,9 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if (button.tag == 103) {
         FourViewController *vc = [[FourViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (button.tag == 104) {
+        FiveViewController *vc = [[FiveViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

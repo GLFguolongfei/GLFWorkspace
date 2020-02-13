@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6F040F991FAD6EDC00EF4721 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */; };
+		6F05C08C23F5DA240034073B /* FiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F05C08B23F5DA240034073B /* FiveViewController.m */; };
 		6F06F99023EF1DCB006E5C97 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F06F98F23EF1DCA006E5C97 /* AssetsLibrary.framework */; };
 		6F06F9DF23F04FCF006E5C97 /* ThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F06F9DE23F04FCF006E5C97 /* ThreeViewController.m */; };
 		6F06F9E023F04FCF006E5C97 /* ThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F06F9DE23F04FCF006E5C97 /* ThreeViewController.m */; };
@@ -163,6 +164,8 @@
 
 /* Begin PBXFileReference section */
 		6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
+		6F05C08A23F5DA240034073B /* FiveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FiveViewController.h; sourceTree = "<group>"; };
+		6F05C08B23F5DA240034073B /* FiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FiveViewController.m; sourceTree = "<group>"; };
 		6F06F98F23EF1DCA006E5C97 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		6F06F9DD23F04FCE006E5C97 /* ThreeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreeViewController.h; sourceTree = "<group>"; };
 		6F06F9DE23F04FCF006E5C97 /* ThreeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreeViewController.m; sourceTree = "<group>"; };
@@ -639,6 +642,8 @@
 				6F06F9DE23F04FCF006E5C97 /* ThreeViewController.m */,
 				6F06F9E123F04FF8006E5C97 /* FourViewController.h */,
 				6F06F9E223F04FF8006E5C97 /* FourViewController.m */,
+				6F05C08A23F5DA240034073B /* FiveViewController.h */,
+				6F05C08B23F5DA240034073B /* FiveViewController.m */,
 			);
 			path = ohter;
 			sourceTree = "<group>";
@@ -896,6 +901,7 @@
 				6F0E961F1FA4135B0029DDD6 /* MBProgressHUD.m in Sources */,
 				6F58F45620BDB0E1003E0911 /* DetailViewController2.m in Sources */,
 				6F96B69C23E34A46006A2D00 /* TestViewController.m in Sources */,
+				6F05C08C23F5DA240034073B /* FiveViewController.m in Sources */,
 				6F1EEB0F1FB1A4060046389D /* Layout.m in Sources */,
 				6F0E96111FA4135B0029DDD6 /* UIColor+Category.m in Sources */,
 				6F0E96251FA4135B0029DDD6 /* MyView.m in Sources */,
