@@ -45,7 +45,8 @@ static NSString *cellID = @"cellID";
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"选择" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction:)];
     self.navigationItem.rightBarButtonItem = item;
     self.navigationItem.rightBarButtonItem.enabled = NO;
-
+    [self canRecord:NO];
+    
     collectionViewArray = [[NSMutableArray alloc] init];
     stackViewArray = [[NSMutableArray alloc] init];
     nameArray = [[NSMutableArray alloc] init];

@@ -31,7 +31,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"自定义拍照";
-    
+    [self canRecord:NO];
+
     endScale = 1;
 
     [self configCamara];

@@ -29,7 +29,8 @@
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"测试功能" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
     self.navigationItem.rightBarButtonItem = item;
     self.title = @"有趣功能";
-    
+    [self canRecord:NO];
+
     // 设置背景图片
     bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;

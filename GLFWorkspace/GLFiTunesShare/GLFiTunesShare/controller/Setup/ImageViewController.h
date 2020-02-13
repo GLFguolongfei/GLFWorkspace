@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 // --- 背景内容页
-@interface ImageViewController : UIViewController
+@interface ImageViewController : BaseViewController
 
 @property (nonatomic, assign) NSInteger selectIndex;
 @property (nonatomic, strong) NSArray *nameArray;

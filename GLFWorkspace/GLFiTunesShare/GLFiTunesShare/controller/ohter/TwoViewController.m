@@ -23,7 +23,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"iOS字体";
-    
+    [self canRecord:NO];
+
     myDataArray = [UIFont familyNames];
     myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
     myTableView.delegate = self;

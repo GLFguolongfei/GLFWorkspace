@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ImageSubViewController : UIViewController
+@interface ImageSubViewController : BaseViewController
 
 @property (nonatomic, assign) NSInteger currentIndex;
 
