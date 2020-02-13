@@ -49,8 +49,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setToolbarHidden:YES animated:YES];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self hiddenNaviBar];
 }
 
 - (void)prepareData {
@@ -113,6 +112,7 @@
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
     
+    [self playOrPauseVideo];
 }
 
 #pragma mark Events
@@ -145,7 +145,8 @@
 }
 
 - (void)playeEnd:(NSNotification *)notification {
-    isPlaying = false;
+    isPlaying = YES;
+    [currentVC playOrPauseVideo:YES];
     [self setButtonPlayState];
 }
 
@@ -216,6 +217,7 @@
         // ToolBar设为暂停状态
         isPlaying = NO;
         [self setButtonPlayState];
+        [self playOrPauseVideo];
     }
 }
 
