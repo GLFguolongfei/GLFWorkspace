@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 // --- 内容子页(视频)
-@interface SubViewController3 : UIViewController
+@interface SubViewController3 : BaseViewController
 
 @property (nonatomic, assign) NSInteger currentIndex;
 @property (nonatomic, strong) FileModel *model;

@@ -206,7 +206,7 @@
         NSString *rootPaht = [paths objectAtIndex:0];
         NSString *name = [self returnName];
         NSString *outputFielPath = [NSString stringWithFormat:@"%@/郭龙飞/%@.mp4", rootPaht, name];
-        NSLog(@"save path is: %@", outputFielPath);
+//        NSLog(@"save path is: %@", outputFielPath);
         NSURL *fileUrl = [NSURL fileURLWithPath:outputFielPath];
         [captureMovieFileOutput startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
     }
@@ -271,6 +271,8 @@
     NSDateFormatter *dateFormat2 = [[NSDateFormatter alloc] init];
     [dateFormat2 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSString *dateStr = [dateFormat2 stringFromDate:[NSDate date]];
+    NSString *classStr = NSStringFromClass([self class]);
+    NSString *name = [NSString stringWithFormat:@"%@%@", dateStr, classStr];
     return dateStr;
 }
 
