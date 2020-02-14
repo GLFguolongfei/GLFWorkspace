@@ -50,6 +50,8 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self hiddenNaviBar];
+    NSString *indexStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"selectIndex"];
+    selectIndex = [indexStr integerValue];
 }
 
 - (void)prepareData {
@@ -65,6 +67,7 @@
     dispatch_async(queue, ^{
         NSMutableArray *resultArray = [[NSMutableArray alloc] init];
         NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
+        NSLog(@"%d", array.count);
         for (int i = 0; i < array.count; i++) {
             if ([array[i] isEqualToString:@"Inbox"]) {
                 continue;
@@ -84,12 +87,16 @@
                     // 内存警告崩溃
 //                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
                     model.image = nil;
-                    [resultArray addObject:model];
+                    CGSize size = [self returnVideoSize:model.path];
+                    if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
+                        [resultArray addObject:model];
+                    }
                 }
             }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideAllHUD];
+            NSLog(@"%d", resultArray.count);
             _dataArray = resultArray;
             self.title = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)resultArray.count];
             [self prepareView];
@@ -104,8 +111,8 @@
     pageVC.dataSource = self;
         
     SubViewController3 *subVC = [[SubViewController3 alloc] init];
-    subVC.currentIndex = 0;
-    subVC.model = _dataArray.firstObject;
+    subVC.currentIndex = selectIndex;
+    subVC.model = _dataArray[selectIndex];
     NSArray *array = [subVC.model.name componentsSeparatedByString:@"/"];
     self.title = array.lastObject;
     currentVC = subVC;
@@ -169,7 +176,7 @@
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     selectIndex = ((SubViewController3 *) viewController).currentIndex;
     if (selectIndex==0 || selectIndex==NSNotFound) {
-        return nil;
+        selectIndex = _dataArray.count;
     }
     
     selectIndex--; // 注意: 直接使用VC的顺序index,不要再单独标记了,否则出大问题
@@ -184,7 +191,7 @@
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
     selectIndex = ((SubViewController3 *) viewController).currentIndex;
     if (selectIndex==_dataArray.count-1 || selectIndex==NSNotFound) {
-        return nil;
+        selectIndex = -1;
     }
     
     selectIndex++;
@@ -218,8 +225,25 @@
         isPlaying = NO;
         [self setButtonPlayState];
         [self playOrPauseVideo];
+        NSString *indexStr = [NSString stringWithFormat:@"%ld", (long)selectIndex];
+        [[NSUserDefaults standardUserDefaults] setObject:indexStr forKey:@"selectIndex"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
 
+#pragma mark Private Method
+- (CGSize)returnVideoSize:(NSString *)path {
+    NSURL *url = [NSURL fileURLWithPath:path];
+    AVURLAsset *asset = [AVURLAsset assetWithURL:url];
+    NSArray *array = asset.tracks;
+    CGSize videoSize = CGSizeZero;
+    for(AVAssetTrack  *track in array) {
+        if([track.mediaType isEqualToString:AVMediaTypeVideo]) {
+            videoSize = track.naturalSize;
+        }
+    }
+//    NSLog(@"%f,%f", videoSize.width, videoSize.height);
+    return videoSize;
+}
 
 @end
