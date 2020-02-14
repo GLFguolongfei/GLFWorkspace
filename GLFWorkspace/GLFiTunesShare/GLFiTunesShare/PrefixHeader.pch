@@ -69,6 +69,7 @@
 #define kRecord             @"kRecord"
 #define CimgTypeArray    @[@"png", @"jpeg", @"jpg", @"gif"]
 #define CvideoTypeArray  @[@"mp4", @"rmvb", @"avi", @"mov", @"mkv"]
+#define CHiddenPaths     @[@"郭龙飞"]
 
 
 

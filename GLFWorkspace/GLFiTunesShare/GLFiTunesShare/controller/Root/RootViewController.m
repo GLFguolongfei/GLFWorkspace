@@ -136,7 +136,7 @@
             if ([array[i] isEqualToString:@"Inbox"]) {
                 continue;
             }
-            if ([hidden isEqualToString:@"0"] && [array[i] isEqualToString:@"郭龙飞"]) {
+            if ([hidden isEqualToString:@"0"] && [CHiddenPaths containsObject:array[i]]) {
                 continue;
             }
             FileModel *model = [[FileModel alloc] init];
@@ -309,7 +309,7 @@
 - (void)moveAction:(id)sender {
     for (NSInteger i = 0; i < editArray.count; i++) {
         FileModel *model = editArray[i];
-        if ([model.name isEqualToString:@"郭龙飞"]) {
+        if ([CHiddenPaths containsObject:model.name]) {
             [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:2];
             [self viewEditing:YES];
             return;
@@ -325,7 +325,7 @@
 - (void)deleteAction:(id)sender {
     for (NSInteger i = 0; i < editArray.count; i++) {
         FileModel *model = editArray[i];
-        if ([model.name isEqualToString:@"郭龙飞"]) {
+        if ([CHiddenPaths containsObject:model.name]) {
             [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:2];
             [self viewEditing:YES];
             return;
@@ -555,7 +555,7 @@
 
 - (void)deleteAction {
     FileModel *model = myDataArray[editIndexPath.row];
-    if ([model.name isEqualToString:@"郭龙飞"]) {
+    if ([CHiddenPaths containsObject:model.name]) {
         [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:2];
         [self viewEditing:YES];
         return;
@@ -600,7 +600,7 @@
 
 - (void)renameAction {
     FileModel *model = myDataArray[editIndexPath.row];
-    if ([model.name isEqualToString:@"郭龙飞"]) {
+    if ([CHiddenPaths containsObject:model.name]) {
         [self showStringHUD:@"文件夹【郭龙飞】不可以重命名" second:2];
         [self viewEditing:YES];
         return;
@@ -632,7 +632,7 @@
 
 - (void)moveAction {
     FileModel *model = myDataArray[editIndexPath.row];
-    if ([model.name isEqualToString:@"郭龙飞"]) {
+    if ([CHiddenPaths containsObject:model.name]) {
         [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:2];
         [self viewEditing:YES];
         return;

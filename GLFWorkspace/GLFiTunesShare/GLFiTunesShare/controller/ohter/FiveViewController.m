@@ -66,12 +66,12 @@
     dispatch_async(queue, ^{
         NSMutableArray *resultArray = [[NSMutableArray alloc] init];
         NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
-        NSLog(@"%d", array.count);
+        NSLog(@"%lu", (unsigned long)array.count);
         for (int i = 0; i < array.count; i++) {
             if ([array[i] isEqualToString:@"Inbox"]) {
                 continue;
             }
-            if ([hidden isEqualToString:@"0"] && [array[i] isEqualToString:@"郭龙飞"]) {
+            if ([hidden isEqualToString:@"0"] && [CHiddenPaths containsObject:array[i]]) {
                 continue;
             }
             FileModel *model = [[FileModel alloc] init];
@@ -86,9 +86,13 @@
                     // 内存警告崩溃
 //                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
                     model.image = nil;
-                    CGSize size = [self returnVideoSize:model.path];
-                    if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
+                    if ([model.name isEqualToString:@"抖音"]) {
                         [resultArray addObject:model];
+                    } else {
+                        CGSize size = [self returnVideoSize:model.path];
+                        if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
+                            [resultArray addObject:model];
+                        }
                     }
                 }
             }
