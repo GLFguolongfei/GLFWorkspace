@@ -43,7 +43,12 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self hiddenBar];
+    if (isHiddenBar) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:nil];
+    } else {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:nil];
+    }
+    isHiddenBar = !isHiddenBar;
 }
 
 - (void)dealloc {
@@ -75,7 +80,7 @@
 
 - (void)setupAVInfo {
     // 进度条
-    CGRect progressRect = CGRectMake(0, 64, kScreenWidth, 20);
+    CGRect progressRect = CGRectMake(0, 0, kScreenWidth, 20);
     progressView = [[UIProgressView alloc] initWithFrame:progressRect];
     progressView.progressViewStyle = UIProgressViewStyleDefault;
     progressView.progressTintColor = [UIColor colorWithHexString:@"2C84E8"]; // 前景色
@@ -84,7 +89,7 @@
     [self.view addSubview:progressView];
     
     // 时间
-    CGRect labelRect = CGRectMake(10, 74, kScreenWidth-20, 20);
+    CGRect labelRect = CGRectMake(10, 20, kScreenWidth-20, 20);
     label = [[UILabel alloc] initWithFrame:labelRect];
     label.textAlignment = NSTextAlignmentRight;
     label.textColor = [UIColor colorWithHexString:@"2C84E8"];
@@ -145,22 +150,12 @@
         [UIView animateWithDuration:0.25 animations:^{
             playerLayer.transform = CATransform3DIdentity;
             playerLayer.frame = kScreen;
-//            progressView.transform = CGAffineTransformIdentity;
-//            progressView.frame = CGRectMake(0, 64, 20, kScreenWidth);
-            label.transform = CGAffineTransformIdentity;
-            label.frame = CGRectMake(90, 74, kScreenWidth-100, 20);
         }];
     } else {
         CATransform3D transform = CATransform3DRotate(playerLayer.transform, -M_PI_2, 0.0f, 0.0f, 1.0f);
-//        CGAffineTransform transform2 = CGAffineTransformRotate(progressView.transform, M_PI_2);
-        CGAffineTransform transform3 = CGAffineTransformRotate(label.transform, -M_PI_2);
         [UIView animateWithDuration:0.25 animations:^{
             playerLayer.transform = transform;
             playerLayer.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
-//            progressView.transform = transform2;
-//            progressView.frame = CGRectMake(0, 0, 20, kScreenHeight);
-            label.transform = transform3;
-            label.frame = CGRectMake(10, 30, 20, kScreenHeight - 40);
         }];
     }
     isRotate = !isRotate;
@@ -179,44 +174,6 @@
     label.text = [NSString stringWithFormat:@"%@ / %@", currentTimeStr, durationStr];
     CGFloat index = CMTimeGetSeconds(playerItem.currentTime) / CMTimeGetSeconds(playerItem.duration);
     [progressView setProgress:index animated:YES];
-}
-
-- (void)hiddenBar {
-    if (isHiddenBar) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:nil];
-    } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:nil];
-    }
-    isHiddenBar = !isHiddenBar;
-    if (isHiddenBar) {
-        progressView.hidden = NO;
-        if (!isRotate) {
-            CGRect progressRect = CGRectMake(0, 0, kScreenWidth, 20);
-            CGRect labelRect = CGRectMake(10, 20, kScreenWidth-20, 20);
-            [UIView animateWithDuration:0.25 animations:^{
-                progressView.frame = progressRect;
-                label.frame = labelRect;
-            }];
-        }
-    } else {
-        progressView.hidden = NO;
-        if (!isRotate) {
-            CGRect progressRect = CGRectMake(0, 64, kScreenWidth, 20);
-            CGRect labelRect = CGRectMake(10, 74, kScreenWidth-20, 20);
-            [UIView animateWithDuration:0.25 animations:^{
-                progressView.frame = progressRect;
-                label.frame = labelRect;
-            }];
-        }
-    }
-}
-
-- (void)resetInfo {
-    isHiddenBar = YES;
-    CGRect progressRect = CGRectMake(0, 0, kScreenWidth, 20);
-    CGRect labelRect = CGRectMake(10, 20, kScreenWidth-20, 20);
-    progressView.frame = progressRect;
-    label.frame = labelRect;
 }
 
 #pragma mark Private Method

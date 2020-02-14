@@ -26,6 +26,8 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"scale_big"] style:UIBarButtonItemStylePlain target:self action:@selector(playViewLandscape)];
+    self.navigationItem.rightBarButtonItems = @[item];
     self.view.backgroundColor = [UIColor blackColor];
     self.title = @"抖音短视频";
     
@@ -120,9 +122,6 @@
     self.title = array.lastObject;
     
     currentVC = subVC;
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [currentVC hiddenBar];
-    });
     
     [self playOrPauseVideo];
 }
@@ -140,6 +139,10 @@
 
 - (void)playerRewind {
     [currentVC playerForwardOrRewind:NO];
+}
+
+- (void)playViewLandscape {
+    [currentVC playViewLandscape];
 }
 
 - (void)hiddenNaviBar {
@@ -208,7 +211,6 @@
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
     // 获取当前控制器
     currentVC = (FSubViewController *)pendingViewControllers[0];
-    [currentVC resetInfo];
     // 获取当前控制器标题
     NSInteger currentIndex = currentVC.currentIndex;
     FileModel *currentModel = _dataArray[currentIndex];

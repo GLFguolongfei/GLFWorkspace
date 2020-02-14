@@ -19,9 +19,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)playerForwardOrRewind:(BOOL)isForward;
 - (void)playViewLandscape;
 
-- (void)hiddenBar;
-- (void)resetInfo;
-
 @end
 
 NS_ASSUME_NONNULL_END
