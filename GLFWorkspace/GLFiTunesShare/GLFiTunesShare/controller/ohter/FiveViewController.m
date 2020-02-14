@@ -30,7 +30,6 @@
     self.navigationItem.rightBarButtonItems = @[item];
     self.view.backgroundColor = [UIColor blackColor];
     self.title = @"抖音短视频";
-    [self canRecord:NO];
     
     isPlaying = NO;
     
