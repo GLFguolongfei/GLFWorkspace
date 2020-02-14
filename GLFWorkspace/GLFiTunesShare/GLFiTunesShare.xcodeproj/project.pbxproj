@@ -101,6 +101,8 @@
 		6F5D7C6E23E47FE8005954F0 /* AllVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */; };
 		6F62A2961F877FCD0049DE3B /* LaunchScreen2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */; };
 		6F62A2971F8783B80049DE3B /* LaunchScreen2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */; };
+		6F79336B23F6516C006E0EC1 /* FSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F79336A23F6516C006E0EC1 /* FSubViewController.m */; };
+		6F79336C23F6516C006E0EC1 /* FSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F79336A23F6516C006E0EC1 /* FSubViewController.m */; };
 		6F8072B21F7E436E007D7B26 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072B11F7E436E007D7B26 /* AppDelegate.m */; };
 		6F8072B51F7E436E007D7B26 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072B41F7E436E007D7B26 /* ViewController.m */; };
 		6F8072B81F7E436E007D7B26 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8072B61F7E436E007D7B26 /* Main.storyboard */; };
@@ -251,6 +253,8 @@
 		6F5D7C6B23E47FE2005954F0 /* AllVideoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AllVideoViewController.h; sourceTree = "<group>"; };
 		6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AllVideoViewController.m; sourceTree = "<group>"; };
 		6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen2.storyboard; sourceTree = "<group>"; };
+		6F79336923F6516C006E0EC1 /* FSubViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSubViewController.h; sourceTree = "<group>"; };
+		6F79336A23F6516C006E0EC1 /* FSubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSubViewController.m; sourceTree = "<group>"; };
 		6F8072AD1F7E436E007D7B26 /* GLFiTunesShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLFiTunesShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8072B01F7E436E007D7B26 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6F8072B11F7E436E007D7B26 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -645,6 +649,8 @@
 				6F06F9E223F04FF8006E5C97 /* FourViewController.m */,
 				6F05C08A23F5DA240034073B /* FiveViewController.h */,
 				6F05C08B23F5DA240034073B /* FiveViewController.m */,
+				6F79336923F6516C006E0EC1 /* FSubViewController.h */,
+				6F79336A23F6516C006E0EC1 /* FSubViewController.m */,
 			);
 			path = ohter;
 			sourceTree = "<group>";
@@ -880,6 +886,7 @@
 				6F0E960D1FA4135B0029DDD6 /* Base64.m in Sources */,
 				6F0E96211FA4135B0029DDD6 /* PhotoStackView.m in Sources */,
 				6F1EEB1E1FB1A86A0046389D /* ImageViewController.m in Sources */,
+				6F79336B23F6516C006E0EC1 /* FSubViewController.m in Sources */,
 				6F06F9E323F04FF8006E5C97 /* FourViewController.m in Sources */,
 				6F1EEB001FB1A4060046389D /* DetailViewController.m in Sources */,
 				6F0E96271FA4135B0029DDD6 /* WaterView2.m in Sources */,
@@ -952,6 +959,7 @@
 				6F1EEB2B1FB1ADD50046389D /* FileInfoViewController.m in Sources */,
 				6F1EEB2C1FB1ADD50046389D /* SetupViewController.m in Sources */,
 				6F1EEB2D1FB1ADD50046389D /* PhotoLibraryViewController.m in Sources */,
+				6F79336C23F6516C006E0EC1 /* FSubViewController.m in Sources */,
 				6F06F9E423F04FF8006E5C97 /* FourViewController.m in Sources */,
 				6F1EEB2E1FB1ADD50046389D /* ImageViewController.m in Sources */,
 				6F1EEB2F1FB1ADD50046389D /* WebSetupViewController.m in Sources */,
