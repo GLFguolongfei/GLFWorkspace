@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "FileModel.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -23,6 +24,8 @@ HMSingletonH(DocumentManager)
 
 - (void)eachAllFiles:(BOOL)isForce;
 - (void)setVideosImage:(NSInteger)maxCount;
+- (void)addFavoriteModel:(FileModel *)model;
+- (void)removeFavoriteModel:(FileModel *)model;
 + (void)updateDocumentPaths;
 
 @end

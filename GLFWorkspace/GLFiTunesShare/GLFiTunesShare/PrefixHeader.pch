@@ -68,6 +68,7 @@
 #define kVoiceMin           @"kVoiceMin"
 #define kContentHidden      @"kContentHidden"
 #define kRecord             @"kRecord"
+#define kFavorite           @"kFavorite"
 #define CimgTypeArray    @[@"png", @"jpeg", @"jpg", @"gif"]
 #define CvideoTypeArray  @[@"mp4", @"rmvb", @"avi", @"mov", @"mkv"]
 #define CHiddenPaths     @[@"郭龙飞"]

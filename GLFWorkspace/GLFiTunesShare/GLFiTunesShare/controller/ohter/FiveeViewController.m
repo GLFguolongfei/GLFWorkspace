@@ -1,16 +1,15 @@
 //
-//  FiveViewController.m
+//  FiveeViewController.m
 //  GLFiTunesShare
 //
-//  Created by guolongfei on 2020/2/14.
+//  Created by guolongfei on 2020/2/16.
 //  Copyright © 2020 GuoLongfei. All rights reserved.
 //
 
-#import "FiveViewController.h"
-#import "FSubViewController.h"
 #import "FiveeViewController.h"
+#import "FSubViewController.h"
 
-@interface FiveViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
+@interface FiveeViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 {
     UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
     FSubViewController *currentVC; // 当前显示的VC
@@ -26,15 +25,14 @@
 }
 @end
 
-@implementation FiveViewController
+@implementation FiveeViewController
 
 
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     UIBarButtonItem *item11 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"scale_big"] style:UIBarButtonItemStylePlain target:self action:@selector(playViewLandscape)];
-    UIBarButtonItem *item22 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"favorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
-    self.navigationItem.rightBarButtonItems = @[item11, item22];
+    self.navigationItem.rightBarButtonItems = @[item11];
     self.view.backgroundColor = [UIColor blackColor];
     self.title = @"抖音短视频";
     
@@ -50,36 +48,26 @@
     
     self.toolbarItems = @[space, item1, space, item2, space, item3, space];
     
-    NSString *indexStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"selectIndex"];
-    selectIndex = [indexStr integerValue];
+    selectIndex = 0;
+    
+    favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
+    favoriteArray = [favoriteArray mutableCopy];
     
     manager = [DocumentManager sharedDocumentManager];
     if (manager.allDYVideosArray.count > 0) {
-        _dataArray = manager.allDYVideosArray;
+        _dataArray = [[NSMutableArray alloc] init];
+        for (NSInteger i = 0; i < manager.allDYVideosArray.count; i++) {
+            FileModel *model = manager.allDYVideosArray[i];
+            if ([favoriteArray containsObject: model.name]) {
+                [_dataArray addObject:model];
+            }
+        }
         currentModel = _dataArray.firstObject;
         self.title = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
         [self prepareView];
     } else {
         [self prepareData];
     }
-    
-    favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
-    favoriteArray = [favoriteArray mutableCopy];
-    if (!favoriteArray) {
-        favoriteArray = [[NSMutableArray alloc] init];
-    }
-    if (favoriteArray.count > 0) {
-        self.navigationItem.rightBarButtonItems = @[item11, item22];
-    } else {
-        self.navigationItem.rightBarButtonItems = @[item11];
-    }
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    isPlaying = YES;
-    [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonPlayState];
 }
 
 - (void)prepareData {
@@ -221,11 +209,6 @@
         [array replaceObjectAtIndex:3 withObject:item];
         self.toolbarItems = array;
     }
-}
-
-- (void)favoriteVideo {
-    FiveeViewController *vc = [[FiveeViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)favoriteAction {

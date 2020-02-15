@@ -41,6 +41,7 @@ HMSingletonM(DocumentManager)
         NSMutableArray *allImagesArray = [[NSMutableArray alloc] init];
         NSMutableArray *allVideosArray = [[NSMutableArray alloc] init];
         NSMutableArray *allDYVideosArray = [[NSMutableArray alloc] init];
+        NSMutableArray *allFavoriteDYVideoArray = [[NSMutableArray alloc] init];
         NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
         for (int i = 0; i < array.count; i++) {
             // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
@@ -132,6 +133,32 @@ HMSingletonM(DocumentManager)
     });
 }
 
+- (void)addFavoriteModel:(FileModel *)model {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *favoriteArray = [userDefaults objectForKey:kFavorite];
+    if (!favoriteArray) {
+        favoriteArray = [[NSMutableArray alloc] init];
+    } else {
+        favoriteArray = [favoriteArray mutableCopy];
+    }
+    [favoriteArray addObject:model.name];
+    [userDefaults setObject:favoriteArray forKey:kFavorite];
+    [userDefaults synchronize];
+}
+
+- (void)removeFavoriteModel:(FileModel *)model {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *favoriteArray = [userDefaults objectForKey:kFavorite];
+    if (!favoriteArray) {
+        favoriteArray = [[NSMutableArray alloc] init];
+    } else {
+        favoriteArray = [favoriteArray mutableCopy];
+    }
+    [favoriteArray removeObject:model.name];
+    [userDefaults setObject:favoriteArray forKey:kFavorite];
+    [userDefaults synchronize];
+}
+
 + (void)updateDocumentPaths {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentPath = [paths objectAtIndex:0];
@@ -156,7 +183,6 @@ HMSingletonM(DocumentManager)
         });
     }
 }
-
 
 
 @end
