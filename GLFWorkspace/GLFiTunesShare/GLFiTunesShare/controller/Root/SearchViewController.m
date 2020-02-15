@@ -27,6 +27,8 @@
     UIImageView *bgImageView;
     BOOL isSuccess;
     BOOL isDir;
+    
+    UIView *view;
 }
 @end
 
@@ -168,6 +170,55 @@
     bgImageView = [[UIImageView alloc] initWithFrame:myTableView.frame];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     myTableView.backgroundView = bgImageView;
+    
+    // info
+    [self prepareInfoView];
+}
+
+- (void)prepareInfoView {
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    if (manager.allArray.count == 0) {
+        return;
+    }
+    
+    CGFloat allFilesArraySize = 0;
+    CGFloat allImagesArraySize = 0;
+    CGFloat allVideosArraySize = 0;
+    for (NSInteger i = 0; i < manager.allFilesArray.count; i++) {
+        FileModel *model = manager.allFilesArray[i];
+        allFilesArraySize += model.size;
+    }
+    for (NSInteger i = 0; i < manager.allImagesArray.count; i++) {
+        FileModel *model = manager.allImagesArray[i];
+        allImagesArraySize += model.size;
+    }
+    for (NSInteger i = 0; i < manager.allVideosArray.count; i++) {
+        FileModel *model = manager.allVideosArray[i];
+        allVideosArraySize += model.size;
+    }
+    
+    CGRect frame = CGRectMake(20, 80, kScreenWidth-40, kScreenHeight-100);
+    view = [[UIView alloc] initWithFrame:frame];
+    [self.view addSubview:view];
+    for (NSInteger i = 0; i < 4; i ++) {
+        CGRect rect = CGRectMake(0, 40 * i, frame.size.width, 40);
+        UILabel *label = [[UILabel alloc] initWithFrame:rect];
+        label.textColor = [UIColor whiteColor];
+        if (i == 0) {
+            NSString *sizeStr = [GLFFileManager returenSizeStr:allFilesArraySize];
+            label.text = [NSString stringWithFormat:@"所有文件(夹)数量: %ld    大小: %@", manager.allArray.count, sizeStr];
+        } else if (i == 1) {
+            NSString *sizeStr = [GLFFileManager returenSizeStr:allFilesArraySize];
+            label.text = [NSString stringWithFormat:@"所有文件数量: %ld    大小: %@", manager.allFilesArray.count, sizeStr];
+        } else if (i == 2) {
+            NSString *sizeStr = [GLFFileManager returenSizeStr:allImagesArraySize];
+            label.text = [NSString stringWithFormat:@"所有图片数量: %ld    大小: %@", manager.allImagesArray.count, sizeStr];
+        } else if (i == 3) {
+            NSString *sizeStr = [GLFFileManager returenSizeStr:allVideosArraySize];
+            label.text = [NSString stringWithFormat:@"所有视频数量: %ld    大小: %@", manager.allVideosArray.count, sizeStr];
+        }
+        [view addSubview:label];
+    }
 }
 
 - (void)buttonAction {
@@ -181,11 +232,13 @@
 }
 
 - (void)search {
-    if (searchBar.text.length == 0) {
-        return;
-    }
     [searchBar resignFirstResponder];
     [myDataArray removeAllObjects];
+    if (searchBar.text.length == 0) {
+        [myTableView reloadData];
+        view.hidden = NO;
+        return;
+    }
     for (NSInteger i = 0; i < allDataArray.count; i++) {
         if (myDataArray.count > 300) {
             break;
@@ -208,6 +261,11 @@
         [self showStringHUD:@"未搜到任何内容" second:2];
     } else if (myDataArray.count > 300) {
         [self showStringHUD:@"搜到的内容过多, 只展示前300条" second:2];
+    }
+    if (myDataArray.count > 0) {
+        view.hidden = YES;
+    } else {
+        view.hidden = NO;
     }
 }
 
