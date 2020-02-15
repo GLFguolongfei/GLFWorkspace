@@ -37,7 +37,7 @@ static NSString *cellID = @"ShowTableViewCell";
     self.title = @"所有视频";
         
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    if (manager.allDYVideosArray.count > 0) {
+    if (manager.allVideosArray.count > 0) {
         _dataArray = manager.allVideosArray;
         self.title = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
     } else {
