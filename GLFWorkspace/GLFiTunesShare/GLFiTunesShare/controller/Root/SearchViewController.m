@@ -44,7 +44,12 @@
     myDataArray = [[NSMutableArray alloc] init];
     allDataArray = [[NSMutableArray alloc] init];
     
-    [self prepareData];
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    if (manager.allDYVideosArray.count > 0) {
+        allDataArray = manager.allArray;
+    } else {
+        [self prepareData];
+    }
     [self prepareView];
 }
 

@@ -35,8 +35,14 @@ static NSString *cellID = @"ShowTableViewCell";
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"文字" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.title = @"所有视频";
-    
-    [self prepareData];
+        
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    if (manager.allDYVideosArray.count > 0) {
+        _dataArray = manager.allVideosArray;
+        self.title = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+    } else {
+        [self prepareData];
+    }
     [self prepareView];
 }
 
@@ -149,7 +155,7 @@ static NSString *cellID = @"ShowTableViewCell";
             first = indexPath.row;
         }
         for (NSInteger i = first; i < _dataArray.count; i++) {
-            if (count > 15) {
+            if (count >= 15) {
                 break;
             }
             FileModel *model = _dataArray[i];

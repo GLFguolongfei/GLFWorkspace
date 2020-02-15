@@ -18,7 +18,7 @@
 
 HMSingletonM(DocumentManager)
 
-- (void)eachAllFiles:(BOOL) isForce {
+- (void)eachAllFiles:(BOOL)isForce {
     if (isEaching && !isForce) {
         return;
     }
@@ -104,6 +104,31 @@ HMSingletonM(DocumentManager)
         NSCalendarUnit type = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
         NSDateComponents *cmps = [calendar components:type fromDate:startDate toDate:endDate options:0];
         NSLog(@"全局遍历完成,一共用时: %ld分钟%ld秒", cmps.minute, cmps.second);
+    });
+}
+
+- (void)setVideosImage:(NSInteger)maxCount {
+    if (maxCount <= 0) {
+        maxCount = 10;
+    }
+    __block NSInteger count = 0;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        for (NSInteger i = 0; i < self.allVideosArray.count; i++) {
+            if (count >= maxCount) {
+                break;
+            }
+            FileModel *model = self.allVideosArray[i];
+            if (model.image == nil) {
+                count++;
+                #if FirstTarget
+                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
+                #else
+                    model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+                #endif
+                [self.allVideosArray replaceObjectAtIndex:i withObject:model];
+            }
+        }
     });
 }
 

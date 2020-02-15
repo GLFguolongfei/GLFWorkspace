@@ -37,6 +37,9 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    [manager setVideosImage:5];
+    
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *record = [userDefaults objectForKey:kRecord];
     if ([record isEqualToString:@"1"] && isCanRecord) {

@@ -21,7 +21,8 @@ HMSingletonH(DocumentManager)
 @property (nonatomic, strong) NSMutableArray *allVideosArray;   // 视频
 @property (nonatomic, strong) NSMutableArray *allDYVideosArray; // 抖音视频
 
-- (void)eachAllFiles:(BOOL) isForce;
+- (void)eachAllFiles:(BOOL)isForce;
+- (void)setVideosImage:(NSInteger)maxCount;
 + (void)updateDocumentPaths;
 
 @end
