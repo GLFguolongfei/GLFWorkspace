@@ -25,6 +25,9 @@
 #pragma mark UIApplicationDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    [manager eachAllFiles:YES];
+    
     // 让程序从容的崩溃
     // ----- 好像没起到作用,原因未知 -----
     InstallUncaughtExceptionHandler();
@@ -74,6 +77,9 @@
     } completion:^(BOOL finished) {
         [imageView removeFromSuperview];
     }];
+    
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    [manager eachAllFiles:NO];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

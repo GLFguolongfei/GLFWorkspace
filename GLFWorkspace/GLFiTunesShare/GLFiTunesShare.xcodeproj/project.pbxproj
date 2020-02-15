@@ -103,6 +103,13 @@
 		6F62A2971F8783B80049DE3B /* LaunchScreen2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */; };
 		6F6C6F1023F7F88A00D7AFAC /* DocumentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6C6F0F23F7F88A00D7AFAC /* DocumentManager.m */; };
 		6F6C6F1123F7F88A00D7AFAC /* DocumentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6C6F0F23F7F88A00D7AFAC /* DocumentManager.m */; };
+		6F6C6F1223F804B100D7AFAC /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9116DC1F7EB445002C40AC /* MediaPlayer.framework */; };
+		6F6C6F1323F804BC00D7AFAC /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9116DC1F7EB445002C40AC /* MediaPlayer.framework */; };
+		6F6C6F1423F804CF00D7AFAC /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F06F98F23EF1DCA006E5C97 /* AssetsLibrary.framework */; };
+		6F6C6F1523F804DF00D7AFAC /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FFE33A023D3333700D6DBE6 /* QuartzCore.framework */; };
+		6F6C6F1623F804FA00D7AFAC /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F393F8D1FA1B3E90049CF49 /* CloudKit.framework */; };
+		6F6C6F1723F8050E00D7AFAC /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */; };
+		6F6C6F1823F8052E00D7AFAC /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0CB5D523485C0300B69807 /* WebKit.framework */; };
 		6F79336B23F6516C006E0EC1 /* FSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F79336A23F6516C006E0EC1 /* FSubViewController.m */; };
 		6F79336C23F6516C006E0EC1 /* FSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F79336A23F6516C006E0EC1 /* FSubViewController.m */; };
 		6F8072B21F7E436E007D7B26 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072B11F7E436E007D7B26 /* AppDelegate.m */; };
@@ -314,7 +321,9 @@
 				6F06F99023EF1DCB006E5C97 /* AssetsLibrary.framework in Frameworks */,
 				6FFE33A123D3333700D6DBE6 /* QuartzCore.framework in Frameworks */,
 				6F393F8E1FA1B3E90049CF49 /* CloudKit.framework in Frameworks */,
+				6F6C6F1823F8052E00D7AFAC /* WebKit.framework in Frameworks */,
 				6F124DF31F9F3E07005605E1 /* MobileCoreServices.framework in Frameworks */,
+				6F6C6F1223F804B100D7AFAC /* MediaPlayer.framework in Frameworks */,
 				6F9116DD1F7EB445002C40AC /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -338,7 +347,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				6F124DF41F9F3E0E005605E1 /* MobileCoreServices.framework in Frameworks */,
+				6F6C6F1723F8050E00D7AFAC /* LocalAuthentication.framework in Frameworks */,
+				6F6C6F1323F804BC00D7AFAC /* MediaPlayer.framework in Frameworks */,
+				6F6C6F1523F804DF00D7AFAC /* QuartzCore.framework in Frameworks */,
 				6FF80A9B1F8F9F5800D7B19B /* AVFoundation.framework in Frameworks */,
+				6F6C6F1423F804CF00D7AFAC /* AssetsLibrary.framework in Frameworks */,
+				6F6C6F1623F804FA00D7AFAC /* CloudKit.framework in Frameworks */,
 				6F0CB5D623485C0300B69807 /* WebKit.framework in Frameworks */,
 				6F91B4571F81615B00A9C616 /* MediaPlayer.framework in Frameworks */,
 			);

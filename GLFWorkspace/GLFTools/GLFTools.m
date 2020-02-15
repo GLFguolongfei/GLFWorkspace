@@ -318,6 +318,34 @@
     CGImageRelease(cgImage);
     return image;
 }
-                                
+
+#pragma mark 获取视频尺寸
++ (CGSize)videoSizeWithPath:(NSString *)path {
+    NSURL *url = [NSURL fileURLWithPath:path];
+    AVURLAsset *asset = [AVURLAsset assetWithURL:url];
+    NSArray *array = asset.tracks;
+    CGSize videoSize = CGSizeZero;
+    for(AVAssetTrack  *track in array) {
+        if([track.mediaType isEqualToString:AVMediaTypeVideo]) {
+            videoSize = track.naturalSize;
+        }
+    }
+    return videoSize;
+}
+
+#pragma mark 转换成时分秒
++ (NSString *)timeFormatted:(NSInteger)totalSeconds {
+    NSInteger seconds = totalSeconds % 60;
+    NSInteger minutes = (totalSeconds / 60) % 60;
+    NSInteger hours = totalSeconds / 3600;
+    if (totalSeconds >= 3600) {
+        return [NSString stringWithFormat:@"%02ld:%02ld:%02ld", (long)hours, (long)minutes, (long)seconds];
+    } else if (totalSeconds >= 60) {
+        return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
+    } else {
+        return [NSString stringWithFormat:@"%02ld", (long)seconds];
+    }
+}
+
 
 @end

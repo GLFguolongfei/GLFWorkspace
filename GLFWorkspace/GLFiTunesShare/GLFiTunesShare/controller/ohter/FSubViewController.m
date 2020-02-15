@@ -169,26 +169,11 @@
 - (void)showTimer {
     NSInteger currentTime = (NSInteger)CMTimeGetSeconds(playerItem.currentTime);
     NSInteger duration = (NSInteger)CMTimeGetSeconds(playerItem.duration);
-    NSString *currentTimeStr = [self timeFormatted:currentTime];
-    NSString *durationStr = [self timeFormatted:duration];
+    NSString *currentTimeStr = [GLFTools timeFormatted:currentTime];
+    NSString *durationStr = [GLFTools timeFormatted:duration];
     label.text = [NSString stringWithFormat:@"%@ / %@", currentTimeStr, durationStr];
     CGFloat index = CMTimeGetSeconds(playerItem.currentTime) / CMTimeGetSeconds(playerItem.duration);
     [progressView setProgress:index animated:YES];
-}
-
-#pragma mark Private Method
-// 转换成时分秒
-- (NSString *)timeFormatted:(NSInteger)totalSeconds {
-    NSInteger seconds = totalSeconds % 60;
-    NSInteger minutes = (totalSeconds / 60) % 60;
-    NSInteger hours = totalSeconds / 3600;
-    if (totalSeconds >= 3600) {
-        return [NSString stringWithFormat:@"%02ld:%02ld:%02ld", (long)hours, (long)minutes, (long)seconds];
-    } else if (totalSeconds >= 60) {
-        return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
-    } else {
-        return [NSString stringWithFormat:@"%02ld", (long)seconds];
-    }
 }
 
 

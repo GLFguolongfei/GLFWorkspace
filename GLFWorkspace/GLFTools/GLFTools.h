@@ -10,6 +10,7 @@
 #import <UIKit/UIKit.h>
 #import <Accelerate/Accelerate.h>
 #import <AVFoundation/AVFoundation.h>
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface GLFTools : NSObject
 
@@ -33,6 +34,10 @@
 #pragma mark 获取视频缩略图
 // 截取指定时间的视频缩略图
 + (UIImage *)thumbnailImageRequest:(CGFloat)timeBySecond andVideoPath:(NSString *)path;
+#pragma mark 获取视频尺寸
++ (CGSize)videoSizeWithPath:(NSString *)path;
 
-    
+#pragma mark 转换成时分秒
++ (NSString *)timeFormatted:(NSInteger)totalSeconds;
+
 @end

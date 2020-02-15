@@ -30,8 +30,11 @@ HMSingletonM(DocumentManager)
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *hidden = [userDefaults objectForKey:kContentHidden];
     
+    NSDate *startDate = [NSDate date];
+    
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
+        NSLog(@"全局遍历开始");
         NSMutableArray *allArray = [[NSMutableArray alloc] init];
         NSMutableArray *allFoldersArray = [[NSMutableArray alloc] init];
         NSMutableArray *allFilesArray = [[NSMutableArray alloc] init];
@@ -62,12 +65,21 @@ HMSingletonM(DocumentManager)
                     model.image = [UIImage imageWithContentsOfFile:model.path];
                     [allImagesArray addObject:model];
                 } else if ([CvideoTypeArray containsObject:lowerType]) {
-                    #if FirstTarget
-                        model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-                    #else
-                        model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
-                    #endif
+//                    #if FirstTarget
+//                        model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
+//                    #else
+//                        model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+//                    #endif
+                    model.image = nil;
                     [allVideosArray addObject:model];
+                    if ([model.name isEqualToString:@"抖音"]) {
+                        [allDYVideosArray addObject:model];
+                    } else {
+                        CGSize size = [GLFTools videoSizeWithPath:model.path];
+                        if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
+                            [allDYVideosArray addObject:model];
+                        }
+                    }
                 }
                 [allFilesArray addObject:model];
             } else if (fileType == 2) { // 文件夹
@@ -87,6 +99,11 @@ HMSingletonM(DocumentManager)
         self.allImagesArray = allImagesArray;
         self.allVideosArray = allVideosArray;
         self.allDYVideosArray = allDYVideosArray;
+        NSDate *endDate = [NSDate date];
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSCalendarUnit type = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+        NSDateComponents *cmps = [calendar components:type fromDate:startDate toDate:endDate options:0];
+        NSLog(@"全局遍历完成,一共用时: %ld分钟%ld秒", cmps.minute, cmps.second);
     });
 }
 
@@ -114,6 +131,7 @@ HMSingletonM(DocumentManager)
         });
     }
 }
+
 
 
 @end

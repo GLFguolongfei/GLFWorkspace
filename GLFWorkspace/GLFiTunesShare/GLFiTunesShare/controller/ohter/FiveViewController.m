@@ -43,13 +43,17 @@
     
     self.toolbarItems = @[space, item1, space, item2, space, item3, space];
     
-    [self prepareData];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
     NSString *indexStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"selectIndex"];
     selectIndex = [indexStr integerValue];
+    
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    if (manager.allDYVideosArray.count > 0) {
+        _dataArray = manager.allDYVideosArray;
+        self.title = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+        [self prepareView];
+    } else {
+        [self prepareData];
+    }
 }
 
 - (void)prepareData {
@@ -88,7 +92,7 @@
                     if ([model.name isEqualToString:@"抖音"]) {
                         [resultArray addObject:model];
                     } else {
-                        CGSize size = [self returnVideoSize:model.path];
+                        CGSize size = [GLFTools videoSizeWithPath:model.path];
                         if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
                             [resultArray addObject:model];
                         }
@@ -235,19 +239,5 @@
     }
 }
 
-#pragma mark Private Method
-- (CGSize)returnVideoSize:(NSString *)path {
-    NSURL *url = [NSURL fileURLWithPath:path];
-    AVURLAsset *asset = [AVURLAsset assetWithURL:url];
-    NSArray *array = asset.tracks;
-    CGSize videoSize = CGSizeZero;
-    for(AVAssetTrack  *track in array) {
-        if([track.mediaType isEqualToString:AVMediaTypeVideo]) {
-            videoSize = track.naturalSize;
-        }
-    }
-//    NSLog(@"%f,%f", videoSize.width, videoSize.height);
-    return videoSize;
-}
 
 @end

@@ -209,7 +209,7 @@
 
 - (void)showTimer {
     timeCount++;
-    timeLabel.text = [self timeFormatted:timeCount];
+    timeLabel.text = [GLFTools timeFormatted:timeCount];
 }
 
 #pragma mark AVCaptureFileOutputRecordingDelegate
@@ -235,20 +235,6 @@
 }
 
 #pragma mark 私有方法
-// 转换成时分秒
-- (NSString *)timeFormatted:(NSInteger)totalSeconds {
-    NSInteger seconds = totalSeconds % 60;
-    NSInteger minutes = (totalSeconds / 60) % 60;
-    NSInteger hours = totalSeconds / 3600;
-    if (totalSeconds >= 3600) {
-        return [NSString stringWithFormat:@"%02ld:%02ld:%02ld", (long)hours, (long)minutes, (long)seconds];
-    } else if (totalSeconds >= 60) {
-        return [NSString stringWithFormat:@"%02ld:%02ld", (long)minutes, (long)seconds];
-    } else {
-        return [NSString stringWithFormat:@"%02ld", (long)seconds];
-    }
-}
-
 // 生成唯一不重复名称
 - (NSString *)returnName {
     NSDateFormatter *dateFormat2 = [[NSDateFormatter alloc] init];
