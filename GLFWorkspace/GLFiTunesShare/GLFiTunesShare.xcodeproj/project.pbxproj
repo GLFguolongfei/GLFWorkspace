@@ -101,6 +101,8 @@
 		6F5D7C6E23E47FE8005954F0 /* AllVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */; };
 		6F62A2961F877FCD0049DE3B /* LaunchScreen2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */; };
 		6F62A2971F8783B80049DE3B /* LaunchScreen2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */; };
+		6F6C6F1023F7F88A00D7AFAC /* DocumentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6C6F0F23F7F88A00D7AFAC /* DocumentManager.m */; };
+		6F6C6F1123F7F88A00D7AFAC /* DocumentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6C6F0F23F7F88A00D7AFAC /* DocumentManager.m */; };
 		6F79336B23F6516C006E0EC1 /* FSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F79336A23F6516C006E0EC1 /* FSubViewController.m */; };
 		6F79336C23F6516C006E0EC1 /* FSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F79336A23F6516C006E0EC1 /* FSubViewController.m */; };
 		6F8072B21F7E436E007D7B26 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072B11F7E436E007D7B26 /* AppDelegate.m */; };
@@ -253,6 +255,8 @@
 		6F5D7C6B23E47FE2005954F0 /* AllVideoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AllVideoViewController.h; sourceTree = "<group>"; };
 		6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AllVideoViewController.m; sourceTree = "<group>"; };
 		6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen2.storyboard; sourceTree = "<group>"; };
+		6F6C6F0E23F7F88A00D7AFAC /* DocumentManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentManager.h; sourceTree = "<group>"; };
+		6F6C6F0F23F7F88A00D7AFAC /* DocumentManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DocumentManager.m; sourceTree = "<group>"; };
 		6F79336923F6516C006E0EC1 /* FSubViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSubViewController.h; sourceTree = "<group>"; };
 		6F79336A23F6516C006E0EC1 /* FSubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSubViewController.m; sourceTree = "<group>"; };
 		6F8072AD1F7E436E007D7B26 /* GLFiTunesShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLFiTunesShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -575,6 +579,8 @@
 				6F8072B41F7E436E007D7B26 /* ViewController.m */,
 				6F96B69A23E34A46006A2D00 /* TestViewController.h */,
 				6F96B69B23E34A46006A2D00 /* TestViewController.m */,
+				6F6C6F0E23F7F88A00D7AFAC /* DocumentManager.h */,
+				6F6C6F0F23F7F88A00D7AFAC /* DocumentManager.m */,
 				6FF29E5422CB352B00386700 /* controller */,
 				6F8072B61F7E436E007D7B26 /* Main.storyboard */,
 				6F8072BB1F7E436E007D7B26 /* LaunchScreen.storyboard */,
@@ -894,6 +900,7 @@
 				6F0E961B1FA4135B0029DDD6 /* MBProgressHUD+Add.m in Sources */,
 				6F8072C01F7E436E007D7B26 /* main.m in Sources */,
 				6F1EEB211FB1A86A0046389D /* WebSetupViewController.m in Sources */,
+				6F6C6F1023F7F88A00D7AFAC /* DocumentManager.m in Sources */,
 				6FE944E120BE4EF6005A46AD /* DetailViewController3.m in Sources */,
 				6F5D7C6D23E47FE2005954F0 /* AllVideoViewController.m in Sources */,
 				6F1EEB0B1FB1A4060046389D /* SubViewController.m in Sources */,
@@ -967,6 +974,7 @@
 				6F1EEB301FB1ADD50046389D /* LoginViewController.m in Sources */,
 				6F1EEB311FB1ADD50046389D /* BaseViewController.m in Sources */,
 				6FE944E220BE4EF6005A46AD /* DetailViewController3.m in Sources */,
+				6F6C6F1123F7F88A00D7AFAC /* DocumentManager.m in Sources */,
 				6F0E960E1FA4135B0029DDD6 /* Base64.m in Sources */,
 				6F5D7C6E23E47FE8005954F0 /* AllVideoViewController.m in Sources */,
 				6FA4620D1FB3383A00DDA77F /* ImageSubViewController.m in Sources */,

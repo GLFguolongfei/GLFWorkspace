@@ -295,7 +295,7 @@
                 [self prepareData];
                 [self viewEditing:YES];
             }
-            [GLFFileManager updateDocumentPaths];
+            [DocumentManager updateDocumentPaths];
         }
     }];
     [alertVC addAction:okAction];
@@ -351,7 +351,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self prepareData];
                 [self viewEditing:YES];
-                [GLFFileManager updateDocumentPaths];
+                [DocumentManager updateDocumentPaths];
             });
         });
     }];
@@ -570,7 +570,7 @@
         BOOL success = [GLFFileManager fileDelete:model.path];
         if (success) {
             [self prepareData];
-            [GLFFileManager updateDocumentPaths];
+            [DocumentManager updateDocumentPaths];
         }
     }];
     [alertVC addAction:okAction];
@@ -618,7 +618,7 @@
             BOOL success = [GLFFileManager fileMove:model.path toPath:toPath];
             if (success) {
                 [self prepareData];
-                [GLFFileManager updateDocumentPaths];
+                [DocumentManager updateDocumentPaths];
             }
         }
     }];

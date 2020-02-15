@@ -29,7 +29,6 @@ HMSingletonH(FileManager)
 
 + (float)fileSize:(NSString *)path;
 + (float)fileSizeForDir:(NSString *)path;
-+ (void)updateDocumentPaths;
 
 + (NSString *)returenSizeStr:(CGFloat)size;
 

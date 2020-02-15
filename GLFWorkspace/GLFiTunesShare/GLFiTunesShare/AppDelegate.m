@@ -34,7 +34,7 @@
         ViewController *testVC = [[ViewController alloc] init];
         self.window.rootViewController = testVC;
     } else {
-        [GLFFileManager updateDocumentPaths];
+        [DocumentManager updateDocumentPaths];
 #if FirstTarget
         RootViewController *rootVC = [[RootViewController alloc] init];
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:rootVC];

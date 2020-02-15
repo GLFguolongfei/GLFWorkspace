@@ -135,31 +135,6 @@ HMSingletonM(FileManager)
     return size;
 }
 
-+ (void)updateDocumentPaths {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentPath = [paths objectAtIndex:0];
-    // 遍历
-    @synchronized(self) { // ------ 加互斥锁
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-        dispatch_async(queue, ^{
-            NSArray *array = [self searchSubFile:documentPath andIsDepth:YES];
-            NSMutableArray *documentPathArray = [[NSMutableArray alloc] init];
-            for (int i = 0; i < array.count; i++) {
-                NSString *path = [NSString stringWithFormat:@"%@/%@", documentPath, array[i]];
-                NSInteger fileType = [self fileExistsAtPath:path];
-                if (fileType == 2) { // 只显示文件夹
-                    [documentPathArray addObject:array[i]];
-                }
-            }
-            [[NSUserDefaults standardUserDefaults] setObject:documentPathArray forKey:DocumentPathArray];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [[NSNotificationCenter defaultCenter] postNotificationName:DocumentPathArrayUpdate object:self userInfo:nil];
-            });
-        });
-    }
-}
-
 #pragma mark Method
 + (NSString *)returenSizeStr:(CGFloat)size {
     if (size / 1000.0 > 1000) {

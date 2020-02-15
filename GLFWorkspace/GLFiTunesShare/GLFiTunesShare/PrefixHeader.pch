@@ -24,6 +24,7 @@
 #import "Base64.h"
 #import "GLFTools.h"
 #import "GLFFileManager.h"
+#import "DocumentManager.h"
 // Models
 #import "FileModel.h"
 // Categorys

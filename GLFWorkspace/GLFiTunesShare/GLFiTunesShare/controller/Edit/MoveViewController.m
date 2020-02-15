@@ -55,7 +55,7 @@ static NSString *cellID = @"GLFTableViewCellID";
             sliderView.hidden = YES;
         }
     } else {
-        [GLFFileManager updateDocumentPaths];
+        [DocumentManager updateDocumentPaths];
     }
 }
 
@@ -219,7 +219,7 @@ static NSString *cellID = @"GLFTableViewCellID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self moveTo:myDataArray[indexPath.row]];
-    [GLFFileManager updateDocumentPaths];
+    [DocumentManager updateDocumentPaths];
 }
 
 
