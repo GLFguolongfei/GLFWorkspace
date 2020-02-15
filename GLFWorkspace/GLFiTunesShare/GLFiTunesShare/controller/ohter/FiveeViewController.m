@@ -7,12 +7,12 @@
 //
 
 #import "FiveeViewController.h"
-#import "FSubViewController.h"
+#import "FSubbViewController.h"
 
 @interface FiveeViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 {
     UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
-    FSubViewController *currentVC; // 当前显示的VC
+    FSubbViewController *currentVC; // 当前显示的VC
     BOOL isPlaying;
     
     NSInteger selectIndex;
@@ -38,7 +38,7 @@
     
     isPlaying = NO;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"isHiddenNaviBar" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"isHiddenNaviBar2" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     
     UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(playerRewind)];
@@ -103,13 +103,8 @@
                     // 内存警告崩溃
 //                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
                     model.image = nil;
-                    if ([model.name isEqualToString:@"抖音"]) {
+                    if ([favoriteArray containsObject: model.name]) {
                         [resultArray addObject:model];
-                    } else {
-                        CGSize size = [GLFTools videoSizeWithPath:model.path];
-                        if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
-                            [resultArray addObject:model];
-                        }
                     }
                 }
             }
@@ -131,7 +126,7 @@
     pageVC.delegate = self;
     pageVC.dataSource = self;
         
-    FSubViewController *subVC = [[FSubViewController alloc] init];
+    FSubbViewController *subVC = [[FSubbViewController alloc] init];
     subVC.currentIndex = selectIndex;
     subVC.model = _dataArray[selectIndex];
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
@@ -226,14 +221,14 @@
 #pragma mark UIPageViewControllerDataSource
 // 上一页
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    selectIndex = ((FSubViewController *) viewController).currentIndex;
+    selectIndex = ((FSubbViewController *) viewController).currentIndex;
     if (selectIndex==0 || selectIndex==NSNotFound) {
         selectIndex = _dataArray.count;
     }
     
     selectIndex--; // 注意: 直接使用VC的顺序index,不要再单独标记了,否则出大问题
     
-    FSubViewController *subVC = [[FSubViewController alloc] init];
+    FSubbViewController *subVC = [[FSubbViewController alloc] init];
     subVC.currentIndex = selectIndex;
     subVC.model = _dataArray[selectIndex];
     return subVC;
@@ -241,14 +236,14 @@
 
 // 下一页
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-    selectIndex = ((FSubViewController *) viewController).currentIndex;
+    selectIndex = ((FSubbViewController *) viewController).currentIndex;
     if (selectIndex==_dataArray.count-1 || selectIndex==NSNotFound) {
         selectIndex = -1;
     }
     
     selectIndex++;
     
-    FSubViewController *subVC = [[FSubViewController alloc] init];
+    FSubbViewController *subVC = [[FSubbViewController alloc] init];
     subVC.currentIndex = selectIndex;
     subVC.model = _dataArray[selectIndex];
     return subVC;
@@ -258,7 +253,7 @@
 // 开始滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
     // 获取当前控制器
-    currentVC = (FSubViewController *)pendingViewControllers[0];
+    currentVC = (FSubbViewController *)pendingViewControllers[0];
     // 获取当前控制器标题
     NSInteger currentIndex = currentVC.currentIndex;
     currentModel = _dataArray[currentIndex];
@@ -270,16 +265,13 @@
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
     if (previousViewControllers.count > 0 && completed) {
         // 获取之前控制器
-        FSubViewController *playVC = (FSubViewController *)previousViewControllers[0];
+        FSubbViewController *playVC = (FSubbViewController *)previousViewControllers[0];
         // 停止播放
         [playVC playOrPauseVideo:NO];
         // ToolBar设为暂停状态
         isPlaying = NO;
         [self setButtonPlayState];
         [self playOrPauseVideo];
-        NSString *indexStr = [NSString stringWithFormat:@"%ld", (long)selectIndex];
-        [[NSUserDefaults standardUserDefaults] setObject:indexStr forKey:@"selectIndex"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
         
         if ([favoriteArray containsObject:currentModel.name]) {
             [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
