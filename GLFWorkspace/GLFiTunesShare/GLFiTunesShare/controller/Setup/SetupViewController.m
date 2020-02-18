@@ -17,6 +17,7 @@
 #import "AllImageViewController.h"
 #import "AllVideoViewController.h"
 #import "SearchViewController.h"
+#import "DYViewController.h"
 
 @interface SetupViewController ()<UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
@@ -185,8 +186,8 @@
 }
 
 - (void)button4 {
-    OtherViewController *otherVC = [[OtherViewController alloc] init];
-    [self.navigationController pushViewController:otherVC animated:YES];
+    DYViewController *dyVC = [[DYViewController alloc] init];
+    [self.navigationController pushViewController:dyVC animated:YES];
 }
 
 - (void)button5 {
