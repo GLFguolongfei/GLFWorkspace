@@ -1,19 +1,19 @@
 //
-//  FiveViewController.m
+//  DYViewController.m
 //  GLFiTunesShare
 //
-//  Created by guolongfei on 2020/2/14.
+//  Created by guolongfei on 2020/2/18.
 //  Copyright © 2020 GuoLongfei. All rights reserved.
 //
 
-#import "FiveViewController.h"
-#import "FSubViewController.h"
-#import "FiveeViewController.h"
+#import "DYViewController.h"
+#import "DYSubViewController.h"
+#import "DYFavoriteViewController.h"
 
-@interface FiveViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
+@interface DYViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 {
     UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
-    FSubViewController *currentVC; // 当前显示的VC
+    DYSubViewController *currentVC; // 当前显示的VC
     BOOL isPlaying;
     
     NSInteger selectIndex;
@@ -26,7 +26,7 @@
 }
 @end
 
-@implementation FiveViewController
+@implementation DYViewController
 
 
 #pragma mark - Life Cycle
@@ -150,7 +150,7 @@
     pageVC.delegate = self;
     pageVC.dataSource = self;
         
-    FSubViewController *subVC = [[FSubViewController alloc] init];
+    DYSubViewController *subVC = [[DYSubViewController alloc] init];
     subVC.currentIndex = selectIndex;
     subVC.model = _dataArray[selectIndex];
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
@@ -231,7 +231,7 @@
 }
 
 - (void)favoriteVideo {
-    FiveeViewController *vc = [[FiveeViewController alloc] init];
+    DYFavoriteViewController *vc = [[DYFavoriteViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -250,14 +250,14 @@
 #pragma mark UIPageViewControllerDataSource
 // 上一页
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    selectIndex = ((FSubViewController *) viewController).currentIndex;
+    selectIndex = ((DYSubViewController *) viewController).currentIndex;
     if (selectIndex==0 || selectIndex==NSNotFound) {
         selectIndex = _dataArray.count;
     }
     
     selectIndex--; // 注意: 直接使用VC的顺序index,不要再单独标记了,否则出大问题
     
-    FSubViewController *subVC = [[FSubViewController alloc] init];
+    DYSubViewController *subVC = [[DYSubViewController alloc] init];
     subVC.currentIndex = selectIndex;
     subVC.model = _dataArray[selectIndex];
     return subVC;
@@ -265,14 +265,14 @@
 
 // 下一页
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-    selectIndex = ((FSubViewController *) viewController).currentIndex;
+    selectIndex = ((DYSubViewController *) viewController).currentIndex;
     if (selectIndex==_dataArray.count-1 || selectIndex==NSNotFound) {
         selectIndex = -1;
     }
     
     selectIndex++;
     
-    FSubViewController *subVC = [[FSubViewController alloc] init];
+    DYSubViewController *subVC = [[DYSubViewController alloc] init];
     subVC.currentIndex = selectIndex;
     subVC.model = _dataArray[selectIndex];
     return subVC;
@@ -282,7 +282,7 @@
 // 开始滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
     // 获取当前控制器
-    currentVC = (FSubViewController *)pendingViewControllers[0];
+    currentVC = (DYSubViewController *)pendingViewControllers[0];
     // 获取当前控制器标题
     NSInteger currentIndex = currentVC.currentIndex;
     currentModel = _dataArray[currentIndex];
@@ -294,7 +294,7 @@
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
     if (previousViewControllers.count > 0 && completed) {
         // 获取之前控制器
-        FSubViewController *playVC = (FSubViewController *)previousViewControllers[0];
+        DYSubViewController *playVC = (DYSubViewController *)previousViewControllers[0];
         // 停止播放
         [playVC playOrPauseVideo:NO];
         // ToolBar设为暂停状态

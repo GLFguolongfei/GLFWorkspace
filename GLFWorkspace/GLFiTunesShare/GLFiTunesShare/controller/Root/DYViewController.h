@@ -1,8 +1,8 @@
 //
-//  FiveeViewController.h
+//  DYViewController.h
 //  GLFiTunesShare
 //
-//  Created by guolongfei on 2020/2/16.
+//  Created by guolongfei on 2020/2/18.
 //  Copyright © 2020 GuoLongfei. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FiveeViewController : BaseViewController
+@interface DYViewController : BaseViewController
 
 @end
 

@@ -1,18 +1,18 @@
 //
-//  FiveeViewController.m
+//  DYFavoriteViewController.m
 //  GLFiTunesShare
 //
-//  Created by guolongfei on 2020/2/16.
+//  Created by guolongfei on 2020/2/18.
 //  Copyright © 2020 GuoLongfei. All rights reserved.
 //
 
-#import "FiveeViewController.h"
-#import "FSubbViewController.h"
+#import "DYFavoriteViewController.h"
+#import "DYFavoriteSubViewController.h"
 
-@interface FiveeViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
+@interface DYFavoriteViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 {
     UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
-    FSubbViewController *currentVC; // 当前显示的VC
+    DYFavoriteSubViewController *currentVC; // 当前显示的VC
     BOOL isPlaying;
     
     NSInteger selectIndex;
@@ -25,7 +25,7 @@
 }
 @end
 
-@implementation FiveeViewController
+@implementation DYFavoriteViewController
 
 
 #pragma mark - Life Cycle
@@ -126,7 +126,7 @@
     pageVC.delegate = self;
     pageVC.dataSource = self;
         
-    FSubbViewController *subVC = [[FSubbViewController alloc] init];
+    DYFavoriteSubViewController *subVC = [[DYFavoriteSubViewController alloc] init];
     subVC.currentIndex = selectIndex;
     subVC.model = _dataArray[selectIndex];
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
@@ -221,14 +221,14 @@
 #pragma mark UIPageViewControllerDataSource
 // 上一页
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    selectIndex = ((FSubbViewController *) viewController).currentIndex;
+    selectIndex = ((DYFavoriteSubViewController *) viewController).currentIndex;
     if (selectIndex==0 || selectIndex==NSNotFound) {
         selectIndex = _dataArray.count;
     }
     
     selectIndex--; // 注意: 直接使用VC的顺序index,不要再单独标记了,否则出大问题
     
-    FSubbViewController *subVC = [[FSubbViewController alloc] init];
+    DYFavoriteSubViewController *subVC = [[DYFavoriteSubViewController alloc] init];
     subVC.currentIndex = selectIndex;
     subVC.model = _dataArray[selectIndex];
     return subVC;
@@ -236,14 +236,14 @@
 
 // 下一页
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-    selectIndex = ((FSubbViewController *) viewController).currentIndex;
+    selectIndex = ((DYFavoriteSubViewController *) viewController).currentIndex;
     if (selectIndex==_dataArray.count-1 || selectIndex==NSNotFound) {
         selectIndex = -1;
     }
     
     selectIndex++;
     
-    FSubbViewController *subVC = [[FSubbViewController alloc] init];
+    DYFavoriteSubViewController *subVC = [[DYFavoriteSubViewController alloc] init];
     subVC.currentIndex = selectIndex;
     subVC.model = _dataArray[selectIndex];
     return subVC;
@@ -253,7 +253,7 @@
 // 开始滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
     // 获取当前控制器
-    currentVC = (FSubbViewController *)pendingViewControllers[0];
+    currentVC = (DYFavoriteSubViewController *)pendingViewControllers[0];
     // 获取当前控制器标题
     NSInteger currentIndex = currentVC.currentIndex;
     currentModel = _dataArray[currentIndex];
@@ -265,7 +265,7 @@
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
     if (previousViewControllers.count > 0 && completed) {
         // 获取之前控制器
-        FSubbViewController *playVC = (FSubbViewController *)previousViewControllers[0];
+        DYFavoriteSubViewController *playVC = (DYFavoriteSubViewController *)previousViewControllers[0];
         // 停止播放
         [playVC playOrPauseVideo:NO];
         // ToolBar设为暂停状态

@@ -1,15 +1,15 @@
 //
-//  FSubViewController.m
+//  DYSubViewController.m
 //  GLFiTunesShare
 //
-//  Created by guolongfei on 2020/2/14.
+//  Created by guolongfei on 2020/2/18.
 //  Copyright © 2020 GuoLongfei. All rights reserved.
 //
 
-#import "FSubViewController.h"
+#import "DYSubViewController.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface FSubViewController ()
+@interface DYSubViewController ()
 {
     AVPlayer *player;
     AVPlayerItem *playerItem;
@@ -22,7 +22,7 @@
 }
 @end
 
-@implementation FSubViewController
+@implementation DYSubViewController
 
 
 #pragma mark - Life Cycle

@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		6F040F991FAD6EDC00EF4721 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */; };
-		6F05C08C23F5DA240034073B /* FiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F05C08B23F5DA240034073B /* FiveViewController.m */; };
-		6F05C08D23F5DFB50034073B /* FiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F05C08B23F5DA240034073B /* FiveViewController.m */; };
 		6F06F99023EF1DCB006E5C97 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F06F98F23EF1DCA006E5C97 /* AssetsLibrary.framework */; };
 		6F06F9DF23F04FCF006E5C97 /* ThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F06F9DE23F04FCF006E5C97 /* ThreeViewController.m */; };
 		6F06F9E023F04FCF006E5C97 /* ThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F06F9DE23F04FCF006E5C97 /* ThreeViewController.m */; };
@@ -91,6 +89,14 @@
 		6F1EEB301FB1ADD50046389D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAFF1FB1A4060046389D /* LoginViewController.m */; };
 		6F1EEB311FB1ADD50046389D /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAFC1FB1A4060046389D /* BaseViewController.m */; };
 		6F1EEB321FB1ADEF0046389D /* FileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAE61FB1A4060046389D /* FileModel.m */; };
+		6F22EB3B23FBEB7C00A30691 /* DYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB3A23FBEB7C00A30691 /* DYViewController.m */; };
+		6F22EB3C23FBEB7C00A30691 /* DYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB3A23FBEB7C00A30691 /* DYViewController.m */; };
+		6F22EB3F23FBEBBB00A30691 /* DYFavoriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB3E23FBEBBB00A30691 /* DYFavoriteViewController.m */; };
+		6F22EB4023FBEBBB00A30691 /* DYFavoriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB3E23FBEBBB00A30691 /* DYFavoriteViewController.m */; };
+		6F22EB4323FBEBDE00A30691 /* DYSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB4223FBEBDE00A30691 /* DYSubViewController.m */; };
+		6F22EB4423FBEBDE00A30691 /* DYSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB4223FBEBDE00A30691 /* DYSubViewController.m */; };
+		6F22EB4723FBEBFC00A30691 /* DYFavoriteSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */; };
+		6F22EB4823FBEBFC00A30691 /* DYFavoriteSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */; };
 		6F2A40D01FB8006400866D06 /* WebSetupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F1EEB1D1FB1A86A0046389D /* WebSetupViewController.xib */; };
 		6F393F8E1FA1B3E90049CF49 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F393F8D1FA1B3E90049CF49 /* CloudKit.framework */; };
 		6F58F45620BDB0E1003E0911 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45520BDB0E1003E0911 /* DetailViewController2.m */; };
@@ -101,10 +107,6 @@
 		6F5D7C6E23E47FE8005954F0 /* AllVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */; };
 		6F62A2961F877FCD0049DE3B /* LaunchScreen2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */; };
 		6F62A2971F8783B80049DE3B /* LaunchScreen2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */; };
-		6F647C1523F859F8007024C0 /* FiveeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F647C1423F859F8007024C0 /* FiveeViewController.m */; };
-		6F647C1623F859F8007024C0 /* FiveeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F647C1423F859F8007024C0 /* FiveeViewController.m */; };
-		6F647C1923F86067007024C0 /* FSubbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F647C1823F86067007024C0 /* FSubbViewController.m */; };
-		6F647C1A23F86067007024C0 /* FSubbViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F647C1823F86067007024C0 /* FSubbViewController.m */; };
 		6F6C6F1023F7F88A00D7AFAC /* DocumentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6C6F0F23F7F88A00D7AFAC /* DocumentManager.m */; };
 		6F6C6F1123F7F88A00D7AFAC /* DocumentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F6C6F0F23F7F88A00D7AFAC /* DocumentManager.m */; };
 		6F6C6F1223F804B100D7AFAC /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9116DC1F7EB445002C40AC /* MediaPlayer.framework */; };
@@ -114,8 +116,6 @@
 		6F6C6F1623F804FA00D7AFAC /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F393F8D1FA1B3E90049CF49 /* CloudKit.framework */; };
 		6F6C6F1723F8050E00D7AFAC /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */; };
 		6F6C6F1823F8052E00D7AFAC /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0CB5D523485C0300B69807 /* WebKit.framework */; };
-		6F79336B23F6516C006E0EC1 /* FSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F79336A23F6516C006E0EC1 /* FSubViewController.m */; };
-		6F79336C23F6516C006E0EC1 /* FSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F79336A23F6516C006E0EC1 /* FSubViewController.m */; };
 		6F8072B21F7E436E007D7B26 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072B11F7E436E007D7B26 /* AppDelegate.m */; };
 		6F8072B51F7E436E007D7B26 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072B41F7E436E007D7B26 /* ViewController.m */; };
 		6F8072B81F7E436E007D7B26 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8072B61F7E436E007D7B26 /* Main.storyboard */; };
@@ -180,8 +180,6 @@
 
 /* Begin PBXFileReference section */
 		6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
-		6F05C08A23F5DA240034073B /* FiveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FiveViewController.h; sourceTree = "<group>"; };
-		6F05C08B23F5DA240034073B /* FiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FiveViewController.m; sourceTree = "<group>"; };
 		6F06F98F23EF1DCA006E5C97 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		6F06F9DD23F04FCE006E5C97 /* ThreeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreeViewController.h; sourceTree = "<group>"; };
 		6F06F9DE23F04FCF006E5C97 /* ThreeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ThreeViewController.m; sourceTree = "<group>"; };
@@ -257,6 +255,14 @@
 		6F1EEB1B1FB1A86A0046389D /* WebSetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebSetupViewController.h; sourceTree = "<group>"; };
 		6F1EEB1C1FB1A86A0046389D /* WebSetupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebSetupViewController.m; sourceTree = "<group>"; };
 		6F1EEB1D1FB1A86A0046389D /* WebSetupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebSetupViewController.xib; sourceTree = "<group>"; };
+		6F22EB3923FBEB7C00A30691 /* DYViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYViewController.h; sourceTree = "<group>"; };
+		6F22EB3A23FBEB7C00A30691 /* DYViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYViewController.m; sourceTree = "<group>"; };
+		6F22EB3D23FBEBBB00A30691 /* DYFavoriteViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYFavoriteViewController.h; sourceTree = "<group>"; };
+		6F22EB3E23FBEBBB00A30691 /* DYFavoriteViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYFavoriteViewController.m; sourceTree = "<group>"; };
+		6F22EB4123FBEBDE00A30691 /* DYSubViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYSubViewController.h; sourceTree = "<group>"; };
+		6F22EB4223FBEBDE00A30691 /* DYSubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYSubViewController.m; sourceTree = "<group>"; };
+		6F22EB4523FBEBFC00A30691 /* DYFavoriteSubViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYFavoriteSubViewController.h; sourceTree = "<group>"; };
+		6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYFavoriteSubViewController.m; sourceTree = "<group>"; };
 		6F393F8C1FA1B3D50049CF49 /* GLFiTunesShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GLFiTunesShare.entitlements; sourceTree = "<group>"; };
 		6F393F8D1FA1B3E90049CF49 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		6F58F45420BDB0E1003E0911 /* DetailViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController2.h; sourceTree = "<group>"; };
@@ -266,14 +272,8 @@
 		6F5D7C6B23E47FE2005954F0 /* AllVideoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AllVideoViewController.h; sourceTree = "<group>"; };
 		6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AllVideoViewController.m; sourceTree = "<group>"; };
 		6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen2.storyboard; sourceTree = "<group>"; };
-		6F647C1323F859F8007024C0 /* FiveeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FiveeViewController.h; sourceTree = "<group>"; };
-		6F647C1423F859F8007024C0 /* FiveeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FiveeViewController.m; sourceTree = "<group>"; };
-		6F647C1723F86067007024C0 /* FSubbViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSubbViewController.h; sourceTree = "<group>"; };
-		6F647C1823F86067007024C0 /* FSubbViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSubbViewController.m; sourceTree = "<group>"; };
 		6F6C6F0E23F7F88A00D7AFAC /* DocumentManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentManager.h; sourceTree = "<group>"; };
 		6F6C6F0F23F7F88A00D7AFAC /* DocumentManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DocumentManager.m; sourceTree = "<group>"; };
-		6F79336923F6516C006E0EC1 /* FSubViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FSubViewController.h; sourceTree = "<group>"; };
-		6F79336A23F6516C006E0EC1 /* FSubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FSubViewController.m; sourceTree = "<group>"; };
 		6F8072AD1F7E436E007D7B26 /* GLFiTunesShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLFiTunesShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8072B01F7E436E007D7B26 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6F8072B11F7E436E007D7B26 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -504,6 +504,14 @@
 				6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */,
 				6F19EE0523F3143300C438DE /* SearchViewController.h */,
 				6F19EE0623F3143300C438DE /* SearchViewController.m */,
+				6F22EB3923FBEB7C00A30691 /* DYViewController.h */,
+				6F22EB3A23FBEB7C00A30691 /* DYViewController.m */,
+				6F22EB3D23FBEBBB00A30691 /* DYFavoriteViewController.h */,
+				6F22EB3E23FBEBBB00A30691 /* DYFavoriteViewController.m */,
+				6F22EB4123FBEBDE00A30691 /* DYSubViewController.h */,
+				6F22EB4223FBEBDE00A30691 /* DYSubViewController.m */,
+				6F22EB4523FBEBFC00A30691 /* DYFavoriteSubViewController.h */,
+				6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -675,14 +683,6 @@
 				6F06F9DE23F04FCF006E5C97 /* ThreeViewController.m */,
 				6F06F9E123F04FF8006E5C97 /* FourViewController.h */,
 				6F06F9E223F04FF8006E5C97 /* FourViewController.m */,
-				6F05C08A23F5DA240034073B /* FiveViewController.h */,
-				6F05C08B23F5DA240034073B /* FiveViewController.m */,
-				6F647C1323F859F8007024C0 /* FiveeViewController.h */,
-				6F647C1423F859F8007024C0 /* FiveeViewController.m */,
-				6F79336923F6516C006E0EC1 /* FSubViewController.h */,
-				6F79336A23F6516C006E0EC1 /* FSubViewController.m */,
-				6F647C1723F86067007024C0 /* FSubbViewController.h */,
-				6F647C1823F86067007024C0 /* FSubbViewController.m */,
 			);
 			path = ohter;
 			sourceTree = "<group>";
@@ -918,7 +918,6 @@
 				6F0E960D1FA4135B0029DDD6 /* Base64.m in Sources */,
 				6F0E96211FA4135B0029DDD6 /* PhotoStackView.m in Sources */,
 				6F1EEB1E1FB1A86A0046389D /* ImageViewController.m in Sources */,
-				6F79336B23F6516C006E0EC1 /* FSubViewController.m in Sources */,
 				6F06F9E323F04FF8006E5C97 /* FourViewController.m in Sources */,
 				6F1EEB001FB1A4060046389D /* DetailViewController.m in Sources */,
 				6F0E96271FA4135B0029DDD6 /* WaterView2.m in Sources */,
@@ -933,8 +932,10 @@
 				6FA4620C1FB3383A00DDA77F /* ImageSubViewController.m in Sources */,
 				6F1EEB201FB1A86A0046389D /* SetupViewController.m in Sources */,
 				6F0E96171FA4135B0029DDD6 /* GLFFileManager.m in Sources */,
+				6F22EB3F23FBEBBB00A30691 /* DYFavoriteViewController.m in Sources */,
 				6F1EEB0C1FB1A4060046389D /* Cell.m in Sources */,
 				6F19EE0723F3143300C438DE /* SearchViewController.m in Sources */,
+				6F22EB4323FBEBDE00A30691 /* DYSubViewController.m in Sources */,
 				6F0E96191FA4135B0029DDD6 /* GLFTools.m in Sources */,
 				6FBA0FAD23E816F900899522 /* TwoViewController.m in Sources */,
 				6F1EEB071FB1A4060046389D /* FileModel.m in Sources */,
@@ -942,14 +943,13 @@
 				6F0E961F1FA4135B0029DDD6 /* MBProgressHUD.m in Sources */,
 				6F58F45620BDB0E1003E0911 /* DetailViewController2.m in Sources */,
 				6F96B69C23E34A46006A2D00 /* TestViewController.m in Sources */,
-				6F05C08C23F5DA240034073B /* FiveViewController.m in Sources */,
 				6F1EEB0F1FB1A4060046389D /* Layout.m in Sources */,
 				6F0E96111FA4135B0029DDD6 /* UIColor+Category.m in Sources */,
 				6F0E96251FA4135B0029DDD6 /* MyView.m in Sources */,
 				6FBA0FA823E8113200899522 /* OneViewController.m in Sources */,
 				6F06F9DF23F04FCF006E5C97 /* ThreeViewController.m in Sources */,
-				6F647C1523F859F8007024C0 /* FiveeViewController.m in Sources */,
-				6F647C1923F86067007024C0 /* FSubbViewController.m in Sources */,
+				6F22EB4723FBEBFC00A30691 /* DYFavoriteSubViewController.m in Sources */,
+				6F22EB3B23FBEB7C00A30691 /* DYViewController.m in Sources */,
 				6FBA0FA523E80C4400899522 /* OtherViewController.m in Sources */,
 				6F8072B21F7E436E007D7B26 /* AppDelegate.m in Sources */,
 				6F0E960F1FA4135B0029DDD6 /* NSDate+Help.m in Sources */,
@@ -994,7 +994,6 @@
 				6F1EEB2B1FB1ADD50046389D /* FileInfoViewController.m in Sources */,
 				6F1EEB2C1FB1ADD50046389D /* SetupViewController.m in Sources */,
 				6F1EEB2D1FB1ADD50046389D /* PhotoLibraryViewController.m in Sources */,
-				6F79336C23F6516C006E0EC1 /* FSubViewController.m in Sources */,
 				6F06F9E423F04FF8006E5C97 /* FourViewController.m in Sources */,
 				6F1EEB2E1FB1ADD50046389D /* ImageViewController.m in Sources */,
 				6F1EEB2F1FB1ADD50046389D /* WebSetupViewController.m in Sources */,
@@ -1009,8 +1008,10 @@
 				6F0E96221FA4135B0029DDD6 /* PhotoStackView.m in Sources */,
 				6FBA0FA923E8113200899522 /* OneViewController.m in Sources */,
 				6F0E96281FA4135B0029DDD6 /* WaterView2.m in Sources */,
+				6F22EB4023FBEBBB00A30691 /* DYFavoriteViewController.m in Sources */,
 				6F0E961C1FA4135B0029DDD6 /* MBProgressHUD+Add.m in Sources */,
 				6F19EE0823F3143300C438DE /* SearchViewController.m in Sources */,
+				6F22EB4423FBEBDE00A30691 /* DYSubViewController.m in Sources */,
 				6F0E96181FA4135B0029DDD6 /* GLFFileManager.m in Sources */,
 				6FBA0FAE23E816F900899522 /* TwoViewController.m in Sources */,
 				6F0E961A1FA4135B0029DDD6 /* GLFTools.m in Sources */,
@@ -1018,14 +1019,13 @@
 				6F1EEB231FB1AD8C0046389D /* EditTableViewCell.m in Sources */,
 				6F0E96201FA4135B0029DDD6 /* MBProgressHUD.m in Sources */,
 				6F58F45720BDB0E1003E0911 /* DetailViewController2.m in Sources */,
-				6F05C08D23F5DFB50034073B /* FiveViewController.m in Sources */,
 				6F96B69D23E34A46006A2D00 /* TestViewController.m in Sources */,
 				6F0E96121FA4135B0029DDD6 /* UIColor+Category.m in Sources */,
 				6F0E96261FA4135B0029DDD6 /* MyView.m in Sources */,
 				6FBA0FAA23E8113700899522 /* OtherViewController.m in Sources */,
 				6F06F9E023F04FCF006E5C97 /* ThreeViewController.m in Sources */,
-				6F647C1623F859F8007024C0 /* FiveeViewController.m in Sources */,
-				6F647C1A23F86067007024C0 /* FSubbViewController.m in Sources */,
+				6F22EB4823FBEBFC00A30691 /* DYFavoriteSubViewController.m in Sources */,
+				6F22EB3C23FBEB7C00A30691 /* DYViewController.m in Sources */,
 				6F91B4501F81615B00A9C616 /* ViewController.m in Sources */,
 				6F91B4521F81615B00A9C616 /* main.m in Sources */,
 				6F1EEB251FB1ADA40046389D /* Cell.m in Sources */,
