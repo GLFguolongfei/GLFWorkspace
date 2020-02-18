@@ -54,7 +54,6 @@
     if (manager.allDYVideosArray.count > 0) {
         _dataArray = manager.allDYVideosArray;
         currentModel = _dataArray.firstObject;
-        self.title = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
         [self prepareView];
     } else {
         [self prepareData];
@@ -138,7 +137,6 @@
             NSLog(@"%ld", resultArray.count);
             _dataArray = resultArray;
             currentModel = _dataArray.firstObject;
-            self.title = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)resultArray.count];
             [self prepareView];
         });
     });
