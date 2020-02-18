@@ -1222,7 +1222,7 @@
 					"FirstTarget=2",
 				);
 				INFOPLIST_FILE = GLFiTunesShare/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1241,7 +1241,7 @@
 				DEVELOPMENT_TEAM = Z93556DRV3;
 				GCC_PREFIX_HEADER = GLFiTunesShare/PrefixHeader.pch;
 				INFOPLIST_FILE = GLFiTunesShare/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline1;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1321,7 +1321,7 @@
 					"SecondTarget=2",
 				);
 				INFOPLIST_FILE = "GLFiTunesShare copy-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1337,7 +1337,7 @@
 				DEVELOPMENT_TEAM = Z93556DRV3;
 				GCC_PREFIX_HEADER = GLFiTunesShare/PrefixHeader.pch;
 				INFOPLIST_FILE = "GLFiTunesShare copy-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline2;
 				PRODUCT_NAME = "$(TARGET_NAME)";
