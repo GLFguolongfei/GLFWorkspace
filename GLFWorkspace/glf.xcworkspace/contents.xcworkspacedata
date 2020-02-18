@@ -8,6 +8,25 @@
       location = "group:GLFTools"
       name = "GLFTools">
       <Group
+         location = "group:MMScanner"
+         name = "MMScanner">
+         <FileRef
+            location = "group:MMScanViewController.m">
+         </FileRef>
+         <FileRef
+            location = "group:MMScanView.m">
+         </FileRef>
+         <FileRef
+            location = "group:MMScanView.h">
+         </FileRef>
+         <FileRef
+            location = "group:MMScanViewController.h">
+         </FileRef>
+         <FileRef
+            location = "group:resource.bundle">
+         </FileRef>
+      </Group>
+      <Group
          location = "group:MD5"
          name = "MD5">
          <FileRef

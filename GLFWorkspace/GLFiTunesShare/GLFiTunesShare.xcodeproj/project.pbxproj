@@ -97,6 +97,12 @@
 		6F22EB4423FBEBDE00A30691 /* DYSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB4223FBEBDE00A30691 /* DYSubViewController.m */; };
 		6F22EB4723FBEBFC00A30691 /* DYFavoriteSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */; };
 		6F22EB4823FBEBFC00A30691 /* DYFavoriteSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */; };
+		6F22EB9023FBF66000A30691 /* MMScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB8B23FBF66000A30691 /* MMScanViewController.m */; };
+		6F22EB9123FBF66000A30691 /* MMScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB8B23FBF66000A30691 /* MMScanViewController.m */; };
+		6F22EB9223FBF66000A30691 /* MMScanView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB8C23FBF66000A30691 /* MMScanView.m */; };
+		6F22EB9323FBF66000A30691 /* MMScanView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB8C23FBF66000A30691 /* MMScanView.m */; };
+		6F22EB9423FBF66000A30691 /* resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F22EB8F23FBF66000A30691 /* resource.bundle */; };
+		6F22EB9523FBF66000A30691 /* resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6F22EB8F23FBF66000A30691 /* resource.bundle */; };
 		6F2A40D01FB8006400866D06 /* WebSetupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F1EEB1D1FB1A86A0046389D /* WebSetupViewController.xib */; };
 		6F393F8E1FA1B3E90049CF49 /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F393F8D1FA1B3E90049CF49 /* CloudKit.framework */; };
 		6F58F45620BDB0E1003E0911 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45520BDB0E1003E0911 /* DetailViewController2.m */; };
@@ -263,6 +269,11 @@
 		6F22EB4223FBEBDE00A30691 /* DYSubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYSubViewController.m; sourceTree = "<group>"; };
 		6F22EB4523FBEBFC00A30691 /* DYFavoriteSubViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYFavoriteSubViewController.h; sourceTree = "<group>"; };
 		6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYFavoriteSubViewController.m; sourceTree = "<group>"; };
+		6F22EB8B23FBF66000A30691 /* MMScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMScanViewController.m; sourceTree = "<group>"; };
+		6F22EB8C23FBF66000A30691 /* MMScanView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMScanView.m; sourceTree = "<group>"; };
+		6F22EB8D23FBF66000A30691 /* MMScanView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMScanView.h; sourceTree = "<group>"; };
+		6F22EB8E23FBF66000A30691 /* MMScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMScanViewController.h; sourceTree = "<group>"; };
+		6F22EB8F23FBF66000A30691 /* resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = resource.bundle; sourceTree = "<group>"; };
 		6F393F8C1FA1B3D50049CF49 /* GLFiTunesShare.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = GLFiTunesShare.entitlements; sourceTree = "<group>"; };
 		6F393F8D1FA1B3E90049CF49 /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 		6F58F45420BDB0E1003E0911 /* DetailViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController2.h; sourceTree = "<group>"; };
@@ -381,6 +392,7 @@
 		6F0E95E91FA4135B0029DDD6 /* GLFTools */ = {
 			isa = PBXGroup;
 			children = (
+				6F22EB8A23FBF66000A30691 /* MMScanner */,
 				6F06F9E523F05721006E5C97 /* MD5 */,
 				6F1C540123C8F523000122FB /* UncaughtExceptionHandler.h */,
 				6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */,
@@ -573,6 +585,18 @@
 				6F1EEB1D1FB1A86A0046389D /* WebSetupViewController.xib */,
 			);
 			path = Setup;
+			sourceTree = "<group>";
+		};
+		6F22EB8A23FBF66000A30691 /* MMScanner */ = {
+			isa = PBXGroup;
+			children = (
+				6F22EB8B23FBF66000A30691 /* MMScanViewController.m */,
+				6F22EB8C23FBF66000A30691 /* MMScanView.m */,
+				6F22EB8D23FBF66000A30691 /* MMScanView.h */,
+				6F22EB8E23FBF66000A30691 /* MMScanViewController.h */,
+				6F22EB8F23FBF66000A30691 /* resource.bundle */,
+			);
+			path = MMScanner;
 			sourceTree = "<group>";
 		};
 		6F8072A41F7E436E007D7B26 = {
@@ -860,6 +884,7 @@
 				6F1EEB051FB1A4060046389D /* FileInfoViewController.xib in Resources */,
 				6F8072BD1F7E436E007D7B26 /* LaunchScreen.storyboard in Resources */,
 				6F8072BA1F7E436E007D7B26 /* Assets.xcassets in Resources */,
+				6F22EB9423FBF66000A30691 /* resource.bundle in Resources */,
 				6F0E96231FA4135B0029DDD6 /* 背景.png in Resources */,
 				6F8072B81F7E436E007D7B26 /* Main.storyboard in Resources */,
 			);
@@ -894,6 +919,7 @@
 				6F1EEB241FB1AD950046389D /* EditTableViewCell.xib in Resources */,
 				6F91B4591F81615B00A9C616 /* LaunchScreen.storyboard in Resources */,
 				6F91B45A1F81615B00A9C616 /* Assets.xcassets in Resources */,
+				6F22EB9523FBF66000A30691 /* resource.bundle in Resources */,
 				6F0E96241FA4135B0029DDD6 /* 背景.png in Resources */,
 				6F91B45B1F81615B00A9C616 /* Main.storyboard in Resources */,
 			);
@@ -917,6 +943,7 @@
 				6F1EEB091FB1A4060046389D /* RootViewController.m in Sources */,
 				6F0E960D1FA4135B0029DDD6 /* Base64.m in Sources */,
 				6F0E96211FA4135B0029DDD6 /* PhotoStackView.m in Sources */,
+				6F22EB9023FBF66000A30691 /* MMScanViewController.m in Sources */,
 				6F1EEB1E1FB1A86A0046389D /* ImageViewController.m in Sources */,
 				6F06F9E323F04FF8006E5C97 /* FourViewController.m in Sources */,
 				6F1EEB001FB1A4060046389D /* DetailViewController.m in Sources */,
@@ -930,6 +957,7 @@
 				6F5D7C6D23E47FE2005954F0 /* AllVideoViewController.m in Sources */,
 				6F1EEB0B1FB1A4060046389D /* SubViewController.m in Sources */,
 				6FA4620C1FB3383A00DDA77F /* ImageSubViewController.m in Sources */,
+				6F22EB9223FBF66000A30691 /* MMScanView.m in Sources */,
 				6F1EEB201FB1A86A0046389D /* SetupViewController.m in Sources */,
 				6F0E96171FA4135B0029DDD6 /* GLFFileManager.m in Sources */,
 				6F22EB3F23FBEBBB00A30691 /* DYFavoriteViewController.m in Sources */,
@@ -993,6 +1021,7 @@
 				6F1EEB291FB1ADD50046389D /* SubViewController.m in Sources */,
 				6F1EEB2B1FB1ADD50046389D /* FileInfoViewController.m in Sources */,
 				6F1EEB2C1FB1ADD50046389D /* SetupViewController.m in Sources */,
+				6F22EB9123FBF66000A30691 /* MMScanViewController.m in Sources */,
 				6F1EEB2D1FB1ADD50046389D /* PhotoLibraryViewController.m in Sources */,
 				6F06F9E423F04FF8006E5C97 /* FourViewController.m in Sources */,
 				6F1EEB2E1FB1ADD50046389D /* ImageViewController.m in Sources */,
@@ -1006,6 +1035,7 @@
 				6F5D7C6E23E47FE8005954F0 /* AllVideoViewController.m in Sources */,
 				6FA4620D1FB3383A00DDA77F /* ImageSubViewController.m in Sources */,
 				6F0E96221FA4135B0029DDD6 /* PhotoStackView.m in Sources */,
+				6F22EB9323FBF66000A30691 /* MMScanView.m in Sources */,
 				6FBA0FA923E8113200899522 /* OneViewController.m in Sources */,
 				6F0E96281FA4135B0029DDD6 /* WaterView2.m in Sources */,
 				6F22EB4023FBEBBB00A30691 /* DYFavoriteViewController.m in Sources */,

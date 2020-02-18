@@ -12,6 +12,7 @@
 #import "TwoViewController.h"
 #import "ThreeViewController.h"
 #import "FourViewController.h"
+#import "MMScanViewController.h"
 
 @interface OtherViewController ()
 {
@@ -36,7 +37,7 @@
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:bgImageView];
 
-    for (NSInteger i = 0; i < 4; i++) {
+    for (NSInteger i = 0; i < 5; i++) {
         CGFloat width = (kScreenWidth - 60) / 2;
         CGRect frame = CGRectMake(20 * (i % 2 + 1) + width * (i % 2), 100 + 80 * ceil(i / 2), width, 60);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
@@ -48,6 +49,8 @@
             [button setTitle:@"自定义拍照" forState:UIControlStateNormal];
         } else if (i == 3)  {
             [button setTitle:@"自定义录像" forState:UIControlStateNormal];
+        } else if (i == 4)  {
+            [button setTitle:@"扫描二维码" forState:UIControlStateNormal];
         } else {
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
@@ -104,6 +107,21 @@
     } else if (button.tag == 103) {
         FourViewController *vc = [[FourViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
+    } else if (button.tag == 104) {
+          MMScanViewController *scanVc = [[MMScanViewController alloc] initWithQrType:MMScanTypeAll onFinish:^(NSString *result, NSError *error) {
+              if (error) {
+                  NSLog(@"error: %@", error);
+                  [self showStringHUD:error.localizedDescription second:2];
+              } else {
+                  NSLog(@"扫描结果：%@", result);
+                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"扫描结果" message:result delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+                  [alert show];
+              }
+          }];
+          [scanVc setHistoryCallBack:^(NSArray *result) {
+              NSLog(@"%@", result);
+          }];
+          [self.navigationController pushViewController:scanVc animated:YES];
     }
 }
 
