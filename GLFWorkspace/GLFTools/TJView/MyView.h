@@ -10,4 +10,6 @@
 
 @interface MyView : UIView
 
+@property (nonatomic, assign) CGFloat addAngle;
+
 @end

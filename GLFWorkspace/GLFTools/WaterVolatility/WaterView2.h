@@ -10,4 +10,6 @@
 
 @interface WaterView2 : UIView
 
+@property (nonatomic, assign) CGFloat addPointX;
+
 @end

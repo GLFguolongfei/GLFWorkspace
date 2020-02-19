@@ -43,7 +43,11 @@
 }
 
 - (void)timerAction {
-    _angle++;
+    if (self.addAngle < 1) {
+        _angle += 1;
+    } else {
+        _angle += self.addAngle;
+    }
     [self setNeedsDisplay]; // 注意: 该方法会自动调用下面的方法
 }
 

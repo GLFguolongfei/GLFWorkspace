@@ -24,6 +24,9 @@
     UIImageView *bgImageView;
     UIView *gestureView;
     BOOL isSuccess;
+    
+    MyView *view;
+    WaterView2 *waterView2;
 }
 @end
 
@@ -62,12 +65,12 @@
     label.shadowOffset = CGSizeMake(2, 2);
     
     // 太极图
-    MyView *view = [[MyView alloc]initWithFrame:CGRectMake(50, 90, kScreenWidth-100, kScreenWidth-100)];
+    view = [[MyView alloc] initWithFrame:CGRectMake(50, 90, kScreenWidth-100, kScreenWidth-100)];
     view.backgroundColor = [UIColor clearColor];
     [self.view addSubview:view];
     
     // 水波
-    WaterView2 *waterView2 = [[WaterView2 alloc] initWithFrame:self.view.bounds];
+    waterView2 = [[WaterView2 alloc] initWithFrame:self.view.bounds];
     waterView2.backgroundColor = [UIColor clearColor];
     [self.view addSubview:waterView2];
     
@@ -147,6 +150,35 @@
     } else {
         [self.navigationController setToolbarHidden:YES animated:YES];
     }
+    NSArray *arrayTouch = [touches allObjects];
+    UITouch *touch = (UITouch *)[arrayTouch lastObject];
+    view.addAngle = touch.force * 3;
+    waterView2.addPointX = touch.force / 10;
+    NSLog(@"%@", [NSString stringWithFormat:@"%f", touch.force]);
+}
+
+- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    NSArray *arrayTouch = [touches allObjects];
+    UITouch *touch = (UITouch *)[arrayTouch lastObject];
+    view.addAngle = touch.force * 3;
+    waterView2.addPointX = touch.force / 10;
+    NSLog(@"%@", [NSString stringWithFormat:@"%f", touch.force]);
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    NSArray *arrayTouch = [touches allObjects];
+    UITouch *touch = (UITouch *)[arrayTouch lastObject];
+    view.addAngle = touch.force * 3;
+    waterView2.addPointX = touch.force / 10;
+    NSLog(@"%@", [NSString stringWithFormat:@"%f", touch.force]);
+}
+
+- (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    NSArray *arrayTouch = [touches allObjects];
+    UITouch *touch = (UITouch *)[arrayTouch lastObject];
+    view.addAngle = touch.force * 3;
+    waterView2.addPointX = touch.force / 10;
+    NSLog(@"%@", [NSString stringWithFormat:@"%f", touch.force]);
 }
 
 - (void)buttonAction:(id)sender {

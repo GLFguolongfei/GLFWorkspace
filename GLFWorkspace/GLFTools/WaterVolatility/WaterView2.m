@@ -81,7 +81,11 @@
     if (a>=1.5) {
         jia = NO;
     }
-    b += 0.1;
+    if (self.addPointX < 0.1) {
+        b += 0.1;
+    } else {
+        b += self.addPointX;
+    }
     [self setNeedsDisplay];
 }
 
@@ -128,8 +132,6 @@
     CGContextAddPath(context, path);
     CGContextFillPath(context); // 只填充颜色(注意、想要填充 必须是闭合的曲线)
     CGContextDrawPath(context, kCGPathStroke); // 画轮廓
-    
-    
     
     CGPathAddLineToPoint(path, nil, 0, upLeftY);
     // 5、画 开始为下得波浪
