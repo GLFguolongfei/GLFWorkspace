@@ -23,6 +23,8 @@
     NSMutableArray *favoriteArray;
     DocumentManager *manager;
     UIButton *favoriteButton;
+    
+    NSTimer *timer; // 定时器
 }
 @end
 
@@ -49,16 +51,7 @@
     
     NSString *indexStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"selectIndex"];
     selectIndex = [indexStr integerValue];
-    
-    manager = [DocumentManager sharedDocumentManager];
-    if (manager.allDYVideosArray.count > 0) {
-        _dataArray = manager.allDYVideosArray;
-        currentModel = _dataArray.firstObject;
-        [self prepareView];
-    } else {
-        [self prepareData];
-    }
-    
+        
     favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
     favoriteArray = [favoriteArray mutableCopy];
     if (!favoriteArray) {
@@ -69,15 +62,28 @@
     } else {
         self.navigationItem.rightBarButtonItems = @[item11];
     }
+    
+    manager = [DocumentManager sharedDocumentManager];
+    if (manager.allDYVideosArray.count > 0) {
+        _dataArray = manager.allDYVideosArray;
+        currentModel = _dataArray.firstObject;
+        [self prepareView];
+    } else {
+        [self showHUD];
+        timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    }
+}
+
+// 更改状态栏
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"isHiddenNaviBar" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
-    isPlaying = YES;
-    [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonPlayState];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -89,57 +95,14 @@
 }
 
 - (void)prepareData {
-    [self showHUD];
-        
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *hidden = [userDefaults objectForKey:kContentHidden];
-    
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        NSMutableArray *resultArray = [[NSMutableArray alloc] init];
-        NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
-        NSLog(@"%lu", (unsigned long)array.count);
-        for (int i = 0; i < array.count; i++) {
-            if ([array[i] isEqualToString:@"Inbox"]) {
-                continue;
-            }
-            if ([hidden isEqualToString:@"0"] && [CHiddenPaths containsObject:array[i]]) {
-                continue;
-            }
-            FileModel *model = [[FileModel alloc] init];
-            model.name = array[i];
-            model.path = [NSString stringWithFormat:@"%@/%@", path,model.name];
-            NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
-            if (fileType == 1) { // 文件
-                model.isDir = NO;
-                NSArray *array = [model.name componentsSeparatedByString:@"."];
-                NSString *lowerType = [array.lastObject lowercaseString];
-                if ([CvideoTypeArray containsObject:lowerType]) {
-                    // 内存警告崩溃
-//                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-                    model.image = nil;
-                    if ([model.name isEqualToString:@"抖音"]) {
-                        [resultArray addObject:model];
-                    } else {
-                        CGSize size = [GLFTools videoSizeWithPath:model.path];
-                        if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
-                            [resultArray addObject:model];
-                        }
-                    }
-                }
-            }
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideAllHUD];
-            NSLog(@"%ld", resultArray.count);
-            _dataArray = resultArray;
-            currentModel = _dataArray.firstObject;
-            [self prepareView];
-        });
-    });
+    if (manager.allDYVideosArray.count > 0) {
+        [self hideAllHUD];
+        [timer invalidate];
+        timer = nil;
+        _dataArray = manager.allDYVideosArray;
+        currentModel = _dataArray.firstObject;
+        [self prepareView];
+    }
 }
 
 - (void)prepareView {
@@ -177,6 +140,7 @@
     [view addSubview:favoriteButton];
     
     [self playOrPauseVideo];
+    [self hiddenNaviBar];
 }
 
 #pragma mark Events

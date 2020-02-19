@@ -29,38 +29,6 @@
             endingLineNumber = "82"
             landmarkName = "-setWebView:"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "A1579278-3212-450F-95B9-75B3C820AE64 - 8be7116770edf89b"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "-[SubViewController setWebView:]"
-                  moduleName = "GLFiTunesShare copy"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/guolongfei/Documents/Project3/GLFWorkspace/GLFWorkspace/GLFiTunesShare/GLFiTunesShare/controller/Root/SubViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "81"
-                  endingLineNumber = "81"
-                  offsetFromSymbolStart = "400">
-               </Location>
-               <Location
-                  uuid = "A1579278-3212-450F-95B9-75B3C820AE64 - 5c76b96c26bf22d7"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "__32-[SubViewController setWebView:]_block_invoke"
-                  moduleName = "GLFiTunesShare copy"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/guolongfei/Documents/Project3/GLFWorkspace/GLFWorkspace/GLFiTunesShare/GLFiTunesShare/controller/Root/SubViewController.m"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "82"
-                  endingLineNumber = "82"
-                  offsetFromSymbolStart = "36">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
