@@ -22,6 +22,8 @@
     NSMutableArray *favoriteArray;
     DocumentManager *manager;
     UIButton *favoriteButton;
+    
+    NSTimer *timer; // 定时器
 }
 @end
 
@@ -48,8 +50,6 @@
     
     self.toolbarItems = @[space, item1, space, item2, space, item3, space];
     
-    selectIndex = 0;
-    
     favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
     favoriteArray = [favoriteArray mutableCopy];
     
@@ -62,60 +62,36 @@
                 [_dataArray addObject:model];
             }
         }
-        currentModel = _dataArray.firstObject;
+        selectIndex = arc4random() % _dataArray.count;
+        currentModel = _dataArray[selectIndex];
         [self prepareView];
+        NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+        [self showStringHUD:str second:2];
     } else {
-        [self prepareData];
+        [self showHUD];
+        timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }
 }
 
 - (void)prepareData {
-    [self showHUD];
-        
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *hidden = [userDefaults objectForKey:kContentHidden];
-    
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        NSMutableArray *resultArray = [[NSMutableArray alloc] init];
-        NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
-        NSLog(@"%lu", (unsigned long)array.count);
-        for (int i = 0; i < array.count; i++) {
-            if ([array[i] isEqualToString:@"Inbox"]) {
-                continue;
-            }
-            if ([hidden isEqualToString:@"0"] && [CHiddenPaths containsObject:array[i]]) {
-                continue;
-            }
-            FileModel *model = [[FileModel alloc] init];
-            model.name = array[i];
-            model.path = [NSString stringWithFormat:@"%@/%@", path,model.name];
-            NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
-            if (fileType == 1) { // 文件
-                model.isDir = NO;
-                NSArray *array = [model.name componentsSeparatedByString:@"."];
-                NSString *lowerType = [array.lastObject lowercaseString];
-                if ([CvideoTypeArray containsObject:lowerType]) {
-                    // 内存警告崩溃
-//                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-                    model.image = nil;
-                    if ([favoriteArray containsObject: model.name]) {
-                        [resultArray addObject:model];
-                    }
-                }
+    if (manager.allDYVideosArray.count > 0) {
+        [self hideAllHUD];
+        [timer invalidate];
+        timer = nil;
+        _dataArray = [[NSMutableArray alloc] init];
+        for (NSInteger i = 0; i < manager.allDYVideosArray.count; i++) {
+            FileModel *model = manager.allDYVideosArray[i];
+            if ([favoriteArray containsObject: model.name]) {
+                [_dataArray addObject:model];
             }
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideAllHUD];
-            NSLog(@"%ld", resultArray.count);
-            _dataArray = resultArray;
-            currentModel = _dataArray.firstObject;
-            [self prepareView];
-        });
-    });
+        selectIndex = arc4random() % _dataArray.count;
+        currentModel = _dataArray[selectIndex];
+        [self prepareView];
+        NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+        [self showStringHUD:str second:2];
+    }
 }
 
 - (void)prepareView {

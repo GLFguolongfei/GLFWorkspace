@@ -68,6 +68,8 @@
         _dataArray = manager.allDYVideosArray;
         currentModel = _dataArray.firstObject;
         [self prepareView];
+        NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+        [self showStringHUD:str second:2];
     } else {
         [self showHUD];
         timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
@@ -84,6 +86,9 @@
     [super viewDidAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"isHiddenNaviBar" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
+    isPlaying = YES;
+    [currentVC playOrPauseVideo:isPlaying];
+    [self setButtonPlayState];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -102,6 +107,8 @@
         _dataArray = manager.allDYVideosArray;
         currentModel = _dataArray.firstObject;
         [self prepareView];
+        NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+        [self showStringHUD:str second:2];
     }
 }
 
@@ -139,8 +146,12 @@
     favoriteButton.layer.masksToBounds = YES;
     [view addSubview:favoriteButton];
     
-    [self playOrPauseVideo];
-    [self hiddenNaviBar];
+    isPlaying = YES;
+    [currentVC playOrPauseVideo:isPlaying];
+    [self setButtonPlayState];
+
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 #pragma mark Events
@@ -193,8 +204,12 @@
 }
 
 - (void)favoriteVideo {
-    DYFavoriteViewController *vc = [[DYFavoriteViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    if (manager.allDYVideosArray.count > 0) {
+        DYFavoriteViewController *vc = [[DYFavoriteViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        [self showStringHUD:@"等待遍历完成" second:2];
+    }
 }
 
 - (void)favoriteAction {
