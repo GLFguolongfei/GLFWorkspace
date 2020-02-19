@@ -296,7 +296,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
     imageView.center = CGPointMake(kScreenWidth / 2.0, -kScreenHeight);
-    [UIView animateWithDuration:1.2 animations:^{
+    [UIView animateWithDuration:1 animations:^{
         imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
     }];
     [self.view addSubview:imageView];
