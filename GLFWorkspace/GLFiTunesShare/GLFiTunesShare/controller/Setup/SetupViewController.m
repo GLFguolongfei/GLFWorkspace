@@ -145,11 +145,6 @@
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    if (self.navigationController.toolbar.hidden ) {
-        [self.navigationController setToolbarHidden:NO animated:YES];
-    } else {
-        [self.navigationController setToolbarHidden:YES animated:YES];
-    }
     NSArray *arrayTouch = [touches allObjects];
     UITouch *touch = (UITouch *)[arrayTouch lastObject];
     view.addAngle = touch.force * 3;
@@ -171,6 +166,11 @@
     view.addAngle = touch.force * 3;
     waterView2.addPointX = touch.force / 10;
     NSLog(@"%@", [NSString stringWithFormat:@"%f", touch.force]);
+    if (self.navigationController.toolbar.hidden ) {
+        [self.navigationController setToolbarHidden:NO animated:YES];
+    } else {
+        [self.navigationController setToolbarHidden:YES animated:YES];
+    }
 }
 
 - (void)touchesCancelled:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
