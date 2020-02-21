@@ -7,6 +7,8 @@
 //
 
 #import "DocumentManager.h"
+#import <UserNotifications/UserNotifications.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface DocumentManager()
 {
@@ -88,6 +90,26 @@ HMSingletonM(DocumentManager)
                 model.size = [GLFFileManager fileSizeForDir:model.path];
                 model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
                 [allFoldersArray addObject:model];
+                if ([model.name isEqualToString:@"郭龙飞"] && model.size > 1000000000) {
+                    UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+                    content.title = @"存储通知";
+                    content.subtitle = [NSString stringWithFormat:@"存储过大"];
+                    content.body = @"存储的东西太多了";
+                    content.badge = @1;
+                    content.sound = [UNNotificationSound defaultSound];
+                    content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
+                    
+                    UNTimeIntervalNotificationTrigger *intervalTrigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:5 repeats:NO];
+                    NSString *requestIdentifier = @"Dely.X.time";
+                    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier content:content trigger:intervalTrigger];
+                    
+                    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+                    [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+                        if (!error) {
+                            NSLog(@"本地推送添加成功: %@", requestIdentifier);
+                        }
+                    }];
+                }
             }
         }
         // 显示文件夹排在前面
