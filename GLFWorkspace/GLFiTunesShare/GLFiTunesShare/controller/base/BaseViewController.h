@@ -26,4 +26,6 @@
 #pragma mark 是否可以记录
 - (void)canRecord:(BOOL)isYes;
 
+- (void)setupEmitter;
+
 @end

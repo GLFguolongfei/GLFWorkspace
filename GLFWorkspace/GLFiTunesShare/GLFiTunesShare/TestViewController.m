@@ -10,6 +10,8 @@
 
 @interface TestViewController ()
 
+@property (nonatomic, strong) CAEmitterLayer *colorBallLayer;
+
 @end
 
 @implementation TestViewController
@@ -18,13 +20,10 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     self.title = @"测试功能";
-    
-}
-
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    
+    [self canRecord:NO];
+    [self setupEmitter];
 }
 
 

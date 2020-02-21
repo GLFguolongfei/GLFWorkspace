@@ -36,7 +36,7 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"有趣功能" style:UIBarButtonItemStylePlain target:self action:@selector(button5)];
     self.navigationItem.rightBarButtonItem = item;
     self.title = @"设置";
@@ -93,7 +93,7 @@
     UIBarButtonItem *searchItem = [[UIBarButtonItem alloc] initWithTitle:@"搜索" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
     UIBarButtonItem *dyItem = [[UIBarButtonItem alloc] initWithTitle:@"抖音" style:UIBarButtonItemStylePlain target:self action:@selector(button4)];
     UIBarButtonItem *toolBarSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
-    self.toolbarItems = @[toolBarSpace, pictureItem, toolBarSpace, videoItem, toolBarSpace, searchItem, toolBarSpace, dyItem, toolBarSpace];
+    self.toolbarItems = @[toolBarSpace, pictureItem, toolBarSpace, videoItem, toolBarSpace, searchItem, toolBarSpace, dyItem, toolBarSpace];    
 }
 
 - (void)viewWillAppear:(BOOL)animated {

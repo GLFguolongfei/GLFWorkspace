@@ -26,7 +26,7 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    self.view.backgroundColor = [UIColor blackColor];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"测试功能" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
     self.navigationItem.rightBarButtonItem = item;
     self.title = @"有趣功能";
@@ -35,7 +35,7 @@
     // 设置背景图片
     bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
-    [self.view addSubview:bgImageView];
+//    [self.view addSubview:bgImageView];
 
     for (NSInteger i = 0; i < 5; i++) {
         CGFloat width = (kScreenWidth - 60) / 2;
@@ -62,6 +62,8 @@
         button.layer.masksToBounds = YES;
         [self.view addSubview:button];
     }
+    
+    [self setupEmitter];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
