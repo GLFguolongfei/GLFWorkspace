@@ -12,7 +12,7 @@
 #import "TwoViewController.h"
 #import "ThreeViewController.h"
 #import "FourViewController.h"
-#import "MMScanViewController.h"
+#import "FiveViewController.h"
 
 @interface OtherViewController ()
 {
@@ -50,7 +50,7 @@
         } else if (i == 3)  {
             [button setTitle:@"自定义录像" forState:UIControlStateNormal];
         } else if (i == 4)  {
-            [button setTitle:@"扫描二维码" forState:UIControlStateNormal];
+            [button setTitle:@"日常小工具" forState:UIControlStateNormal];
         } else {
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
@@ -108,20 +108,8 @@
         FourViewController *vc = [[FourViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if (button.tag == 104) {
-          MMScanViewController *scanVc = [[MMScanViewController alloc] initWithQrType:MMScanTypeAll onFinish:^(NSString *result, NSError *error) {
-              if (error) {
-                  NSLog(@"error: %@", error);
-                  [self showStringHUD:error.localizedDescription second:2];
-              } else {
-                  NSLog(@"扫描结果：%@", result);
-                  UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"扫描结果" message:result delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-                  [alert show];
-              }
-          }];
-          [scanVc setHistoryCallBack:^(NSArray *result) {
-              NSLog(@"%@", result);
-          }];
-          [self.navigationController pushViewController:scanVc animated:YES];
+        FiveViewController *vc = [[FiveViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }
 }
 

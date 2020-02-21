@@ -8,6 +8,126 @@
       location = "group:GLFTools"
       name = "GLFTools">
       <Group
+         location = "group:AFNetworking"
+         name = "AFNetworking">
+         <FileRef
+            location = "group:LICENSE">
+         </FileRef>
+         <FileRef
+            location = "group:README.md">
+         </FileRef>
+         <Group
+            location = "group:UIKit+AFNetworking"
+            name = "UIKit+AFNetworking">
+            <FileRef
+               location = "group:UIProgressView+AFNetworking.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIButton+AFNetworking.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIRefreshControl+AFNetworking.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIImageView+AFNetworking.h">
+            </FileRef>
+            <FileRef
+               location = "group:AFImageDownloader.h">
+            </FileRef>
+            <FileRef
+               location = "group:AFNetworkActivityIndicatorManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:AFAutoPurgingImageCache.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIWebView+AFNetworking.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIActivityIndicatorView+AFNetworking.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIImage+AFNetworking.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIProgressView+AFNetworking.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIImageView+AFNetworking.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIKit+AFNetworking.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIRefreshControl+AFNetworking.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIButton+AFNetworking.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIActivityIndicatorView+AFNetworking.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIWebView+AFNetworking.m">
+            </FileRef>
+            <FileRef
+               location = "group:AFAutoPurgingImageCache.m">
+            </FileRef>
+            <FileRef
+               location = "group:AFNetworkActivityIndicatorManager.h">
+            </FileRef>
+            <FileRef
+               location = "group:AFImageDownloader.m">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:AFNetworking"
+            name = "AFNetworking">
+            <FileRef
+               location = "group:AFSecurityPolicy.h">
+            </FileRef>
+            <FileRef
+               location = "group:AFNetworkReachabilityManager.h">
+            </FileRef>
+            <FileRef
+               location = "group:AFURLSessionManager.h">
+            </FileRef>
+            <FileRef
+               location = "group:AFURLRequestSerialization.h">
+            </FileRef>
+            <FileRef
+               location = "group:AFURLResponseSerialization.m">
+            </FileRef>
+            <FileRef
+               location = "group:AFHTTPSessionManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:AFURLResponseSerialization.h">
+            </FileRef>
+            <FileRef
+               location = "group:AFURLSessionManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:AFURLRequestSerialization.m">
+            </FileRef>
+            <FileRef
+               location = "group:AFNetworking.h">
+            </FileRef>
+            <FileRef
+               location = "group:AFNetworkReachabilityManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:AFSecurityPolicy.m">
+            </FileRef>
+            <FileRef
+               location = "group:AFCompatibilityMacros.h">
+            </FileRef>
+            <FileRef
+               location = "group:AFHTTPSessionManager.h">
+            </FileRef>
+         </Group>
+      </Group>
+      <Group
          location = "group:MMScanner"
          name = "MMScanner">
          <FileRef
