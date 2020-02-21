@@ -35,6 +35,29 @@
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self showImage];
+}
+
+// 运动开始时执行
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    // 这里只处理摇晃事件
+    if (motion == UIEventSubtypeMotionShake) {
+        NSLog(@"motion begin: %ld %@", motion, event);
+        [self showImage];
+    }
+}
+
+// 运动结束后执行
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    NSLog(@"motion end: %ld %@", motion, event);
+}
+
+// 运动被意外取消时执行
+- (void)motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    NSLog(@"motion cancel: %ld %@", motion, event);
+}
+
+- (void)showImage {
     if (imageView) {
         // 为重力仿真行为添加动力学元素
         [gravityBeahvior addItem:imageView];
