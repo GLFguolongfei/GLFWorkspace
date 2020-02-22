@@ -8,6 +8,16 @@
       location = "group:GLFTools"
       name = "GLFTools">
       <Group
+         location = "group:FDFullscreenPopGesture"
+         name = "FDFullscreenPopGesture">
+         <FileRef
+            location = "group:UINavigationController+FDFullscreenPopGesture.h">
+         </FileRef>
+         <FileRef
+            location = "group:UINavigationController+FDFullscreenPopGesture.m">
+         </FileRef>
+      </Group>
+      <Group
          location = "group:AFNetworking"
          name = "AFNetworking">
          <FileRef

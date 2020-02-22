@@ -9,6 +9,7 @@
 #import "AllImageViewController.h"
 #import "ShowTableViewCell.h"
 #import "DetailViewController2.h"
+#import "UINavigationController+FDFullscreenPopGesture.h"
 
 static NSString *cellID1 = @"ShowTableViewCell1";
 static NSString *cellID2 = @"ShowTableViewCell2";
@@ -24,7 +25,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     
     UIImageView *imageView;
     UIBarButtonItem *item;
-    UIView *background;
+    UIVisualEffectView *visualEfView;
     BOOL isPlaying;
     
     UIView *gestureView;
@@ -247,24 +248,24 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [_tableView2 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID2];
     [_tableView3 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID3];
     
-    background = [[UIView alloc] initWithFrame:kScreen];
-    background.backgroundColor = [UIColor lightGrayColor];
-    background.alpha = 0;
-    [self.view addSubview:background];
+    visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = kScreen;
+    visualEfView.alpha = 0;
+    [self.view addSubview:visualEfView];
 }
 
 - (void)buttonAction {
     isPlaying = !isPlaying;
     if (isPlaying) {
         item.title = @"停止播放";
-        background.alpha = 0.7;
+        visualEfView.alpha = 0.7;
         if (imageView) {
             [gravityBeahvior addItem:imageView];
         }
     } else {
         item.title = @"自动播放";
         [UIView animateWithDuration:4 animations:^{
-            background.alpha = 0;
+            visualEfView.alpha = 0;
         }];
     }
     [self playImage];

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F01DF90240155D400F64623 /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F01DF8F240155D400F64623 /* UINavigationController+FDFullscreenPopGesture.m */; };
+		6F01DF91240155D400F64623 /* UINavigationController+FDFullscreenPopGesture.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F01DF8F240155D400F64623 /* UINavigationController+FDFullscreenPopGesture.m */; };
 		6F040F991FAD6EDC00EF4721 /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */; };
 		6F06F99023EF1DCB006E5C97 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F06F98F23EF1DCA006E5C97 /* AssetsLibrary.framework */; };
 		6F06F9DF23F04FCF006E5C97 /* ThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F06F9DE23F04FCF006E5C97 /* ThreeViewController.m */; };
@@ -257,6 +259,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6F01DF8E240155D400F64623 /* UINavigationController+FDFullscreenPopGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+FDFullscreenPopGesture.h"; sourceTree = "<group>"; };
+		6F01DF8F240155D400F64623 /* UINavigationController+FDFullscreenPopGesture.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+FDFullscreenPopGesture.m"; sourceTree = "<group>"; };
 		6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = LocalAuthentication.framework; path = System/Library/Frameworks/LocalAuthentication.framework; sourceTree = SDKROOT; };
 		6F06F98F23EF1DCA006E5C97 /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		6F06F9DD23F04FCE006E5C97 /* ThreeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ThreeViewController.h; sourceTree = "<group>"; };
@@ -526,6 +530,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6F01DF8D240155D400F64623 /* FDFullscreenPopGesture */ = {
+			isa = PBXGroup;
+			children = (
+				6F01DF8E240155D400F64623 /* UINavigationController+FDFullscreenPopGesture.h */,
+				6F01DF8F240155D400F64623 /* UINavigationController+FDFullscreenPopGesture.m */,
+			);
+			path = FDFullscreenPopGesture;
+			sourceTree = "<group>";
+		};
 		6F06F9E523F05721006E5C97 /* MD5 */ = {
 			isa = PBXGroup;
 			children = (
@@ -538,6 +551,7 @@
 		6F0E95E91FA4135B0029DDD6 /* GLFTools */ = {
 			isa = PBXGroup;
 			children = (
+				6F01DF8D240155D400F64623 /* FDFullscreenPopGesture */,
 				6F4C2C0224004C9A0094D193 /* AFNetworking */,
 				6F22EB8A23FBF66000A30691 /* MMScanner */,
 				6F06F9E523F05721006E5C97 /* MD5 */,
@@ -1282,6 +1296,7 @@
 				6F4C2BE424004C0D0094D193 /* QQL_CompassView.m in Sources */,
 				6F0E961B1FA4135B0029DDD6 /* MBProgressHUD+Add.m in Sources */,
 				6F8072C01F7E436E007D7B26 /* main.m in Sources */,
+				6F01DF90240155D400F64623 /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
 				6F1EEB211FB1A86A0046389D /* WebSetupViewController.m in Sources */,
 				6F6C6F1023F7F88A00D7AFAC /* DocumentManager.m in Sources */,
 				6FE944E120BE4EF6005A46AD /* DetailViewController3.m in Sources */,
@@ -1394,6 +1409,7 @@
 				6F4C2BE524004C0D0094D193 /* QQL_CompassView.m in Sources */,
 				6F1EEB301FB1ADD50046389D /* LoginViewController.m in Sources */,
 				6F1EEB311FB1ADD50046389D /* BaseViewController.m in Sources */,
+				6F01DF91240155D400F64623 /* UINavigationController+FDFullscreenPopGesture.m in Sources */,
 				6FE944E220BE4EF6005A46AD /* DetailViewController3.m in Sources */,
 				6F6C6F1123F7F88A00D7AFAC /* DocumentManager.m in Sources */,
 				6F0E960E1FA4135B0029DDD6 /* Base64.m in Sources */,

@@ -26,8 +26,9 @@ static NSString *cellID = @"cellID";
     PhotoStackView *stackView;
     NSMutableArray *stackViewArray;
     
+    UIVisualEffectView *visualEfView;
+    
     UIImageView *background;
-    UIImage *showImage;
     
     UIView *gestureView;
     BOOL isSuccess;
@@ -124,12 +125,16 @@ static NSString *cellID = @"cellID";
 
 - (void)prepareStackView {
     // 1-背景
-    background = [[UIImageView alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    background = [[UIImageView alloc] initWithFrame:kScreen];
     background.backgroundColor = [UIColor clearColor];
     background.alpha = 0;
     background.userInteractionEnabled = YES;
     background.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:background];
+    visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = kScreen;
+    visualEfView.alpha = 0.7;
+    [background addSubview:visualEfView];
     // 2-左右滑动按钮
     CGFloat space = kScreenWidth / 3.0;
     for (int i = 0; i < 3; i++) {
@@ -185,17 +190,6 @@ static NSString *cellID = @"cellID";
     }
 }
 
-- (void)setBackgroundImage:(UIImage *)sourceImage {
-    showImage = sourceImage;
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        UIImage *resultImage = [GLFTools blurryImage2:sourceImage withBlurLevel:30];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            background.image = resultImage;
-        });
-    });
-}
-
 - (void)buttonAction:(id)sender {
     // 存储
     NSString *name = nameArray[self.title.integerValue];
@@ -234,11 +228,11 @@ static NSString *cellID = @"cellID";
     [stackViewArray removeAllObjects];
     // 2-添加数据
     for (NSInteger i = indexPath.row; i < collectionViewArray.count; i++) {
-        id mmm = [collectionViewArray objectAtIndex:i];
-        [stackViewArray addObject:mmm];
+        id image = [collectionViewArray objectAtIndex:i];
+        [stackViewArray addObject:image];
         
         if (i == indexPath.row) {
-            [self setBackgroundImage:mmm];
+            background.image = image;
         }
     }
     // 3-显示stackView
@@ -280,7 +274,7 @@ static NSString *cellID = @"cellID";
     } else {
         self.title = [NSString stringWithFormat:@"%ld", startIndex+index+1];
         UIImage *image = [stackViewArray objectAtIndex:index+1];
-        [self setBackgroundImage:image];
+        background.image = image;
     }
 }
 
