@@ -20,9 +20,6 @@
     BOOL isUseFrontFacingCamera; // 是否使用前置摄像头
     BOOL isCanRecord;
 }
-
-@property (nonatomic, strong) CAEmitterLayer *colorBallLayer;
-
 @end
 
 @implementation BaseViewController
@@ -34,9 +31,7 @@
     // 不需要添加额外的滚动区域
     self.automaticallyAdjustsScrollViewInsets = NO;
 
-    isCanRecord = YES;
-    
-//    [self setupEmitter];
+    isCanRecord = YES;    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -289,9 +284,7 @@
 //    1.设置 CAEmitterLayer
     CAEmitterLayer *colorBallLayer = [CAEmitterLayer layer];
     [self.view.layer addSublayer:colorBallLayer];
-    
-    self.colorBallLayer = colorBallLayer;
-    
+        
 //    发射源的尺寸大小
     colorBallLayer.emitterSize = self.view.frame.size;
 //    发射源的形状
@@ -337,50 +330,57 @@
     colorBallCell.alphaSpeed = -0.1f;
 //    添加
     colorBallLayer.emitterCells = @[colorBallCell];
-
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    CGPoint point = [self locationFromTouchEvent:event];
-    [self setBallInPsition:point];
-}
-
-- (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    CGPoint point = [self locationFromTouchEvent:event];
-    [self setBallInPsition:point];
-}
-
-// 移动发射源到某个点上
-- (void)setBallInPsition:(CGPoint)position {
+- (void)setupEmitter2 {
+    CAEmitterLayer * snowEmitterLayer = [CAEmitterLayer layer];
+    snowEmitterLayer.emitterPosition = CGPointMake(100, -30);
+    snowEmitterLayer.emitterSize = CGSizeMake(self.view.bounds.size.width * 2, 0);
+    snowEmitterLayer.emitterMode = kCAEmitterLayerOutline;
+    snowEmitterLayer.emitterShape = kCAEmitterLayerLine;
+//    snowEmitterLayer.renderMode = kCAEmitterLayerAdditive;
     
-//    创建基础动画
-    CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"emitterCells.colorBallCell.scale"];
-//    fromValue
-    anim.fromValue = @0.2f;
-//    toValue
-    anim.toValue = @0.5f;
-//    duration
-    anim.duration = 1.f;
-//    线性起搏, 使动画在其持续时间内均匀地发生
-    anim.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionLinear];
-//    用事务包装隐式动画
-    [CATransaction begin];
-//    设置是否禁止由于该事务组内的属性更改而触发的操作
-    [CATransaction setDisableActions:YES];
-//    为 colorBallLayer 添加动画
-    [self.colorBallLayer addAnimation:anim forKey:nil];
-//    为 colorBallLayer 指定位置添加动画效果
-    [self.colorBallLayer setValue:[NSValue valueWithCGPoint:position] forKey:@"emitterPosition"];
-//    提交动画
-    [CATransaction commit];
+    CAEmitterCell * snowCell = [CAEmitterCell emitterCell];
+    snowCell.contents = (__bridge id)[UIImage imageNamed:@"樱花瓣2"].CGImage;
+    
+    // 花瓣缩放比例
+    snowCell.scale = 0.02;
+    snowCell.scaleRange = 0.5;
+    
+    // 每秒产生的花瓣数量
+    snowCell.birthRate = 7;
+    snowCell.lifetime = 80;
+    
+    // 每秒花瓣变透明的速度
+    snowCell.alphaSpeed = -0.01;
+    
+    // 秒速“五”厘米～～
+    snowCell.velocity = 40;
+    snowCell.velocityRange = 60;
+    
+    // 花瓣掉落的角度范围
+    snowCell.emissionRange = M_PI;
+    
+    // 花瓣旋转的速度
+    snowCell.spin = M_PI_4;
+
+    // 每个cell的颜色
+//    snowCell.color = [[UIColor redColor] CGColor];
+    
+    // 阴影的 不透明 度
+    snowEmitterLayer.shadowOpacity = 1;
+    // 阴影化开的程度（就像墨水滴在宣纸上化开那样）
+    snowEmitterLayer.shadowRadius = 8;
+    // 阴影的偏移量
+    snowEmitterLayer.shadowOffset = CGSizeMake(3, 3);
+    // 阴影的颜色
+    snowEmitterLayer.shadowColor = [[UIColor whiteColor] CGColor];
+    
+    
+    snowEmitterLayer.emitterCells = [NSArray arrayWithObject:snowCell];
+    [self.view.layer addSublayer:snowEmitterLayer];
 }
 
-// 获取手指所在点
-
-- (CGPoint)locationFromTouchEvent:(UIEvent *)event {
-    UITouch *touch = [[event allTouches] anyObject];
-    return [touch locationInView:self.view];
-}
 
 
 @end

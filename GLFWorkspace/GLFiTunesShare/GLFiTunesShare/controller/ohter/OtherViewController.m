@@ -15,9 +15,7 @@
 #import "FiveViewController.h"
 
 @interface OtherViewController ()
-{
-    UIImageView *bgImageView;
-}
+
 @end
 
 @implementation OtherViewController
@@ -31,11 +29,6 @@
     self.navigationItem.rightBarButtonItem = item;
     self.title = @"有趣功能";
     [self canRecord:NO];
-
-    // 设置背景图片
-    bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    bgImageView.contentMode = UIViewContentModeScaleAspectFill;
-//    [self.view addSubview:bgImageView];
 
     for (NSInteger i = 0; i < 5; i++) {
         CGFloat width = (kScreenWidth - 60) / 2;
@@ -55,7 +48,7 @@
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
         [button setBackgroundColor:[UIColor clearColor]];
-        [button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i + 100;
         button.layer.cornerRadius = 5;
@@ -70,25 +63,6 @@
     [super viewWillAppear:animated];
     self.navigationController.toolbar.hidden = YES;
     self.navigationController.navigationBar.hidden = NO;
-    // 1.设置背景图片
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
-    NSString *backName = [userDefaults objectForKey:BackImageName];
-    NSArray *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *cachePath = [cachePaths objectAtIndex:0];
-    NSString *filePath = [cachePath stringByAppendingString:@"/image.png"];
-    UIImage *backImage;
-    if (isUseBackImagePath.integerValue) {
-        backImage = [UIImage imageWithContentsOfFile:filePath];
-    } else {
-        backImage = [UIImage imageNamed:backName];
-    }
-    if (backImage == nil) {
-        backImage = [UIImage imageNamed:@"bgView2"];
-        [userDefaults setObject:@"bgView2" forKey:BackImageName];
-        [userDefaults synchronize];
-    }
-    bgImageView.image = backImage;
 }
 
 - (void)button {

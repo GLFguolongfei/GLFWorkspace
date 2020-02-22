@@ -10,8 +10,6 @@
 
 @interface TestViewController ()
 
-@property (nonatomic, strong) CAEmitterLayer *colorBallLayer;
-
 @end
 
 @implementation TestViewController
