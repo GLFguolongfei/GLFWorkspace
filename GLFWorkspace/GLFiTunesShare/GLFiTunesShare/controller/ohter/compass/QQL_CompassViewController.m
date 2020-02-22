@@ -17,6 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     // Do any additional setup after loading the view.
     QQL_CompassView *compassView = [QQL_CompassView sharedWithRect:self.view.bounds radius:(self.view.bounds.size.width-20)/2];
     compassView.backgroundColor = [UIColor blackColor];
@@ -33,7 +34,11 @@
     [button setImage:[UIImage imageNamed:@"tool_fanhui_left"] forState:(UIControlStateNormal)];
     [button addTarget:self action:@selector(buttonClick) forControlEvents:(UIControlEventTouchUpInside)];
     [self.view addSubview:button];
-    
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
 }
 
 // 更改状态栏

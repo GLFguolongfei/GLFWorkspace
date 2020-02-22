@@ -71,6 +71,11 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    self.navigationController.navigationBarHidden = YES;
+}
+
 /**
  *  启动传感器
  */
