@@ -197,7 +197,7 @@
         allVideosArraySize += model.size;
     }
     
-    CGRect frame = CGRectMake(20, 80, kScreenWidth-40, kScreenHeight-100);
+    CGRect frame = CGRectMake(30, 80, kScreenWidth-60, kScreenHeight-100);
     view = [[UIView alloc] initWithFrame:frame];
     [self.view addSubview:view];
     for (NSInteger i = 0; i < 4; i ++) {
@@ -206,16 +206,18 @@
         label.textColor = [UIColor whiteColor];
         if (i == 0) {
             NSString *sizeStr = [GLFFileManager returenSizeStr:allFilesArraySize];
-            label.text = [NSString stringWithFormat:@"所有文件(夹)数量: %ld    大小: %@", manager.allArray.count, sizeStr];
+            label.text = [NSString stringWithFormat:@"总共: %ld    大小: %@", manager.allFilesArray.count, sizeStr];
         } else if (i == 1) {
-            NSString *sizeStr = [GLFFileManager returenSizeStr:allFilesArraySize];
-            label.text = [NSString stringWithFormat:@"所有文件数量: %ld    大小: %@", manager.allFilesArray.count, sizeStr];
-        } else if (i == 2) {
             NSString *sizeStr = [GLFFileManager returenSizeStr:allImagesArraySize];
-            label.text = [NSString stringWithFormat:@"所有图片数量: %ld    大小: %@", manager.allImagesArray.count, sizeStr];
-        } else if (i == 3) {
+            label.text = [NSString stringWithFormat:@"图片: %ld    大小: %@", manager.allImagesArray.count, sizeStr];
+        } else if (i == 2) {
             NSString *sizeStr = [GLFFileManager returenSizeStr:allVideosArraySize];
-            label.text = [NSString stringWithFormat:@"所有视频数量: %ld    大小: %@", manager.allVideosArray.count, sizeStr];
+            label.text = [NSString stringWithFormat:@"视频: %ld    大小: %@", manager.allVideosArray.count, sizeStr];
+        } else if (i == 3) {
+            NSInteger count = manager.allFilesArray.count - manager.allImagesArray.count - manager.allVideosArray.count;
+            CGFloat size = allFilesArraySize - allImagesArraySize - allVideosArraySize;
+            NSString *sizeStr = [GLFFileManager returenSizeStr:size];
+            label.text = [NSString stringWithFormat:@"其它: %ld    大小: %@", count, sizeStr];
         }
         [view addSubview:label];
     }
