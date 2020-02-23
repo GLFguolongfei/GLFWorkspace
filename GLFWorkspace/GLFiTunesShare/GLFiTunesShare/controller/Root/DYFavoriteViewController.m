@@ -33,8 +33,6 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *item11 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"scale_big"] style:UIBarButtonItemStylePlain target:self action:@selector(playViewLandscape)];
-    self.navigationItem.rightBarButtonItems = @[item11];
     self.view.backgroundColor = [UIColor blackColor];
     self.title = @"抖音短视频";
     

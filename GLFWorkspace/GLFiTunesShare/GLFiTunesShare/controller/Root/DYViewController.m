@@ -34,9 +34,8 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *item11 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"scale_big"] style:UIBarButtonItemStylePlain target:self action:@selector(playViewLandscape)];
-    UIBarButtonItem *item22 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"favorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
-    self.navigationItem.rightBarButtonItems = @[item11, item22];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"favorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
+    self.navigationItem.rightBarButtonItem = item;
     self.view.backgroundColor = [UIColor blackColor];
     self.title = @"抖音短视频";
     
@@ -58,9 +57,7 @@
         favoriteArray = [[NSMutableArray alloc] init];
     }
     if (favoriteArray.count > 0) {
-        self.navigationItem.rightBarButtonItems = @[item11, item22];
-    } else {
-        self.navigationItem.rightBarButtonItems = @[item11];
+        self.navigationItem.rightBarButtonItem = item;
     }
     
     manager = [DocumentManager sharedDocumentManager];
