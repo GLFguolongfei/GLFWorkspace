@@ -9,7 +9,7 @@
 #import "MathViewController.h"
 #import "ZHFigureDrawingView.h"
 
-@interface MathViewController ()
+@interface MathViewController ()<UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) ZHFigureDrawingView *drawingView;
 
@@ -27,6 +27,29 @@
     
     _drawingView = [[ZHFigureDrawingView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:_drawingView];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    // 禁用右滑返回
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+        self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    // 恢复右滑返回
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+        self.navigationController.interactivePopGestureRecognizer.delegate = nil;
+    }
+}
+
+#pragma mark UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizerShouldBegin:(UIGestureRecognizer *)gestureRecognizer {
+    return NO;
 }
 
 

@@ -26,7 +26,8 @@
     [self canRecord:NO];
 
     myDataArray = [UIFont familyNames];
-    myTableView = [[UITableView alloc] initWithFrame:self.view.bounds style:UITableViewStyleGrouped];
+    CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    myTableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStyleInsetGrouped];
     myTableView.delegate = self;
     myTableView.dataSource = self;
     [self.view addSubview:myTableView];
