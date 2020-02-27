@@ -25,6 +25,9 @@
     UIButton *favoriteButton;
     
     NSTimer *timer; // 定时器
+    
+    UIView *gestureView;
+    BOOL isSuccess;
 }
 @end
 
@@ -79,6 +82,23 @@
     return UIStatusBarStyleLightContent;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    // 导航栏bg
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
+    gestureView.backgroundColor = [UIColor clearColor];
+    [self.navigationController.navigationBar addSubview:gestureView];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
+    [tapGesture addTarget:self action:@selector(resetData)];
+    [gestureView addGestureRecognizer:tapGesture];
+    
+    // 放在最上面,否则点击事件没法触发
+    [self.navigationController.navigationBar bringSubviewToFront:gestureView];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"isHiddenNaviBar" object:nil];
@@ -94,6 +114,7 @@
     isPlaying = NO;
     [currentVC playOrPauseVideo:isPlaying];
     [self setButtonPlayState];
+    [gestureView removeFromSuperview];
 }
 
 - (void)prepareData {
@@ -219,6 +240,12 @@
         [manager addFavoriteModel:currentModel];
         [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
     }
+}
+
+- (void)resetData {
+    selectIndex = arc4random() % _dataArray.count;
+    currentVC.currentIndex = selectIndex;
+    [self showStringHUD:@"随机播放" second:2];
 }
 
 #pragma mark UIPageViewControllerDataSource
