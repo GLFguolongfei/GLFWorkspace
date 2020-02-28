@@ -64,6 +64,11 @@
     self.navigationController.toolbar.hidden = NO;
 }
 
+// 更改状态栏
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 #pragma mark Events
 - (void)playOrPauseVideo {
     isPlaying = !isPlaying;

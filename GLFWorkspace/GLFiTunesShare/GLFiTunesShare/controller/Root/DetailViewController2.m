@@ -43,6 +43,11 @@
     [self.view addSubview:pageVC.view];
 }
 
+// 更改状态栏
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)hiddenNaviBar {
     if (self.navigationController.navigationBar.hidden == YES) {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
