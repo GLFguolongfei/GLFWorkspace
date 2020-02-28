@@ -72,6 +72,11 @@
     }
 }
 
+// 更改状态栏
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)prepareData {
     if (manager.allDYVideosArray.count > 0) {
         [self hideAllHUD];
