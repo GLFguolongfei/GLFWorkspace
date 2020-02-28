@@ -75,6 +75,10 @@
         [userDefaults synchronize];
     }
     bgImageView.image = backImage;
+    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = kScreen;
+    visualEfView.alpha = 0.5;
+    [bgImageView addSubview:visualEfView];
     // 2.设置数据源
     [self prepareData];
     // 导航栏bg

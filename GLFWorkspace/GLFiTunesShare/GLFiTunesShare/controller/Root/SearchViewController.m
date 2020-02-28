@@ -83,6 +83,10 @@
         [userDefaults synchronize];
     }
     bgImageView.image = backImage;
+    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = kScreen;
+    visualEfView.alpha = 0.5;
+    [bgImageView addSubview:visualEfView];
 }
 
 - (void)prepareData {
@@ -197,7 +201,7 @@
         allVideosArraySize += model.size;
     }
     
-    CGRect frame = CGRectMake(30, 80, kScreenWidth-60, kScreenHeight-100);
+    CGRect frame = CGRectMake(60, (kScreenHeight-64-160)/2, kScreenWidth-120, 160);
     view = [[UIView alloc] initWithFrame:frame];
     [self.view addSubview:view];
     for (NSInteger i = 0; i < 4; i ++) {
