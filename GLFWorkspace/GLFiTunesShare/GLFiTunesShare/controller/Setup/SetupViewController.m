@@ -46,6 +46,10 @@
     bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:bgImageView];
+    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = kScreen;
+    visualEfView.alpha = 0.5;
+    [bgImageView addSubview:visualEfView];
     
     // 文字
     CGRect labelRect = CGRectMake(0, kScreenWidth, kScreenWidth, 100);
@@ -123,10 +127,6 @@
         [userDefaults synchronize];
     }
     bgImageView.image = backImage;
-    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-    visualEfView.frame = kScreen;
-    visualEfView.alpha = 0.5;
-    [bgImageView addSubview:visualEfView];
     // 导航栏bg
     gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
     gestureView.backgroundColor = [UIColor clearColor];

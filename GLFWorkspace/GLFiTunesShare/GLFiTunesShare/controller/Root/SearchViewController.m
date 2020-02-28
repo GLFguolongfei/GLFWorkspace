@@ -29,6 +29,10 @@
     BOOL isDir;
     
     UIView *view;
+    UILabel *label1;
+    UILabel *label2;
+    UILabel *label3;
+    UILabel *label4;
 }
 @end
 
@@ -83,10 +87,6 @@
         [userDefaults synchronize];
     }
     bgImageView.image = backImage;
-    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-    visualEfView.frame = kScreen;
-    visualEfView.alpha = 0.5;
-    [bgImageView addSubview:visualEfView];
 }
 
 - (void)prepareData {
@@ -174,6 +174,10 @@
     bgImageView = [[UIImageView alloc] initWithFrame:myTableView.frame];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     myTableView.backgroundView = bgImageView;
+    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = kScreen;
+    visualEfView.alpha = 0.5;
+    [bgImageView addSubview:visualEfView];
     
     // info
     [self prepareInfoView];
@@ -201,29 +205,37 @@
         allVideosArraySize += model.size;
     }
     
-    CGRect frame = CGRectMake(60, (kScreenHeight-64-160)/2, kScreenWidth-120, 160);
+    CGRect frame = CGRectMake(60, (kScreenHeight-64-160)/2, kScreenWidth-120, 165);
     view = [[UIView alloc] initWithFrame:frame];
+    view.backgroundColor = [UIColor whiteColor];
+    view.layer.cornerRadius = 10;
+    view.layer.masksToBounds = YES;
+    view.alpha = 0.3;
     [self.view addSubview:view];
     for (NSInteger i = 0; i < 4; i ++) {
-        CGRect rect = CGRectMake(0, 40 * i, frame.size.width, 40);
+        CGRect rect = CGRectMake(75, (kScreenHeight-64-160)/2 + 10 + 35 * i, kScreenWidth-150, 40);
         UILabel *label = [[UILabel alloc] initWithFrame:rect];
-        label.textColor = [UIColor whiteColor];
+        label.textColor = KColorThree;
         if (i == 0) {
+            label1 = label;
             NSString *sizeStr = [GLFFileManager returenSizeStr:allFilesArraySize];
             label.text = [NSString stringWithFormat:@"总共: %ld    大小: %@", manager.allFilesArray.count, sizeStr];
         } else if (i == 1) {
+            label2 = label;
             NSString *sizeStr = [GLFFileManager returenSizeStr:allImagesArraySize];
             label.text = [NSString stringWithFormat:@"图片: %ld    大小: %@", manager.allImagesArray.count, sizeStr];
         } else if (i == 2) {
+            label3 = label;
             NSString *sizeStr = [GLFFileManager returenSizeStr:allVideosArraySize];
             label.text = [NSString stringWithFormat:@"视频: %ld    大小: %@", manager.allVideosArray.count, sizeStr];
         } else if (i == 3) {
+            label4 = label;
             NSInteger count = manager.allFilesArray.count - manager.allImagesArray.count - manager.allVideosArray.count;
             CGFloat size = allFilesArraySize - allImagesArraySize - allVideosArraySize;
             NSString *sizeStr = [GLFFileManager returenSizeStr:size];
             label.text = [NSString stringWithFormat:@"其它: %ld    大小: %@", count, sizeStr];
         }
-        [view addSubview:label];
+        [self.view addSubview:label];
     }
 }
 
@@ -243,6 +255,10 @@
     if (searchBar.text.length == 0) {
         [myTableView reloadData];
         view.hidden = NO;
+        label1.hidden = NO;
+        label2.hidden = NO;
+        label3.hidden = NO;
+        label4.hidden = NO;
         return;
     }
     for (NSInteger i = 0; i < allDataArray.count; i++) {
@@ -270,8 +286,16 @@
     }
     if (myDataArray.count > 0) {
         view.hidden = YES;
+        label1.hidden = YES;
+        label2.hidden = YES;
+        label3.hidden = YES;
+        label4.hidden = YES;
     } else {
         view.hidden = NO;
+        label1.hidden = NO;
+        label2.hidden = NO;
+        label3.hidden = NO;
+        label4.hidden = NO;
     }
 }
 

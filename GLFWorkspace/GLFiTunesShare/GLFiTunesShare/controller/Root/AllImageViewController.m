@@ -94,10 +94,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         [userDefaults synchronize];
     }
     bgImageView.image = backImage;
-    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-    visualEfView.frame = kScreen;
-    visualEfView.alpha = 0.5;
-    [bgImageView addSubview:visualEfView];
     
     // 导航栏bg
     gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
@@ -221,6 +217,10 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:bgImageView];
+    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = kScreen;
+    visualEfView.alpha = 0.5;
+    [bgImageView addSubview:visualEfView];
     
     _tableView1 = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
     _tableView1.delegate = self;

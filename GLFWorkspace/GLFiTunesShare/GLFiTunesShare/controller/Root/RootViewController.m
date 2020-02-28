@@ -75,10 +75,6 @@
         [userDefaults synchronize];
     }
     bgImageView.image = backImage;
-    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-    visualEfView.frame = kScreen;
-    visualEfView.alpha = 0.5;
-    [bgImageView addSubview:visualEfView];
     // 2.设置数据源
     [self prepareData];
     // 导航栏bg
@@ -231,6 +227,11 @@
     bgImageView = [[UIImageView alloc] initWithFrame:myTableView.frame];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     myTableView.backgroundView = bgImageView;
+    
+    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = kScreen;
+    visualEfView.alpha = 0.5;
+    [bgImageView addSubview:visualEfView];
 }
 
 #pragma mark Events
