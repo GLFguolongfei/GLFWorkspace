@@ -35,6 +35,19 @@
                 
     [self setupAVPlayer];
     [self setupAVInfo];
+    
+    UITapGestureRecognizer *tapGesture1 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(hiddenNaviBar)];
+    tapGesture1.numberOfTapsRequired = 1;    // 设置点按次数,默认为1,注意在iOS中很少用双击操作
+    tapGesture1.numberOfTouchesRequired = 1; // 点按的手指数
+    [self.view addGestureRecognizer:tapGesture1];
+    
+    UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(favoriteAction)];
+    tapGesture2.numberOfTapsRequired = 2;    // 设置点按次数,默认为1,注意在iOS中很少用双击操作
+    tapGesture2.numberOfTouchesRequired = 1; // 点按的手指数
+    [self.view addGestureRecognizer:tapGesture2];
+    
+    // 指定一个手势需要另一个手势执行失败才会执行
+    [tapGesture1 requireGestureRecognizerToFail:tapGesture2];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
@@ -43,17 +56,21 @@
     [player pause];
 }
 
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)hiddenNaviBar {
     if (isHiddenBar) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar2" object:self userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:nil];
     } else {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar2" object:self userInfo:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:nil];
     }
     isHiddenBar = !isHiddenBar;
 }
 
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+- (void)favoriteAction {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"favoriteClick" object:self userInfo:nil];
 }
 
 #pragma mark Setup

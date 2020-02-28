@@ -50,7 +50,7 @@
     UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
     
     self.toolbarItems = @[space, item1, space, item2, space, item3, space];
-    
+        
     NSString *indexStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"selectIndex"];
     selectIndex = [indexStr integerValue];
         
@@ -102,6 +102,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"isHiddenNaviBar" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteAction) name:@"favoriteClick" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     isPlaying = YES;
     [currentVC playOrPauseVideo:isPlaying];
