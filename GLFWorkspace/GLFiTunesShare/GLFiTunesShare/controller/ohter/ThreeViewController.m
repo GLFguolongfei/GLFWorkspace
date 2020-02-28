@@ -60,7 +60,7 @@
     [camDevice removeObserver:self forKeyPath:@"adjustingFocus"];
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     if (self.navigationController.navigationBar.hidden == YES) {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
     } else {
