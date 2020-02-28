@@ -67,7 +67,7 @@ static NSString *cellID = @"cellID";
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
     tapGesture.numberOfTapsRequired = 2;
     tapGesture.numberOfTouchesRequired = 1;
-    [tapGesture addTarget:self action:@selector(prepareData)];
+    [tapGesture addTarget:self action:@selector(resetData)];
     [gestureView addGestureRecognizer:tapGesture];
     
     // 放在最上面,否则点击事件没法触发
@@ -77,6 +77,22 @@ static NSString *cellID = @"cellID";
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [gestureView removeFromSuperview];
+}
+
+- (void)resetData {
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"隐藏功能" message:@"惊不惊喜！意不意外！！！" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertVC addAction:cancelAction];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"更换数据源" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self prepareData];
+    }];
+    [alertVC addAction:okAction];
+    
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 - (void)prepareData {

@@ -103,13 +103,25 @@ static NSString *cellID = @"ShowTableViewCell";
 }
 
 - (void)setState {
-    isSuccess = !isSuccess;
-    if (isSuccess) {
-        [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
-    } else {
-        [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"RootShowType"];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"隐藏功能" message:@"惊不惊喜！意不意外！！！" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertVC addAction:cancelAction];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        isSuccess = !isSuccess;
+        if (isSuccess) {
+            [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
+        } else {
+            [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"RootShowType"];
+        }
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }];
+    [alertVC addAction:okAction];
+    
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 - (void)buttonAction1 {

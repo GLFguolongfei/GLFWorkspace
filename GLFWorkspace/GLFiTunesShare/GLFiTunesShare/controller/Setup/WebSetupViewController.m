@@ -12,6 +12,7 @@
 {
     UIView *gestureView;
     BOOL isSuccess;
+    BOOL isSu;
 }
 @end
 
@@ -42,11 +43,16 @@
     [self.switch6 setOn:min.integerValue animated:YES];
     [self.switch7 setOn:hidden.integerValue animated:YES];
     [self.switch8 setOn:record.integerValue animated:YES];
-
-
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    tapGesture.numberOfTapsRequired = 3;
+    tapGesture.numberOfTouchesRequired = 3;
+    [tapGesture addTarget:self action:@selector(tapGesture:)];
+    [self.view addGestureRecognizer:tapGesture];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
+    isSu = false;
     // 导航栏bg
     gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
@@ -68,12 +74,37 @@
 }
 
 - (void)setState {
-    self.switch6.hidden = !self.switch6.hidden;
-    self.label6.hidden = !self.label6.hidden;
-    self.switch7.hidden = !self.switch7.hidden;
-    self.label7.hidden = !self.label7.hidden;
-    self.switch8.hidden = !self.switch8.hidden;
-    self.label8.hidden = !self.label8.hidden;
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"隐藏功能" message:@"惊不惊喜！意不意外！！！" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertVC addAction:cancelAction];
+    
+    NSString *title = @"其它控制";
+    if (isSu) {
+        title = @"Other Control";
+    }
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        self.switch5.hidden = !self.switch6.hidden;
+        self.label5.hidden = !self.label6.hidden;
+        if (isSu) {
+            self.switch6.hidden = !self.switch6.hidden;
+            self.label6.hidden = !self.label6.hidden;
+            self.switch7.hidden = !self.switch7.hidden;
+            self.label7.hidden = !self.label7.hidden;
+            self.switch8.hidden = !self.switch8.hidden;
+            self.label8.hidden = !self.label8.hidden;
+        }
+    }];
+    [alertVC addAction:okAction];
+    
+    [self presentViewController:alertVC animated:YES completion:nil];
+}
+
+- (void)tapGesture:(UITapGestureRecognizer *)gesture {
+    isSu = YES;
 }
 
 - (IBAction)switchAction1:(id)sender {

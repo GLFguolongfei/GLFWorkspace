@@ -43,7 +43,7 @@
     [player pause];
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     if (isHiddenBar) {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar2" object:self userInfo:nil];
     } else {

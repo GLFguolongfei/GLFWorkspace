@@ -243,9 +243,21 @@
 }
 
 - (void)resetData {
-    selectIndex = arc4random() % _dataArray.count;
-    currentVC.currentIndex = selectIndex;
-    [self showStringHUD:@"随机播放" second:2];
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"隐藏功能" message:@"惊不惊喜！意不意外！！！" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertVC addAction:cancelAction];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"随机播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        selectIndex = arc4random() % _dataArray.count;
+        currentVC.currentIndex = selectIndex;
+        [self showStringHUD:@"随机播放" second:2];
+    }];
+    [alertVC addAction:okAction];
+    
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 #pragma mark UIPageViewControllerDataSource
