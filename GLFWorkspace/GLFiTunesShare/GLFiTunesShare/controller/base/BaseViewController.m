@@ -18,7 +18,7 @@
     AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
     
     BOOL isUseFrontFacingCamera; // 是否使用前置摄像头
-    BOOL isCanRecord;
+    BOOL isCanRecord;    
 }
 @end
 
@@ -31,7 +31,7 @@
     // 不需要添加额外的滚动区域
     self.automaticallyAdjustsScrollViewInsets = NO;
 
-    isCanRecord = YES;    
+    isCanRecord = YES;
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -73,7 +73,7 @@
     [self stopRecording];
 }
 
-#pragma mark ------- HUD透明指示器
+#pragma mark ------- HUD指示器
 // 功能:显示hud
 - (void)showHUD {
     [self hideAllHUD];
@@ -127,7 +127,7 @@
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
 
-#pragma mark ------- 是否可以记录
+#pragma mark ------- 是否记录
 - (void)canRecord:(BOOL)isYes {
     isCanRecord = isYes;
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -380,7 +380,6 @@
     snowEmitterLayer.emitterCells = [NSArray arrayWithObject:snowCell];
     [self.view.layer addSublayer:snowEmitterLayer];
 }
-
 
 
 @end

@@ -13,6 +13,7 @@
 @interface DocumentManager()
 {
     BOOL isEaching;
+    AVPlayer *player; // 千万不要用作局部变量
 }
 @end
 
@@ -207,6 +208,21 @@ HMSingletonM(DocumentManager)
             });
         });
     }
+}
+
+#pragma mark -------- 背景音乐
+- (void)startPlay {
+    if (player) {
+        [player play];
+    } else {
+        NSURL *url = [[NSBundle mainBundle] URLForResource:@"陈一发儿-童话镇.mp3" withExtension:nil];
+        player = [[AVPlayer alloc] initWithURL:url];
+        [player play];
+    }
+}
+
+- (void)stopPlay {
+    [player pause];
 }
 
 

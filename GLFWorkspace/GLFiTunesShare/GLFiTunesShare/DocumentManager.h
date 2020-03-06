@@ -28,6 +28,9 @@ HMSingletonH(DocumentManager)
 - (void)removeFavoriteModel:(FileModel *)model;
 + (void)updateDocumentPaths;
 
+- (void)startPlay;
+- (void)stopPlay;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -39,6 +39,9 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     
+//    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+//    [manager startPlay];
+    
     fileManager = [GLFFileManager sharedFileManager];
     myDataArray = [[NSMutableArray alloc] init];
     editArray = [[NSMutableArray alloc] init];

@@ -300,6 +300,13 @@
 		6F91B4591F81615B00A9C616 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8072BB1F7E436E007D7B26 /* LaunchScreen.storyboard */; };
 		6F91B45A1F81615B00A9C616 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F8072B91F7E436E007D7B26 /* Assets.xcassets */; };
 		6F91B45B1F81615B00A9C616 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8072B61F7E436E007D7B26 /* Main.storyboard */; };
+		6F969B782412A87100BFD659 /* 陈一发儿-童话镇.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6F969B772412A87100BFD659 /* 陈一发儿-童话镇.mp3 */; };
+		6F969B792412A87100BFD659 /* 陈一发儿-童话镇.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6F969B772412A87100BFD659 /* 陈一发儿-童话镇.mp3 */; };
+		6F969B7E2412B7AE00BFD659 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9116DC1F7EB445002C40AC /* MediaPlayer.framework */; };
+		6F969B802412BB6300BFD659 /* 柯陈军-亡灵序曲.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6F969B7F2412BB6300BFD659 /* 柯陈军-亡灵序曲.mp3 */; };
+		6F969B812412BB6300BFD659 /* 柯陈军-亡灵序曲.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6F969B7F2412BB6300BFD659 /* 柯陈军-亡灵序曲.mp3 */; };
+		6F969B832412BB7000BFD659 /* 麦振鸿-天下第一.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6F969B822412BB7000BFD659 /* 麦振鸿-天下第一.mp3 */; };
+		6F969B842412BB7000BFD659 /* 麦振鸿-天下第一.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6F969B822412BB7000BFD659 /* 麦振鸿-天下第一.mp3 */; };
 		6F96B69C23E34A46006A2D00 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F96B69B23E34A46006A2D00 /* TestViewController.m */; };
 		6F96B69D23E34A46006A2D00 /* TestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F96B69B23E34A46006A2D00 /* TestViewController.m */; };
 		6F96B6A123E35257006A2D00 /* AllImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F96B6A023E35257006A2D00 /* AllImageViewController.m */; };
@@ -631,6 +638,9 @@
 		6F90B04B24123D8C00D7B447 /* bd.webarchive */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = bd.webarchive; sourceTree = "<group>"; };
 		6F9116DC1F7EB445002C40AC /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		6F91B45F1F81615B00A9C616 /* GLFiTunesShare copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GLFiTunesShare copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F969B772412A87100BFD659 /* 陈一发儿-童话镇.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "陈一发儿-童话镇.mp3"; sourceTree = "<group>"; };
+		6F969B7F2412BB6300BFD659 /* 柯陈军-亡灵序曲.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "柯陈军-亡灵序曲.mp3"; sourceTree = "<group>"; };
+		6F969B822412BB7000BFD659 /* 麦振鸿-天下第一.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "麦振鸿-天下第一.mp3"; sourceTree = "<group>"; };
 		6F96B69A23E34A46006A2D00 /* TestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		6F96B69B23E34A46006A2D00 /* TestViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		6F96B69F23E35257006A2D00 /* AllImageViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AllImageViewController.h; sourceTree = "<group>"; };
@@ -667,6 +677,7 @@
 				6FFE33A123D3333700D6DBE6 /* QuartzCore.framework in Frameworks */,
 				6F393F8E1FA1B3E90049CF49 /* CloudKit.framework in Frameworks */,
 				6F6C6F1823F8052E00D7AFAC /* WebKit.framework in Frameworks */,
+				6F969B7E2412B7AE00BFD659 /* MediaPlayer.framework in Frameworks */,
 				6F124DF31F9F3E07005605E1 /* MobileCoreServices.framework in Frameworks */,
 				6F6C6F1223F804B100D7AFAC /* MediaPlayer.framework in Frameworks */,
 				6F9116DD1F7EB445002C40AC /* MediaPlayer.framework in Frameworks */,
@@ -1254,6 +1265,7 @@
 		6F8072AF1F7E436E007D7B26 /* GLFiTunesShare */ = {
 			isa = PBXGroup;
 			children = (
+				6F969B762412A84200BFD659 /* ProjectResource */,
 				6F90B04A24123D3A00D7B447 /* WebResource */,
 				6F0E95E91FA4135B0029DDD6 /* GLFTools */,
 				6F393F8C1FA1B3D50049CF49 /* GLFiTunesShare.entitlements */,
@@ -1317,6 +1329,16 @@
 				6F9116DC1F7EB445002C40AC /* MediaPlayer.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6F969B762412A84200BFD659 /* ProjectResource */ = {
+			isa = PBXGroup;
+			children = (
+				6F969B822412BB7000BFD659 /* 麦振鸿-天下第一.mp3 */,
+				6F969B7F2412BB6300BFD659 /* 柯陈军-亡灵序曲.mp3 */,
+				6F969B772412A87100BFD659 /* 陈一发儿-童话镇.mp3 */,
+			);
+			path = ProjectResource;
 			sourceTree = "<group>";
 		};
 		6F96B6A323E4267A006A2D00 /* Views */ = {
@@ -1522,7 +1544,10 @@
 				6F1EEB221FB1A86A0046389D /* WebSetupViewController.xib in Resources */,
 				6F0E961D1FA4135B0029DDD6 /* MBProgressHUD.bundle in Resources */,
 				6F14401723F28A5E00C7C201 /* VideoTableViewCell.xib in Resources */,
+				6F969B802412BB6300BFD659 /* 柯陈军-亡灵序曲.mp3 in Resources */,
 				6F0E965C1FA414840029DDD6 /* GLFiTunesShare copy-Info.plist in Resources */,
+				6F969B832412BB7000BFD659 /* 麦振鸿-天下第一.mp3 in Resources */,
+				6F969B782412A87100BFD659 /* 陈一发儿-童话镇.mp3 in Resources */,
 				6F4C2C2B24004C9A0094D193 /* README.md in Resources */,
 				6F62A2961F877FCD0049DE3B /* LaunchScreen2.storyboard in Resources */,
 				6F96B6A923E4269E006A2D00 /* ShowTableViewCell.xib in Resources */,
@@ -1560,7 +1585,10 @@
 				6F2A40D01FB8006400866D06 /* WebSetupViewController.xib in Resources */,
 				6F0E965D1FA414840029DDD6 /* GLFiTunesShare copy-Info.plist in Resources */,
 				6F14401823F28A5E00C7C201 /* VideoTableViewCell.xib in Resources */,
+				6F969B812412BB6300BFD659 /* 柯陈军-亡灵序曲.mp3 in Resources */,
 				6F62A2971F8783B80049DE3B /* LaunchScreen2.storyboard in Resources */,
+				6F969B842412BB7000BFD659 /* 麦振鸿-天下第一.mp3 in Resources */,
+				6F969B792412A87100BFD659 /* 陈一发儿-童话镇.mp3 in Resources */,
 				6F4C2C2C24004C9A0094D193 /* README.md in Resources */,
 				6FA4620E1FB342CC00DDA77F /* FileInfoViewController.xib in Resources */,
 				6F96B6AA23E4269E006A2D00 /* ShowTableViewCell.xib in Resources */,
