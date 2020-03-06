@@ -716,7 +716,7 @@
     vc.preferredContentSize = CGSizeMake(0.0f, 400.0f);
     vc.model = myDataArray[indexPath.row];
     // 调整不被虚化的范围，按压的那个cell不被虚化（轻轻按压时周边会被虚化，再少用力展示预览，再加力跳页至设定界面）
-    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, 40);
+    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, 60);
     previewingContext.sourceRect = rect;
     // 返回预览界面
     return vc;
