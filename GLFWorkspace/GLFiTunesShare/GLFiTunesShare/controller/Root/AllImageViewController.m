@@ -140,10 +140,10 @@ static NSString *cellID3 = @"ShowTableViewCell3";
             model.path = [NSString stringWithFormat:@"%@/%@", path,model.name];
             NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
             if (fileType == 1) { // 文件
-                model.isDir = NO;
                 NSArray *array = [model.name componentsSeparatedByString:@"."];
                 NSString *lowerType = [array.lastObject lowercaseString];
                 if ([CimgTypeArray containsObject:lowerType]) {
+                    model.type = 2;
                     model.size = [GLFFileManager fileSize:model.path];
                     model.image = [UIImage imageWithContentsOfFile:model.path];
                     if (model.size > 1000000) { // 大于1M

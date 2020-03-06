@@ -60,14 +60,15 @@ HMSingletonM(DocumentManager)
             model.attributes = [GLFFileManager attributesOfItemAtPath:model.path];
             NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
             if (fileType == 1) { // 文件
-                model.isDir = NO;
                 model.size = [GLFFileManager fileSize:model.path];
                 NSArray *array = [model.name componentsSeparatedByString:@"."];
                 NSString *lowerType = [array.lastObject lowercaseString];
                 if ([CimgTypeArray containsObject:lowerType]) {
+                    model.type = 2;
                     model.image = [UIImage imageWithContentsOfFile:model.path];
                     [allImagesArray addObject:model];
                 } else if ([CvideoTypeArray containsObject:lowerType]) {
+                    model.type = 3;
 //                    #if FirstTarget
 //                        model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
 //                    #else
@@ -83,10 +84,12 @@ HMSingletonM(DocumentManager)
                             [allDYVideosArray addObject:model];
                         }
                     }
+                } else {
+                    model.type = 4;
                 }
                 [allFilesArray addObject:model];
             } else if (fileType == 2) { // 文件夹
-                model.isDir = YES;
+                model.type = 1;
                 model.size = [GLFFileManager fileSizeForDir:model.path];
                 model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
                 [allFoldersArray addObject:model];

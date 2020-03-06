@@ -14,7 +14,7 @@
 @property (nonatomic, strong) NSString *name;           // 名字(含扩展名)
 @property (nonatomic, strong) NSString *path;           // 全路径(含最后的名字以及扩展名)
 @property (nonatomic, strong) NSDictionary *attributes; // 属性字典
-@property (nonatomic, assign) BOOL isDir;               // 是否文件夹
+@property (nonatomic, assign) NSInteger type;           // 1-文件夹 2-图片 3-视频 4-其它文件类型
 @property (nonatomic, assign) CGFloat size;             // 大小
 @property (nonatomic, assign) NSInteger count;          // 子文件数目(只有文件夹有)
 

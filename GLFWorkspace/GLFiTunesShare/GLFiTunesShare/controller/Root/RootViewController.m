@@ -145,23 +145,26 @@
             model.attributes = [GLFFileManager attributesOfItemAtPath:model.path];
             NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
             if (fileType == 1) { // 文件
-                model.isDir = NO;
                 model.size = [GLFFileManager fileSize:model.path];
                 NSArray *array = [model.name componentsSeparatedByString:@"."];
                 NSString *lowerType = [array.lastObject lowercaseString];
                 if ([CimgTypeArray containsObject:lowerType]) {
+                    model.type = 2;
                     model.image = [UIImage imageWithContentsOfFile:model.path];
                 } else if ([CvideoTypeArray containsObject:lowerType]) {
+                    model.type = 3;
                     #if FirstTarget
                         model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
                     #else
                         model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
                     #endif
+                } else {
+                    model.type = 4;
                 }
                 [bArray addObject:model];
                 allSize += model.size;
             } else if (fileType == 2) { // 文件夹
-                model.isDir = YES;
+                model.type = 1;
                 model.size = [GLFFileManager fileSizeForDir:model.path];
                 model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
                 [cArray addObject:model];
@@ -173,6 +176,12 @@
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideAllHUD];
+            BOOL isHave = false;
+            for (NSInteger i = 0; i < bArray.count; i++) {
+                FileModel *model = bArray[i];
+//                if ()
+            }
+            
             // 有更新才更新
             if (allSize != currentSize) {
                 [myDataArray removeAllObjects];
@@ -425,21 +434,19 @@
     // 内容
     FileModel *model = myDataArray[indexPath.row];
     cell.textLabel.text = model.name;
-    if (model.isDir) { // 文件夹
+    if (model.type == 1) { // 文件夹
         NSString *sizeStr = [GLFFileManager returenSizeStr:model.size];
         cell.imageView.image = [UIImage imageNamed:@"wenjianjia"];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld 项  %@", model.count, sizeStr];
     } else { // 文件
-        NSArray *array = [model.name componentsSeparatedByString:@"."];
-        NSString *lowerType = [array.lastObject lowercaseString];
-        if ([CimgTypeArray containsObject:lowerType] && model.image.size.width > 0) { // 图片
+        if (model.type == 2) { // 图片
             if (model.image.size.width > 0) { // 有时image会解析出错
                 cell.imageView.image = model.image;
             } else {
                 cell.imageView.image = [UIImage imageNamed:@"图片"];
             }
-        } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
+        } else if (model.type == 3) { // 视频
             if (model.image.size.width > 0) { // 有时image会解析出错
                 cell.imageView.image = model.image;
             } else {
