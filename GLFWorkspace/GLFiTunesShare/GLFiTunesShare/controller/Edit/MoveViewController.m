@@ -37,6 +37,11 @@ static NSString *cellID = @"GLFTableViewCellID";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(prepareData) name:DocumentPathArrayUpdate object:nil];
 }
 
+// 更改状态栏
+- (UIStatusBarStyle)preferredStatusBarStyle {
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)prepareData {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     documentPath = [paths objectAtIndex:0];
@@ -88,7 +93,7 @@ static NSString *cellID = @"GLFTableViewCellID";
     [self.view addSubview:back];
     
     UILabel *label1 = [[UILabel alloc] initWithFrame:CGRectMake(0, 25, kScreenWidth, 20)];
-    label1.text = @"选取添加这些项目的位置。";
+    label1.text = @"选取添加这些项目的位置";
     label1.textAlignment = NSTextAlignmentCenter;
     label1.font = [UIFont systemFontOfSize:14];
     label1.textColor = [UIColor whiteColor];
@@ -105,7 +110,7 @@ static NSString *cellID = @"GLFTableViewCellID";
     label3.textColor = [UIColor whiteColor];
     [back addSubview:label3];
     
-    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth-85, 20, 85, 60)];
+    UIButton *button = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth-85, 25, 85, 70)];
     [button setTitle:@"取消" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     [back addSubview:button];
@@ -213,6 +218,12 @@ static NSString *cellID = @"GLFTableViewCellID";
     }
     cell.photoLeftConstraint.constant = space;
     cell.contentLabel.text = array.lastObject;
+    // 背景色
+    UIView *view = [[UIView alloc] initWithFrame:cell.frame];
+    view.backgroundColor = [UIColor clearColor];
+    cell.selectedBackgroundView = view;
+    cell.backgroundColor = [UIColor clearColor];
+    cell.contentView.backgroundColor = [UIColor clearColor];
     return cell;
 }
 

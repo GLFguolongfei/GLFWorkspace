@@ -176,11 +176,30 @@
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideAllHUD];
-            BOOL isHave = false;
-            for (NSInteger i = 0; i < bArray.count; i++) {
-                FileModel *model = bArray[i];
-//                if ()
-            }
+            
+//            dispatch_async(queue, ^{
+//                BOOL isHave = false;
+//                for (NSInteger i = 0; i < bArray.count; i++) {
+//                    FileModel *model = bArray[i];
+//                    if (model.type == 3 && model.image == nil) {
+//                        #if FirstTarget
+//                            model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
+//                        #else
+//                            model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+//                        #endif
+//                        isHave = true;
+//                    }
+//                }
+//                dispatch_async(dispatch_get_main_queue(), ^{
+//                    if (isHave) {
+//                        [myDataArray removeAllObjects];
+//                        // 显示文件夹排在前面
+//                        [myDataArray addObjectsFromArray:cArray];
+//                        [myDataArray addObjectsFromArray:bArray];
+//                        [myTableView reloadData];
+//                    }
+//                });
+//            });
             
             // 有更新才更新
             if (allSize != currentSize) {
