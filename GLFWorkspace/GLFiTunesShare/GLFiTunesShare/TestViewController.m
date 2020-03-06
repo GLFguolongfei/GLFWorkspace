@@ -7,6 +7,7 @@
 //
 
 #import "TestViewController.h"
+#import "WKWebViewController.h"
 
 @interface TestViewController ()
 
@@ -23,6 +24,11 @@
     [self canRecord:NO];
     [self setupEmitter];
     
+}
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    WKWebViewController *vc = [[WKWebViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 

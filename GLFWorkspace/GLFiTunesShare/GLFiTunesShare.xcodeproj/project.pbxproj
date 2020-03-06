@@ -153,7 +153,6 @@
 		6F1EEB0F1FB1A4060046389D /* Layout.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAF61FB1A4060046389D /* Layout.m */; };
 		6F1EEB121FB1A4060046389D /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAFC1FB1A4060046389D /* BaseViewController.m */; };
 		6F1EEB131FB1A4060046389D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAFF1FB1A4060046389D /* LoginViewController.m */; };
-		6F1EEB1E1FB1A86A0046389D /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEB161FB1A86A0046389D /* ImageViewController.m */; };
 		6F1EEB1F1FB1A86A0046389D /* PhotoLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEB181FB1A86A0046389D /* PhotoLibraryViewController.m */; };
 		6F1EEB201FB1A86A0046389D /* SetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEB1A1FB1A86A0046389D /* SetupViewController.m */; };
 		6F1EEB211FB1A86A0046389D /* WebSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEB1C1FB1A86A0046389D /* WebSetupViewController.m */; };
@@ -168,7 +167,6 @@
 		6F1EEB2B1FB1ADD50046389D /* FileInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAE01FB1A4060046389D /* FileInfoViewController.m */; };
 		6F1EEB2C1FB1ADD50046389D /* SetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEB1A1FB1A86A0046389D /* SetupViewController.m */; };
 		6F1EEB2D1FB1ADD50046389D /* PhotoLibraryViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEB181FB1A86A0046389D /* PhotoLibraryViewController.m */; };
-		6F1EEB2E1FB1ADD50046389D /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEB161FB1A86A0046389D /* ImageViewController.m */; };
 		6F1EEB2F1FB1ADD50046389D /* WebSetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEB1C1FB1A86A0046389D /* WebSetupViewController.m */; };
 		6F1EEB301FB1ADD50046389D /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAFF1FB1A4060046389D /* LoginViewController.m */; };
 		6F1EEB311FB1ADD50046389D /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAFC1FB1A4060046389D /* BaseViewController.m */; };
@@ -286,6 +284,14 @@
 		6F8072C01F7E436E007D7B26 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072BF1F7E436E007D7B26 /* main.m */; };
 		6F8072CA1F7E436E007D7B26 /* GLFiTunesShareTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072C91F7E436E007D7B26 /* GLFiTunesShareTests.m */; };
 		6F8072D51F7E436E007D7B26 /* GLFiTunesShareUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072D41F7E436E007D7B26 /* GLFiTunesShareUITests.m */; };
+		6F90B04224123C8000D7B447 /* ImageSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F90B03F24123C7F00D7B447 /* ImageSubViewController.m */; };
+		6F90B04324123C8000D7B447 /* ImageSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F90B03F24123C7F00D7B447 /* ImageSubViewController.m */; };
+		6F90B04424123C8000D7B447 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F90B04124123C7F00D7B447 /* ImageViewController.m */; };
+		6F90B04524123C8000D7B447 /* ImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F90B04124123C7F00D7B447 /* ImageViewController.m */; };
+		6F90B04824123CB000D7B447 /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F90B04724123CB000D7B447 /* WKWebViewController.m */; };
+		6F90B04924123CB000D7B447 /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F90B04724123CB000D7B447 /* WKWebViewController.m */; };
+		6F90B04C24123D8C00D7B447 /* bd.webarchive in Resources */ = {isa = PBXBuildFile; fileRef = 6F90B04B24123D8C00D7B447 /* bd.webarchive */; };
+		6F90B04D24123D8C00D7B447 /* bd.webarchive in Resources */ = {isa = PBXBuildFile; fileRef = 6F90B04B24123D8C00D7B447 /* bd.webarchive */; };
 		6F9116DD1F7EB445002C40AC /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9116DC1F7EB445002C40AC /* MediaPlayer.framework */; };
 		6F91B4501F81615B00A9C616 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072B41F7E436E007D7B26 /* ViewController.m */; };
 		6F91B4521F81615B00A9C616 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072BF1F7E436E007D7B26 /* main.m */; };
@@ -304,8 +310,6 @@
 		6F96B6AA23E4269E006A2D00 /* ShowTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F96B6A623E4269E006A2D00 /* ShowTableViewCell.xib */; };
 		6F9FB57C1F8B55B9002CD399 /* GLF.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F9FB57B1F8B55B9002CD399 /* GLF.plist */; };
 		6F9FB57D1F8B55B9002CD399 /* GLF.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F9FB57B1F8B55B9002CD399 /* GLF.plist */; };
-		6FA4620C1FB3383A00DDA77F /* ImageSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA4620B1FB3383A00DDA77F /* ImageSubViewController.m */; };
-		6FA4620D1FB3383A00DDA77F /* ImageSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FA4620B1FB3383A00DDA77F /* ImageSubViewController.m */; };
 		6FA4620E1FB342CC00DDA77F /* FileInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F1EEAE11FB1A4060046389D /* FileInfoViewController.xib */; };
 		6FBA0FA523E80C4400899522 /* OtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA0FA423E80C4400899522 /* OtherViewController.m */; };
 		6FBA0FA823E8113200899522 /* OneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA0FA723E8113200899522 /* OneViewController.m */; };
@@ -497,8 +501,6 @@
 		6F1EEAFC1FB1A4060046389D /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		6F1EEAFE1FB1A4060046389D /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginViewController.h; sourceTree = "<group>"; };
 		6F1EEAFF1FB1A4060046389D /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginViewController.m; sourceTree = "<group>"; };
-		6F1EEB151FB1A86A0046389D /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
-		6F1EEB161FB1A86A0046389D /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
 		6F1EEB171FB1A86A0046389D /* PhotoLibraryViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoLibraryViewController.h; sourceTree = "<group>"; };
 		6F1EEB181FB1A86A0046389D /* PhotoLibraryViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoLibraryViewController.m; sourceTree = "<group>"; };
 		6F1EEB191FB1A86A0046389D /* SetupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetupViewController.h; sourceTree = "<group>"; };
@@ -620,6 +622,13 @@
 		6F8072D01F7E436E007D7B26 /* GLFiTunesShareUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GLFiTunesShareUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8072D41F7E436E007D7B26 /* GLFiTunesShareUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GLFiTunesShareUITests.m; sourceTree = "<group>"; };
 		6F8072D61F7E436E007D7B26 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6F90B03E24123C7F00D7B447 /* ImageSubViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSubViewController.h; sourceTree = "<group>"; };
+		6F90B03F24123C7F00D7B447 /* ImageSubViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSubViewController.m; sourceTree = "<group>"; };
+		6F90B04024123C7F00D7B447 /* ImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageViewController.h; sourceTree = "<group>"; };
+		6F90B04124123C7F00D7B447 /* ImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageViewController.m; sourceTree = "<group>"; };
+		6F90B04624123CB000D7B447 /* WKWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebViewController.h; sourceTree = "<group>"; };
+		6F90B04724123CB000D7B447 /* WKWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewController.m; sourceTree = "<group>"; };
+		6F90B04B24123D8C00D7B447 /* bd.webarchive */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = bd.webarchive; sourceTree = "<group>"; };
 		6F9116DC1F7EB445002C40AC /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		6F91B45F1F81615B00A9C616 /* GLFiTunesShare copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GLFiTunesShare copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F96B69A23E34A46006A2D00 /* TestViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
@@ -631,8 +640,6 @@
 		6F96B6A623E4269E006A2D00 /* ShowTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ShowTableViewCell.xib; sourceTree = "<group>"; };
 		6F9FB57B1F8B55B9002CD399 /* GLF.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = GLF.plist; sourceTree = "<group>"; };
 		6F9FB5841F8B614B002CD399 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
-		6FA4620A1FB3383A00DDA77F /* ImageSubViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageSubViewController.h; sourceTree = "<group>"; };
-		6FA4620B1FB3383A00DDA77F /* ImageSubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ImageSubViewController.m; sourceTree = "<group>"; };
 		6FBA0FA323E80C4400899522 /* OtherViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OtherViewController.h; sourceTree = "<group>"; };
 		6FBA0FA423E80C4400899522 /* OtherViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OtherViewController.m; sourceTree = "<group>"; };
 		6FBA0FA623E8113200899522 /* OneViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OneViewController.h; sourceTree = "<group>"; };
@@ -985,6 +992,8 @@
 				6F22EB4223FBEBDE00A30691 /* DYSubViewController.m */,
 				6F22EB4523FBEBFC00A30691 /* DYFavoriteSubViewController.h */,
 				6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */,
+				6F90B04624123CB000D7B447 /* WKWebViewController.h */,
+				6F90B04724123CB000D7B447 /* WKWebViewController.m */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -1037,10 +1046,10 @@
 				6F1EEB1A1FB1A86A0046389D /* SetupViewController.m */,
 				6F1EEB171FB1A86A0046389D /* PhotoLibraryViewController.h */,
 				6F1EEB181FB1A86A0046389D /* PhotoLibraryViewController.m */,
-				6F1EEB151FB1A86A0046389D /* ImageViewController.h */,
-				6F1EEB161FB1A86A0046389D /* ImageViewController.m */,
-				6FA4620A1FB3383A00DDA77F /* ImageSubViewController.h */,
-				6FA4620B1FB3383A00DDA77F /* ImageSubViewController.m */,
+				6F90B03E24123C7F00D7B447 /* ImageSubViewController.h */,
+				6F90B03F24123C7F00D7B447 /* ImageSubViewController.m */,
+				6F90B04024123C7F00D7B447 /* ImageViewController.h */,
+				6F90B04124123C7F00D7B447 /* ImageViewController.m */,
 				6F1EEB1B1FB1A86A0046389D /* WebSetupViewController.h */,
 				6F1EEB1C1FB1A86A0046389D /* WebSetupViewController.m */,
 				6F1EEB1D1FB1A86A0046389D /* WebSetupViewController.xib */,
@@ -1245,6 +1254,7 @@
 		6F8072AF1F7E436E007D7B26 /* GLFiTunesShare */ = {
 			isa = PBXGroup;
 			children = (
+				6F90B04A24123D3A00D7B447 /* WebResource */,
 				6F0E95E91FA4135B0029DDD6 /* GLFTools */,
 				6F393F8C1FA1B3D50049CF49 /* GLFiTunesShare.entitlements */,
 				6F8072B01F7E436E007D7B26 /* AppDelegate.h */,
@@ -1284,6 +1294,14 @@
 				6F8072D61F7E436E007D7B26 /* Info.plist */,
 			);
 			path = GLFiTunesShareUITests;
+			sourceTree = "<group>";
+		};
+		6F90B04A24123D3A00D7B447 /* WebResource */ = {
+			isa = PBXGroup;
+			children = (
+				6F90B04B24123D8C00D7B447 /* bd.webarchive */,
+			);
+			path = WebResource;
 			sourceTree = "<group>";
 		};
 		6F9116DB1F7EB445002C40AC /* Frameworks */ = {
@@ -1515,6 +1533,7 @@
 				6F22EB9423FBF66000A30691 /* resource.bundle in Resources */,
 				6F0E96231FA4135B0029DDD6 /* 背景.png in Resources */,
 				6F8072B81F7E436E007D7B26 /* Main.storyboard in Resources */,
+				6F90B04C24123D8C00D7B447 /* bd.webarchive in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1552,6 +1571,7 @@
 				6F22EB9523FBF66000A30691 /* resource.bundle in Resources */,
 				6F0E96241FA4135B0029DDD6 /* 背景.png in Resources */,
 				6F91B45B1F81615B00A9C616 /* Main.storyboard in Resources */,
+				6F90B04D24123D8C00D7B447 /* bd.webarchive in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1594,7 +1614,6 @@
 				6F01E0782401722B00F64623 /* ZHFigureDrawingLayer.m in Sources */,
 				6F22EB9023FBF66000A30691 /* MMScanViewController.m in Sources */,
 				6F4C2BE024004C0D0094D193 /* DrawRectView.m in Sources */,
-				6F1EEB1E1FB1A86A0046389D /* ImageViewController.m in Sources */,
 				6F4C2C4924004C9A0094D193 /* AFSecurityPolicy.m in Sources */,
 				6F06F9E323F04FF8006E5C97 /* FourViewController.m in Sources */,
 				6F1EEB001FB1A4060046389D /* DetailViewController.m in Sources */,
@@ -1612,12 +1631,12 @@
 				6F1EEB211FB1A86A0046389D /* WebSetupViewController.m in Sources */,
 				6F01DFFC2401720D00F64623 /* View+MASAdditions.m in Sources */,
 				6F6C6F1023F7F88A00D7AFAC /* DocumentManager.m in Sources */,
+				6F90B04224123C8000D7B447 /* ImageSubViewController.m in Sources */,
 				6FE944E120BE4EF6005A46AD /* DetailViewController3.m in Sources */,
 				6F01E0482401722B00F64623 /* ZHDrawingSphereLayer.m in Sources */,
 				6F5D7C6D23E47FE2005954F0 /* AllVideoViewController.m in Sources */,
 				6F4C2C2D24004C9A0094D193 /* UIProgressView+AFNetworking.m in Sources */,
 				6F1EEB0B1FB1A4060046389D /* SubViewController.m in Sources */,
-				6FA4620C1FB3383A00DDA77F /* ImageSubViewController.m in Sources */,
 				6F22EB9223FBF66000A30691 /* MMScanView.m in Sources */,
 				6F4C2BF624004C0D0094D193 /* QQL_RuleViewController.m in Sources */,
 				6F1EEB201FB1A86A0046389D /* SetupViewController.m in Sources */,
@@ -1634,6 +1653,7 @@
 				6F4C2BE824004C0D0094D193 /* QQL_CompassManage.m in Sources */,
 				6F0E96191FA4135B0029DDD6 /* GLFTools.m in Sources */,
 				6FBA0FAD23E816F900899522 /* TwoViewController.m in Sources */,
+				6F90B04824123CB000D7B447 /* WKWebViewController.m in Sources */,
 				6F4C2C3D24004C9A0094D193 /* AFImageDownloader.m in Sources */,
 				6F01E06A2401722B00F64623 /* ZHDrawingPentagonLayer.m in Sources */,
 				6F01E06E2401722B00F64623 /* ZHDrawingRulerArrowLayer.m in Sources */,
@@ -1662,6 +1682,7 @@
 				6F4C2BFA24004C0D0094D193 /* QQL_ProtractorViewController.m in Sources */,
 				6F4C2C4524004C9A0094D193 /* AFURLRequestSerialization.m in Sources */,
 				6F4C2C0024004C0D0094D193 /* QQL_MirrorViewController.m in Sources */,
+				6F90B04424123C8000D7B447 /* ImageViewController.m in Sources */,
 				6F22EB4723FBEBFC00A30691 /* DYFavoriteSubViewController.m in Sources */,
 				6F01E0662401722B00F64623 /* ZHDrawingOvalLayer.m in Sources */,
 				6F01E0582401722B00F64623 /* ZHDrawingTriangleLayer.m in Sources */,
@@ -1751,7 +1772,6 @@
 				6F1EEB2D1FB1ADD50046389D /* PhotoLibraryViewController.m in Sources */,
 				6F4C2C4A24004C9A0094D193 /* AFSecurityPolicy.m in Sources */,
 				6F06F9E423F04FF8006E5C97 /* FourViewController.m in Sources */,
-				6F1EEB2E1FB1ADD50046389D /* ImageViewController.m in Sources */,
 				6F1EEB2F1FB1ADD50046389D /* WebSetupViewController.m in Sources */,
 				6F06F9E923F05721006E5C97 /* NSString+Hash.m in Sources */,
 				6F4C2BF924004C0D0094D193 /* ZJ_RulesLineMovingView.m in Sources */,
@@ -1766,11 +1786,11 @@
 				6FE944E220BE4EF6005A46AD /* DetailViewController3.m in Sources */,
 				6F01DFFD2401720D00F64623 /* View+MASAdditions.m in Sources */,
 				6F6C6F1123F7F88A00D7AFAC /* DocumentManager.m in Sources */,
+				6F90B04324123C8000D7B447 /* ImageSubViewController.m in Sources */,
 				6F0E960E1FA4135B0029DDD6 /* Base64.m in Sources */,
 				6F01E0492401722B00F64623 /* ZHDrawingSphereLayer.m in Sources */,
 				6F5D7C6E23E47FE8005954F0 /* AllVideoViewController.m in Sources */,
 				6F4C2C2E24004C9A0094D193 /* UIProgressView+AFNetworking.m in Sources */,
-				6FA4620D1FB3383A00DDA77F /* ImageSubViewController.m in Sources */,
 				6F0E96221FA4135B0029DDD6 /* PhotoStackView.m in Sources */,
 				6F22EB9323FBF66000A30691 /* MMScanView.m in Sources */,
 				6F4C2BF724004C0D0094D193 /* QQL_RuleViewController.m in Sources */,
@@ -1788,6 +1808,7 @@
 				6F4C2BE924004C0D0094D193 /* QQL_CompassManage.m in Sources */,
 				6F0E96181FA4135B0029DDD6 /* GLFFileManager.m in Sources */,
 				6FBA0FAE23E816F900899522 /* TwoViewController.m in Sources */,
+				6F90B04924123CB000D7B447 /* WKWebViewController.m in Sources */,
 				6F4C2C3E24004C9A0094D193 /* AFImageDownloader.m in Sources */,
 				6F01E06B2401722B00F64623 /* ZHDrawingPentagonLayer.m in Sources */,
 				6F01E06F2401722B00F64623 /* ZHDrawingRulerArrowLayer.m in Sources */,
@@ -1816,6 +1837,7 @@
 				6F4C2BFB24004C0D0094D193 /* QQL_ProtractorViewController.m in Sources */,
 				6F4C2C4624004C9A0094D193 /* AFURLRequestSerialization.m in Sources */,
 				6F4C2C0124004C0D0094D193 /* QQL_MirrorViewController.m in Sources */,
+				6F90B04524123C8000D7B447 /* ImageViewController.m in Sources */,
 				6F22EB4823FBEBFC00A30691 /* DYFavoriteSubViewController.m in Sources */,
 				6F01E0672401722B00F64623 /* ZHDrawingOvalLayer.m in Sources */,
 				6F01E0592401722B00F64623 /* ZHDrawingTriangleLayer.m in Sources */,
