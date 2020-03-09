@@ -48,7 +48,8 @@
 }
 
 - (void)setUIProgressView {
-    self.progressView = [[UIProgressView alloc] initWithFrame:self.view.frame];
+    CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    self.progressView = [[UIProgressView alloc] initWithFrame:rect];
     self.progressView.progressViewStyle = UIProgressViewStyleDefault;
     self.progressView.progressTintColor = [UIColor blueColor];  // 前景色
     self.progressView.trackTintColor = [UIColor lightGrayColor];    // 背景色

@@ -103,11 +103,21 @@
             [self showStringHUD:error.localizedDescription second:2];
         } else {
             NSLog(@"扫描结果：%@", result);
-            if ([GLFTools isUrl:result]) {
+            
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"扫描结果" message:result preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            [alertVC addAction:cancelAction];
+            
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 WKWebViewController *vc = [[WKWebViewController alloc] init];
                 vc.urlStr = result;
                 [self.navigationController pushViewController:vc animated:YES];
-            }
+            }];
+            [alertVC addAction:okAction];
+            [self presentViewController:alertVC animated:YES completion:nil];
         }
     }];
     [scanVc setHistoryCallBack:^(NSArray *result) {
@@ -148,7 +158,7 @@
         if (self.ipTextView.text.length == 0) {
             return NO;
         }
-        WebViewController *vc = [[WebViewController alloc] init];
+        WKWebViewController *vc = [[WKWebViewController alloc] init];
         vc.urlStr = self.ipTextView.text;
         [self.navigationController pushViewController:vc animated:YES];
         return NO;
