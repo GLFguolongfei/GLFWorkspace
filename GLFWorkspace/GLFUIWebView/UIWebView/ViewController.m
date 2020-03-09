@@ -135,7 +135,7 @@
             NSLog(@"动画结束");
         }];
     } else if (button.tag == 11) {
-        [self showStringHUD:@"清除Webview缓存" second:2];
+        [self showStringHUD:@"清除Webview缓存[假的]" second:2];
     }
 }
 

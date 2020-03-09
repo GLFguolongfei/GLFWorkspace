@@ -53,6 +53,7 @@
     myTableView.delegate = self;
     myTableView.dataSource = self;
     [self addSubview:myTableView];
+    myTableView.tableFooterView = [[UIView alloc] init];
 }
 
 #pragma mark UITableViewDataSource
