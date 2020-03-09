@@ -9,7 +9,9 @@
 #import "ViewController.h"
 // VCs
 #import "WebViewController.h"
+#import "WKWebViewController.h"
 #import "DeclareViewController.h"
+#import "MMScanViewController.h"
 // Views
 #import "SelectIPView.h"
 // Tools
@@ -31,15 +33,19 @@
     self.navigationItem.leftBarButtonItem = leftItem;
     self.navigationItem.rightBarButtonItem = rightItem;
     
-    CGRect textViewRect = CGRectMake(15, 80, kScreenWidth-30, 60);
+    CGRect textViewRect = CGRectMake(15, 80, kScreenWidth-30, 100);
     self.ipTextView = [[UITextView alloc] initWithFrame:textViewRect];
+    self.ipTextView.backgroundColor = [UIColor lightGrayColor];
+    self.ipTextView.layer.cornerRadius = 5;
+    self.ipTextView.layer.masksToBounds = YES;
+    self.ipTextView.font = [UIFont systemFontOfSize:16];
     self.ipTextView.text = [NSString stringWithFormat:@"http://%@:8080/", [GLFTools getIPAddress:YES]];
     self.ipTextView.delegate = self;
     [self.view addSubview:self.ipTextView];
     
     for (NSInteger i = 0; i < 2; i++) {
-        CGFloat width = (kScreenWidth - 60) / 2;
-        CGRect frame = CGRectMake(20 * (i % 2 + 1) + width * (i % 2), 180 + 80 * ceil(i / 2), width, 60);
+        CGFloat width = (kScreenWidth - 60) / 3;
+        CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 200 + 80 * ceil(i / 3), width, 50);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
         if (i == 0) {
             [button setTitle:@"选择地址" forState:UIControlStateNormal];
@@ -48,8 +54,9 @@
         } else {
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
-        [button setBackgroundColor:[UIColor clearColor]];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        button.titleLabel.font = [UIFont systemFontOfSize:16.0];
+        button.backgroundColor = [UIColor lightGrayColor];
+        [button setTitleColor:KNavgationBarColor forState:UIControlStateNormal];
         [button addTarget:self action:@selector(buttonAction1:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i + 10;
         button.layer.cornerRadius = 5;
@@ -58,8 +65,8 @@
     }
     
     for (NSInteger i = 0; i < 3; i++) {
-        CGFloat width = (kScreenWidth - 60) / 2;
-        CGRect frame = CGRectMake(20 * (i % 2 + 1) + width * (i % 2), 100 + 80 * ceil(i / 2), width, 60);
+        CGFloat width = (kScreenWidth - 60) / 3;
+        CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 270 + 80 * ceil(i / 3), width, 50);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
         if (i == 0) {
             [button setTitle:@"Test1" forState:UIControlStateNormal];
@@ -68,7 +75,8 @@
         } else {
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
-        [button setBackgroundColor:[UIColor clearColor]];
+        button.titleLabel.font = [UIFont systemFontOfSize:16.0];
+        button.backgroundColor = [UIColor lightGrayColor];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(buttonAction2:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i + 100;
@@ -89,18 +97,34 @@
 }
 
 - (void)scanQrCode {
-    
+    MMScanViewController *scanVc = [[MMScanViewController alloc] initWithQrType:MMScanTypeAll onFinish:^(NSString *result, NSError *error) {
+        if (error) {
+            NSLog(@"error: %@", error);
+            [self showStringHUD:error.localizedDescription second:2];
+        } else {
+            NSLog(@"扫描结果：%@", result);
+            if ([GLFTools isUrl:result]) {
+                WKWebViewController *vc = [[WKWebViewController alloc] init];
+                vc.urlStr = result;
+                [self.navigationController pushViewController:vc animated:YES];
+            }
+        }
+    }];
+    [scanVc setHistoryCallBack:^(NSArray *result) {
+        NSLog(@"%@", result);
+    }];
+    [self.navigationController pushViewController:scanVc animated:YES];
 }
 
 - (void)buttonAction1:(UIButton *)button {
     [self.view endEditing:YES];
-    if (button.tag == 100) {
+    if (button.tag == 10) {
         SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
         ipView.parentVC = self;
         [self lew_presentPopupView:ipView animation:[LewPopupViewAnimationSpring new] dismissed:^{
             NSLog(@"动画结束");
         }];
-    } else if (button.tag == 101) {
+    } else if (button.tag == 11) {
         [self showStringHUD:@"清除Webview缓存" second:2];
     }
 }

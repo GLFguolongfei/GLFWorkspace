@@ -42,6 +42,9 @@
 		6F9CAFCF202175A300E66E49 /* DeclareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9CAFCE202175A300E66E49 /* DeclareViewController.m */; };
 		6FC1EB71241635DD008764D5 /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC1EB70241635DD008764D5 /* WKWebViewController.m */; };
 		6FC1EB7424163625008764D5 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC1EB7324163625008764D5 /* WebKit.framework */; };
+		6FFC2C78241661BF00061C1F /* MMScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFC2C73241661BF00061C1F /* MMScanViewController.m */; };
+		6FFC2C79241661BF00061C1F /* MMScanView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFC2C74241661BF00061C1F /* MMScanView.m */; };
+		6FFC2C7A241661BF00061C1F /* resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6FFC2C77241661BF00061C1F /* resource.bundle */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -132,6 +135,11 @@
 		6FC1EB6F241635DD008764D5 /* WKWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebViewController.h; sourceTree = "<group>"; };
 		6FC1EB70241635DD008764D5 /* WKWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewController.m; sourceTree = "<group>"; };
 		6FC1EB7324163625008764D5 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		6FFC2C73241661BF00061C1F /* MMScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMScanViewController.m; sourceTree = "<group>"; };
+		6FFC2C74241661BF00061C1F /* MMScanView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMScanView.m; sourceTree = "<group>"; };
+		6FFC2C75241661BF00061C1F /* MMScanView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMScanView.h; sourceTree = "<group>"; };
+		6FFC2C76241661BF00061C1F /* MMScanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMScanViewController.h; sourceTree = "<group>"; };
+		6FFC2C77241661BF00061C1F /* resource.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = resource.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -183,6 +191,7 @@
 		6F0E96291FA413670029DDD6 /* GLFTools */ = {
 			isa = PBXGroup;
 			children = (
+				6FFC2C72241661BF00061C1F /* MMScanner */,
 				6F002F151FDA28E300A66BFB /* popupViewController */,
 				6F0E962A1FA413670029DDD6 /* Base64 */,
 				6F0E962D1FA413670029DDD6 /* Cagetorys */,
@@ -309,12 +318,8 @@
 				6F5281F21FA318FF006833DA /* AppDelegate.m */,
 				6F53420B1FDA3F1500805808 /* ViewController.h */,
 				6F53420A1FDA3F1500805808 /* ViewController.m */,
-				6F5282261FA322AA006833DA /* BaseViewController.h */,
-				6F5282271FA322AA006833DA /* BaseViewController.m */,
-				6F5282231FA31B32006833DA /* WebViewController.h */,
-				6F5282241FA31B32006833DA /* WebViewController.m */,
-				6FC1EB6F241635DD008764D5 /* WKWebViewController.h */,
-				6FC1EB70241635DD008764D5 /* WKWebViewController.m */,
+				6FFC2C6B24165D3500061C1F /* base */,
+				6FFC2C6C24165D5900061C1F /* webView */,
 				6F9CAFCD202175A300E66E49 /* DeclareViewController.h */,
 				6F9CAFCE202175A300E66E49 /* DeclareViewController.m */,
 				6F002F0B1FDA218300A66BFB /* SelectIPView.h */,
@@ -355,6 +360,38 @@
 				6FC1EB7324163625008764D5 /* WebKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6FFC2C6B24165D3500061C1F /* base */ = {
+			isa = PBXGroup;
+			children = (
+				6F5282261FA322AA006833DA /* BaseViewController.h */,
+				6F5282271FA322AA006833DA /* BaseViewController.m */,
+			);
+			path = base;
+			sourceTree = "<group>";
+		};
+		6FFC2C6C24165D5900061C1F /* webView */ = {
+			isa = PBXGroup;
+			children = (
+				6F5282231FA31B32006833DA /* WebViewController.h */,
+				6F5282241FA31B32006833DA /* WebViewController.m */,
+				6FC1EB6F241635DD008764D5 /* WKWebViewController.h */,
+				6FC1EB70241635DD008764D5 /* WKWebViewController.m */,
+			);
+			path = webView;
+			sourceTree = "<group>";
+		};
+		6FFC2C72241661BF00061C1F /* MMScanner */ = {
+			isa = PBXGroup;
+			children = (
+				6FFC2C73241661BF00061C1F /* MMScanViewController.m */,
+				6FFC2C74241661BF00061C1F /* MMScanView.m */,
+				6FFC2C75241661BF00061C1F /* MMScanView.h */,
+				6FFC2C76241661BF00061C1F /* MMScanViewController.h */,
+				6FFC2C77241661BF00061C1F /* resource.bundle */,
+			);
+			path = MMScanner;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -466,6 +503,7 @@
 				6F0E96581FA413670029DDD6 /* 背景.png in Resources */,
 				6F53420D1FDA3F8E00805808 /* Main.storyboard in Resources */,
 				6F5281FE1FA318FF006833DA /* LaunchScreen.storyboard in Resources */,
+				6FFC2C7A241661BF00061C1F /* resource.bundle in Resources */,
 				6F0E96551FA413670029DDD6 /* MBProgressHUD.bundle in Resources */,
 				6F5281FB1FA318FF006833DA /* Assets.xcassets in Resources */,
 			);
@@ -496,6 +534,7 @@
 				6F5282281FA322AA006833DA /* BaseViewController.m in Sources */,
 				6F002F121FDA232A00A66BFB /* IpModel.m in Sources */,
 				6F002F261FDA28E300A66BFB /* LewPopupViewAnimationDrop.m in Sources */,
+				6FFC2C79241661BF00061C1F /* MMScanView.m in Sources */,
 				6F0E964E1FA413670029DDD6 /* NSDate+Help.m in Sources */,
 				6F0E96501FA413670029DDD6 /* UIColor+HexString.m in Sources */,
 				6F0E96591FA413670029DDD6 /* MyView.m in Sources */,
@@ -503,6 +542,7 @@
 				6F0E96571FA413670029DDD6 /* PhotoStackView.m in Sources */,
 				6F0E96511FA413670029DDD6 /* UIView+Helper.m in Sources */,
 				6F002F0D1FDA218300A66BFB /* SelectIPView.m in Sources */,
+				6FFC2C78241661BF00061C1F /* MMScanViewController.m in Sources */,
 				6F002F231FDA28E300A66BFB /* LewPopupViewAnimationFade.m in Sources */,
 				6F0E964F1FA413670029DDD6 /* UIColor+Category.m in Sources */,
 				6F9CAFCF202175A300E66E49 /* DeclareViewController.m in Sources */,

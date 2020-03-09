@@ -40,4 +40,7 @@
 #pragma mark 转换成时分秒
 + (NSString *)timeFormatted:(NSInteger)totalSeconds;
 
+#pragma mark 判断是否为URL字符串
++ (BOOL)isUrl:(NSString *)urlStr;
+
 @end
