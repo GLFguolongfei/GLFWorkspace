@@ -58,23 +58,18 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     NSLog(@"webViewDidStartLoad");
-//    [self showHUD];
+    [self showHUD];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSLog(@"webViewDidFinishLoad");
     [self hideAllHUD];
     [self setup:webView];
-    if (self.type == 1) {
-//        [self setHTMLInfo:webView];
-    } else if (self.type == 2) {
-        [self setHTMLAccount:webView];
-    }
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     NSLog(@"didFailLoadWithError: %@", error.localizedDescription);
-//    [self hideAllHUD];
+    [self hideAllHUD];
 }
 
 #pragma mark WebView Events
@@ -122,40 +117,6 @@
         [array writeToFile:plistPath atomically:YES];
     }
     [self showStringHUD:@"已保存" second:1.5];
-}
-
-- (void)setHTMLInfo:(UIWebView *)webView {
-    // 设置扫码需要的信息
-    //    * idCard:身份证号
-    //    * isAuth:是否实名认证状态 -- 0,已提交未审核  1,已审核已通过  2,已审核不通过  3,未提交未审核
-    //    * phoneNum:手机号
-    //    * userId:用户id
-    //    * userName:用户姓名
-    //    * versionNumber:版本号
-    //    * zjType:证件类型  1：身份证 （目前仅有“1”类型）
-    NSDictionary *dict = @{
-                           @"idCard" : @"411081199104051555",
-                           @"isAuth" : @"1",
-                           @"phoneNum" : @"15618632831",
-                           @"source" : @"iOS",
-                           @"userId" : @"1cf14ff2d2164730a992a4af421eb63b",
-                           @"userName" : @"郭龙飞",
-                           @"versionNumber" : @"2.0.1",
-                           @"zjType" : @"1"
-                           };
-    NSString *str = [GLFTools dictionaryToJson:dict];
-    NSString *jsStr = [NSString stringWithFormat:@"getUserInfo(%@)", str];
-    [webView stringByEvaluatingJavaScriptFromString:jsStr];
-}
-
-- (void)setHTMLAccount:(UIWebView *)webView {
-    // 设置用户名和密码
-    NSMutableString *js2 = [NSMutableString string];
-    [js2 appendString:@"var abcuserName = document.getElementById('userName');"];
-    [js2 appendString:@"var abcpassword = document.getElementById('password');"];
-    [js2 appendString:@"abcuserName.value = '13852812033';"];
-    [js2 appendString:@"abcpassword.value = '000000';"];
-    [webView stringByEvaluatingJavaScriptFromString:js2];
 }
 
 

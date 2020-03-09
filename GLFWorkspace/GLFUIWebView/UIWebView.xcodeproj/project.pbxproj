@@ -40,6 +40,8 @@
 		6F53420C1FDA3F1500805808 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F53420A1FDA3F1500805808 /* ViewController.m */; };
 		6F53420D1FDA3F8E00805808 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F5281F71FA318FF006833DA /* Main.storyboard */; };
 		6F9CAFCF202175A300E66E49 /* DeclareViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9CAFCE202175A300E66E49 /* DeclareViewController.m */; };
+		6FC1EB71241635DD008764D5 /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC1EB70241635DD008764D5 /* WKWebViewController.m */; };
+		6FC1EB7424163625008764D5 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC1EB7324163625008764D5 /* WebKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -127,6 +129,9 @@
 		6F53420B1FDA3F1500805808 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
 		6F9CAFCD202175A300E66E49 /* DeclareViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DeclareViewController.h; sourceTree = "<group>"; };
 		6F9CAFCE202175A300E66E49 /* DeclareViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DeclareViewController.m; sourceTree = "<group>"; };
+		6FC1EB6F241635DD008764D5 /* WKWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebViewController.h; sourceTree = "<group>"; };
+		6FC1EB70241635DD008764D5 /* WKWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewController.m; sourceTree = "<group>"; };
+		6FC1EB7324163625008764D5 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +139,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6FC1EB7424163625008764D5 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -281,6 +287,7 @@
 				6F5282091FA318FF006833DA /* UIWebViewTests */,
 				6F5282141FA318FF006833DA /* UIWebViewUITests */,
 				6F5281EF1FA318FF006833DA /* Products */,
+				6FC1EB7224163625008764D5 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -306,6 +313,8 @@
 				6F5282271FA322AA006833DA /* BaseViewController.m */,
 				6F5282231FA31B32006833DA /* WebViewController.h */,
 				6F5282241FA31B32006833DA /* WebViewController.m */,
+				6FC1EB6F241635DD008764D5 /* WKWebViewController.h */,
+				6FC1EB70241635DD008764D5 /* WKWebViewController.m */,
 				6F9CAFCD202175A300E66E49 /* DeclareViewController.h */,
 				6F9CAFCE202175A300E66E49 /* DeclareViewController.m */,
 				6F002F0B1FDA218300A66BFB /* SelectIPView.h */,
@@ -338,6 +347,14 @@
 				6F5282171FA318FF006833DA /* Info.plist */,
 			);
 			path = UIWebViewUITests;
+			sourceTree = "<group>";
+		};
+		6FC1EB7224163625008764D5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6FC1EB7324163625008764D5 /* WebKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -495,6 +512,7 @@
 				6F5281F31FA318FF006833DA /* AppDelegate.m in Sources */,
 				6F0E965A1FA413670029DDD6 /* WaterView2.m in Sources */,
 				6F0E964D1FA413670029DDD6 /* Base64.m in Sources */,
+				6FC1EB71241635DD008764D5 /* WKWebViewController.m in Sources */,
 				6F0E96521FA413670029DDD6 /* GLFFileManager.m in Sources */,
 				6F002F241FDA28E300A66BFB /* UIViewController+LewPopupViewController.m in Sources */,
 				6F5282251FA31B32006833DA /* WebViewController.m in Sources */,
@@ -667,7 +685,7 @@
 				DEVELOPMENT_TEAM = Z93556DRV3;
 				GCC_PREFIX_HEADER = UIWebView/PrefixHeader.pch;
 				INFOPLIST_FILE = UIWebView/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline3;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -683,7 +701,7 @@
 				DEVELOPMENT_TEAM = Z93556DRV3;
 				GCC_PREFIX_HEADER = UIWebView/PrefixHeader.pch;
 				INFOPLIST_FILE = UIWebView/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline3;
 				PRODUCT_NAME = "$(TARGET_NAME)";

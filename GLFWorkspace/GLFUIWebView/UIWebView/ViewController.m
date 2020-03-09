@@ -50,10 +50,6 @@
     self.clearCache.layer.cornerRadius = 20;
     self.clearCache.layer.masksToBounds = YES;
     
-    // http://192.168.1.59:8083/    上海测试服
-    // http://61.177.174.10:8082/   芜湖测试服
-    // http://www.z-health.cn:8088/ 芜湖正式服
-
     [self resetAction:nil];
 }
 
@@ -97,7 +93,6 @@
 // 家庭医生居民版（沭阳家庭医生）
 - (IBAction)buttonAction1:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
-    vc.type = 1;
     vc.urlStr = @"http://112.20.237.76:8087/HealthClientStatic/HTML/tabbar/home.html";
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -105,7 +100,6 @@
 // 家庭医生医生版（沭阳家庭医生）
 - (IBAction)buttonAction2:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
-    vc.type = 2;
     vc.urlStr = @"http://112.20.237.76:8087/docClient/login";
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -113,7 +107,6 @@
 // 健康大本营（新）
 - (IBAction)buttonAction3:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
-    vc.type = 1;
     vc.urlStr = @"http://61.177.174.10:8082/whserver/healthy-home-v2!myarchives.action";
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -121,7 +114,6 @@
 // 健康大本营（旧）
 - (IBAction)buttonAction4:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
-    vc.type = 1;
     vc.urlStr = @"http://61.177.174.10:8082/whserver/healthy-home-v2!home.action";
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -129,7 +121,6 @@
 // 健康小驿
 - (IBAction)buttonAction5:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
-    vc.type = 1;
     vc.urlStr = @"http://61.177.174.10:80/HealthHotel/HTML/tabbar/home.html";
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -138,7 +129,6 @@
 // 测试
 - (IBAction)testAction:(id)sender {
     WebViewController *vc = [[WebViewController alloc] init];
-    vc.type = 1;
     vc.urlStr = @"http://www.baidu.com";
     [self.navigationController pushViewController:vc animated:YES];
 }
