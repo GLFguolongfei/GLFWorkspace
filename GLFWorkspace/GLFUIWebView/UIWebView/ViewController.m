@@ -15,7 +15,7 @@
 // Tools
 #import "LewPopupViewController.h"
 
-@interface ViewController () 
+@interface ViewController ()<UITextViewDelegate>
 
 @end
 
@@ -27,115 +27,109 @@
     [super viewDidLoad];
     self.title = @"HTML5";
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"说明" style:UIBarButtonItemStylePlain target:self action:@selector(declareAction)];
+    UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"扫码" style:UIBarButtonItemStylePlain target:self action:@selector(scanQrCode)];
     self.navigationItem.leftBarButtonItem = leftItem;
-
-    self.topButton1.layer.cornerRadius = 20;
-    self.topButton1.layer.masksToBounds = YES;
-    self.topButton2.layer.cornerRadius = 20;
-    self.topButton2.layer.masksToBounds = YES;
-    self.topButton3.layer.cornerRadius = 20;
-    self.topButton3.layer.masksToBounds = YES;
-    self.button1.layer.cornerRadius = 20;
-    self.button1.layer.masksToBounds = YES;
-    self.button2.layer.cornerRadius = 20;
-    self.button2.layer.masksToBounds = YES;
-    self.button3.layer.cornerRadius = 20;
-    self.button3.layer.masksToBounds = YES;
-    self.button4.layer.cornerRadius = 20;
-    self.button4.layer.masksToBounds = YES;
-    self.button5.layer.cornerRadius = 20;
-    self.button5.layer.masksToBounds = YES;
-    self.testButton.layer.cornerRadius = 20;
-    self.testButton.layer.masksToBounds = YES;
-    self.clearCache.layer.cornerRadius = 20;
-    self.clearCache.layer.masksToBounds = YES;
+    self.navigationItem.rightBarButtonItem = rightItem;
     
-    [self resetAction:nil];
+    CGRect textViewRect = CGRectMake(15, 80, kScreenWidth-30, 60);
+    self.ipTextView = [[UITextView alloc] initWithFrame:textViewRect];
+    self.ipTextView.text = [NSString stringWithFormat:@"http://%@:8080/", [GLFTools getIPAddress:YES]];
+    self.ipTextView.delegate = self;
+    [self.view addSubview:self.ipTextView];
+    
+    for (NSInteger i = 0; i < 2; i++) {
+        CGFloat width = (kScreenWidth - 60) / 2;
+        CGRect frame = CGRectMake(20 * (i % 2 + 1) + width * (i % 2), 180 + 80 * ceil(i / 2), width, 60);
+        UIButton *button = [[UIButton alloc] initWithFrame:frame];
+        if (i == 0) {
+            [button setTitle:@"选择地址" forState:UIControlStateNormal];
+        } else if (i == 1)  {
+            [button setTitle:@"清除缓存" forState:UIControlStateNormal];
+        } else {
+            [button setTitle:@"测试" forState:UIControlStateNormal];
+        }
+        [button setBackgroundColor:[UIColor clearColor]];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(buttonAction1:) forControlEvents:UIControlEventTouchUpInside];
+        button.tag = i + 10;
+        button.layer.cornerRadius = 5;
+        button.layer.masksToBounds = YES;
+        [self.view addSubview:button];
+    }
+    
+    for (NSInteger i = 0; i < 3; i++) {
+        CGFloat width = (kScreenWidth - 60) / 2;
+        CGRect frame = CGRectMake(20 * (i % 2 + 1) + width * (i % 2), 100 + 80 * ceil(i / 2), width, 60);
+        UIButton *button = [[UIButton alloc] initWithFrame:frame];
+        if (i == 0) {
+            [button setTitle:@"Test1" forState:UIControlStateNormal];
+        } else if (i == 1)  {
+            [button setTitle:@"Test2" forState:UIControlStateNormal];
+        } else {
+            [button setTitle:@"测试" forState:UIControlStateNormal];
+        }
+        [button setBackgroundColor:[UIColor clearColor]];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(buttonAction2:) forControlEvents:UIControlEventTouchUpInside];
+        button.tag = i + 100;
+        button.layer.cornerRadius = 5;
+        button.layer.masksToBounds = YES;
+        [self.view addSubview:button];
+    }
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
 }
 
-#pragma mark 说明
+#pragma mark Events
 - (void)declareAction {
     DeclareViewController *vc = [[DeclareViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-#pragma mark 网址操作
-- (IBAction)selectIPAction:(id)sender {
-    [self.view endEditing:YES];
-    SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
-    ipView.parentVC = self;
-    [self lew_presentPopupView:ipView animation:[LewPopupViewAnimationSpring new] dismissed:^{
-        NSLog(@"动画结束");
-    }];
-}
-
-- (IBAction)goAction:(id)sender {
-    [self.view endEditing:YES];
-    if (self.ipTextView.text.length == 0) {
-        return;
-    }    
-    WebViewController *vc = [[WebViewController alloc] init];
-    vc.urlStr = self.ipTextView.text;
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (IBAction)resetAction:(id)sender {
-    [self.view endEditing:YES];
-    NSString *ipAdress = [GLFTools getIPAddress:YES];
-    self.ipTextView.text = [NSString stringWithFormat:@"http://%@:8080/", ipAdress];
-}
-
-#pragma mark 各个项目
-// 家庭医生居民版（沭阳家庭医生）
-- (IBAction)buttonAction1:(id)sender {
-    WebViewController *vc = [[WebViewController alloc] init];
-    vc.urlStr = @"http://112.20.237.76:8087/HealthClientStatic/HTML/tabbar/home.html";
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-// 家庭医生医生版（沭阳家庭医生）
-- (IBAction)buttonAction2:(id)sender {
-    WebViewController *vc = [[WebViewController alloc] init];
-    vc.urlStr = @"http://112.20.237.76:8087/docClient/login";
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-// 健康大本营（新）
-- (IBAction)buttonAction3:(id)sender {
-    WebViewController *vc = [[WebViewController alloc] init];
-    vc.urlStr = @"http://61.177.174.10:8082/whserver/healthy-home-v2!myarchives.action";
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-// 健康大本营（旧）
-- (IBAction)buttonAction4:(id)sender {
-    WebViewController *vc = [[WebViewController alloc] init];
-    vc.urlStr = @"http://61.177.174.10:8082/whserver/healthy-home-v2!home.action";
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-// 健康小驿
-- (IBAction)buttonAction5:(id)sender {
-    WebViewController *vc = [[WebViewController alloc] init];
-    vc.urlStr = @"http://61.177.174.10:80/HealthHotel/HTML/tabbar/home.html";
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-#pragma mark 特殊
-// 测试
-- (IBAction)testAction:(id)sender {
-    WebViewController *vc = [[WebViewController alloc] init];
-    vc.urlStr = @"http://www.baidu.com";
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-// 清除Webview缓存
-- (IBAction)clearCache:(id)sender {
+- (void)scanQrCode {
     
+}
+
+- (void)buttonAction1:(UIButton *)button {
+    [self.view endEditing:YES];
+    if (button.tag == 100) {
+        SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
+        ipView.parentVC = self;
+        [self lew_presentPopupView:ipView animation:[LewPopupViewAnimationSpring new] dismissed:^{
+            NSLog(@"动画结束");
+        }];
+    } else if (button.tag == 101) {
+        [self showStringHUD:@"清除Webview缓存" second:2];
+    }
+}
+
+- (void)buttonAction2:(UIButton *)button {
+    [self.view endEditing:YES];
+    WebViewController *vc = [[WebViewController alloc] init];
+    if (button.tag == 100) {
+        vc.urlStr = @"http://112.20.237.76:8087/HealthClientStatic/HTML/tabbar/home.html";
+    } else if (button.tag == 101) {
+        vc.urlStr = @"http://112.20.237.76:8087/docClient/login";
+    }
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark UITextViewDelegate
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    // 如果为回车则将键盘收起
+    if ([text isEqualToString:@"\n"]) {
+        [self.view endEditing:YES];
+        if (self.ipTextView.text.length == 0) {
+            return NO;
+        }
+        WebViewController *vc = [[WebViewController alloc] init];
+        vc.urlStr = self.ipTextView.text;
+        [self.navigationController pushViewController:vc animated:YES];
+        return NO;
+    }
+    return YES;
 }
 
 

@@ -8,21 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface ViewController : BaseViewController
 
-@property (weak, nonatomic) IBOutlet UITextView *ipTextView;
-
-@property (weak, nonatomic) IBOutlet UIButton *topButton1;
-@property (weak, nonatomic) IBOutlet UIButton *topButton2;
-@property (weak, nonatomic) IBOutlet UIButton *topButton3;
-
-@property (weak, nonatomic) IBOutlet UIButton *button1;
-@property (weak, nonatomic) IBOutlet UIButton *button2;
-@property (weak, nonatomic) IBOutlet UIButton *button3;
-@property (weak, nonatomic) IBOutlet UIButton *button4;
-@property (weak, nonatomic) IBOutlet UIButton *button5;
-@property (weak, nonatomic) IBOutlet UIButton *testButton;
-@property (weak, nonatomic) IBOutlet UIButton *clearCache;
+@property (nonatomic, strong) UITextView *ipTextView;
 
 @end
 
