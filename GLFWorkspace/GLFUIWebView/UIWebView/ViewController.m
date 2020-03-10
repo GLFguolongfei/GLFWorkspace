@@ -161,9 +161,7 @@
     } else if (button.tag == 11) {
         [self cleanCacheAndCookie];
         [self clearCache];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self showStringHUD:@"缓存清理完成" second:2];
-        });
+        [self showStringHUD:@"缓存清理完成" second:1.5];
     } else if (button.tag == 12) {
 
     }
