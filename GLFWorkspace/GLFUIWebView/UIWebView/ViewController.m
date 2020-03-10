@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import <WebKit/WebKit.h>
+#import <SafariServices/SafariServices.h>
 // VCs
 #import "WebViewController.h"
 #import "WKWebViewController.h"
@@ -133,13 +134,30 @@
                 
             }];
             [alertVC addAction:cancelAction];
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"UIWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                self.ipTextView.text = result;
+                WebViewController *vc = [[WebViewController alloc] init];
+                vc.urlStr = result;
+                [self.navigationController pushViewController:vc animated:YES];
+            }];
+            [alertVC addAction:okAction1];
+            UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"WKWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 self.ipTextView.text = result;
                 WKWebViewController *vc = [[WKWebViewController alloc] init];
                 vc.urlStr = result;
                 [self.navigationController pushViewController:vc animated:YES];
             }];
-            [alertVC addAction:okAction];
+            [alertVC addAction:okAction2];
+            UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"SFSafariViewController" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                self.ipTextView.text = result;
+                NSURL *url = [NSURL URLWithString:result];
+                SFSafariViewController *sfViewControllr = [[SFSafariViewController alloc] initWithURL:url];
+//                sfViewControllr.delegate = self;
+                [self presentViewController:sfViewControllr animated:YES completion:^{
+                    
+                }];
+            }];
+            [alertVC addAction:okAction3];
             [self presentViewController:alertVC animated:YES completion:nil];
         }
     }];

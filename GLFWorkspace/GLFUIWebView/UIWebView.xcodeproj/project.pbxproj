@@ -42,6 +42,7 @@
 		6F5282281FA322AA006833DA /* BaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5282271FA322AA006833DA /* BaseViewController.m */; };
 		6F53420C1FDA3F1500805808 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F53420A1FDA3F1500805808 /* ViewController.m */; };
 		6F53420D1FDA3F8E00805808 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F5281F71FA318FF006833DA /* Main.storyboard */; };
+		6F6D9E9C241789410020C268 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6D9E9B241789410020C268 /* SafariServices.framework */; };
 		6FC1EB71241635DD008764D5 /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC1EB70241635DD008764D5 /* WKWebViewController.m */; };
 		6FC1EB7424163625008764D5 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC1EB7324163625008764D5 /* WebKit.framework */; };
 		6FFC2C78241661BF00061C1F /* MMScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFC2C73241661BF00061C1F /* MMScanViewController.m */; };
@@ -137,6 +138,7 @@
 		6F5282271FA322AA006833DA /* BaseViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseViewController.m; sourceTree = "<group>"; };
 		6F53420A1FDA3F1500805808 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		6F53420B1FDA3F1500805808 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		6F6D9E9B241789410020C268 /* SafariServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SafariServices.framework; path = System/Library/Frameworks/SafariServices.framework; sourceTree = SDKROOT; };
 		6FC1EB6F241635DD008764D5 /* WKWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebViewController.h; sourceTree = "<group>"; };
 		6FC1EB70241635DD008764D5 /* WKWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewController.m; sourceTree = "<group>"; };
 		6FC1EB7324163625008764D5 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -152,6 +154,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F6D9E9C241789410020C268 /* SafariServices.framework in Frameworks */,
 				6FC1EB7424163625008764D5 /* WebKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -365,6 +368,7 @@
 		6FC1EB7224163625008764D5 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6F6D9E9B241789410020C268 /* SafariServices.framework */,
 				6FC1EB7324163625008764D5 /* WebKit.framework */,
 			);
 			name = Frameworks;
