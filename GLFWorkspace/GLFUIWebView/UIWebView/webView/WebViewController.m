@@ -11,6 +11,8 @@
 @interface WebViewController ()<UIWebViewDelegate>
 {
     UIWebView *_webView;
+    UIBarButtonItem *item1;
+    UIBarButtonItem *item2;
 }
 @end
 
@@ -20,8 +22,8 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"W前进" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
-    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"W回退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
+    item1 = [[UIBarButtonItem alloc] initWithTitle:@"W前进" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
+    item2 = [[UIBarButtonItem alloc] initWithTitle:@"W回退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     
     _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight-64)];
@@ -70,6 +72,8 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     NSLog(@"didFailLoadWithError: %@", error.localizedDescription);
     [self hideAllHUD];
+    NSString *msg = [NSString stringWithFormat:@"页面加载失败: %@", error.localizedDescription];
+    [self showStringHUD:msg second:3];
 }
 
 #pragma mark WebView Events
@@ -79,8 +83,6 @@
     NSString *resultJS = [webView stringByEvaluatingJavaScriptFromString:js];
     self.title = resultJS;
     // 页面能否返回
-    UIBarButtonItem *item1 = self.navigationItem.rightBarButtonItems[0];
-    UIBarButtonItem *item2 = self.navigationItem.rightBarButtonItems[1];
     item1.enabled = webView.canGoForward;
     item2.enabled = webView.canGoBack;
     // 保存网址

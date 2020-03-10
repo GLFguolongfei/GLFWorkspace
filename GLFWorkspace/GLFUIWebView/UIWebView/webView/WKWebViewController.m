@@ -10,10 +10,12 @@
 #import <WebKit/WebKit.h>
 
 @interface WKWebViewController ()<WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>
-
-@property (nonatomic, strong) WKWebView *wkWebView;
-@property (nonatomic, strong) UIProgressView *progressView;
-
+{
+    WKWebView *_wkWebView;
+    UIProgressView *_progressView;
+    UIBarButtonItem *item1;
+    UIBarButtonItem *item2;
+}
 @end
 
 @implementation WKWebViewController
@@ -22,7 +24,9 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor whiteColor];
+    item1 = [[UIBarButtonItem alloc] initWithTitle:@"W前进" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
+    item2 = [[UIBarButtonItem alloc] initWithTitle:@"W回退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
+    self.navigationItem.rightBarButtonItems = @[item1, item2];
     
     [self setWKWebView];
     [self setUIProgressView];
@@ -31,58 +35,70 @@
 
 - (void)dealloc {
     // 注意移除,否则页面跳转会崩溃的
-    [self.wkWebView removeObserver:self forKeyPath:@"estimatedProgress"];
+    [_wkWebView removeObserver:self forKeyPath:@"estimatedProgress"];
 }
 
 - (void)setWKWebView {
-    self.wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight-64)];
-    self.wkWebView.UIDelegate = self;
-    self.wkWebView.navigationDelegate = self;
-    [self.view addSubview:self.wkWebView];
+    _wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight-64)];
+    _wkWebView.UIDelegate = self;
+    _wkWebView.navigationDelegate = self;
+    [self.view addSubview:_wkWebView];
     
     NSURL *url = [NSURL URLWithString:self.urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     // 加载请求的时候忽略缓存
 //    request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:3.0];
-    [self.wkWebView loadRequest:request];
+    [_wkWebView loadRequest:request];
 }
 
 - (void)setUIProgressView {
     CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
-    self.progressView = [[UIProgressView alloc] initWithFrame:rect];
-    self.progressView.progressViewStyle = UIProgressViewStyleDefault;
-    self.progressView.progressTintColor = [UIColor blueColor];  // 前景色
-    self.progressView.trackTintColor = [UIColor lightGrayColor];    // 背景色
-    self.progressView.progress = 0; // 进度默认为0 - 1
-    [self.view addSubview:self.progressView];
+    _progressView = [[UIProgressView alloc] initWithFrame:rect];
+    _progressView.progressViewStyle = UIProgressViewStyleDefault;
+    _progressView.progressTintColor = [UIColor blueColor];  // 前景色
+    _progressView.trackTintColor = [UIColor lightGrayColor];    // 背景色
+    _progressView.progress = 0; // 进度默认为0 - 1
+    [self.view addSubview:_progressView];
 }
 
 - (void)addObserver {
     // 通过监听estimatedProgress可以获取它的加载进度,还可以监听它的title,URL,loading
-    [self.wkWebView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
+    [_wkWebView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
+}
+
+- (void)buttonAction1:(id)sender {
+    if (_wkWebView.canGoForward) {
+        [_wkWebView goForward];
+    }
+}
+
+- (void)buttonAction2:(id)sender {
+    if (_wkWebView.canGoBack) {
+        [_wkWebView goBack];
+    }
 }
 
 #pragma mark KVO
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
     if ([keyPath isEqualToString:@"loading"]) {
-        WKBackForwardList *backForwardList = self.wkWebView.backForwardList;
+        WKBackForwardList *backForwardList = _wkWebView.backForwardList;
         NSLog(@"loading: %@", backForwardList);
     } else if ([keyPath isEqualToString:@"title"]) {
-        NSLog(@"title: %@", self.wkWebView.title);
+        NSLog(@"title: %@", _wkWebView.title);
     } else if ([keyPath isEqualToString:@"URL"]) {
-        NSLog(@"URL: %@", self.wkWebView.URL);
+        NSLog(@"URL: %@", _wkWebView.URL);
     } else if ([keyPath isEqualToString:@"estimatedProgress"]) {
-        NSLog(@"estimatedProgress: %f", self.wkWebView.estimatedProgress);
+        NSLog(@"estimatedProgress: %f", _wkWebView.estimatedProgress);
     }
     
-    if (object == self.wkWebView && [keyPath isEqualToString:@"estimatedProgress"]) {
+    if (object == _wkWebView && [keyPath isEqualToString:@"estimatedProgress"]) {
         CGFloat newprogress = [[change objectForKey:NSKeyValueChangeNewKey] doubleValue];
         if (newprogress == 1) {
-            self.progressView.hidden = YES;
-            [self.progressView setProgress:0 animated:NO];
+            _progressView.hidden = YES;
+            [_progressView setProgress:0 animated:NO];
         } else {
-            self.progressView.hidden = NO;
-            [self.progressView setProgress:newprogress animated:YES];
+            _progressView.hidden = NO;
+            [_progressView setProgress:newprogress animated:YES];
         }
     }
 }
@@ -122,10 +138,12 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     NSLog(@"3-页面加载完成");
+    [self setup:webView];
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation {
     NSLog(@"4-页面加载失败");
+    [self showStringHUD:@"页面加载失败" second:3];
 }
 
 #pragma mark 2-页面跳转
@@ -167,6 +185,57 @@
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
     NSLog(@"从web界面中接收到一个脚本时调用: %@", message);
 }
+
+#pragma mark WebView Events
+- (void)setup:(WKWebView *)webView {
+    // 获取网页的title
+    NSString *js = @"document.title";
+    [webView evaluateJavaScript:js completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"%@", error.localizedDescription);
+        } else {
+            self.title = result;
+        }
+    }];
+    // 页面能否返回
+    item1.enabled = webView.canGoForward;
+    item2.enabled = webView.canGoBack;
+    // 保存网址
+    if (webView.canGoBack) {
+        return; // 能返回,就表示不是第一个页面,就不必再保存了
+    }
+    BOOL isSave = YES;
+    NSArray *sandboxpath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [sandboxpath objectAtIndex:0];
+    NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"IP.plist"];
+    NSMutableArray *array = [[NSMutableArray alloc] initWithContentsOfFile:plistPath];
+    if (array == nil) {
+        array = [[NSMutableArray alloc] init];
+    } else {
+        for (NSInteger i = 0; i < array.count; i++) {
+            NSMutableDictionary *dict = array[i];
+            if ([dict[@"ipStr"] isEqualToString:self.urlStr]) {
+                isSave = NO;
+                dict[@"isLastSelect"] = @"1";
+            } else {
+                dict[@"isLastSelect"] = @"0";
+            }
+            [array replaceObjectAtIndex:i withObject:dict];
+        }
+    }
+    if (isSave) {
+        NSDictionary *dict = @{@"ipStr": self.urlStr,
+                               @"ipDescribe": self.title,
+                               @"isLastSelect": @"1"
+                               };
+        [array addObject:dict];
+        [array writeToFile:plistPath atomically:YES];
+    } else {
+        [array writeToFile:plistPath atomically:YES];
+    }
+    [self showStringHUD:@"已保存" second:1.5];
+}
+
 
 
 @end
