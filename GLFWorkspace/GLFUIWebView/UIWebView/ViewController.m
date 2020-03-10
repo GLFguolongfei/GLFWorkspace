@@ -40,6 +40,7 @@
     self.ipTextView.layer.masksToBounds = YES;
     self.ipTextView.font = [UIFont systemFontOfSize:16];
     self.ipTextView.text = [NSString stringWithFormat:@"http://%@:8080/", [GLFTools getIPAddress:YES]];
+    self.ipTextView.returnKeyType = UIReturnKeyGo;
     self.ipTextView.delegate = self;
     [self.view addSubview:self.ipTextView];
     
