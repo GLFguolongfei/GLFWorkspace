@@ -40,7 +40,9 @@
 
 - (void)setWKWebView {
     CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
-    if (self.navigationController.navigationBar.hidden == YES) {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *tabbarHidden = [userDefaults objectForKey:@"tabbarHidden"];
+    if (tabbarHidden.integerValue) {
         rect = kScreen;
     }
     _wkWebView = [[WKWebView alloc] initWithFrame:rect];
@@ -57,7 +59,9 @@
 
 - (void)setUIProgressView {
     CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
-    if (self.navigationController.navigationBar.hidden == YES) {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *tabbarHidden = [userDefaults objectForKey:@"tabbarHidden"];
+    if (tabbarHidden.integerValue) {
         rect = kScreen;
     }
     _progressView = [[UIProgressView alloc] initWithFrame:rect];
@@ -219,7 +223,7 @@
             @"isLastSelect": @"1"
         };
         [manager saveURLDict:dict];
-        [self showStringHUD:@"已保存" second:1.5];
+//        [self showStringHUD:@"已保存" second:1.5];
     });
 }
 

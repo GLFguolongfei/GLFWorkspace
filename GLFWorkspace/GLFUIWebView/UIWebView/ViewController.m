@@ -10,7 +10,7 @@
 // VCs
 #import "WebViewController.h"
 #import "WKWebViewController.h"
-#import "DeclareViewController.h"
+#import "SetupViewController.h"
 #import "MMScanViewController.h"
 // Views
 #import "SelectIPView.h"
@@ -28,7 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"HTML5";
-    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"说明" style:UIBarButtonItemStylePlain target:self action:@selector(declareAction)];
+    UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStylePlain target:self action:@selector(declareAction)];
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"扫码" style:UIBarButtonItemStylePlain target:self action:@selector(scanQrCode)];
     self.navigationItem.leftBarButtonItem = leftItem;
     self.navigationItem.rightBarButtonItem = rightItem;
@@ -43,7 +43,7 @@
     self.ipTextView.delegate = self;
     [self.view addSubview:self.ipTextView];
     
-    for (NSInteger i = 0; i < 3; i++) {
+    for (NSInteger i = 0; i < 2; i++) {
         CGFloat width = (kScreenWidth - 60) / 3;
         CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 200 + 80 * ceil(i / 3), width, 50);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
@@ -86,13 +86,29 @@
     }
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *tabbarHidden = [userDefaults objectForKey:@"tabbarHidden"];
+    if (tabbarHidden.integerValue) {
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+    } else {
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
+    }
+}
+
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
 }
 
 #pragma mark Events
 - (void)declareAction {
-    DeclareViewController *vc = [[DeclareViewController alloc] init];
+    SetupViewController *vc = [[SetupViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];
 }
 
@@ -105,12 +121,10 @@
             NSLog(@"扫描结果：%@", result);
             
             UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"扫描结果" message:result preferredStyle:UIAlertControllerStyleAlert];
-            
             UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                 
             }];
             [alertVC addAction:cancelAction];
-            
             UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                 WKWebViewController *vc = [[WKWebViewController alloc] init];
                 vc.urlStr = result;
@@ -137,19 +151,13 @@
     } else if (button.tag == 11) {
         [self showStringHUD:@"清除Webview缓存[假的]" second:2];
     } else if (button.tag == 12) {
-        if (self.navigationController.navigationBar.hidden == YES) {
-            [self.navigationController setNavigationBarHidden:NO animated:YES];
-//            [self.navigationController setToolbarHidden:NO animated:YES];
-        } else {
-            [self.navigationController setNavigationBarHidden:YES animated:YES];
-//            [self.navigationController setToolbarHidden:YES animated:YES];
-        }
+
     }
 }
 
 - (void)buttonAction2:(UIButton *)button {
     [self.view endEditing:YES];
-    WebViewController *vc = [[WebViewController alloc] init];
+    WKWebViewController *vc = [[WKWebViewController alloc] init];
     if (button.tag == 100) {
         vc.urlStr = @"http://112.20.237.76:8087/HealthClientStatic/HTML/tabbar/home.html";
     } else if (button.tag == 101) {
