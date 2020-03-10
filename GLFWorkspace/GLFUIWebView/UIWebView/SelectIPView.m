@@ -25,6 +25,7 @@
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
 - (void)drawRect:(CGRect)rect {
+    self.backgroundColor = [UIColor whiteColor];
     self.layer.cornerRadius = 10;
     self.layer.masksToBounds = YES;
     [self setupData];
@@ -49,7 +50,8 @@
 }
 
 - (void)setupUI {
-    myTableView = [[UITableView alloc] initWithFrame:self.bounds style:UITableViewStylePlain];
+    CGRect rect = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    myTableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
     myTableView.delegate = self;
     myTableView.dataSource = self;
     [self addSubview:myTableView];
@@ -82,8 +84,8 @@
         cell.textLabel.textColor = [UIColor redColor];
         cell.detailTextLabel.textColor = [UIColor redColor];
     } else {
-        cell.textLabel.textColor = [UIColor blackColor];
-        cell.detailTextLabel.textColor = [UIColor blackColor];
+        cell.textLabel.textColor = [UIColor grayColor];
+        cell.detailTextLabel.textColor = [UIColor lightGrayColor];
     }
     cell.textLabel.numberOfLines = 0;
     

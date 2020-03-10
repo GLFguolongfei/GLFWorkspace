@@ -159,9 +159,9 @@
     [self.view endEditing:YES];
     WKWebViewController *vc = [[WKWebViewController alloc] init];
     if (button.tag == 100) {
-        vc.urlStr = @"http://112.20.237.76:8087/HealthClientStatic/HTML/tabbar/home.html";
+        vc.urlStr = @"http://192.168.1.123:60108/abroadDetail?productId=174";
     } else if (button.tag == 101) {
-        vc.urlStr = @"http://112.20.237.76:8087/docClient/login";
+        vc.urlStr = @"http://192.168.1.121:60108/abroadDetail?productId=174";
     }
     [self.navigationController pushViewController:vc animated:YES];
 }
