@@ -204,35 +204,13 @@
     if (webView.canGoBack) {
         return; // 能返回,就表示不是第一个页面,就不必再保存了
     }
-    BOOL isSave = YES;
-    NSArray *sandboxpath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [sandboxpath objectAtIndex:0];
-    NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"IP.plist"];
-    NSMutableArray *array = [[NSMutableArray alloc] initWithContentsOfFile:plistPath];
-    if (array == nil) {
-        array = [[NSMutableArray alloc] init];
-    } else {
-        for (NSInteger i = 0; i < array.count; i++) {
-            NSMutableDictionary *dict = array[i];
-            if ([dict[@"ipStr"] isEqualToString:self.urlStr]) {
-                isSave = NO;
-                dict[@"isLastSelect"] = @"1";
-            } else {
-                dict[@"isLastSelect"] = @"0";
-            }
-            [array replaceObjectAtIndex:i withObject:dict];
-        }
-    }
-    if (isSave) {
-        NSDictionary *dict = @{@"ipStr": self.urlStr,
-                               @"ipDescribe": self.title,
-                               @"isLastSelect": @"1"
-                               };
-        [array addObject:dict];
-        [array writeToFile:plistPath atomically:YES];
-    } else {
-        [array writeToFile:plistPath atomically:YES];
-    }
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    NSDictionary *dict = @{
+        @"ipStr": self.urlStr,
+        @"ipDescribe": self.title,
+        @"isLastSelect": @"1"
+    };
+    [manager saveURLDict:dict];
     [self showStringHUD:@"已保存" second:1.5];
 }
 

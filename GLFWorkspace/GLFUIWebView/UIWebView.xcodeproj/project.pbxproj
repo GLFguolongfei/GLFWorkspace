@@ -15,6 +15,7 @@
 		6F002F261FDA28E300A66BFB /* LewPopupViewAnimationDrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F002F1E1FDA28E300A66BFB /* LewPopupViewAnimationDrop.m */; };
 		6F002F271FDA28E300A66BFB /* LewPopupViewAnimationSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F002F1F1FDA28E300A66BFB /* LewPopupViewAnimationSlide.m */; };
 		6F002F281FDA28E300A66BFB /* LewPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F002F221FDA28E300A66BFB /* LewPopupBackgroundView.m */; };
+		6F0A7A0B2417397A00AA9FD1 /* DocumentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0A7A0A2417397A00AA9FD1 /* DocumentManager.m */; };
 		6F0E964D1FA413670029DDD6 /* Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E962C1FA413670029DDD6 /* Base64.m */; };
 		6F0E964E1FA413670029DDD6 /* NSDate+Help.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E962F1FA413670029DDD6 /* NSDate+Help.m */; };
 		6F0E964F1FA413670029DDD6 /* UIColor+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E96311FA413670029DDD6 /* UIColor+Category.m */; };
@@ -82,6 +83,8 @@
 		6F002F201FDA28E300A66BFB /* LewPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LewPopupViewController.h; sourceTree = "<group>"; };
 		6F002F211FDA28E300A66BFB /* LewPopupViewAnimationFade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LewPopupViewAnimationFade.h; sourceTree = "<group>"; };
 		6F002F221FDA28E300A66BFB /* LewPopupBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LewPopupBackgroundView.m; sourceTree = "<group>"; };
+		6F0A7A092417397A00AA9FD1 /* DocumentManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentManager.h; sourceTree = "<group>"; };
+		6F0A7A0A2417397A00AA9FD1 /* DocumentManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DocumentManager.m; sourceTree = "<group>"; };
 		6F0E95E81FA40ECF0029DDD6 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		6F0E962B1FA413670029DDD6 /* Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Base64.h; sourceTree = "<group>"; };
 		6F0E962C1FA413670029DDD6 /* Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Base64.m; sourceTree = "<group>"; };
@@ -318,6 +321,8 @@
 				6F5281F21FA318FF006833DA /* AppDelegate.m */,
 				6F53420B1FDA3F1500805808 /* ViewController.h */,
 				6F53420A1FDA3F1500805808 /* ViewController.m */,
+				6F0A7A092417397A00AA9FD1 /* DocumentManager.h */,
+				6F0A7A0A2417397A00AA9FD1 /* DocumentManager.m */,
 				6FFC2C6B24165D3500061C1F /* base */,
 				6FFC2C6C24165D5900061C1F /* webView */,
 				6F9CAFCD202175A300E66E49 /* DeclareViewController.h */,
@@ -538,6 +543,7 @@
 				6F0E964E1FA413670029DDD6 /* NSDate+Help.m in Sources */,
 				6F0E96501FA413670029DDD6 /* UIColor+HexString.m in Sources */,
 				6F0E96591FA413670029DDD6 /* MyView.m in Sources */,
+				6F0A7A0B2417397A00AA9FD1 /* DocumentManager.m in Sources */,
 				6F002F271FDA28E300A66BFB /* LewPopupViewAnimationSlide.m in Sources */,
 				6F0E96571FA413670029DDD6 /* PhotoStackView.m in Sources */,
 				6F0E96511FA413670029DDD6 /* UIView+Helper.m in Sources */,

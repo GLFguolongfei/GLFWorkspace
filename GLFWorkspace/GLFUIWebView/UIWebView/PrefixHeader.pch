@@ -24,6 +24,7 @@
 #import "UIView+Helper.h"
 #import "UIColor+HexString.h"
 #import "NSDate+Help.h"
+#import "DocumentManager.h"
 
 #pragma mark 适配
 #define kScreen [[UIScreen mainScreen] bounds]
