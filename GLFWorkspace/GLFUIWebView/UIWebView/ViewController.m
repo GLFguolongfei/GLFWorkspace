@@ -43,7 +43,7 @@
     self.ipTextView.delegate = self;
     [self.view addSubview:self.ipTextView];
     
-    for (NSInteger i = 0; i < 2; i++) {
+    for (NSInteger i = 0; i < 3; i++) {
         CGFloat width = (kScreenWidth - 60) / 3;
         CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 200 + 80 * ceil(i / 3), width, 50);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
@@ -52,7 +52,7 @@
         } else if (i == 1)  {
             [button setTitle:@"清除缓存" forState:UIControlStateNormal];
         } else {
-            [button setTitle:@"测试" forState:UIControlStateNormal];
+            [button setTitle:@"导航栏" forState:UIControlStateNormal];
         }
         button.titleLabel.font = [UIFont systemFontOfSize:16.0];
         button.backgroundColor = [UIColor lightGrayColor];
@@ -136,6 +136,14 @@
         }];
     } else if (button.tag == 11) {
         [self showStringHUD:@"清除Webview缓存[假的]" second:2];
+    } else if (button.tag == 12) {
+        if (self.navigationController.navigationBar.hidden == YES) {
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+//            [self.navigationController setToolbarHidden:NO animated:YES];
+        } else {
+            [self.navigationController setNavigationBarHidden:YES animated:YES];
+//            [self.navigationController setToolbarHidden:YES animated:YES];
+        }
     }
 }
 

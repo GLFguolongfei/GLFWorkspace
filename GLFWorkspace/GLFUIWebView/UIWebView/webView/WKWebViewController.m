@@ -39,7 +39,11 @@
 }
 
 - (void)setWKWebView {
-    _wkWebView = [[WKWebView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight-64)];
+    CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    if (self.navigationController.navigationBar.hidden == YES) {
+        rect = kScreen;
+    }
+    _wkWebView = [[WKWebView alloc] initWithFrame:rect];
     _wkWebView.UIDelegate = self;
     _wkWebView.navigationDelegate = self;
     [self.view addSubview:_wkWebView];
@@ -53,6 +57,9 @@
 
 - (void)setUIProgressView {
     CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    if (self.navigationController.navigationBar.hidden == YES) {
+        rect = kScreen;
+    }
     _progressView = [[UIProgressView alloc] initWithFrame:rect];
     _progressView.progressViewStyle = UIProgressViewStyleDefault;
     _progressView.progressTintColor = [UIColor blueColor];  // 前景色
@@ -205,13 +212,15 @@
         return; // 能返回,就表示不是第一个页面,就不必再保存了
     }
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    NSDictionary *dict = @{
-        @"ipStr": self.urlStr,
-        @"ipDescribe": self.title,
-        @"isLastSelect": @"1"
-    };
-    [manager saveURLDict:dict];
-    [self showStringHUD:@"已保存" second:1.5];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSDictionary *dict = @{
+            @"ipStr": self.urlStr,
+            @"ipDescribe": self.title,
+            @"isLastSelect": @"1"
+        };
+        [manager saveURLDict:dict];
+        [self showStringHUD:@"已保存" second:1.5];
+    });
 }
 
 
