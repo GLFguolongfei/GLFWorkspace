@@ -113,7 +113,7 @@
 		6F0E96491FA413670029DDD6 /* MyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyView.m; sourceTree = "<group>"; };
 		6F0E964B1FA413670029DDD6 /* WaterView2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterView2.h; sourceTree = "<group>"; };
 		6F0E964C1FA413670029DDD6 /* WaterView2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaterView2.m; sourceTree = "<group>"; };
-		6F5281EE1FA318FF006833DA /* UIWebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UIWebView.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F5281EE1FA318FF006833DA /* WebView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WebView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F5281F11FA318FF006833DA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6F5281F21FA318FF006833DA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		6F5281F81FA318FF006833DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -306,7 +306,7 @@
 		6F5281EF1FA318FF006833DA /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				6F5281EE1FA318FF006833DA /* UIWebView.app */,
+				6F5281EE1FA318FF006833DA /* WebView.app */,
 				6F5282061FA318FF006833DA /* UIWebViewTests.xctest */,
 				6F5282111FA318FF006833DA /* UIWebViewUITests.xctest */,
 			);
@@ -416,7 +416,7 @@
 			);
 			name = UIWebView;
 			productName = UIWebView;
-			productReference = 6F5281EE1FA318FF006833DA /* UIWebView.app */;
+			productReference = 6F5281EE1FA318FF006833DA /* WebView.app */;
 			productType = "com.apple.product-type.application";
 		};
 		6F5282051FA318FF006833DA /* UIWebViewTests */ = {
@@ -734,7 +734,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline3;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = WebView;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -750,7 +750,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.iskyTripAirport.airline3;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = WebView;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
