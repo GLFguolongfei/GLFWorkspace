@@ -95,7 +95,7 @@
         @"ipDescribe": self.title,
         @"isLastSelect": @"1"
     };
-    [manager saveURLDict:dict];
+    [manager addURL:dict];
     [self showStringHUD:@"已保存" second:1.5];
 }
 

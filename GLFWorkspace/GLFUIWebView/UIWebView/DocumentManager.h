@@ -14,7 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 HMSingletonH(DocumentManager)
 
-- (void)saveURLDict:(NSDictionary *)dict;
+- (void)addURL:(NSDictionary *)urlDict;
+- (void)deleteURL:(NSString *)urlStr;
+- (void)clearURL;
+- (void)renameURL:(NSDictionary *)urlDict;
 
 @end
 

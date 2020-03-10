@@ -12,5 +12,7 @@
 
 @property (nonatomic, strong) UITextView *ipTextView;
 
+- (void)goURLVC:(NSString *)urlStr;
+
 @end
 

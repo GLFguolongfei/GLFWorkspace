@@ -50,7 +50,7 @@
 }
 
 - (void)setupUI {
-    CGRect rect = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    CGRect rect = CGRectMake(0, 5, self.bounds.size.width, self.bounds.size.height - 10);
     myTableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
     myTableView.delegate = self;
     myTableView.dataSource = self;
@@ -98,27 +98,8 @@
     
     IpModel *model = myDataArray[indexPath.row];
     _parentVC.ipTextView.text = model.ipStr;
+    [_parentVC goURLVC:model.ipStr];
     [_parentVC lew_dismissPopupViewWithanimation:[LewPopupViewAnimationSpring new]];
-    
-    // 保存
-    NSArray *sandboxpath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentsDirectory = [sandboxpath objectAtIndex:0];
-    NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"IP.plist"];
-    NSMutableArray *array = [[NSMutableArray alloc] initWithContentsOfFile:plistPath];
-    if (array == nil) {
-        array = [[NSMutableArray alloc] init];
-    } else {
-        for (NSInteger i = 0; i < array.count; i++) {
-            NSMutableDictionary *dict = array[i];
-            if ([dict[@"ipStr"] isEqualToString:model.ipStr]) {
-                dict[@"isLastSelect"] = @"1";
-            } else {
-                dict[@"isLastSelect"] = @"0";
-            }
-            [array replaceObjectAtIndex:i withObject:dict];
-        }
-    }
-    [array writeToFile:plistPath atomically:YES];
 }
 
 #pragma mark 编辑
@@ -143,23 +124,8 @@
     }];
     [alertVC addAction:cancelAction];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"删除" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
-        // 保存
-        NSArray *sandboxpath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *documentsDirectory = [sandboxpath objectAtIndex:0];
-        NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"IP.plist"];
-        NSMutableArray *array = [[NSMutableArray alloc] initWithContentsOfFile:plistPath];
-        if (array == nil) {
-            array = [[NSMutableArray alloc] init];
-        } else {
-            for (NSInteger i = 0; i < array.count; i++) {
-                NSMutableDictionary *dict = array[i];
-                if ([dict[@"ipStr"] isEqualToString:model.ipStr]) {
-                    [array removeObject:dict];
-                    break;
-                }
-            }
-        }
-        [array writeToFile:plistPath atomically:YES];
+        DocumentManager *manager = [DocumentManager sharedDocumentManager];
+        [manager deleteURL:model.ipStr];
         [self setupData];
     }];
     [alertVC addAction:okAction];
@@ -177,24 +143,18 @@
         if (alertVC.textFields.count > 0) {
             UITextField *textField = alertVC.textFields.firstObject;
             NSLog(@"重命名名称: %@", textField.text);
-            
-            // 保存
-            NSArray *sandboxpath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *documentsDirectory = [sandboxpath objectAtIndex:0];
-            NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"IP.plist"];
-            NSMutableArray *array = [[NSMutableArray alloc] initWithContentsOfFile:plistPath];
-            if (array == nil) {
-                array = [[NSMutableArray alloc] init];
-            } else {
-                for (NSInteger i = 0; i < array.count; i++) {
-                    NSMutableDictionary *dict = array[i];
-                    if ([dict[@"ipStr"] isEqualToString:model.ipStr]) {
-                        dict[@"ipDescribe"] = textField.text;
-                    }
-                    [array replaceObjectAtIndex:i withObject:dict];
-                }
+            DocumentManager *manager = [DocumentManager sharedDocumentManager];
+            NSString *isLastSelect = @"0";
+            if (model.isLastSelect) {
+                isLastSelect = @"1";
             }
-            [array writeToFile:plistPath atomically:YES];
+            NSDictionary *dict = @{
+                @"ipStr": model.ipStr,
+                @"ipDescribe": textField.text,
+                @"isLastSelect": isLastSelect
+            };
+            [manager renameURL:dict];
+            
             [self setupData];
         }
     }];

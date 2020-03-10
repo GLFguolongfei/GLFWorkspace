@@ -26,6 +26,11 @@
     [self.switch1 setOn:tabbarHidden.integerValue animated:YES];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
 - (IBAction)switchAction1:(id)sender {
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {

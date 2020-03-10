@@ -106,6 +106,12 @@
     [self.view endEditing:YES];
 }
 
+- (void)goURLVC:(NSString *)urlStr {
+    WKWebViewController *vc = [[WKWebViewController alloc] init];
+    vc.urlStr = urlStr;
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 #pragma mark Events
 - (void)declareAction {
     SetupViewController *vc = [[SetupViewController alloc] init];
@@ -145,6 +151,7 @@
     if (button.tag == 10) {
         SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
         ipView.parentVC = self;
+        ipView.backgroundColor = [UIColor whiteColor];
         [self lew_presentPopupView:ipView animation:[LewPopupViewAnimationSpring new] dismissed:^{
             NSLog(@"动画结束");
         }];
@@ -165,6 +172,8 @@
     }
     [self.navigationController pushViewController:vc animated:YES];
 }
+
+
 
 #pragma mark UITextViewDelegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
