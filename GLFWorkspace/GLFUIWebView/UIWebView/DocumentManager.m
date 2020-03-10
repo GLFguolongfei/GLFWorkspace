@@ -23,11 +23,12 @@ HMSingletonM(DocumentManager)
             NSMutableDictionary *dict = array[i];
             if ([dict[@"ipStr"] isEqualToString:urlDict[@"ipStr"]]) {
                 isHaveSave = YES;
+                dict[@"ipStr"] = urlDict[@"ipStr"];
                 dict[@"isLastSelect"] = @"1";
             } else {
                 dict[@"isLastSelect"] = @"0";
             }
-            [array replaceObjectAtIndex:i withObject:urlDict];
+            [array replaceObjectAtIndex:i withObject:dict];
         }
     }
     if (!isHaveSave) {
@@ -37,6 +38,7 @@ HMSingletonM(DocumentManager)
 }
 
 - (void)deleteURL:(NSString *)urlStr {
+    BOOL isHaveSave = NO;
     NSString *plistPath = [self getPath];
     NSMutableArray *array = [[NSMutableArray alloc] initWithContentsOfFile:plistPath];
     if (array == nil) {
@@ -45,12 +47,15 @@ HMSingletonM(DocumentManager)
         for (NSInteger i = 0; i < array.count; i++) {
             NSMutableDictionary *dict = array[i];
             if ([dict[@"ipStr"] isEqualToString:urlStr]) {
+                isHaveSave = YES;
                 [array removeObject:dict];
                 break;
             }
         }
     }
-    [array writeToFile:plistPath atomically:YES];
+    if (isHaveSave) {
+        [array writeToFile:plistPath atomically:YES];
+    }
 }
 
 - (void)clearURL {

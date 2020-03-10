@@ -45,6 +45,7 @@
         model.ipDescribe = dict[@"ipDescribe"];
         model.isLastSelect = [dict[@"isLastSelect"] boolValue];
         [myDataArray addObject:model];
+        NSLog(@"%@", model.ipStr);
     }
     [myTableView reloadData];
 }
@@ -62,7 +63,7 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     IpModel *model = myDataArray[indexPath.row];
     // 计算的不太准
-    CGSize size = [GLFTools calculatingStringSizeWithString:model.ipStr ByFont:KFontSize(16) andSize:CGSizeMake(kScreenWidth/4*3-50, kScreenHeight)];
+    CGSize size = [GLFTools calculatingStringSizeWithString:model.ipStr ByFont:KFontSize(16) andSize:CGSizeMake(self.bounds.size.width - 50, kScreenHeight)];
     return size.height + 35;
 }
 
@@ -81,11 +82,9 @@
     cell.textLabel.text = model.ipStr;
     cell.detailTextLabel.text = model.ipDescribe;
     if (model.isLastSelect) {
-        cell.textLabel.textColor = [UIColor redColor];
-        cell.detailTextLabel.textColor = [UIColor redColor];
+        cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
-        cell.textLabel.textColor = [UIColor grayColor];
-        cell.detailTextLabel.textColor = [UIColor lightGrayColor];
+        cell.accessoryType = UITableViewCellAccessoryNone;
     }
     cell.textLabel.numberOfLines = 0;
     
