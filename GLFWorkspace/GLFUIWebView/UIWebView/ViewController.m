@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import <WebKit/WebKit.h>
 // VCs
 #import "WebViewController.h"
 #import "WKWebViewController.h"
@@ -158,7 +159,11 @@
             NSLog(@"动画结束");
         }];
     } else if (button.tag == 11) {
-        [self showStringHUD:@"清除Webview缓存[假的]" second:2];
+        [self cleanCacheAndCookie];
+        [self clearCache];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self showStringHUD:@"缓存清理完成" second:2];
+        });
     } else if (button.tag == 12) {
 
     }
@@ -177,6 +182,40 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+#pragma mark Tools
+// 清除缓存和cookie
+- (void)cleanCacheAndCookie{
+    // 清除cookies
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies]){
+        [storage deleteCookie:cookie];
+    }
+    // 清除UIWebView的缓存
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    NSURLCache *cache = [NSURLCache sharedURLCache];
+    [cache removeAllCachedResponses];
+    [cache setDiskCapacity:0];
+    [cache setMemoryCapacity:0];
+}
+
+// 清除缓存
+- (void)clearCache {
+    if ([[[UIDevice currentDevice]systemVersion]intValue ] >= 9.0) {
+        NSArray * types =@[WKWebsiteDataTypeMemoryCache,WKWebsiteDataTypeDiskCache]; // 9.0之后才有的
+        NSSet *websiteDataTypes = [NSSet setWithArray:types];
+        NSDate *dateFrom = [NSDate dateWithTimeIntervalSince1970:0];
+        [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:websiteDataTypes modifiedSince:dateFrom completionHandler:^{
+
+        }];
+    }else{
+        NSString *libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,NSUserDomainMask,YES) objectAtIndex:0];
+        NSString *cookiesFolderPath = [libraryPath stringByAppendingString:@"/Cookies"];
+        NSLog(@"%@", cookiesFolderPath);
+        NSError *errors;
+        [[NSFileManager defaultManager] removeItemAtPath:cookiesFolderPath error:&errors];
+    }
+}
 
 #pragma mark UITextViewDelegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
