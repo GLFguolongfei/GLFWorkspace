@@ -223,7 +223,6 @@
             @"isLastSelect": @"1"
         };
         [manager addURL:dict];
-//        [self showStringHUD:@"已保存" second:1.5];
     });
 }
 
