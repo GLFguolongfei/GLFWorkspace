@@ -82,8 +82,12 @@
     cell.textLabel.text = model.ipStr;
     cell.detailTextLabel.text = model.ipDescribe;
     if (model.isLastSelect) {
+        cell.textLabel.textColor = [UIColor blackColor];
+        cell.detailTextLabel.textColor = [UIColor blackColor];
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {
+        cell.textLabel.textColor = [UIColor grayColor];
+        cell.detailTextLabel.textColor = [UIColor grayColor];
         cell.accessoryType = UITableViewCellAccessoryNone;
     }
     cell.textLabel.numberOfLines = 0;
