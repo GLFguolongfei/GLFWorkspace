@@ -171,10 +171,11 @@
         vc.urlStr = @"http://192.168.1.123:60108/abroadDetail?productId=174";
     } else if (button.tag == 101) {
         vc.urlStr = @"http://192.168.1.121:60108/abroadDetail?productId=174";
+    } else {
+        vc.urlStr = @"http://www.baidu.com";
     }
     [self.navigationController pushViewController:vc animated:YES];
 }
-
 
 
 #pragma mark UITextViewDelegate
