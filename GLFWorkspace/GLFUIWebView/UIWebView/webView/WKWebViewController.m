@@ -57,7 +57,7 @@
 //    request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:3.0];
     [_wkWebView loadRequest:request];
     
-    [WebViewJavascriptBridge enableLogging];
+    [WKWebViewJavascriptBridge enableLogging];
     
     self.bridge = [WKWebViewJavascriptBridge bridgeForWebView:_wkWebView];
     [self.bridge setWebViewDelegate:self];

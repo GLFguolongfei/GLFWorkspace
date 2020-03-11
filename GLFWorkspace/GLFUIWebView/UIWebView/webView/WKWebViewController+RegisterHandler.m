@@ -102,18 +102,6 @@
     [self registerHandler:@"AirportOpenBounces" handler:^(id data, WVJBResponseCallback responseCallback) {
         [weakSelf airportIosBounces:data callBack:responseCallback];
     }];
-    // 埋点事件统计
-    [self registerHandler:@"AirportUbtEvent" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [weakSelf airportUbtEvent:data callBack:responseCallback];
-    }];
-    // 埋点进入页面
-    [self registerHandler:@"AirportUbtPageIn" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [weakSelf airportUbtPageIn:data callBack:responseCallback];
-    }];
-    // 埋点离开页面
-    [self registerHandler:@"AirportUbtPageOut" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [weakSelf airportUbtPageOut:data callBack:responseCallback];
-    }];
     // 获取当前机场信息
     [self registerHandler:@"UserAirportInfo" handler:^(id data, WVJBResponseCallback responseCallback) {
         [weakSelf airportUserAirportInfo:data callBack:responseCallback];
@@ -184,7 +172,6 @@
 // 获取信号栏背景色
 - (void)airportSignalBarBackgroundColor:(NSDictionary *)data callBack:(WVJBResponseCallback)responseCallback {
     NSString * colorStr = data[@"backgroundColor"];
-    [self setStatusBarBackgroundColor:colorStr];
     if (colorStr.length > 0) {
         responseCallback(@{@"result":@(true)});
     } else {
@@ -390,21 +377,13 @@
     }
 }
 
-#pragma mark 私有方法
+#pragma mark Tools
 // 注册OC方法给JS调用
 - (void)registerHandler:(NSString *)handlerName handler:(WVJBHandler)handler {
+    NSLog(@"JSBridge: %@", handlerName);
     [self.bridge registerHandler:handlerName handler:^(id data, WVJBResponseCallback responseCallback) {
         handler(data, responseCallback);
     }];
-}
-
-// 设置状态栏背景颜色
-- (void)setStatusBarBackgroundColor:(NSString *)colorStr {
-   
-}
-
-- (void)setResponseCallback:(WVJBResponseCallback)responseCallback {
-
 }
 
 
