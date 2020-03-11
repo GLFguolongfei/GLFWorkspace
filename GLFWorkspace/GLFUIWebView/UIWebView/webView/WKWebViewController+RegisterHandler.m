@@ -34,14 +34,6 @@
     [self registerHandler:@"AirportNavHeight" handler:^(id data, WVJBResponseCallback responseCallback) {
         [weakSelf airportNavHeight:data callBack:responseCallback];
     }];
-    // 获取信号栏文字颜色
-    [self registerHandler:@"AirportSignalBarColor" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [weakSelf airportSignalBarColor:data callBack:responseCallback];
-    }];
-    // 获取信号栏背景色
-    [self registerHandler:@"AirportSignalBarBackgroundColor" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [weakSelf airportSignalBarBackgroundColor:data callBack:responseCallback];
-    }];
     // 获取信号栏高度
     [self registerHandler:@"AirportSignalBarHeight" handler:^(id data, WVJBResponseCallback responseCallback) {
         [weakSelf airportSignalBarHeight:data callBack:responseCallback];
@@ -149,34 +141,9 @@
     responseCallback(@{@"appChannel":@"AppStore"});
 }
 
-#pragma mrk 获取导航条高度
+// 获取导航条高度
 - (void)airportNavHeight:(id)data callBack:(WVJBResponseCallback)responseCallback {
     responseCallback(@{@"navHeight":@(NAVIGATION_HEIGHT_X)});
-}
-
-// 获取信号栏文字颜色
-- (void)airportSignalBarColor:(NSDictionary *)data callBack:(WVJBResponseCallback)responseCallback {
-    if ([data[@"color"] isEqualToString:@"black"]) {
-        //设置全局状态栏字体颜色为黑色
-        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleDefault;
-        responseCallback(@{@"result":@(true)});
-    } else if ([data[@"color"] isEqualToString:@"white"]) {
-        //设置全局状态栏字体颜色为白色
-        [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
-        responseCallback(@{@"result":@(true)});
-    } else {
-        responseCallback(@{@"result":@(false)});
-    }
-}
-
-// 获取信号栏背景色
-- (void)airportSignalBarBackgroundColor:(NSDictionary *)data callBack:(WVJBResponseCallback)responseCallback {
-    NSString * colorStr = data[@"backgroundColor"];
-    if (colorStr.length > 0) {
-        responseCallback(@{@"result":@(true)});
-    } else {
-        responseCallback(@{@"result":@(false)});
-    }
 }
 
 // 获取信号栏高度
@@ -197,7 +164,6 @@
 // 拨打电话
 - (void)airportCallPhone:(NSDictionary *)data callBack:(WVJBResponseCallback)responseCallback {
     NSString * phone = data[@"num"];
-    
     if (phone.length > 0) {
         NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",phone];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str] options:@{} completionHandler:^(BOOL success) {
@@ -207,7 +173,6 @@
     } else {
         responseCallback(@{@"result":@(false)});
     }
-    
 }
 
 // 页面回退
@@ -295,7 +260,7 @@
 // --获取APP Token
 - (void)airportToken:(id )data callBack:(WVJBResponseCallback)responseCallback {
     responseCallback(@{
-        @"token": @"",
+        @"token": @"101_540124bcaab492c1983695f8bb719629",
         @"userId": @"162",
         @"result": @(true)
     });
@@ -303,7 +268,21 @@
 
 // --获取Header
 - (void)airportHeader:(id )data callBack:(WVJBResponseCallback)responseCallback {
-    NSMutableDictionary * dict = [NSMutableDictionary dictionary];
+    NSDictionary *dict = @{
+        @"channelSource": @"101",
+        @"uid": @"162",
+        @"clientIp": @"",
+        @"clientName": @"ios",
+        @"clientVersion": @"1.2.3",
+        @"timestamp": @"1583908730",
+        @"appId": @"60103",
+        @"deviceId": @"35A11F48-42A6-4301-B30B-757F524E2B95",
+        @"deviceType": @(2),
+        @"requestId": @"",
+        @"version": @"1.2.3",
+        @"token": @"101_540124bcaab492c1983695f8bb719629",
+        @"customerData": @""
+    };
 //    [dict setObject:@"60103" forKey:@"appId"];
 //    [dict setObject:@"101" forKey:@"channelSource"];
 //    [dict setObject:@"" forKey:@"clientIp"];

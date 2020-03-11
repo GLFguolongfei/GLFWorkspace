@@ -62,9 +62,8 @@
         sureStr = [NSString stringWithFormat:@"%@?agent=iskytrip_app&signalBarHeight=%d&nativeLoading=1", self.urlStr, STATUSBAR_HEIGHT_X];
     }
     NSURL *url = [NSURL URLWithString:sureStr];
-    NSURLRequest *request = [NSURLRequest requestWithURL:url];
     // 加载请求的时候忽略缓存
-//    request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:3.0];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:3.0];
     [_wkWebView loadRequest:request];
     
     [WKWebViewJavascriptBridge enableLogging];
