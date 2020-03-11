@@ -27,14 +27,20 @@
     item2 = [[UIBarButtonItem alloc] initWithTitle:@"W回退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     
-    _webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight-64)];
+    CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *tabbarHidden = [userDefaults objectForKey:@"tabbarHidden"];
+    if (tabbarHidden.integerValue) {
+        rect = kScreen;
+    }
+    _webView = [[UIWebView alloc] initWithFrame:rect];
     _webView.scalesPageToFit = YES;
     _webView.delegate = self;
     [self.view addSubview:_webView];
     
-    // WKWebview设置其UserAgent
-    NSString *userAgent = [NSString stringWithFormat:@"iskytrip_app signalBarHeight=%d", STATUSBAR_HEIGHT_X];
-    [_webView setValue:userAgent forKey:@"applicationNameForUserAgent"];
+    // Webview设置其UserAgent
+//    NSString *userAgent = [NSString stringWithFormat:@"iskytrip_app signalBarHeight=%d", STATUSBAR_HEIGHT_X];
+//    [_webView setValue:userAgent forKey:@"applicationNameForUserAgent"];
     
     NSString *sureStr;
     if ([self.urlStr containsString:@"?"]) {
