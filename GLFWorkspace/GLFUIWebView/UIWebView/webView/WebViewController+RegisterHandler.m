@@ -78,25 +78,9 @@
     [self registerHandler:@"AirportHeader" handler:^(id data, WVJBResponseCallback responseCallback) {
         [weakSelf airportHeader:data callBack:responseCallback];
     }];
-    // 获取AuthCode
-    [self registerHandler:@"AirportAuthCode" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [weakSelf airportAuthCode:data callBack:responseCallback];
-    }];
     // 添加toast
     [self registerHandler:@"AirportToast" handler:^(id data, WVJBResponseCallback responseCallback) {
         [weakSelf airportToast:data callBack:responseCallback];
-    }];
-    // 打开定位设置权限
-    [self registerHandler:@"AirportLocationPermissions" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [weakSelf airportLocationpPermissions:data callBack:responseCallback];
-    }];
-    // 开启或关闭webview Bounces效果
-    [self registerHandler:@"AirportOpenBounces" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [weakSelf airportIosBounces:data callBack:responseCallback];
-    }];
-    // 获取当前机场信息
-    [self registerHandler:@"UserAirportInfo" handler:^(id data, WVJBResponseCallback responseCallback) {
-        [weakSelf airportUserAirportInfo:data callBack:responseCallback];
     }];
     // loading展示和关闭
     [self registerHandler:@"airportLoading" handler:^(id data, WVJBResponseCallback responseCallback) {
@@ -119,10 +103,8 @@
             id params = data[@"params"];
             
             WebViewController *vc = [[WebViewController alloc] init];
-            if (urlString.length > 0) {
-                vc.urlStr = urlString;
-                [self.navigationController pushViewController:vc animated:YES];
-            }
+            vc.urlStr = urlString;
+            [self.navigationController pushViewController:vc animated:YES];
         }
     }
 }
@@ -153,12 +135,12 @@
 
 // 定位经纬度
 - (void)airportLocation:(id)data callBack:(WVJBResponseCallback)responseCallback {
-    responseCallback(@{@"status":@"201"});
+    responseCallback(@{@"status": @"201"});
 }
 
 // 是否在App当中
 - (void)airportInTheApp:(id)data callBack:(WVJBResponseCallback)responseCallback {
-    responseCallback(@{@"InTheApp":@(true)});
+    responseCallback(@{@"InTheApp": @(true)});
 }
 
 // 拨打电话
@@ -167,11 +149,11 @@
     if (phone.length > 0) {
         NSMutableString *str=[[NSMutableString alloc] initWithFormat:@"telprompt://%@",phone];
         [[UIApplication sharedApplication] openURL:[NSURL URLWithString:str] options:@{} completionHandler:^(BOOL success) {
-            //回调
+            // 回调
         }];
-        responseCallback(@{@"result":@(true)});
+        responseCallback(@{@"result": @(true)});
     } else {
-        responseCallback(@{@"result":@(false)});
+        responseCallback(@{@"result": @(false)});
     }
 }
 
@@ -254,7 +236,16 @@
 
 // 禁止当前页面右滑返回
 - (void)airportBanRightGestures:(id )data callBack:(WVJBResponseCallback)responseCallback {
-    
+    if ([data isKindOfClass:[NSDictionary class]]) {
+        BOOL isBanGestures = [data[@"isBanGestures"] boolValue];
+        if (isBanGestures) {
+            self.navigationController.interactivePopGestureRecognizer.enabled = YES;
+            responseCallback(@{@"result":@(true)});
+        } else {
+            self.navigationController.interactivePopGestureRecognizer.enabled = NO;
+            responseCallback(@{@"result":@(false)});
+        }
+    }
 }
 
 // --获取APP Token
@@ -283,71 +274,19 @@
         @"token": @"101_540124bcaab492c1983695f8bb719629",
         @"customerData": @""
     };
-//    [dict setObject:@"60103" forKey:@"appId"];
-//    [dict setObject:@"101" forKey:@"channelSource"];
-//    [dict setObject:@"" forKey:@"clientIp"];
-//    [dict setObject:@"ios" forKey:@"clientName"];
-//    [dict setObject:KVersion forKey:@"clientVersion"];
-//    [dict setObject:@"" forKey:@"customerData"];
-//    [dict setObject:[SKUUID getUUID] forKey:@"deviceId"];
-//    [dict setObject:@(2) forKey:@"deviceType"];
-//    [dict setObject:@"" forKey:@"requestId"];
-//    [dict setObject:[NSString getNowTimeTimestamp] forKey:@"timestamp"];
-//    [dict setObject:isNotEmptyValue(APPInstance.token)?APPInstance.token:@"" forKey:@"token"];
-//    [dict setObject:isNotEmptyValue(APPInstance.user_id)?APPInstance.user_id:@"" forKey:@"uid"];
-//    [dict setObject:KVersion forKey:@"version"];
-
     responseCallback(dict);
-}
-
-// --获取AuthCode
-- (void)airportAuthCode:(id )data callBack:(WVJBResponseCallback)responseCallback {
-    
 }
 
 // 添加toast
 - (void)airportToast:(NSDictionary *)data callBack:(WVJBResponseCallback)responseCallback {
-    
-}
-
-
-// 打开定位权限
-- (void)airportLocationpPermissions:(NSDictionary *)data callBack:(WVJBResponseCallback)responseCallback {
-
-}
-
-- (void)applicationDidBecomeActive:(NSNotification *)notification {
-
-}
-
-// 开启或关闭ios webview Bounces效果
-- (void)airportIosBounces:(NSDictionary *)data callBack:(WVJBResponseCallback)responseCallback {
-    
-}
-
-// 埋点事件统计
-- (void)airportUbtEvent:(NSDictionary *)data callBack:(WVJBResponseCallback)responseCallback {
-
-}
-
-// 埋点进入页面
-- (void)airportUbtPageIn:(NSDictionary *)data callBack:(WVJBResponseCallback)responseCallback {
-
-}
-
-// 埋点离开页面
-- (void)airportUbtPageOut:(NSDictionary *)data callBack:(WVJBResponseCallback)responseCallback {
-
-}
-
-// 获取当前机场信息
-- (void)airportUserAirportInfo:(NSDictionary *)data callBack:(WVJBResponseCallback)responseCallback {
+    NSString *toastMsg = data[@"msg"];
+    [self showStringHUD:toastMsg second:2];
 }
 
 // loading展示和关闭
 - (void)airportLoading:(NSDictionary *)data callBack:(WVJBResponseCallback)responseCallback {
     NSInteger showFlag = [data[@"show"] intValue];
-    if (showFlag == 1) { //开启
+    if (showFlag == 1) { // 开启
         [self showHUD];
         responseCallback(@{@"result":@(true)});
     } else if (showFlag == 2) { // 关闭
