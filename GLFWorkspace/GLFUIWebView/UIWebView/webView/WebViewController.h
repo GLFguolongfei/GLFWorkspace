@@ -10,6 +10,8 @@
 
 @interface WebViewController : BaseViewController
 
+@property(nonatomic, strong) WebViewJavascriptBridge *bridge;
+
 @property (nonatomic, strong) NSString *urlStr;
 
 @end

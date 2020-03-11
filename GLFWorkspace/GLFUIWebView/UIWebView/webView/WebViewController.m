@@ -7,6 +7,7 @@
 //
 
 #import "WebViewController.h"
+#import "WebViewController+RegisterHandler.h"
 
 @interface WebViewController ()<UIWebViewDelegate>
 {
@@ -31,10 +32,28 @@
     _webView.delegate = self;
     [self.view addSubview:_webView];
     
-    NSURL *url = [NSURL URLWithString:self.urlStr];
+    // WKWebview设置其UserAgent
+    NSString *userAgent = [NSString stringWithFormat:@"iskytrip_app signalBarHeight=%d", STATUSBAR_HEIGHT_X];
+    [_webView setValue:userAgent forKey:@"applicationNameForUserAgent"];
+    
+    NSString *sureStr;
+    if ([self.urlStr containsString:@"?"]) {
+        sureStr = [NSString stringWithFormat:@"%@&agent=iskytrip_app&signalBarHeight=%d&nativeLoading=1", self.urlStr, STATUSBAR_HEIGHT_X];
+    } else {
+        sureStr = [NSString stringWithFormat:@"%@?agent=iskytrip_app&signalBarHeight=%d&nativeLoading=1", self.urlStr, STATUSBAR_HEIGHT_X];
+    }
+    NSURL *url = [NSURL URLWithString:sureStr];
     // 加载请求的时候忽略缓存
     NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:3.0];
     [_webView loadRequest:request];
+    
+    // Bridge
+    [WebViewJavascriptBridge enableLogging];
+    
+    self.bridge = [WebViewJavascriptBridge bridgeForWebView:_webView];
+    [self.bridge setWebViewDelegate:self];
+    
+    [self registerHandlers];
 }
 
 - (void)buttonAction1:(id)sender {

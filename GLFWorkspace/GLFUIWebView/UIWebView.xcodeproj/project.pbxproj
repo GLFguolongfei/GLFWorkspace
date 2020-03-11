@@ -21,6 +21,7 @@
 		6F01D88F241893FB00D7DB48 /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F01D887241893FB00D7DB48 /* WebViewJavascriptBridge.m */; };
 		6F01D890241893FB00D7DB48 /* WebViewJavascriptBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F01D88A241893FB00D7DB48 /* WebViewJavascriptBridge_JS.m */; };
 		6F01D8932418BA1600D7DB48 /* ExampleApp.html in Resources */ = {isa = PBXBuildFile; fileRef = 6F01D8922418BA1600D7DB48 /* ExampleApp.html */; };
+		6F01D8962418C60500D7DB48 /* WebViewController+RegisterHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F01D8952418C60500D7DB48 /* WebViewController+RegisterHandler.m */; };
 		6F0A7A0B2417397A00AA9FD1 /* DocumentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0A7A0A2417397A00AA9FD1 /* DocumentManager.m */; };
 		6F0A7A0F2417402400AA9FD1 /* SetupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0A7A0D2417402400AA9FD1 /* SetupViewController.m */; };
 		6F0A7A102417402400AA9FD1 /* SetupViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F0A7A0E2417402400AA9FD1 /* SetupViewController.xib */; };
@@ -102,6 +103,8 @@
 		6F01D88B241893FB00D7DB48 /* WebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge.h; sourceTree = "<group>"; };
 		6F01D88C241893FB00D7DB48 /* WKWebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKWebViewJavascriptBridge.h; sourceTree = "<group>"; };
 		6F01D8922418BA1600D7DB48 /* ExampleApp.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = ExampleApp.html; sourceTree = "<group>"; };
+		6F01D8942418C60500D7DB48 /* WebViewController+RegisterHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WebViewController+RegisterHandler.h"; sourceTree = "<group>"; };
+		6F01D8952418C60500D7DB48 /* WebViewController+RegisterHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WebViewController+RegisterHandler.m"; sourceTree = "<group>"; };
 		6F0A7A092417397A00AA9FD1 /* DocumentManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentManager.h; sourceTree = "<group>"; };
 		6F0A7A0A2417397A00AA9FD1 /* DocumentManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DocumentManager.m; sourceTree = "<group>"; };
 		6F0A7A0C2417402400AA9FD1 /* SetupViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SetupViewController.h; sourceTree = "<group>"; };
@@ -430,6 +433,8 @@
 			children = (
 				6F5282231FA31B32006833DA /* WebViewController.h */,
 				6F5282241FA31B32006833DA /* WebViewController.m */,
+				6F01D8942418C60500D7DB48 /* WebViewController+RegisterHandler.h */,
+				6F01D8952418C60500D7DB48 /* WebViewController+RegisterHandler.m */,
 				6FC1EB6F241635DD008764D5 /* WKWebViewController.h */,
 				6FC1EB70241635DD008764D5 /* WKWebViewController.m */,
 				6F01D8812418929F00D7DB48 /* WKWebViewController+RegisterHandler.h */,
@@ -597,6 +602,7 @@
 				6F0E964E1FA413670029DDD6 /* NSDate+Help.m in Sources */,
 				6F0E96501FA413670029DDD6 /* UIColor+HexString.m in Sources */,
 				6F0E96591FA413670029DDD6 /* MyView.m in Sources */,
+				6F01D8962418C60500D7DB48 /* WebViewController+RegisterHandler.m in Sources */,
 				6F0A7A0B2417397A00AA9FD1 /* DocumentManager.m in Sources */,
 				6F002F271FDA28E300A66BFB /* LewPopupViewAnimationSlide.m in Sources */,
 				6F0E96571FA413670029DDD6 /* PhotoStackView.m in Sources */,
