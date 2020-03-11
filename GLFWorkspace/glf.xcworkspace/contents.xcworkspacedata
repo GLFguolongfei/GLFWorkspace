@@ -8,6 +8,34 @@
       location = "group:GLFTools"
       name = "GLFTools">
       <Group
+         location = "group:WebViewJavascriptBridge"
+         name = "WebViewJavascriptBridge">
+         <FileRef
+            location = "group:WebViewJavascriptBridgeBase.m">
+         </FileRef>
+         <FileRef
+            location = "group:WKWebViewJavascriptBridge.m">
+         </FileRef>
+         <FileRef
+            location = "group:WebViewJavascriptBridge.m">
+         </FileRef>
+         <FileRef
+            location = "group:WebViewJavascriptBridge_JS.h">
+         </FileRef>
+         <FileRef
+            location = "group:WebViewJavascriptBridgeBase.h">
+         </FileRef>
+         <FileRef
+            location = "group:WebViewJavascriptBridge_JS.m">
+         </FileRef>
+         <FileRef
+            location = "group:WebViewJavascriptBridge.h">
+         </FileRef>
+         <FileRef
+            location = "group:WKWebViewJavascriptBridge.h">
+         </FileRef>
+      </Group>
+      <Group
          location = "group:Masonry"
          name = "Masonry">
          <FileRef

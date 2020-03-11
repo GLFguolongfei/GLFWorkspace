@@ -161,6 +161,7 @@ static NSString *kMMScanHistoryKey = @"kMMScanHistoryKey";
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
     //开始捕获
     if (self.session) [self.session startRunning];
 }

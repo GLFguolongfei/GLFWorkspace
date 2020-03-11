@@ -25,6 +25,9 @@
 #import "UIColor+HexString.h"
 #import "NSDate+Help.h"
 #import "DocumentManager.h"
+#import "WebViewJavascriptBridge.h"
+#import "WKWebViewJavascriptBridge.h"
+
 
 #pragma mark 适配
 #define kScreen [[UIScreen mainScreen] bounds]
