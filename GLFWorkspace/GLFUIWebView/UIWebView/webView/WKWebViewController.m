@@ -59,7 +59,7 @@
     
     [WebViewJavascriptBridge enableLogging];
     
-    self.bridge = [WebViewJavascriptBridge bridgeForWebView:_wkWebView];
+    self.bridge = [WKWebViewJavascriptBridge bridgeForWebView:_wkWebView];
     [self.bridge setWebViewDelegate:self];
     
     [self registerHandlers];

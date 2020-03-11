@@ -25,6 +25,8 @@
 #import "UIColor+HexString.h"
 #import "NSDate+Help.h"
 #import "DocumentManager.h"
+// Bridge
+#import "WebViewJavascriptBridgeBase.h"
 #import "WebViewJavascriptBridge.h"
 #import "WKWebViewJavascriptBridge.h"
 
