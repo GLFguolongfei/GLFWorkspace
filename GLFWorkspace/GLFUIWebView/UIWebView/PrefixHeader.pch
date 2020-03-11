@@ -52,5 +52,28 @@
 #define KColorCCC   kSAColorWithStr(@"CCCCCC") // 字体颜色CCCCCC
 
 
+/* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Bridge页面用到 */
+
+#define kWEAKOBJ(name,obj) __weak typeof(obj) name = obj;
+#define kWEAKSELF   kWEAKOBJ(weakSelf,self)
+
+#define uWeakSelf typeof(self) __weak weakSelf = self;
+
+
+// iOS11
+#define Bottom_X_XXX IS_iPhoneX?34.0:0
+#define Bottom_X IS_iPhoneX?34.0:0
+#define STATUSBAR_HEIGHT_X IS_iPhoneX?44:20
+#define NAVIGATION_HEIGHT_X IS_iPhoneX?88.0:64.0
+
+#define TabbarHeight_X IS_iPhoneX?83:49
+#define User_Nologin_bgHeight IS_iPhoneX?24:0
+
+#define IS_iPhoneX ([UIScreen mainScreen].bounds.size.height == 812 || [UIScreen mainScreen].bounds.size.height == 896)
+
+
+#define     MAX_MESSAGE_WIDTH               SCREEN_WIDTH * 0.58
+
+
 
 

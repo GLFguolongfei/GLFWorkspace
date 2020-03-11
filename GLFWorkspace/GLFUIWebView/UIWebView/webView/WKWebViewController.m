@@ -55,6 +55,11 @@
     // 加载请求的时候忽略缓存
 //    request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:3.0];
     [_wkWebView loadRequest:request];
+    
+    [WebViewJavascriptBridge enableLogging];
+    
+    self.bridge = [WebViewJavascriptBridge bridgeForWebView:_wkWebView];
+    [self.bridge setWebViewDelegate:self];
 }
 
 - (void)setUIProgressView {
