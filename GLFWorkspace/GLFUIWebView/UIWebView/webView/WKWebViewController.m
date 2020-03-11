@@ -51,7 +51,17 @@
     _wkWebView.navigationDelegate = self;
     [self.view addSubview:_wkWebView];
     
-    NSURL *url = [NSURL URLWithString:self.urlStr];
+    // WKWebview设置其UserAgent
+    NSString *userAgent = [NSString stringWithFormat:@"iskytrip_app signalBarHeight=%d", STATUSBAR_HEIGHT_X];
+    [_wkWebView setValue:userAgent forKey:@"applicationNameForUserAgent"];
+    
+    NSString *sureStr;
+    if ([self.urlStr containsString:@"?"]) {
+        sureStr = [NSString stringWithFormat:@"%@&agent=iskytrip_app&signalBarHeight=%d&nativeLoading=1", self.urlStr, STATUSBAR_HEIGHT_X];
+    } else {
+        sureStr = [NSString stringWithFormat:@"%@?agent=iskytrip_app&signalBarHeight=%d&nativeLoading=1", self.urlStr, STATUSBAR_HEIGHT_X];
+    }
+    NSURL *url = [NSURL URLWithString:sureStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     // 加载请求的时候忽略缓存
 //    request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:3.0];
