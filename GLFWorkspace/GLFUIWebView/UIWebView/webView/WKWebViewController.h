@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface WKWebViewController : BaseViewController
 
-@property(strong, nonatomic) WKWebViewJavascriptBridge *bridge;
+@property(nonatomic, strong) WKWebViewJavascriptBridge *bridge;
 
 @property (nonatomic, strong) NSString *urlStr;
 

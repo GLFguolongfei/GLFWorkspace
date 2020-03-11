@@ -8,6 +8,7 @@
 
 #import "WKWebViewController.h"
 #import <WebKit/WebKit.h>
+#import "WKWebViewController+RegisterHandler.h"
 
 @interface WKWebViewController ()<WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>
 {
@@ -60,6 +61,8 @@
     
     self.bridge = [WebViewJavascriptBridge bridgeForWebView:_wkWebView];
     [self.bridge setWebViewDelegate:self];
+    
+    [self registerHandlers];
 }
 
 - (void)setUIProgressView {
