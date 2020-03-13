@@ -679,7 +679,7 @@
 - (void)moveAction {
     FileModel *model = myDataArray[editIndexPath.row];
     if ([CHiddenPaths containsObject:model.name]) {
-        [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:2];
+        [self showStringHUD:@"文件夹【郭龙飞】不可以移动" second:2];
         [self viewEditing:YES];
         return;
     }

@@ -190,6 +190,9 @@ HMSingletonM(DocumentManager)
     NSString *documentPath = [paths objectAtIndex:0];
     // 遍历
     @synchronized(self) { // ------ 加互斥锁
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSString *hidden = [userDefaults objectForKey:kContentHidden];
+        
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_async(queue, ^{
             NSArray *array = [GLFFileManager searchSubFile:documentPath andIsDepth:YES];
@@ -198,7 +201,11 @@ HMSingletonM(DocumentManager)
                 NSString *path = [NSString stringWithFormat:@"%@/%@", documentPath, array[i]];
                 NSInteger fileType = [GLFFileManager fileExistsAtPath:path];
                 if (fileType == 2) { // 只显示文件夹
-                    [documentPathArray addObject:array[i]];
+                    if ([hidden isEqualToString:@"0"] && [CHiddenPaths containsObject:array[i]]) {
+                        continue;
+                    } else {
+                        [documentPathArray addObject:array[i]];
+                    }
                 }
             }
             [[NSUserDefaults standardUserDefaults] setObject:documentPathArray forKey:DocumentPathArray];

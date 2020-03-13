@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "FileModel.h"
 
+static NSString *DocumentPathArray = @"DocumentPathArray";
+static NSString *DocumentPathArrayUpdate = @"DocumentPathArrayUpdate";
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DocumentManager : NSObject

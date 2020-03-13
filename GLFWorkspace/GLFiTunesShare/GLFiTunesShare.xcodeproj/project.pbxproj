@@ -873,8 +873,6 @@
 				6F4C2C0224004C9A0094D193 /* AFNetworking */,
 				6F22EB8A23FBF66000A30691 /* MMScanner */,
 				6F06F9E523F05721006E5C97 /* MD5 */,
-				6F1C540123C8F523000122FB /* UncaughtExceptionHandler.h */,
-				6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */,
 				6F0E95FB1FA4135B0029DDD6 /* MBProgressHUD */,
 				6F0E96011FA4135B0029DDD6 /* PhotoStackView */,
 				6F0E96051FA4135B0029DDD6 /* Singleton */,
@@ -885,6 +883,8 @@
 				6F0E95F61FA4135B0029DDD6 /* FileManager */,
 				6F0E95F91FA4135B0029DDD6 /* GLFTools.h */,
 				6F0E95FA1FA4135B0029DDD6 /* GLFTools.m */,
+				6F1C540123C8F523000122FB /* UncaughtExceptionHandler.h */,
+				6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */,
 			);
 			name = GLFTools;
 			path = ../../GLFTools;

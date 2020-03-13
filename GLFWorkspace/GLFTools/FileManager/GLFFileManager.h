@@ -9,9 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "HMSingleton.h"
 
-static NSString *DocumentPathArray = @"DocumentPathArray";
-static NSString *DocumentPathArrayUpdate = @"DocumentPathArrayUpdate";
-
 @interface GLFFileManager : NSObject
 
 HMSingletonH(FileManager)
