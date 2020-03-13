@@ -96,7 +96,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     bgImageView.image = backImage;
     
     // 导航栏bg
-    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake((kScreenWidth - 150) / 2, -20, 150, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
     [self.navigationController.navigationBar addSubview:gestureView];
     
