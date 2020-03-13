@@ -158,9 +158,7 @@
     searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64, kScreenWidth, 60)];
     searchBar.delegate = self;
     searchBar.placeholder = @"要搜啥, 就搜啥";
-    searchBar.barStyle = UIBarStyleDefault;
-    searchBar.searchBarStyle = UISearchBarStyleDefault;
-    searchBar.backgroundColor = [UIColor clearColor];
+    searchBar.backgroundImage = [UIImage imageWithColor:[UIColor clearColor]];
     self.navigationItem.titleView = searchBar;
     
     // 数据列表

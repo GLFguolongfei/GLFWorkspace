@@ -32,6 +32,7 @@
 #import "UIColor+HexString.h"
 #import "NSDate+Help.h"
 #import "NSString+Hash.h"
+#import "UIColor+Category.h"
 
 
 
