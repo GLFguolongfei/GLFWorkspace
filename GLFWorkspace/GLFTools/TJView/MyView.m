@@ -32,7 +32,7 @@
         _biggerR = frame.size.height/2;
         _smallR = _biggerR/6;
         
-        myTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/60.0 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
+        myTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/120.0 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:myTimer forMode:NSRunLoopCommonModes];
     }
     return self;
@@ -43,8 +43,8 @@
 }
 
 - (void)timerAction {
-    if (self.addAngle < 1) {
-        _angle += 1;
+    if (self.addAngle < 0.5) {
+        _angle += 0.5;
     } else {
         _angle += self.addAngle;
     }
@@ -70,6 +70,14 @@
 
     CGContextAddEllipseInRect(ctf, CGRectMake(_biggerR+(_biggerR-1)*cos(degreeToRadians(_angle))/2 - _smallR, _biggerR - (_biggerR-1)*sin(degreeToRadians(_angle))/2 - _smallR, _smallR * 2, _smallR * 2));
   
+    // 阴影的 不透明度
+    self.layer.shadowOpacity = 1;
+    // 阴影化开的程度（就像墨水滴在宣纸上化开那样）
+    self.layer.shadowRadius = 8;
+    // 阴影的偏移量
+    self.layer.shadowOffset = CGSizeMake(3, 3);
+    // 阴影的颜色
+    self.layer.shadowColor = [[UIColor whiteColor] CGColor];
     
 //    CGContextStrokePath(ctf); // 只画轮廓
     CGContextFillPath(ctf);     // 只填充颜色(只填充从上一个画图方法CGContextStrokePath之后的闭合线段代码)

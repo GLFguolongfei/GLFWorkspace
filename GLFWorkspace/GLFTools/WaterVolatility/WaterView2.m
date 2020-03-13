@@ -59,7 +59,7 @@
         // 水的高度可以设置
         _currentLinePointY = kScreenHeight-150;
         
-        myTimer = [NSTimer scheduledTimerWithTimeInterval:0.05 target:self selector:@selector(animateWave) userInfo:nil repeats:YES];
+        myTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/30.0 target:self selector:@selector(animateWave) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:myTimer forMode:NSRunLoopCommonModes];
     }
     return self;
@@ -71,9 +71,9 @@
 
 - (void)animateWave {
     if (jia) {
-        a += 0.01;
+        a += 0.005;
     } else {
-        a -= 0.01;
+        a -= 0.005;
     }
     if (a<=1) {
         jia = YES;
@@ -81,8 +81,8 @@
     if (a>=1.5) {
         jia = NO;
     }
-    if (self.addPointX < 0.1) {
-        b += 0.1;
+    if (self.addPointX < 0.05) {
+        b += 0.05;
     } else {
         b += self.addPointX;
     }
@@ -90,9 +90,7 @@
 }
 
 - (void)drawRect:(CGRect)rect {
-    
     CGContextRef context = UIGraphicsGetCurrentContext();
-    
     [self testOne:context andRect:rect];
     [self testTwo:context andRect:rect];
 }
