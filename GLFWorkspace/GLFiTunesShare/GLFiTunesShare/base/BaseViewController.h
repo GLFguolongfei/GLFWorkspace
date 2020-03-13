@@ -26,8 +26,9 @@
 #pragma mark 是否可以记录
 - (void)canRecord:(BOOL)isYes;
 #pragma mark 雪花飞舞
-- (void)setupEmitter;
+- (void)setupEmitter1;
 - (void)setupEmitter2;
+- (void)removeEmitter;
 
 
 @end

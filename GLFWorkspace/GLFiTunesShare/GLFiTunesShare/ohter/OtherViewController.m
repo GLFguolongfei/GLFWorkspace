@@ -59,13 +59,18 @@
         [self.view addSubview:button];
     }
     
-    [self setupEmitter];
+    [self setupEmitter2];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.toolbar.hidden = YES;
     self.navigationController.navigationBar.hidden = NO;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self removeEmitter];
 }
 
 - (void)button {
