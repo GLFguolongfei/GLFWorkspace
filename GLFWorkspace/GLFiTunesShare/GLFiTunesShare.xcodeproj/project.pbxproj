@@ -989,22 +989,6 @@
 				6F58F45920BDB0FC003E0911 /* SubViewController2.m */,
 				6FE944E320BE4F0A005A46AD /* SubViewController3.h */,
 				6FE944E420BE4F0A005A46AD /* SubViewController3.m */,
-				6F96B69F23E35257006A2D00 /* AllImageViewController.h */,
-				6F96B6A023E35257006A2D00 /* AllImageViewController.m */,
-				6F5D7C6B23E47FE2005954F0 /* AllVideoViewController.h */,
-				6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */,
-				6F19EE0523F3143300C438DE /* SearchViewController.h */,
-				6F19EE0623F3143300C438DE /* SearchViewController.m */,
-				6F22EB3923FBEB7C00A30691 /* DYViewController.h */,
-				6F22EB3A23FBEB7C00A30691 /* DYViewController.m */,
-				6F22EB3D23FBEBBB00A30691 /* DYFavoriteViewController.h */,
-				6F22EB3E23FBEBBB00A30691 /* DYFavoriteViewController.m */,
-				6F22EB4123FBEBDE00A30691 /* DYSubViewController.h */,
-				6F22EB4223FBEBDE00A30691 /* DYSubViewController.m */,
-				6F22EB4523FBEBFC00A30691 /* DYFavoriteSubViewController.h */,
-				6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */,
-				6F90B04624123CB000D7B447 /* WKWebViewController.h */,
-				6F90B04724123CB000D7B447 /* WKWebViewController.m */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -1037,17 +1021,10 @@
 			children = (
 				6F1EEAFB1FB1A4060046389D /* BaseViewController.h */,
 				6F1EEAFC1FB1A4060046389D /* BaseViewController.m */,
-			);
-			path = base;
-			sourceTree = "<group>";
-		};
-		6F1EEAFD1FB1A4060046389D /* login */ = {
-			isa = PBXGroup;
-			children = (
 				6F1EEAFE1FB1A4060046389D /* LoginViewController.h */,
 				6F1EEAFF1FB1A4060046389D /* LoginViewController.m */,
 			);
-			path = login;
+			path = base;
 			sourceTree = "<group>";
 		};
 		6F1EEB141FB1A86A0046389D /* Setup */ = {
@@ -1278,10 +1255,10 @@
 				6F6C6F0E23F7F88A00D7AFAC /* DocumentManager.h */,
 				6F6C6F0F23F7F88A00D7AFAC /* DocumentManager.m */,
 				6F1EEAD71FB1A4060046389D /* Root */,
+				6F9388B4241BE9640024DBB9 /* SVC */,
 				6F1EEB141FB1A86A0046389D /* Setup */,
 				6FE944E720BE58D3005A46AD /* Edit */,
 				6F1EEAFA1FB1A4060046389D /* base */,
-				6F1EEAFD1FB1A4060046389D /* login */,
 				6FBA0FA223E80BA500899522 /* ohter */,
 				6F8072B61F7E436E007D7B26 /* Main.storyboard */,
 				6F8072BB1F7E436E007D7B26 /* LaunchScreen.storyboard */,
@@ -1334,6 +1311,29 @@
 				6F9116DC1F7EB445002C40AC /* MediaPlayer.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6F9388B4241BE9640024DBB9 /* SVC */ = {
+			isa = PBXGroup;
+			children = (
+				6F96B69F23E35257006A2D00 /* AllImageViewController.h */,
+				6F96B6A023E35257006A2D00 /* AllImageViewController.m */,
+				6F5D7C6B23E47FE2005954F0 /* AllVideoViewController.h */,
+				6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */,
+				6F19EE0523F3143300C438DE /* SearchViewController.h */,
+				6F19EE0623F3143300C438DE /* SearchViewController.m */,
+				6F22EB3923FBEB7C00A30691 /* DYViewController.h */,
+				6F22EB3A23FBEB7C00A30691 /* DYViewController.m */,
+				6F22EB3D23FBEBBB00A30691 /* DYFavoriteViewController.h */,
+				6F22EB3E23FBEBBB00A30691 /* DYFavoriteViewController.m */,
+				6F22EB4123FBEBDE00A30691 /* DYSubViewController.h */,
+				6F22EB4223FBEBDE00A30691 /* DYSubViewController.m */,
+				6F22EB4523FBEBFC00A30691 /* DYFavoriteSubViewController.h */,
+				6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */,
+				6F90B04624123CB000D7B447 /* WKWebViewController.h */,
+				6F90B04724123CB000D7B447 /* WKWebViewController.m */,
+			);
+			path = SVC;
 			sourceTree = "<group>";
 		};
 		6F969B762412A84200BFD659 /* ProjectResource */ = {
