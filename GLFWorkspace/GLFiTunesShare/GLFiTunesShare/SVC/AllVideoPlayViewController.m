@@ -1,43 +1,37 @@
 //
-//  AllVideoViewController.m
+//  AllVideoPlayViewController.m
 //  GLFiTunesShare
 //
-//  Created by guolongfei on 2020/1/31.
+//  Created by guolongfei on 2020/3/14.
 //  Copyright © 2020 GuoLongfei. All rights reserved.
 //
 
-#import "AllVideoViewController.h"
+#import "AllVideoPlayViewController.h"
 #import "DetailViewController3.h"
 #import "FileInfoViewController.h"
-#import "VideoTableViewCell.h"
-#import "AllVideoPlayViewController.h"
+#import "PlayVideoTableViewCell.h"
 
-static NSString *cellID = @"VideoTableViewCell";
+static NSString *cellID = @"PlayVideoTableViewCell";
 
-@interface AllVideoViewController ()<UITableViewDataSource, UITableViewDelegate, UIDocumentInteractionControllerDelegate, UIViewControllerPreviewingDelegate>
+@interface AllVideoPlayViewController ()<UITableViewDataSource, UITableViewDelegate, UIDocumentInteractionControllerDelegate, UIViewControllerPreviewingDelegate>
 {
     UITableView *_tableView;
     NSMutableArray *_dataArray;
     
     UIView *gestureView;
     BOOL isSuccess;
-    BOOL isShowImage;
     
     DocumentManager *manager;
-    NSTimer *timer; // 定时器
 }
 @end
 
-@implementation AllVideoViewController
+@implementation AllVideoPlayViewController
 
 
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"图文" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
-    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"文字" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
-    self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.title = @"所有视频";
         
     manager = [DocumentManager sharedDocumentManager];
@@ -45,10 +39,6 @@ static NSString *cellID = @"VideoTableViewCell";
         _dataArray = manager.allVideosArray;
         self.title = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
         [self prepareView];
-    }  else {
-        [self showHUD];
-        timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }
 }
 
@@ -82,17 +72,6 @@ static NSString *cellID = @"VideoTableViewCell";
     [gestureView removeFromSuperview];
 }
 
-- (void)prepareData {
-    if (manager.allVideosArray.count > 0) {
-        [self hideAllHUD];
-        [timer invalidate];
-        timer = nil;
-        _dataArray = manager.allVideosArray;
-        self.title = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
-        [self prepareView];
-    }
-}
-
 - (void)prepareView {
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight-64) style:UITableViewStylePlain];
     _tableView.delegate = self;
@@ -100,7 +79,7 @@ static NSString *cellID = @"VideoTableViewCell";
     [self.view addSubview:_tableView];
     _tableView.tableFooterView = [UIView new];
     
-    [_tableView registerNib:[UINib nibWithNibName:@"VideoTableViewCell" bundle:nil] forCellReuseIdentifier:cellID];
+    [_tableView registerClass:[PlayVideoTableViewCell class] forCellReuseIdentifier:cellID];
 }
 
 - (void)setState {
@@ -111,7 +90,7 @@ static NSString *cellID = @"VideoTableViewCell";
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         isSuccess = !isSuccess;
         if (isSuccess) {
             [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
@@ -120,89 +99,14 @@ static NSString *cellID = @"VideoTableViewCell";
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
     }];
-    [alertVC addAction:okAction1];
-    
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"实时视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        if (manager.allVideosArray.count > 0) {
-            AllVideoPlayViewController *vc = [[AllVideoPlayViewController alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else {
-            [self showStringHUD:@"等待遍历完成" second:2];
-        }
-    }];
-    [alertVC addAction:okAction2];
+    [alertVC addAction:okAction];
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
-- (void)buttonAction1 {
-    [self showHUD];
-    
-    isShowImage = YES;
-    __block NSInteger count = 0;
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        NSArray *array = [_tableView indexPathsForVisibleRows];
-        NSInteger first = 0;
-        if (array.count > 0) {
-            NSIndexPath *indexPath = array.firstObject;
-            first = indexPath.row;
-        }
-        for (NSInteger i = first; i < _dataArray.count; i++) {
-            if (count >= 15) {
-                break;
-            }
-            FileModel *model = _dataArray[i];
-            if (model.image == nil) {
-                count++;
-                #if FirstTarget
-                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-                #else
-                    model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
-                #endif
-                [_dataArray replaceObjectAtIndex:i withObject:model];
-            }
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideAllHUD];
-            [_tableView reloadData];
-        });
-    });
-}
-
-- (void)buttonAction2 {
-    isShowImage = NO;
-    [_tableView reloadData];
-}
-
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    FileModel *model = _dataArray[indexPath.row];
-    NSArray *array = [model.name componentsSeparatedByString:@"/"];
-    NSString *name = [array lastObject];
-    if (isShowImage && model.image != nil && model.image.size.width > 0) {
-        CGFloat width = 100 * model.image.size.width / model.image.size.height;
-        if (width > kScreenWidth / 2) {
-            width = kScreenWidth / 2;
-        }
-        NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
-        CGRect rect = [name boundingRectWithSize:CGSizeMake(kScreenWidth - 30 - width, MAXFLOAT)
-                                        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                     attributes:attrbute
-                                        context:nil];
-        if (rect.size.height + 20 > 100) {
-            return rect.size.height + 20;
-        } else {
-            return 100;
-        }
-    } else {
-        NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
-        CGRect rect = [name boundingRectWithSize:CGSizeMake(kScreenWidth - 30, MAXFLOAT)
-                                        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                     attributes:attrbute
-                                        context:nil];
-        return rect.size.height + 30;
-    }
+    return 100;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -210,25 +114,20 @@ static NSString *cellID = @"VideoTableViewCell";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    VideoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
+    
+    PlayVideoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
+//    PlayVideoTableViewCell *cell = [[PlayVideoTableViewCell alloc] init];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     FileModel *model = _dataArray[indexPath.row];
-    NSArray *array = [model.name componentsSeparatedByString:@"/"];
-    cell.vTextLabel.text = array.lastObject;
-    cell.vTextLabel.numberOfLines = 0;
+    cell.model = model;
     
-    if (isShowImage && model.image != nil && model.image.size.width > 0) {
-        cell.vImageView.image = model.image;
-        CGFloat width = 100 * model.image.size.width / model.image.size.height;
-        if (width > kScreenWidth / 2) {
-            width = kScreenWidth / 2;
-        }
-        cell.imageViewWidthConstraint.constant = width;
-    } else {
-        cell.vImageView.image = nil;
-        cell.imageViewWidthConstraint.constant = 0;
-    }
+    
+//    FileModel *model = _dataArray[indexPath.row];
+//    NSArray *array = [model.name componentsSeparatedByString:@"/"];
+//    cell.vTextLabel.text = array.lastObject;
+//    cell.vTextLabel.numberOfLines = 0;
+    
     
 
     // 3D Touch 可用!
@@ -308,6 +207,44 @@ static NSString *cellID = @"VideoTableViewCell";
         }
     }
     return index;
+}
+
+#pragma mark UIScrollViewDelegate
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    // 停止类型1、停止类型2
+    BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
+    if (scrollToScrollStop) {
+        [self scrollViewDidEndScroll];
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        // 停止类型3
+        BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
+        if (dragToDragStop) {
+            [self scrollViewDidEndScroll];
+        }
+    }
+}
+
+- (void)scrollViewDidEndScroll {
+    NSLog(@"停止滚动了！！！");
+    NSArray *array = [_tableView indexPathsForVisibleRows];
+//    for (NSInteger i = 0; i < array.count; i++) {
+//        NSIndexPath *indexPath = array[i];
+//        PlayVideoTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+//        [cell playOrPauseVideo:YES];
+//    }
+    for (NSInteger i = 0; i < _dataArray.count; i++) {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+        PlayVideoTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
+        if ([array containsObject:indexPath]) {
+            [cell playOrPauseVideo:YES];
+        } else {
+            [cell playOrPauseVideo:NO];
+        }
+    }
 }
 
 

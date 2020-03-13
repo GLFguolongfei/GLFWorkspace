@@ -22,8 +22,6 @@
     NSMutableArray *favoriteArray;
     DocumentManager *manager;
     UIButton *favoriteButton;
-    
-    NSTimer *timer; // 定时器
 }
 @end
 
@@ -62,10 +60,6 @@
         [self prepareView];
         NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
         [self showStringHUD:str second:2];
-    } else {
-        [self showHUD];
-        timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }
 }
 
@@ -79,26 +73,6 @@
 // 更改状态栏
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
-}
-
-- (void)prepareData {
-    if (manager.allDYVideosArray.count > 0) {
-        [self hideAllHUD];
-        [timer invalidate];
-        timer = nil;
-        _dataArray = [[NSMutableArray alloc] init];
-        for (NSInteger i = 0; i < manager.allDYVideosArray.count; i++) {
-            FileModel *model = manager.allDYVideosArray[i];
-            if ([favoriteArray containsObject: model.name]) {
-                [_dataArray addObject:model];
-            }
-        }
-        selectIndex = arc4random() % _dataArray.count;
-        currentModel = _dataArray[selectIndex];
-        [self prepareView];
-        NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
-        [self showStringHUD:str second:2];
-    }
 }
 
 - (void)prepareView {

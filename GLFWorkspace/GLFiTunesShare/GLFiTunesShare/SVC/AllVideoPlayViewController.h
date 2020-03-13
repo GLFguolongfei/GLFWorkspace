@@ -1,5 +1,5 @@
 //
-//  PlayVideoTableViewCell.h
+//  AllVideoPlayViewController.h
 //  GLFiTunesShare
 //
 //  Created by guolongfei on 2020/3/14.
@@ -10,11 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface PlayVideoTableViewCell : UITableViewCell
-
-@property (nonatomic, assign) FileModel *model;
-
-- (void)playOrPauseVideo: (BOOL)isPlay;
+@interface AllVideoPlayViewController : BaseViewController
 
 @end
 
