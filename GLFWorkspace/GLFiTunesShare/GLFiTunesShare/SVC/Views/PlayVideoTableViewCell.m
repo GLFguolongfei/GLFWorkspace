@@ -53,12 +53,12 @@
     // 4-添加AVPlayerLayer
     playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
     CGSize size = [GLFTools videoSizeWithPath:self.model.path];
-    CGFloat width = 100.0 * size.width / size.height;
-    playerLayer.frame = CGRectMake(10, 0, width, 100);
+    CGFloat width = self.bounds.size.height * size.width / size.height;
+    playerLayer.frame = CGRectMake(10, 0, width, self.bounds.size.height);
     playerLayer.backgroundColor = KColorCCC.CGColor;
     [self.contentView.layer addSublayer:playerLayer];
 
-    CGRect rect = CGRectMake(width + 20, 0, kScreenWidth - 30 - width, 100);
+    CGRect rect = CGRectMake(width + 20, 0, kScreenWidth - 30 - width, self.bounds.size.height);
     label = [[UILabel alloc] initWithFrame:rect];
     label.numberOfLines = 0;
     label.text = self.model.name;

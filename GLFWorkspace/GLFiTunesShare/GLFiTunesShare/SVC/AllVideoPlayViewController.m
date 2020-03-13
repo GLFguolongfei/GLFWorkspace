@@ -21,6 +21,10 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     UIView *gestureView;
     BOOL isSuccess;
     
+    UIBarButtonItem *item1;
+    UIBarButtonItem *item2;
+    CGFloat cellHeight;
+    
     DocumentManager *manager;
 }
 @end
@@ -32,7 +36,12 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    item1 = [[UIBarButtonItem alloc] initWithTitle:@"减小" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
+    item2 = [[UIBarButtonItem alloc] initWithTitle:@"增大" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
+    self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.title = @"所有视频";
+    
+    cellHeight = 100;
         
     manager = [DocumentManager sharedDocumentManager];
     if (manager.allVideosArray.count > 0) {
@@ -104,9 +113,33 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
+- (void)buttonAction1 {
+    cellHeight -= 20;
+    if (cellHeight <= 60) {
+        item1.enabled = NO;
+        item2.enabled = YES;
+    } else {
+        item1.enabled = YES;
+        item2.enabled = YES;
+    }
+    [_tableView reloadData];
+}
+
+- (void)buttonAction2 {
+    cellHeight += 20;
+    if (cellHeight >= 140) {
+        item1.enabled = YES;
+        item2.enabled = NO;
+    } else {
+        item1.enabled = YES;
+        item2.enabled = YES;
+    }
+    [_tableView reloadData];
+}
+
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 100;
+    return cellHeight;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
