@@ -300,6 +300,8 @@
 		6F91B4591F81615B00A9C616 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8072BB1F7E436E007D7B26 /* LaunchScreen.storyboard */; };
 		6F91B45A1F81615B00A9C616 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6F8072B91F7E436E007D7B26 /* Assets.xcassets */; };
 		6F91B45B1F81615B00A9C616 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8072B61F7E436E007D7B26 /* Main.storyboard */; };
+		6F9388B8241BF5130024DBB9 /* PlayVideoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9388B6241BF5130024DBB9 /* PlayVideoTableViewCell.m */; };
+		6F9388B9241BF5130024DBB9 /* PlayVideoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F9388B6241BF5130024DBB9 /* PlayVideoTableViewCell.m */; };
 		6F969B782412A87100BFD659 /* 陈一发儿-童话镇.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6F969B772412A87100BFD659 /* 陈一发儿-童话镇.mp3 */; };
 		6F969B792412A87100BFD659 /* 陈一发儿-童话镇.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6F969B772412A87100BFD659 /* 陈一发儿-童话镇.mp3 */; };
 		6F969B7E2412B7AE00BFD659 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F9116DC1F7EB445002C40AC /* MediaPlayer.framework */; };
@@ -638,6 +640,8 @@
 		6F90B04B24123D8C00D7B447 /* bd.webarchive */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = bd.webarchive; sourceTree = "<group>"; };
 		6F9116DC1F7EB445002C40AC /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = System/Library/Frameworks/MediaPlayer.framework; sourceTree = SDKROOT; };
 		6F91B45F1F81615B00A9C616 /* GLFiTunesShare copy.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "GLFiTunesShare copy.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F9388B5241BF5130024DBB9 /* PlayVideoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PlayVideoTableViewCell.h; sourceTree = "<group>"; };
+		6F9388B6241BF5130024DBB9 /* PlayVideoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PlayVideoTableViewCell.m; sourceTree = "<group>"; };
 		6F969B772412A87100BFD659 /* 陈一发儿-童话镇.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "陈一发儿-童话镇.mp3"; sourceTree = "<group>"; };
 		6F969B7F2412BB6300BFD659 /* 柯陈军-亡灵序曲.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "柯陈军-亡灵序曲.mp3"; sourceTree = "<group>"; };
 		6F969B822412BB7000BFD659 /* 麦振鸿-天下第一.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = "麦振鸿-天下第一.mp3"; sourceTree = "<group>"; };
@@ -974,7 +978,6 @@
 		6F1EEAD71FB1A4060046389D /* Root */ = {
 			isa = PBXGroup;
 			children = (
-				6F96B6A323E4267A006A2D00 /* Views */,
 				6F1EEAE91FB1A4060046389D /* RootViewController.h */,
 				6F1EEAEA1FB1A4060046389D /* RootViewController.m */,
 				6F1EEAD81FB1A4060046389D /* DetailViewController.h */,
@@ -1316,6 +1319,7 @@
 		6F9388B4241BE9640024DBB9 /* SVC */ = {
 			isa = PBXGroup;
 			children = (
+				6F96B6A323E4267A006A2D00 /* Views */,
 				6F96B69F23E35257006A2D00 /* AllImageViewController.h */,
 				6F96B6A023E35257006A2D00 /* AllImageViewController.m */,
 				6F5D7C6B23E47FE2005954F0 /* AllVideoViewController.h */,
@@ -1355,6 +1359,8 @@
 				6F14401223F28A5E00C7C201 /* VideoTableViewCell.h */,
 				6F14401323F28A5E00C7C201 /* VideoTableViewCell.m */,
 				6F14401423F28A5E00C7C201 /* VideoTableViewCell.xib */,
+				6F9388B5241BF5130024DBB9 /* PlayVideoTableViewCell.h */,
+				6F9388B6241BF5130024DBB9 /* PlayVideoTableViewCell.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -1714,6 +1720,7 @@
 				6F4C2BEC24004C0D0094D193 /* QQL_NetworkSpeedViewController.m in Sources */,
 				6F8072B21F7E436E007D7B26 /* AppDelegate.m in Sources */,
 				6F01E07C2401737500F64623 /* SixViewController.m in Sources */,
+				6F9388B8241BF5130024DBB9 /* PlayVideoTableViewCell.m in Sources */,
 				6F0E960F1FA4135B0029DDD6 /* NSDate+Help.m in Sources */,
 				6F01E0022401720D00F64623 /* MASViewAttribute.m in Sources */,
 				6F0E96151FA4135B0029DDD6 /* UIView+Helper.m in Sources */,
@@ -1869,6 +1876,7 @@
 				6F4C2BED24004C0D0094D193 /* QQL_NetworkSpeedViewController.m in Sources */,
 				6F91B4521F81615B00A9C616 /* main.m in Sources */,
 				6F01E07D2401737500F64623 /* SixViewController.m in Sources */,
+				6F9388B9241BF5130024DBB9 /* PlayVideoTableViewCell.m in Sources */,
 				6F1EEB251FB1ADA40046389D /* Cell.m in Sources */,
 				6F01E0032401720D00F64623 /* MASViewAttribute.m in Sources */,
 				6F91B4531F81615B00A9C616 /* AppDelegate.m in Sources */,

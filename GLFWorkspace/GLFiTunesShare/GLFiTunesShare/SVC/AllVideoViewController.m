@@ -11,7 +11,7 @@
 #import "FileInfoViewController.h"
 #import "VideoTableViewCell.h"
 
-static NSString *cellID = @"ShowTableViewCell";
+static NSString *cellID = @"VideoTableViewCell";
 
 @interface AllVideoViewController ()<UITableViewDataSource, UITableViewDelegate, UIDocumentInteractionControllerDelegate, UIViewControllerPreviewingDelegate>
 {
