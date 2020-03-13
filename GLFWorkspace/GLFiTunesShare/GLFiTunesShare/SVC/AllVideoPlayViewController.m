@@ -113,22 +113,12 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     return _dataArray.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {    
     PlayVideoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
-//    PlayVideoTableViewCell *cell = [[PlayVideoTableViewCell alloc] init];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
 
     FileModel *model = _dataArray[indexPath.row];
     cell.model = model;
-    
-    
-//    FileModel *model = _dataArray[indexPath.row];
-//    NSArray *array = [model.name componentsSeparatedByString:@"/"];
-//    cell.vTextLabel.text = array.lastObject;
-//    cell.vTextLabel.numberOfLines = 0;
-    
-    
 
     // 3D Touch 可用!
     if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
@@ -231,11 +221,6 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 - (void)scrollViewDidEndScroll {
     NSLog(@"停止滚动了！！！");
     NSArray *array = [_tableView indexPathsForVisibleRows];
-//    for (NSInteger i = 0; i < array.count; i++) {
-//        NSIndexPath *indexPath = array[i];
-//        PlayVideoTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
-//        [cell playOrPauseVideo:YES];
-//    }
     for (NSInteger i = 0; i < _dataArray.count; i++) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
         PlayVideoTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];

@@ -14,6 +14,8 @@
     AVPlayer *player;
     AVPlayerItem *playerItem;
     AVPlayerLayer *playerLayer;
+    
+    UILabel *label;
 }
 @end
 
@@ -25,16 +27,11 @@
     [super awakeFromNib];
     self.contentView.backgroundColor = [UIColor blackColor];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];            
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
-}
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark Setup
@@ -46,19 +43,37 @@
     // 3-创建AVPlayer
     player = [AVPlayer playerWithPlayerItem:playerItem];
     player.volume = 0.0; // 控制音量
+    CMTime dragedCMTime = CMTimeMake(0, 1);
+    #if FirstTarget
+        dragedCMTime = CMTimeMake(9, 1);
+    #else
+        dragedCMTime = CMTimeMake(90, 1);
+    #endif
+    [player seekToTime:dragedCMTime];
     // 4-添加AVPlayerLayer
     playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
-    
     CGSize size = [GLFTools videoSizeWithPath:self.model.path];
     CGFloat width = 100.0 * size.width / size.height;
     playerLayer.frame = CGRectMake(10, 0, width, 100);
+    playerLayer.backgroundColor = KColorCCC.CGColor;
     [self.contentView.layer addSublayer:playerLayer];
+
+    CGRect rect = CGRectMake(width + 20, 0, kScreenWidth - 30 - width, 100);
+    label = [[UILabel alloc] initWithFrame:rect];
+    label.numberOfLines = 0;
+    label.text = self.model.name;
+    label.textColor = kSAColorWithStr(@"555555");
+    [self.contentView addSubview:label];
+    
+    NSArray *array = [self.model.name componentsSeparatedByString:@"/"];
+    label.text = array.lastObject;
 }
 
 - (void)setModel:(FileModel *)model {
     _model = model;
     if (playerLayer) {
         [playerLayer removeFromSuperlayer];
+        [label removeFromSuperview];
     }
     [self setupAVPlayer];
 }
@@ -71,12 +86,6 @@
     } else {
         [player pause];
     }
-}
-
-// 播放完成
-- (void)playeEnd:(NSNotification *)notification {
-    CMTime dragedCMTime = CMTimeMake(0, 1);
-    [player seekToTime:dragedCMTime];
 }
 
 
