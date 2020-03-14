@@ -124,6 +124,9 @@
 
 - (void)prepareData {
     [self hideAllHUD];
+    isPlaying = NO;
+    [currentVC playOrPauseVideo:isPlaying];
+    [self setButtonState];
     if (isOtherVideos) {
         _dataArray = manager.allNoDYVideosArray;
     } else if (manager.allDYVideosArray.count > 0) {
