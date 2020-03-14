@@ -127,7 +127,7 @@ static NSString *cellID = @"VideoTableViewCell";
             AllVideoPlayViewController *vc = [[AllVideoPlayViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
         } else {
-            [self showStringHUD:@"等待遍历完成" second:2];
+            [self showStringHUD:@"等待遍历完成" second:1.5];
         }
     }];
     [alertVC addAction:okAction2];
@@ -251,7 +251,7 @@ static NSString *cellID = @"VideoTableViewCell";
         // 显示预览
         BOOL canOpen = [documentController presentPreviewAnimated:YES];
         if (!canOpen) {
-            [self showStringHUD:@"沒有程序可以打开要分享的文件" second:2];
+            [self showStringHUD:@"沒有程序可以打开要分享的文件" second:1.5];
         }
     } else {
         // 进入详情页面

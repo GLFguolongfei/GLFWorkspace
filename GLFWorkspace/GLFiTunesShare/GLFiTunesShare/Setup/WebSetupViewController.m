@@ -189,7 +189,7 @@
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kRecord];
-        [self showStringHUD:@"慎重打开, 很浪费空间的！！！" second:2];
+        [self showStringHUD:@"慎重打开, 很浪费空间的！！！" second:1.5];
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kRecord];
     }

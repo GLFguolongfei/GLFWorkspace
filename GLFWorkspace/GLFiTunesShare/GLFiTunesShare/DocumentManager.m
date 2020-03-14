@@ -44,7 +44,7 @@ HMSingletonM(DocumentManager)
         NSMutableArray *allImagesArray = [[NSMutableArray alloc] init];
         NSMutableArray *allVideosArray = [[NSMutableArray alloc] init];
         NSMutableArray *allDYVideosArray = [[NSMutableArray alloc] init];
-        NSMutableArray *allFavoriteDYVideoArray = [[NSMutableArray alloc] init];
+        NSMutableArray *allNoDYVideosArray = [[NSMutableArray alloc] init];
         NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
         for (int i = 0; i < array.count; i++) {
             // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
@@ -83,7 +83,9 @@ HMSingletonM(DocumentManager)
                         [allDYVideosArray addObject:model];
                     } else if ([model.name isEqualToString:@"抖音"]) {
                         [allDYVideosArray addObject:model];
-                    } 
+                    } else {
+                        [allNoDYVideosArray addObject:model];
+                    }
                 } else {
                     model.type = 4;
                 }
@@ -125,6 +127,7 @@ HMSingletonM(DocumentManager)
         self.allImagesArray = allImagesArray;
         self.allVideosArray = allVideosArray;
         self.allDYVideosArray = allDYVideosArray;
+        self.allNoDYVideosArray = allNoDYVideosArray;
         NSDate *endDate = [NSDate date];
         NSCalendar *calendar = [NSCalendar currentCalendar];
         NSCalendarUnit type = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;

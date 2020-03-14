@@ -114,7 +114,7 @@
     if ([data isKindOfClass:[NSDictionary class]]) {
         NSString *pageName = [data objectForKey:@"pageName"];
         NSString *str = [NSString stringWithFormat:@"打开原生页面: %@", pageName];
-        [self showStringHUD:str second:2];
+        [self showStringHUD:str second:1.5];
     }
 }
 
@@ -280,7 +280,7 @@
 // 添加toast
 - (void)airportToast:(NSDictionary *)data callBack:(WVJBResponseCallback)responseCallback {
     NSString *toastMsg = data[@"msg"];
-    [self showStringHUD:toastMsg second:2];
+    [self showStringHUD:toastMsg second:1.5];
 }
 
 // loading展示和关闭

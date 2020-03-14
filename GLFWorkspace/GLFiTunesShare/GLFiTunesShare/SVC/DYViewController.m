@@ -25,6 +25,7 @@
     UIButton *favoriteButton;
     
     NSTimer *timer; // 定时器
+    BOOL isOtherVideos;
     
     UIView *gestureView;
     BOOL isSuccess;
@@ -45,6 +46,7 @@
     self.title = @"抖音短视频";
     
     isPlaying = NO;
+    isOtherVideos = NO;
     
     UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(playerRewind)];
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(playOrPauseVideo)];
@@ -71,7 +73,7 @@
         currentModel = _dataArray.firstObject;
         [self prepareView];
         NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
-        [self showStringHUD:str second:2];
+        [self showStringHUD:str second:1.5];
     } else {
         [self showHUD];
         timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
@@ -121,16 +123,19 @@
 }
 
 - (void)prepareData {
-    if (manager.allDYVideosArray.count > 0) {
-        [self hideAllHUD];
+    [self hideAllHUD];
+    if (isOtherVideos) {
+        _dataArray = manager.allNoDYVideosArray;
+    } else if (manager.allDYVideosArray.count > 0) {
         [timer invalidate];
         timer = nil;
         _dataArray = manager.allDYVideosArray;
-        currentModel = _dataArray.firstObject;
-        [self prepareView];
-        NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
-        [self showStringHUD:str second:2];
     }
+    selectIndex = arc4random() % _dataArray.count;
+    currentModel = _dataArray[selectIndex];
+    [self prepareView];
+    NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+    [self showStringHUD:str second:1.5];
 }
 
 - (void)prepareView {
@@ -242,7 +247,21 @@
        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
     attributes:attrbute
        context:nil];
-    CGRect labelReact = CGRectMake(15, kScreenHeight - 40 - calculateRect.size.height, kScreenWidth - 130, calculateRect.size.height);
+    
+    CGFloat move = 10;
+    if (calculateRect.size.height < 25) {
+        move = 55;
+    } else if (calculateRect.size.height < 50) {
+        move = 40;
+    } else if (calculateRect.size.height < 70) {
+        move = 30;
+    } else if (calculateRect.size.height < 70) {
+        move = 20;
+    } else {
+        move = 15;
+    }
+    
+    CGRect labelReact = CGRectMake(15, kScreenHeight - move - calculateRect.size.height, kScreenWidth - 130, calculateRect.size.height);
     label.text = self.title;
     label.frame = labelReact;
 }
@@ -252,7 +271,7 @@
         DYFavoriteViewController *vc = [[DYFavoriteViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else {
-        [self showStringHUD:@"等待遍历完成" second:2];
+        [self showStringHUD:@"等待遍历完成" second:1.5];
     }
 }
 
@@ -276,12 +295,24 @@
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"随机播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"随机播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         selectIndex = arc4random() % _dataArray.count;
-        currentVC.currentIndex = selectIndex;
-        [self showStringHUD:@"随机播放" second:2];
+        [self prepareView];
+        [self showStringHUD:@"随机播放" second:1.5];
     }];
-    [alertVC addAction:okAction];
+    [alertVC addAction:okAction1];
+    
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"抖音视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        isOtherVideos = NO;
+        [self prepareData];
+    }];
+    [alertVC addAction:okAction2];
+    
+    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"其它视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        isOtherVideos = YES;
+        [self prepareData];
+    }];
+    [alertVC addAction:okAction3];
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }
@@ -339,9 +370,11 @@
         isPlaying = NO;
         [self setButtonState];
         [self playOrPauseVideo];
-        NSString *indexStr = [NSString stringWithFormat:@"%ld", (long)selectIndex];
-        [[NSUserDefaults standardUserDefaults] setObject:indexStr forKey:@"selectIndex"];
-        [[NSUserDefaults standardUserDefaults] synchronize];
+        if (!isOtherVideos) {
+            NSString *indexStr = [NSString stringWithFormat:@"%ld", (long)selectIndex];
+            [[NSUserDefaults standardUserDefaults] setObject:indexStr forKey:@"selectIndex"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
         
         if ([favoriteArray containsObject:currentModel.name]) {
             [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];

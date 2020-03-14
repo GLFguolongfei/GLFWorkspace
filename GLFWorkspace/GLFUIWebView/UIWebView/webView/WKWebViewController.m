@@ -172,7 +172,7 @@
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation {
     NSLog(@"4-页面加载失败");
-    [self showStringHUD:@"页面加载失败" second:3];
+    [self showStringHUD:@"页面加载失败" second:2];
 }
 
 #pragma mark 2-页面跳转

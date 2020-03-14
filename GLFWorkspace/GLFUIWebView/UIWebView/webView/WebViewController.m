@@ -101,7 +101,7 @@
     NSLog(@"didFailLoadWithError: %@", error.localizedDescription);
     [self hideAllHUD];
     NSString *msg = [NSString stringWithFormat:@"页面加载失败: %@", error.localizedDescription];
-    [self showStringHUD:msg second:3];
+    [self showStringHUD:msg second:2];
 }
 
 #pragma mark WebView Events

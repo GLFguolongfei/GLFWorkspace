@@ -189,7 +189,7 @@ static NSString *cellID = @"PlayVideoTableViewCell";
         // 显示预览
         BOOL canOpen = [documentController presentPreviewAnimated:YES];
         if (!canOpen) {
-            [self showStringHUD:@"沒有程序可以打开要分享的文件" second:2];
+            [self showStringHUD:@"沒有程序可以打开要分享的文件" second:1.5];
         }
     } else {
         // 进入详情页面

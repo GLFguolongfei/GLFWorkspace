@@ -285,9 +285,9 @@
     }
     [myTableView reloadData];
     if (myDataArray.count == 0) {
-        [self showStringHUD:@"未搜到任何内容" second:2];
+        [self showStringHUD:@"未搜到任何内容" second:1.5];
     } else if (myDataArray.count > 300) {
-        [self showStringHUD:@"搜到的内容过多, 只展示前300条" second:2];
+        [self showStringHUD:@"搜到的内容过多, 只展示前300条" second:1.5];
     }
     if (myDataArray.count > 0) {
         view.hidden = YES;
@@ -392,7 +392,7 @@
             // 显示预览
             BOOL canOpen = [documentController presentPreviewAnimated:YES];
             if (!canOpen) {
-                [self showStringHUD:@"沒有程序可以打开要分享的文件" second:2];
+                [self showStringHUD:@"沒有程序可以打开要分享的文件" second:1.5];
             }
         } else {
             // 获取所有类型文件

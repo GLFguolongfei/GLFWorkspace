@@ -215,21 +215,21 @@
 #pragma mark AVCaptureFileOutputRecordingDelegate
 - (void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections{
     NSLog(@"开始录制...");
-    [self showStringHUD:@"开始录制..." second:2];
+    [self showStringHUD:@"开始录制..." second:1.5];
 }
 
 - (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error{
     NSLog(@"视频录制完成.");
-    [self showStringHUD:@"视频录制完成." second:2];
+    [self showStringHUD:@"视频录制完成." second:1.5];
     // 视频录制完成后将视频存储到相簿
     ALAssetsLibrary *assetsLibrary = [[ALAssetsLibrary alloc]init];
     [assetsLibrary writeVideoAtPathToSavedPhotosAlbum:outputFileURL completionBlock:^(NSURL *assetURL, NSError *error) {
         if (error) {
             NSLog(@"保存视频到相簿过程中发生错误: %@", error.localizedDescription);
-            [self showStringHUD:error.localizedDescription second:2];
+            [self showStringHUD:error.localizedDescription second:1.5];
         } else {
             NSLog(@"成功保存视频到相簿.");
-            [self showStringHUD:@"成功保存视频到相簿." second:2];
+            [self showStringHUD:@"成功保存视频到相簿." second:1.5];
         }
     }];
 }

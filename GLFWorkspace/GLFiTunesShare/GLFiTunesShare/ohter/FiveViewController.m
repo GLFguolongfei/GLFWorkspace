@@ -113,7 +113,7 @@
         MMScanViewController *scanVc = [[MMScanViewController alloc] initWithQrType:MMScanTypeAll onFinish:^(NSString *result, NSError *error) {
             if (error) {
                 NSLog(@"error: %@", error);
-                [self showStringHUD:error.localizedDescription second:2];
+                [self showStringHUD:error.localizedDescription second:1.5];
             } else {
                 NSLog(@"扫描结果：%@", result);
                 UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"扫描结果" message:result delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];

@@ -358,7 +358,7 @@
     for (NSInteger i = 0; i < editArray.count; i++) {
         FileModel *model = editArray[i];
         if ([CHiddenPaths containsObject:model.name]) {
-            [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:2];
+            [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:1.5];
             [self viewEditing:YES];
             return;
         }
@@ -374,7 +374,7 @@
     for (NSInteger i = 0; i < editArray.count; i++) {
         FileModel *model = editArray[i];
         if ([CHiddenPaths containsObject:model.name]) {
-            [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:2];
+            [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:1.5];
             [self viewEditing:YES];
             return;
         }
@@ -517,7 +517,7 @@
             // 显示预览
             BOOL canOpen = [documentController presentPreviewAnimated:YES];
             if (!canOpen) {
-                [self showStringHUD:@"沒有程序可以打开要分享的文件" second:2];
+                [self showStringHUD:@"沒有程序可以打开要分享的文件" second:1.5];
             }
         } else {
             // 获取所有类型文件
@@ -602,7 +602,7 @@
 - (void)deleteAction {
     FileModel *model = myDataArray[editIndexPath.row];
     if ([CHiddenPaths containsObject:model.name]) {
-        [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:2];
+        [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:1.5];
         [self viewEditing:YES];
         return;
     }
@@ -647,7 +647,7 @@
 - (void)renameAction {
     FileModel *model = myDataArray[editIndexPath.row];
     if ([CHiddenPaths containsObject:model.name]) {
-        [self showStringHUD:@"文件夹【郭龙飞】不可以重命名" second:2];
+        [self showStringHUD:@"文件夹【郭龙飞】不可以重命名" second:1.5];
         [self viewEditing:YES];
         return;
     }
@@ -679,7 +679,7 @@
 - (void)moveAction {
     FileModel *model = myDataArray[editIndexPath.row];
     if ([CHiddenPaths containsObject:model.name]) {
-        [self showStringHUD:@"文件夹【郭龙飞】不可以移动" second:2];
+        [self showStringHUD:@"文件夹【郭龙飞】不可以移动" second:1.5];
         [self viewEditing:YES];
         return;
     }

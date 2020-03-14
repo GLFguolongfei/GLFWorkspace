@@ -175,11 +175,11 @@ static NSString *cellID = @"GLFTableViewCellID";
         FileModel *model = self.modelArray[i];
         NSString *toPath = [NSString stringWithFormat:@"%@/%@/%@", documentPath, path, model.name];
         if ([toPath isEqualToString:model.path]) {
-            [self showStringHUD:@"目标路径不能与源路径相同" second:2];
+            [self showStringHUD:@"目标路径不能与源路径相同" second:1.5];
             return;
         }
         if ([toPath containsString:model.path]) {
-            [self showStringHUD:@"目标路径不能是源路径的子路径" second:2];
+            [self showStringHUD:@"目标路径不能是源路径的子路径" second:1.5];
             return;
         }
         BOOL success = [GLFFileManager fileMove:model.path toPath:toPath];
