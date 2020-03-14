@@ -16,6 +16,7 @@
     AVPlayerLayer *playerLayer;
     
     UILabel *label;
+    UIView *bgView;
 }
 @end
 
@@ -54,25 +55,55 @@
     playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
     CGSize size = [GLFTools videoSizeWithPath:self.model.path];
     CGFloat width = self.bounds.size.height * size.width / size.height;
+    if (width > kScreenWidth - 20) {
+        width = kScreenWidth - 20;
+    }
     playerLayer.frame = CGRectMake(10, 0, width, self.bounds.size.height);
     playerLayer.backgroundColor = KColorCCC.CGColor;
     [self.contentView.layer addSublayer:playerLayer];
 
     CGRect rect = CGRectMake(width + 20, 0, kScreenWidth - 30 - width, self.bounds.size.height);
+//    if (width >= kScreenWidth - 60) {
+//        rect = CGRectMake(10, self.bounds.size.height - 30, kScreenWidth - 20, 20);
+//    }
+    
+    bgView = [[UIView alloc] init];
+    bgView.backgroundColor = [UIColor whiteColor];
+    bgView.alpha = 0.5;
+    bgView.hidden = YES;
+    [self.contentView addSubview:bgView];
+    
     label = [[UILabel alloc] initWithFrame:rect];
     label.numberOfLines = 0;
-    label.text = self.model.name;
     label.textColor = kSAColorWithStr(@"555555");
     [self.contentView addSubview:label];
     
     NSArray *array = [self.model.name componentsSeparatedByString:@"/"];
     label.text = array.lastObject;
+    
+    NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
+    CGRect calculateRect = [label.text boundingRectWithSize:CGSizeMake(kScreenWidth - 30 - width, MAXFLOAT)
+       options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+    attributes:attrbute
+       context:nil];
+    if (width >= kScreenWidth - 20 || calculateRect.size.height > self.bounds.size.height) {
+        calculateRect = [label.text boundingRectWithSize:CGSizeMake(kScreenWidth - 30, MAXFLOAT)
+           options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+        attributes:attrbute
+           context:nil];
+        label.frame = CGRectMake(15, self.bounds.size.height - 5 - calculateRect.size.height, kScreenWidth - 30, calculateRect.size.height);
+        label.textColor = KColorThree;
+        
+        bgView.hidden = NO;
+        bgView.frame = CGRectMake(10, self.bounds.size.height - 10 - calculateRect.size.height, kScreenWidth - 20, calculateRect.size.height + 10);
+    }
 }
 
 - (void)setModel:(FileModel *)model {
     _model = model;
     if (playerLayer) {
         [playerLayer removeFromSuperlayer];
+        [bgView removeFromSuperview];
         [label removeFromSuperview];
     }
     [self setupAVPlayer];

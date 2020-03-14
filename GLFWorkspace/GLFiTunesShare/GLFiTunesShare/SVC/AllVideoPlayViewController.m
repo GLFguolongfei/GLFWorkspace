@@ -114,7 +114,11 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 }
 
 - (void)buttonAction1 {
-    cellHeight -= 20;
+    if (cellHeight > 200) {
+        cellHeight -= 40;
+    } else {
+        cellHeight -= 20;
+    }
     if (cellHeight <= 60) {
         item1.enabled = NO;
         item2.enabled = YES;
@@ -126,8 +130,12 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 }
 
 - (void)buttonAction2 {
-    cellHeight += 20;
-    if (cellHeight >= 140) {
+    if (cellHeight > 200) {
+        cellHeight += 60;
+    } else {
+        cellHeight += 20;
+    }
+    if (cellHeight >= kScreenHeight) {
         item1.enabled = YES;
         item2.enabled = NO;
     } else {
@@ -139,7 +147,15 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return cellHeight;
+    FileModel *model = _dataArray[indexPath.row];
+    CGSize size = model.videoSize;
+    CGFloat width = cellHeight * size.width / size.height;
+    if (width > kScreenWidth - 20) {
+        CGFloat height = (kScreenWidth - 20) * size.height / size.width;
+        return height;
+    } else {
+        return cellHeight;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

@@ -77,14 +77,13 @@ HMSingletonM(DocumentManager)
 //                    #endif
                     model.image = nil;
                     [allVideosArray addObject:model];
-                    if ([model.name isEqualToString:@"抖音"]) {
+                    CGSize size = [GLFTools videoSizeWithPath:model.path];
+                    model.videoSize = size;
+                    if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
                         [allDYVideosArray addObject:model];
-                    } else {
-                        CGSize size = [GLFTools videoSizeWithPath:model.path];
-                        if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
-                            [allDYVideosArray addObject:model];
-                        }
-                    }
+                    } else if ([model.name isEqualToString:@"抖音"]) {
+                        [allDYVideosArray addObject:model];
+                    } 
                 } else {
                     model.type = 4;
                 }

@@ -28,6 +28,8 @@
     
     UIView *gestureView;
     BOOL isSuccess;
+    
+    UILabel *label;
 }
 @end
 
@@ -106,7 +108,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     isPlaying = YES;
     [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonPlayState];
+    [self setButtonState];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -114,7 +116,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     isPlaying = NO;
     [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonPlayState];
+    [self setButtonState];
     [gestureView removeFromSuperview];
 }
 
@@ -132,6 +134,7 @@
 }
 
 - (void)prepareView {
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ UIPageViewController
     pageVC = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationVertical options:nil];
     pageVC.view.frame = self.view.bounds;
     pageVC.delegate = self;
@@ -143,11 +146,10 @@
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
     
-    NSArray *array = [subVC.model.name componentsSeparatedByString:@"/"];
-    self.title = array.lastObject;
-    
     currentVC = subVC;
-    
+    currentModel = subVC.model;
+
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ UIButton
     CGRect rect = CGRectMake(kScreenWidth - 120, kScreenHeight - 120, 120, 120);
     UIView *view = [[UIView alloc] initWithFrame:rect];
     view.backgroundColor = [UIColor clearColor];
@@ -165,9 +167,18 @@
     favoriteButton.layer.masksToBounds = YES;
     [view addSubview:favoriteButton];
     
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ title
+    label = [[UILabel alloc] init];
+    label.numberOfLines = 0;
+    label.textColor = [UIColor whiteColor];
+    [self.view addSubview:label];
+    
+    [self setLabelTitle];
+    
+    // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Other
     isPlaying = YES;
     [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonPlayState];
+    [self setButtonState];
 
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self.navigationController setToolbarHidden:YES animated:YES];
@@ -177,7 +188,7 @@
 - (void)playOrPauseVideo {
     isPlaying = !isPlaying;
     [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonPlayState];
+    [self setButtonState];
 }
 
 - (void)playerForward {
@@ -205,10 +216,10 @@
 - (void)playeEnd:(NSNotification *)notification {
     isPlaying = YES;
     [currentVC playOrPauseVideo:YES];
-    [self setButtonPlayState];
+    [self setButtonState];
 }
 
-- (void)setButtonPlayState {
+- (void)setButtonState {
     if (isPlaying) {
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(playOrPauseVideo)];
         NSMutableArray *array = [self.toolbarItems mutableCopy];
@@ -220,6 +231,20 @@
         [array replaceObjectAtIndex:3 withObject:item];
         self.toolbarItems = array;
     }
+}
+
+- (void)setLabelTitle {
+    NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
+    self.title = array.lastObject;
+    
+    NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
+    CGRect calculateRect = [self.title boundingRectWithSize:CGSizeMake(kScreenWidth - 130, MAXFLOAT)
+       options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+    attributes:attrbute
+       context:nil];
+    CGRect labelReact = CGRectMake(15, kScreenHeight - 40 - calculateRect.size.height, kScreenWidth - 130, calculateRect.size.height);
+    label.text = self.title;
+    label.frame = labelReact;
 }
 
 - (void)favoriteVideo {
@@ -300,8 +325,7 @@
     // 获取当前控制器标题
     NSInteger currentIndex = currentVC.currentIndex;
     currentModel = _dataArray[currentIndex];
-    NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
-    self.title = array.lastObject;
+    [self setLabelTitle];
 }
 
 // 结束滚动或翻页的时候触发
@@ -313,7 +337,7 @@
         [playVC playOrPauseVideo:NO];
         // ToolBar设为暂停状态
         isPlaying = NO;
-        [self setButtonPlayState];
+        [self setButtonState];
         [self playOrPauseVideo];
         NSString *indexStr = [NSString stringWithFormat:@"%ld", (long)selectIndex];
         [[NSUserDefaults standardUserDefaults] setObject:indexStr forKey:@"selectIndex"];

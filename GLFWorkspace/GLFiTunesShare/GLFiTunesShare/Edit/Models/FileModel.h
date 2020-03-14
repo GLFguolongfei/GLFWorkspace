@@ -16,7 +16,10 @@
 @property (nonatomic, strong) NSDictionary *attributes; // 属性字典
 @property (nonatomic, assign) NSInteger type;           // 1-文件夹 2-图片 3-视频 4-其它文件类型
 @property (nonatomic, assign) CGFloat size;             // 大小
+@property (nonatomic, assign) CGSize videoSize;         // 视频尺寸(只有视频有)
 @property (nonatomic, assign) NSInteger count;          // 子文件数目(只有文件夹有)
+
+
 
 // 如果Model为图片,image就是那张图
 // 如果Model为视频,image就是视频缩略图
