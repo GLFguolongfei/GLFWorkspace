@@ -34,6 +34,12 @@
     BOOL isSuccess;
     
     UILabel *label;
+    
+    UIBarButtonItem *barItem1;
+    UIBarButtonItem *barItem2;
+    
+    UIView *editBgView1;
+    UIView *editBgView2;
 }
 @end
 
@@ -43,8 +49,8 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *barItem1 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"favorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
-    UIBarButtonItem *barItem2 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStylePlain target:self action:@selector(removeVideo)];
+    barItem1 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"favorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
+    barItem2 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStylePlain target:self action:@selector(removeVideo)];
     self.navigationItem.rightBarButtonItems = @[barItem1, barItem2];
     self.view.backgroundColor = [UIColor blackColor];
     self.title = @"抖音短视频";
@@ -66,11 +72,17 @@
     if (!favoriteArray) {
         favoriteArray = [[NSMutableArray alloc] init];
     }
+    if (favoriteArray.count == 0) {
+        barItem1.enabled = NO;
+    }
 
     removeArray = [[NSUserDefaults standardUserDefaults] objectForKey:kRemove];
     removeArray = [removeArray mutableCopy];
     if (!removeArray) {
         removeArray = [[NSMutableArray alloc] init];
+    }
+    if (removeArray.count == 0) {
+        barItem2.enabled = NO;
     }
     
     manager = [DocumentManager sharedDocumentManager];
@@ -169,9 +181,9 @@
 
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ UIButton
     CGRect rect = CGRectMake(kScreenWidth - 120, kScreenHeight - 120, 120, 120);
-    UIView *view = [[UIView alloc] initWithFrame:rect];
-    view.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:view];
+    editBgView1 = [[UIView alloc] initWithFrame:rect];
+    editBgView1.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:editBgView1];
     CGRect buttonRect = CGRectMake(20, 20, 80, 80);
     favoriteButton = [[UIButton alloc] initWithFrame:buttonRect];
     if ([favoriteArray containsObject:currentModel.name]) {
@@ -183,12 +195,13 @@
     favoriteButton.backgroundColor = [UIColor colorWithWhite:1 alpha:0.7];
     favoriteButton.layer.cornerRadius = 40;
     favoriteButton.layer.masksToBounds = YES;
-    [view addSubview:favoriteButton];
+    [editBgView1 addSubview:favoriteButton];
     
     CGRect rect2 = CGRectMake(kScreenWidth - 120, kScreenHeight - 210, 120, 120);
-    UIView *view2 = [[UIView alloc] initWithFrame:rect2];
-    view2.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:view2];
+    editBgView2 = [[UIView alloc] initWithFrame:rect2];
+    editBgView2.backgroundColor = [UIColor clearColor];
+    editBgView2.hidden = YES;
+    [self.view addSubview:editBgView2];
     CGRect buttonRect2 = CGRectMake(20, 20, 80, 80);
     removeButton = [[UIButton alloc] initWithFrame:buttonRect2];
     if ([removeArray containsObject:currentModel.name]) {
@@ -200,7 +213,7 @@
     removeButton.backgroundColor = [UIColor colorWithWhite:1 alpha:0.7];
     removeButton.layer.cornerRadius = 40;
     removeButton.layer.masksToBounds = YES;
-    [view2 addSubview:removeButton];
+    [editBgView2 addSubview:removeButton];
     
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ title
     label = [[UILabel alloc] init];
@@ -326,6 +339,12 @@
         [manager addFavoriteModel:currentModel];
         [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
     }
+    
+    if (favoriteArray.count > 0) {
+        barItem1.enabled = YES;
+    } else {
+        barItem1.enabled = NO;
+    }
 }
 
 - (void)removeAction {
@@ -338,6 +357,12 @@
         [manager addRemoveModel:currentModel];
         [removeButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
     }
+    
+    if (removeArray.count > 0) {
+        barItem2.enabled = YES;
+    } else {
+        barItem2.enabled = NO;
+    }
 }
 
 - (void)resetData {
@@ -348,7 +373,12 @@
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"随机播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"显示/隐藏 删除按钮" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        editBgView2.hidden = !editBgView2.hidden;
+    }];
+    [alertVC addAction:okAction1];
+    
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"随机播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         // 暂停当前播放
         isPlaying = NO;
         [currentVC playOrPauseVideo:isPlaying];
@@ -358,19 +388,19 @@
         [self prepareView];
         [self showStringHUD:@"随机播放" second:1.5];
     }];
-    [alertVC addAction:okAction1];
+    [alertVC addAction:okAction2];
     
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"抖音视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"抖音视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         isOtherVideos = NO;
         [self prepareData];
     }];
-    [alertVC addAction:okAction2];
+    [alertVC addAction:okAction3];
     
-    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"其它视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction4 = [UIAlertAction actionWithTitle:@"其它视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         isOtherVideos = YES;
         [self prepareData];
     }];
-    [alertVC addAction:okAction3];
+    [alertVC addAction:okAction4];
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }

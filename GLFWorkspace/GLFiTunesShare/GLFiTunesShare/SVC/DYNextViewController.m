@@ -21,8 +21,8 @@
     
     DocumentManager *manager;
 
-    NSMutableArray *favoriteArray;
-    UIButton *favoriteButton;
+    NSMutableArray *editArray;
+    UIButton *editButton;
     
     UIView *gestureView;
     BOOL isSuccess;
@@ -42,6 +42,8 @@
         self.title = @"抖音短视频";
     } else {
         self.title = @"垃圾篓视频";
+        UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(clearArray)];
+        self.navigationItem.rightBarButtonItem = barItem;
     }
     
     isPlaying = NO;
@@ -54,18 +56,18 @@
     self.toolbarItems = @[space, item1, space, item2, space, item3, space];
     
     if (self.pageType == 1) {
-        favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
+        editArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
     } else {
-        favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kRemove];
+        editArray = [[NSUserDefaults standardUserDefaults] objectForKey:kRemove];
     }
-    favoriteArray = [favoriteArray mutableCopy];
+    editArray = [editArray mutableCopy];
     
     manager = [DocumentManager sharedDocumentManager];
     if (manager.allVideosArray.count > 0) {
         _dataArray = [[NSMutableArray alloc] init];
         for (NSInteger i = 0; i < manager.allVideosArray.count; i++) {
             FileModel *model = manager.allVideosArray[i];
-            if ([favoriteArray containsObject: model.name]) {
+            if ([editArray containsObject: model.name]) {
                 [_dataArray addObject:model];
             }
         }
@@ -134,25 +136,25 @@
     view.backgroundColor = [UIColor clearColor];
     [self.view addSubview:view];
     CGRect buttonRect = CGRectMake(20, 20, 80, 80);
-    favoriteButton = [[UIButton alloc] initWithFrame:buttonRect];
+    editButton = [[UIButton alloc] initWithFrame:buttonRect];
     if (self.pageType == 1) {
-        if ([favoriteArray containsObject:currentModel.name]) {
-            [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+        if ([editArray containsObject:currentModel.name]) {
+            [editButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
         } else {
-            [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
         }
     } else {
-        if ([favoriteArray containsObject:currentModel.name]) {
-            [favoriteButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+        if ([editArray containsObject:currentModel.name]) {
+            [editButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
         } else {
-            [favoriteButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
         }
     }
-    [favoriteButton addTarget:self action:@selector(favoriteAction) forControlEvents:UIControlEventTouchUpInside];
-    favoriteButton.backgroundColor = [UIColor colorWithWhite:1 alpha:0.7];
-    favoriteButton.layer.cornerRadius = 40;
-    favoriteButton.layer.masksToBounds = YES;
-    [view addSubview:favoriteButton];
+    [editButton addTarget:self action:@selector(favoriteAction) forControlEvents:UIControlEventTouchUpInside];
+    editButton.backgroundColor = [UIColor colorWithWhite:1 alpha:0.7];
+    editButton.layer.cornerRadius = 40;
+    editButton.layer.masksToBounds = YES;
+    [view addSubview:editButton];
     
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ title
     label = [[UILabel alloc] init];
@@ -245,24 +247,24 @@
 
 - (void)favoriteAction {
     if (self.pageType == 1) {
-        if ([favoriteArray containsObject:currentModel.name]) {
-            [favoriteArray removeObject:currentModel.name];
+        if ([editArray containsObject:currentModel.name]) {
+            [editArray removeObject:currentModel.name];
             [manager removeFavoriteModel:currentModel];
-            [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
         } else {
-            [favoriteArray addObject:currentModel.name];
+            [editArray addObject:currentModel.name];
             [manager addFavoriteModel:currentModel];
-            [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
         }
     } else {
-        if ([favoriteArray containsObject:currentModel.name]) {
-            [favoriteArray removeObject:currentModel.name];
+        if ([editArray containsObject:currentModel.name]) {
+            [editArray removeObject:currentModel.name];
             [manager removeRemoveModel:currentModel];
-            [favoriteButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
         } else {
-            [favoriteArray addObject:currentModel.name];
+            [editArray addObject:currentModel.name];
             [manager addRemoveModel:currentModel];
-            [favoriteButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
         }
     }
 }
@@ -290,6 +292,20 @@
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
+- (void)clearArray {
+    editArray = [[NSMutableArray alloc] init];
+    selectIndex = 0;
+    
+    // 暂停当前播放
+    isPlaying = NO;
+    [currentVC playOrPauseVideo:isPlaying];
+    [self setButtonState];
+    [self prepareView];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    [userDefaults setObject:@[] forKey:kRemove];
+    [userDefaults synchronize];
+}
 
 #pragma mark UIPageViewControllerDataSource
 // 上一页
@@ -346,16 +362,16 @@
         [self playOrPauseVideo];
         
         if (self.pageType == 1) {
-            if ([favoriteArray containsObject:currentModel.name]) {
-                [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+            if ([editArray containsObject:currentModel.name]) {
+                [editButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
             } else {
-                [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+                [editButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
             }
         } else {
-            if ([favoriteArray containsObject:currentModel.name]) {
-                [favoriteButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+            if ([editArray containsObject:currentModel.name]) {
+                [editButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
             } else {
-                [favoriteButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+                [editButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
             }
         }
     }
