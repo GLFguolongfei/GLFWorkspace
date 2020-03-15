@@ -1,18 +1,18 @@
 //
-//  DYFavoriteViewController.m
+//  DYNextViewController.m
 //  GLFiTunesShare
 //
-//  Created by guolongfei on 2020/2/18.
+//  Created by guolongfei on 2020/3/15.
 //  Copyright © 2020 GuoLongfei. All rights reserved.
 //
 
-#import "DYFavoriteViewController.h"
-#import "DYFavoriteSubViewController.h"
+#import "DYNextViewController.h"
+#import "DYNextSubViewController.h"
 
-@interface DYFavoriteViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
+@interface DYNextViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 {
     UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
-    DYFavoriteSubViewController *currentVC; // 当前显示的VC
+    DYNextSubViewController *currentVC; // 当前显示的VC
     BOOL isPlaying;
     
     NSInteger selectIndex;
@@ -31,14 +31,18 @@
 }
 @end
 
-@implementation DYFavoriteViewController
+@implementation DYNextViewController
 
 
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    self.title = @"抖音短视频";
+    if (self.pageType == 1) {
+        self.title = @"抖音短视频";
+    } else {
+        self.title = @"垃圾篓视频";
+    }
     
     isPlaying = NO;
     
@@ -49,7 +53,11 @@
     
     self.toolbarItems = @[space, item1, space, item2, space, item3, space];
     
-    favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
+    if (self.pageType == 1) {
+        favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
+    } else {
+        favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kRemove];
+    }
     favoriteArray = [favoriteArray mutableCopy];
     
     manager = [DocumentManager sharedDocumentManager];
@@ -111,7 +119,7 @@
     pageVC.delegate = self;
     pageVC.dataSource = self;
         
-    DYFavoriteSubViewController *subVC = [[DYFavoriteSubViewController alloc] init];
+    DYNextSubViewController *subVC = [[DYNextSubViewController alloc] init];
     subVC.currentIndex = selectIndex;
     subVC.model = _dataArray[selectIndex];
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
@@ -127,10 +135,18 @@
     [self.view addSubview:view];
     CGRect buttonRect = CGRectMake(20, 20, 80, 80);
     favoriteButton = [[UIButton alloc] initWithFrame:buttonRect];
-    if ([favoriteArray containsObject:currentModel.name]) {
-        [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+    if (self.pageType == 1) {
+        if ([favoriteArray containsObject:currentModel.name]) {
+            [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+        } else {
+            [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+        }
     } else {
-        [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+        if ([favoriteArray containsObject:currentModel.name]) {
+            [favoriteButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+        } else {
+            [favoriteButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+        }
     }
     [favoriteButton addTarget:self action:@selector(favoriteAction) forControlEvents:UIControlEventTouchUpInside];
     favoriteButton.backgroundColor = [UIColor colorWithWhite:1 alpha:0.7];
@@ -228,14 +244,26 @@
 }
 
 - (void)favoriteAction {
-    if ([favoriteArray containsObject:currentModel.name]) {
-        [favoriteArray removeObject:currentModel.name];
-        [manager removeFavoriteModel:currentModel];
-        [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+    if (self.pageType == 1) {
+        if ([favoriteArray containsObject:currentModel.name]) {
+            [favoriteArray removeObject:currentModel.name];
+            [manager removeFavoriteModel:currentModel];
+            [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+        } else {
+            [favoriteArray addObject:currentModel.name];
+            [manager addFavoriteModel:currentModel];
+            [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+        }
     } else {
-        [favoriteArray addObject:currentModel.name];
-        [manager addFavoriteModel:currentModel];
-        [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+        if ([favoriteArray containsObject:currentModel.name]) {
+            [favoriteArray removeObject:currentModel.name];
+            [manager removeRemoveModel:currentModel];
+            [favoriteButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+        } else {
+            [favoriteArray addObject:currentModel.name];
+            [manager addRemoveModel:currentModel];
+            [favoriteButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+        }
     }
 }
 
@@ -266,14 +294,14 @@
 #pragma mark UIPageViewControllerDataSource
 // 上一页
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    selectIndex = ((DYFavoriteSubViewController *) viewController).currentIndex;
+    selectIndex = ((DYNextSubViewController *) viewController).currentIndex;
     if (selectIndex==0 || selectIndex==NSNotFound) {
         selectIndex = _dataArray.count;
     }
     
     selectIndex--; // 注意: 直接使用VC的顺序index,不要再单独标记了,否则出大问题
     
-    DYFavoriteSubViewController *subVC = [[DYFavoriteSubViewController alloc] init];
+    DYNextSubViewController *subVC = [[DYNextSubViewController alloc] init];
     subVC.currentIndex = selectIndex;
     subVC.model = _dataArray[selectIndex];
     return subVC;
@@ -281,14 +309,14 @@
 
 // 下一页
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-    selectIndex = ((DYFavoriteSubViewController *) viewController).currentIndex;
+    selectIndex = ((DYNextSubViewController *) viewController).currentIndex;
     if (selectIndex==_dataArray.count-1 || selectIndex==NSNotFound) {
         selectIndex = -1;
     }
     
     selectIndex++;
     
-    DYFavoriteSubViewController *subVC = [[DYFavoriteSubViewController alloc] init];
+    DYNextSubViewController *subVC = [[DYNextSubViewController alloc] init];
     subVC.currentIndex = selectIndex;
     subVC.model = _dataArray[selectIndex];
     return subVC;
@@ -298,7 +326,7 @@
 // 开始滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
     // 获取当前控制器
-    currentVC = (DYFavoriteSubViewController *)pendingViewControllers[0];
+    currentVC = (DYNextSubViewController *)pendingViewControllers[0];
     // 获取当前控制器标题
     NSInteger currentIndex = currentVC.currentIndex;
     currentModel = _dataArray[currentIndex];
@@ -309,7 +337,7 @@
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
     if (previousViewControllers.count > 0 && completed) {
         // 获取之前控制器
-        DYFavoriteSubViewController *playVC = (DYFavoriteSubViewController *)previousViewControllers[0];
+        DYNextSubViewController *playVC = (DYNextSubViewController *)previousViewControllers[0];
         // 停止播放
         [playVC playOrPauseVideo:NO];
         // ToolBar设为暂停状态
@@ -317,10 +345,18 @@
         [self setButtonState];
         [self playOrPauseVideo];
         
-        if ([favoriteArray containsObject:currentModel.name]) {
-            [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+        if (self.pageType == 1) {
+            if ([favoriteArray containsObject:currentModel.name]) {
+                [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+            } else {
+                [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+            }
         } else {
-            [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+            if ([favoriteArray containsObject:currentModel.name]) {
+                [favoriteButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+            } else {
+                [favoriteButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+            }
         }
     }
 }

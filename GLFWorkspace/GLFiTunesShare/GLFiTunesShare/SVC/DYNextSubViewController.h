@@ -1,8 +1,8 @@
 //
-//  DYFavoriteSubViewController.h
+//  DYNextSubViewController.h
 //  GLFiTunesShare
 //
-//  Created by guolongfei on 2020/2/18.
+//  Created by guolongfei on 2020/3/15.
 //  Copyright © 2020 GuoLongfei. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DYFavoriteSubViewController : BaseViewController
+@interface DYNextSubViewController : BaseViewController
 
 @property (nonatomic, assign) NSInteger currentIndex;
 @property (nonatomic, strong) FileModel *model;

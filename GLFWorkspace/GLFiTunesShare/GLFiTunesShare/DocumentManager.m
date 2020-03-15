@@ -187,6 +187,32 @@ HMSingletonM(DocumentManager)
     [userDefaults synchronize];
 }
 
+- (void)addRemoveModel:(FileModel *)model {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *removeArray = [userDefaults objectForKey:kRemove];
+    if (!removeArray) {
+        removeArray = [[NSMutableArray alloc] init];
+    } else {
+        removeArray = [removeArray mutableCopy];
+    }
+    [removeArray addObject:model.name];
+    [userDefaults setObject:removeArray forKey:kRemove];
+    [userDefaults synchronize];
+}
+
+- (void)removeRemoveModel:(FileModel *)model {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *removeArray = [userDefaults objectForKey:kRemove];
+    if (!removeArray) {
+        removeArray = [[NSMutableArray alloc] init];
+    } else {
+        removeArray = [removeArray mutableCopy];
+    }
+    [removeArray removeObject:model.name];
+    [userDefaults setObject:removeArray forKey:kRemove];
+    [userDefaults synchronize];
+}
+
 + (void)updateDocumentPaths {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentPath = [paths objectAtIndex:0];

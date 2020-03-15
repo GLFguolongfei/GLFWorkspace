@@ -137,6 +137,10 @@
 		6F14401623F28A5E00C7C201 /* VideoTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F14401323F28A5E00C7C201 /* VideoTableViewCell.m */; };
 		6F14401723F28A5E00C7C201 /* VideoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F14401423F28A5E00C7C201 /* VideoTableViewCell.xib */; };
 		6F14401823F28A5E00C7C201 /* VideoTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F14401423F28A5E00C7C201 /* VideoTableViewCell.xib */; };
+		6F151569241E4F7D00621247 /* DYNextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F151568241E4F7D00621247 /* DYNextViewController.m */; };
+		6F15156A241E4F7D00621247 /* DYNextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F151568241E4F7D00621247 /* DYNextViewController.m */; };
+		6F15156D241E500300621247 /* DYNextSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F15156C241E500300621247 /* DYNextSubViewController.m */; };
+		6F15156E241E500300621247 /* DYNextSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F15156C241E500300621247 /* DYNextSubViewController.m */; };
 		6F19EE0723F3143300C438DE /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F19EE0623F3143300C438DE /* SearchViewController.m */; };
 		6F19EE0823F3143300C438DE /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F19EE0623F3143300C438DE /* SearchViewController.m */; };
 		6F1C540223C8F523000122FB /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */; };
@@ -173,12 +177,8 @@
 		6F1EEB321FB1ADEF0046389D /* FileModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAE61FB1A4060046389D /* FileModel.m */; };
 		6F22EB3B23FBEB7C00A30691 /* DYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB3A23FBEB7C00A30691 /* DYViewController.m */; };
 		6F22EB3C23FBEB7C00A30691 /* DYViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB3A23FBEB7C00A30691 /* DYViewController.m */; };
-		6F22EB3F23FBEBBB00A30691 /* DYFavoriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB3E23FBEBBB00A30691 /* DYFavoriteViewController.m */; };
-		6F22EB4023FBEBBB00A30691 /* DYFavoriteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB3E23FBEBBB00A30691 /* DYFavoriteViewController.m */; };
 		6F22EB4323FBEBDE00A30691 /* DYSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB4223FBEBDE00A30691 /* DYSubViewController.m */; };
 		6F22EB4423FBEBDE00A30691 /* DYSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB4223FBEBDE00A30691 /* DYSubViewController.m */; };
-		6F22EB4723FBEBFC00A30691 /* DYFavoriteSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */; };
-		6F22EB4823FBEBFC00A30691 /* DYFavoriteSubViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */; };
 		6F22EB9023FBF66000A30691 /* MMScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB8B23FBF66000A30691 /* MMScanViewController.m */; };
 		6F22EB9123FBF66000A30691 /* MMScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB8B23FBF66000A30691 /* MMScanViewController.m */; };
 		6F22EB9223FBF66000A30691 /* MMScanView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F22EB8C23FBF66000A30691 /* MMScanView.m */; };
@@ -486,6 +486,10 @@
 		6F14401223F28A5E00C7C201 /* VideoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoTableViewCell.h; sourceTree = "<group>"; };
 		6F14401323F28A5E00C7C201 /* VideoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoTableViewCell.m; sourceTree = "<group>"; };
 		6F14401423F28A5E00C7C201 /* VideoTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = VideoTableViewCell.xib; sourceTree = "<group>"; };
+		6F151567241E4F7D00621247 /* DYNextViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYNextViewController.h; sourceTree = "<group>"; };
+		6F151568241E4F7D00621247 /* DYNextViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYNextViewController.m; sourceTree = "<group>"; };
+		6F15156B241E500300621247 /* DYNextSubViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYNextSubViewController.h; sourceTree = "<group>"; };
+		6F15156C241E500300621247 /* DYNextSubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYNextSubViewController.m; sourceTree = "<group>"; };
 		6F19EE0523F3143300C438DE /* SearchViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		6F19EE0623F3143300C438DE /* SearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
@@ -521,12 +525,8 @@
 		6F1EEB1D1FB1A86A0046389D /* WebSetupViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebSetupViewController.xib; sourceTree = "<group>"; };
 		6F22EB3923FBEB7C00A30691 /* DYViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYViewController.h; sourceTree = "<group>"; };
 		6F22EB3A23FBEB7C00A30691 /* DYViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYViewController.m; sourceTree = "<group>"; };
-		6F22EB3D23FBEBBB00A30691 /* DYFavoriteViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYFavoriteViewController.h; sourceTree = "<group>"; };
-		6F22EB3E23FBEBBB00A30691 /* DYFavoriteViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYFavoriteViewController.m; sourceTree = "<group>"; };
 		6F22EB4123FBEBDE00A30691 /* DYSubViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYSubViewController.h; sourceTree = "<group>"; };
 		6F22EB4223FBEBDE00A30691 /* DYSubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYSubViewController.m; sourceTree = "<group>"; };
-		6F22EB4523FBEBFC00A30691 /* DYFavoriteSubViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DYFavoriteSubViewController.h; sourceTree = "<group>"; };
-		6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DYFavoriteSubViewController.m; sourceTree = "<group>"; };
 		6F22EB8B23FBF66000A30691 /* MMScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMScanViewController.m; sourceTree = "<group>"; };
 		6F22EB8C23FBF66000A30691 /* MMScanView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMScanView.m; sourceTree = "<group>"; };
 		6F22EB8D23FBF66000A30691 /* MMScanView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMScanView.h; sourceTree = "<group>"; };
@@ -1334,12 +1334,12 @@
 				6F19EE0623F3143300C438DE /* SearchViewController.m */,
 				6F22EB3923FBEB7C00A30691 /* DYViewController.h */,
 				6F22EB3A23FBEB7C00A30691 /* DYViewController.m */,
-				6F22EB3D23FBEBBB00A30691 /* DYFavoriteViewController.h */,
-				6F22EB3E23FBEBBB00A30691 /* DYFavoriteViewController.m */,
+				6F151567241E4F7D00621247 /* DYNextViewController.h */,
+				6F151568241E4F7D00621247 /* DYNextViewController.m */,
 				6F22EB4123FBEBDE00A30691 /* DYSubViewController.h */,
 				6F22EB4223FBEBDE00A30691 /* DYSubViewController.m */,
-				6F22EB4523FBEBFC00A30691 /* DYFavoriteSubViewController.h */,
-				6F22EB4623FBEBFC00A30691 /* DYFavoriteSubViewController.m */,
+				6F15156B241E500300621247 /* DYNextSubViewController.h */,
+				6F15156C241E500300621247 /* DYNextSubViewController.m */,
 				6F90B04624123CB000D7B447 /* WKWebViewController.h */,
 				6F90B04724123CB000D7B447 /* WKWebViewController.m */,
 			);
@@ -1622,6 +1622,7 @@
 				6F1EEB121FB1A4060046389D /* BaseViewController.m in Sources */,
 				6F4C2C3124004C9A0094D193 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				6F01E0422401722B00F64623 /* ZHDrawingLineLayer.m in Sources */,
+				6F151569241E4F7D00621247 /* DYNextViewController.m in Sources */,
 				6F01E0562401722B00F64623 /* ZHDrawingRectLayer.m in Sources */,
 				6FE944E520BE4F0A005A46AD /* SubViewController3.m in Sources */,
 				6F01DFF42401720D00F64623 /* MASCompositeConstraint.m in Sources */,
@@ -1643,6 +1644,7 @@
 				6F0E96211FA4135B0029DDD6 /* PhotoStackView.m in Sources */,
 				6F01E0462401722B00F64623 /* ZHDrawingRighTangleLayer.m in Sources */,
 				6F01E0762401722B00F64623 /* ZHFigureDrawingView.m in Sources */,
+				6F15156D241E500300621247 /* DYNextSubViewController.m in Sources */,
 				6F01E0782401722B00F64623 /* ZHFigureDrawingLayer.m in Sources */,
 				6F22EB9023FBF66000A30691 /* MMScanViewController.m in Sources */,
 				6F4C2BE024004C0D0094D193 /* DrawRectView.m in Sources */,
@@ -1675,7 +1677,6 @@
 				6F1EEB201FB1A86A0046389D /* SetupViewController.m in Sources */,
 				6F01E0002401720D00F64623 /* MASViewConstraint.m in Sources */,
 				6F0E96171FA4135B0029DDD6 /* GLFFileManager.m in Sources */,
-				6F22EB3F23FBEBBB00A30691 /* DYFavoriteViewController.m in Sources */,
 				6F4C2BF424004C0D0094D193 /* ZJ_RulesLineView.m in Sources */,
 				6F4C2C4D24004DF90094D193 /* FiveViewController.m in Sources */,
 				6F1EEB0C1FB1A4060046389D /* Cell.m in Sources */,
@@ -1716,7 +1717,6 @@
 				6F4C2C4524004C9A0094D193 /* AFURLRequestSerialization.m in Sources */,
 				6F4C2C0024004C0D0094D193 /* QQL_MirrorViewController.m in Sources */,
 				6F90B04424123C8000D7B447 /* ImageViewController.m in Sources */,
-				6F22EB4723FBEBFC00A30691 /* DYFavoriteSubViewController.m in Sources */,
 				6F01E0662401722B00F64623 /* ZHDrawingOvalLayer.m in Sources */,
 				6F01E0582401722B00F64623 /* ZHDrawingTriangleLayer.m in Sources */,
 				6F01E0522401722B00F64623 /* ZHDrawingTriangularPyramidLayer.m in Sources */,
@@ -1779,6 +1779,7 @@
 				6F1EEB271FB1ADD50046389D /* RootViewController.m in Sources */,
 				6F4C2C3224004C9A0094D193 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				6F01E0432401722B00F64623 /* ZHDrawingLineLayer.m in Sources */,
+				6F15156A241E4F7D00621247 /* DYNextViewController.m in Sources */,
 				6F01E0572401722B00F64623 /* ZHDrawingRectLayer.m in Sources */,
 				6FE944E620BE4F0A005A46AD /* SubViewController3.m in Sources */,
 				6F01DFF52401720D00F64623 /* MASCompositeConstraint.m in Sources */,
@@ -1800,6 +1801,7 @@
 				6F1EEB2C1FB1ADD50046389D /* SetupViewController.m in Sources */,
 				6F01E0472401722B00F64623 /* ZHDrawingRighTangleLayer.m in Sources */,
 				6F01E0772401722B00F64623 /* ZHFigureDrawingView.m in Sources */,
+				6F15156E241E500300621247 /* DYNextSubViewController.m in Sources */,
 				6F01E0792401722B00F64623 /* ZHFigureDrawingLayer.m in Sources */,
 				6F22EB9123FBF66000A30691 /* MMScanViewController.m in Sources */,
 				6F4C2BE124004C0D0094D193 /* DrawRectView.m in Sources */,
@@ -1832,7 +1834,6 @@
 				6FBA0FA923E8113200899522 /* OneViewController.m in Sources */,
 				6F01E0012401720D00F64623 /* MASViewConstraint.m in Sources */,
 				6F0E96281FA4135B0029DDD6 /* WaterView2.m in Sources */,
-				6F22EB4023FBEBBB00A30691 /* DYFavoriteViewController.m in Sources */,
 				6F4C2BF524004C0D0094D193 /* ZJ_RulesLineView.m in Sources */,
 				6F4C2C4E24004DF90094D193 /* FiveViewController.m in Sources */,
 				6F0E961C1FA4135B0029DDD6 /* MBProgressHUD+Add.m in Sources */,
@@ -1873,7 +1874,6 @@
 				6F4C2C4624004C9A0094D193 /* AFURLRequestSerialization.m in Sources */,
 				6F4C2C0124004C0D0094D193 /* QQL_MirrorViewController.m in Sources */,
 				6F90B04524123C8000D7B447 /* ImageViewController.m in Sources */,
-				6F22EB4823FBEBFC00A30691 /* DYFavoriteSubViewController.m in Sources */,
 				6F01E0672401722B00F64623 /* ZHDrawingOvalLayer.m in Sources */,
 				6F01E0592401722B00F64623 /* ZHDrawingTriangleLayer.m in Sources */,
 				6F01E0532401722B00F64623 /* ZHDrawingTriangularPyramidLayer.m in Sources */,

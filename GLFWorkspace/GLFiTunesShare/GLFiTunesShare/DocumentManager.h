@@ -30,6 +30,8 @@ HMSingletonH(DocumentManager)
 - (void)setVideosImage:(NSInteger)maxCount;
 - (void)addFavoriteModel:(FileModel *)model;
 - (void)removeFavoriteModel:(FileModel *)model;
+- (void)addRemoveModel:(FileModel *)model;
+- (void)removeRemoveModel:(FileModel *)model;
 + (void)updateDocumentPaths;
 
 - (void)startPlay;

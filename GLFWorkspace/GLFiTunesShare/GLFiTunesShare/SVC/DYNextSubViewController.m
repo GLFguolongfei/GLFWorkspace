@@ -1,15 +1,15 @@
 //
-//  DYFavoriteSubViewController.m
+//  DYNextSubViewController.m
 //  GLFiTunesShare
 //
-//  Created by guolongfei on 2020/2/18.
+//  Created by guolongfei on 2020/3/15.
 //  Copyright © 2020 GuoLongfei. All rights reserved.
 //
 
-#import "DYFavoriteSubViewController.h"
+#import "DYNextSubViewController.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface DYFavoriteSubViewController ()
+@interface DYNextSubViewController ()
 {
     AVPlayer *player;
     AVPlayerItem *playerItem;
@@ -22,7 +22,7 @@
 }
 @end
 
-@implementation DYFavoriteSubViewController
+@implementation DYNextSubViewController
 
 
 #pragma mark - Life Cycle

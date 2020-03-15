@@ -70,6 +70,7 @@
 #define kContentHidden      @"kContentHidden"
 #define kRecord             @"kRecord"
 #define kFavorite           @"kFavorite"
+#define kRemove             @"kRemove"
 #define CimgTypeArray    @[@"png", @"jpeg", @"jpg", @"gif"]
 #define CvideoTypeArray  @[@"mp4", @"rmvb", @"avi", @"mov", @"mkv"]
 #define CHiddenPaths     @[@"郭龙飞"]

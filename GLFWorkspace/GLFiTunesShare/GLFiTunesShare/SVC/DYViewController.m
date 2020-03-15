@@ -8,7 +8,7 @@
 
 #import "DYViewController.h"
 #import "DYSubViewController.h"
-#import "DYFavoriteViewController.h"
+#import "DYNextViewController.h"
 
 @interface DYViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 {
@@ -20,9 +20,12 @@
     NSMutableArray *_dataArray;
     FileModel *currentModel;
     
-    NSMutableArray *favoriteArray;
     DocumentManager *manager;
+
+    NSMutableArray *favoriteArray;
     UIButton *favoriteButton;
+    NSMutableArray *removeArray;
+    UIButton *removeButton;
     
     NSTimer *timer; // 定时器
     BOOL isOtherVideos;
@@ -41,7 +44,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     UIBarButtonItem *barItem1 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"favorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
-    UIBarButtonItem *barItem2 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"rubbish"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
+    UIBarButtonItem *barItem2 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStylePlain target:self action:@selector(removeVideo)];
     self.navigationItem.rightBarButtonItems = @[barItem1, barItem2];
     self.view.backgroundColor = [UIColor blackColor];
     self.title = @"抖音短视频";
@@ -62,6 +65,12 @@
     favoriteArray = [favoriteArray mutableCopy];
     if (!favoriteArray) {
         favoriteArray = [[NSMutableArray alloc] init];
+    }
+
+    removeArray = [[NSUserDefaults standardUserDefaults] objectForKey:kRemove];
+    removeArray = [removeArray mutableCopy];
+    if (!removeArray) {
+        removeArray = [[NSMutableArray alloc] init];
     }
     
     manager = [DocumentManager sharedDocumentManager];
@@ -176,6 +185,23 @@
     favoriteButton.layer.masksToBounds = YES;
     [view addSubview:favoriteButton];
     
+    CGRect rect2 = CGRectMake(kScreenWidth - 120, kScreenHeight - 210, 120, 120);
+    UIView *view2 = [[UIView alloc] initWithFrame:rect2];
+    view2.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:view2];
+    CGRect buttonRect2 = CGRectMake(20, 20, 80, 80);
+    removeButton = [[UIButton alloc] initWithFrame:buttonRect2];
+    if ([removeArray containsObject:currentModel.name]) {
+        [removeButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+    } else {
+        [removeButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+    }
+    [removeButton addTarget:self action:@selector(removeAction) forControlEvents:UIControlEventTouchUpInside];
+    removeButton.backgroundColor = [UIColor colorWithWhite:1 alpha:0.7];
+    removeButton.layer.cornerRadius = 40;
+    removeButton.layer.masksToBounds = YES;
+    [view2 addSubview:removeButton];
+    
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ title
     label = [[UILabel alloc] init];
     label.numberOfLines = 0;
@@ -271,8 +297,19 @@
 }
 
 - (void)favoriteVideo {
-    if (manager.allDYVideosArray.count > 0) {
-        DYFavoriteViewController *vc = [[DYFavoriteViewController alloc] init];
+    if (manager.allVideosArray.count > 0) {
+        DYNextViewController *vc = [[DYNextViewController alloc] init];
+        vc.pageType = 1;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        [self showStringHUD:@"等待遍历完成" second:1.5];
+    }
+}
+
+- (void)removeVideo {
+    if (manager.allVideosArray.count > 0) {
+        DYNextViewController *vc = [[DYNextViewController alloc] init];
+        vc.pageType = 2;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         [self showStringHUD:@"等待遍历完成" second:1.5];
@@ -288,6 +325,18 @@
         [favoriteArray addObject:currentModel.name];
         [manager addFavoriteModel:currentModel];
         [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+    }
+}
+
+- (void)removeAction {
+    if ([removeArray containsObject:currentModel.name]) {
+        [removeArray removeObject:currentModel.name];
+        [manager removeRemoveModel:currentModel];
+        [removeButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+    } else {
+        [removeArray addObject:currentModel.name];
+        [manager addRemoveModel:currentModel];
+        [removeButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
     }
 }
 
@@ -389,6 +438,12 @@
             [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
         } else {
             [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+        }
+        
+        if ([removeArray containsObject:currentModel.name]) {
+            [removeButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+        } else {
+            [removeButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
         }
     }
 }
