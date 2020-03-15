@@ -40,8 +40,9 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"favorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
-    self.navigationItem.rightBarButtonItem = item;
+    UIBarButtonItem *barItem1 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"favorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
+    UIBarButtonItem *barItem2 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"rubbish"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
+    self.navigationItem.rightBarButtonItems = @[barItem1, barItem2];
     self.view.backgroundColor = [UIColor blackColor];
     self.title = @"抖音短视频";
     
@@ -52,7 +53,6 @@
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(playOrPauseVideo)];
     UIBarButtonItem *item3 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFastForward target:self action:@selector(playerForward)];
     UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
-    
     self.toolbarItems = @[space, item1, space, item2, space, item3, space];
         
     NSString *indexStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"selectIndex"];
@@ -62,9 +62,6 @@
     favoriteArray = [favoriteArray mutableCopy];
     if (!favoriteArray) {
         favoriteArray = [[NSMutableArray alloc] init];
-    }
-    if (favoriteArray.count > 0) {
-        self.navigationItem.rightBarButtonItem = item;
     }
     
     manager = [DocumentManager sharedDocumentManager];
@@ -303,6 +300,11 @@
     [alertVC addAction:cancelAction];
     
     UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"随机播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        // 暂停当前播放
+        isPlaying = NO;
+        [currentVC playOrPauseVideo:isPlaying];
+        [self setButtonState];
+        // 切换视频
         selectIndex = arc4random() % _dataArray.count;
         [self prepareView];
         [self showStringHUD:@"随机播放" second:1.5];

@@ -19,8 +19,9 @@
     NSMutableArray *_dataArray;
     FileModel *currentModel;
     
-    NSMutableArray *favoriteArray;
     DocumentManager *manager;
+
+    NSMutableArray *favoriteArray;
     UIButton *favoriteButton;
     
     UIView *gestureView;
@@ -247,6 +248,11 @@
     [alertVC addAction:cancelAction];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"随机播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        // 暂停当前播放
+        isPlaying = NO;
+        [currentVC playOrPauseVideo:isPlaying];
+        [self setButtonState];
+        // 切换视频
         selectIndex = arc4random() % _dataArray.count;
         [self prepareView];
         [self showStringHUD:@"随机播放" second:1.5];
