@@ -146,7 +146,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
                     model.type = 2;
                     model.size = [GLFFileManager fileSize:model.path];
                     model.image = [UIImage imageWithContentsOfFile:model.path];
-                    if (model.size > 500000) { // 大于500K
+                    if (model.size > 1000000) { // 大于1M
                         model.scaleImage = nil;
                     } else {
                         model.scaleImage = model.image;
@@ -186,7 +186,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
                 for (NSInteger i = 0; i < _dataArray1.count; i++) {
                     FileModel *model = _dataArray1[i];
                     if (model.scaleImage == nil) {
-                        UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
+                        CGFloat scale = [self returnScaleSize:model.size];
+                        UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
                         model.scaleImage = scaleImage;
                         [_dataArray1 replaceObjectAtIndex:i withObject:model];
                     }
@@ -194,7 +195,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
                 for (NSInteger i = 0; i < _dataArray2.count; i++) {
                     FileModel *model = _dataArray2[i];
                     if (model.scaleImage == nil) {
-                        UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
+                        CGFloat scale = [self returnScaleSize:model.size];
+                        UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
                         model.scaleImage = scaleImage;
                         [_dataArray2 replaceObjectAtIndex:i withObject:model];
                     }
@@ -202,7 +204,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
                 for (NSInteger i = 0; i < _dataArray3.count; i++) {
                     FileModel *model = _dataArray3[i];
                     if (model.scaleImage == nil) {
-                        UIImage *scaleImage = [self scaleImage:model.image toScale:0.1];
+                        CGFloat scale = [self returnScaleSize:model.size];
+                        UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
                         model.scaleImage = scaleImage;
                         [_dataArray3 replaceObjectAtIndex:i withObject:model];
                     }
@@ -463,6 +466,22 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 #pragma mark Private Method
+- (CGFloat)returnScaleSize:(CGFloat)fileSize {
+    CGFloat scale = 0.1;
+    if (fileSize <= 2000000) {
+        scale = 0.5;
+    } else if (fileSize > 2000000) {
+        scale = 0.2;
+    } else if (fileSize > 4000000) {
+        scale = 0.05;
+    } else if (fileSize > 8000000)  {
+        scale = 0.02;
+    } else {
+        scale = 0.01;
+    }
+    return scale;
+}
+
 // 压缩图片
 - (UIImage *)scaleImage:(UIImage *)image toScale:(float)scaleSize {
     CGFloat imageW = image.size.width * scaleSize;

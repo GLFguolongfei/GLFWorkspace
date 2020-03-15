@@ -86,9 +86,12 @@ HMSingletonM(DocumentManager)
                     [allVideosArray addObject:model];
                     CGSize size = [GLFTools videoSizeWithPath:model.path];
                     model.videoSize = size;
-                    if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
+                    
+                    NSArray *array = [model.name componentsSeparatedByString:@"/"];
+                    NSString *name = array.firstObject;
+                    if ([name isEqualToString:@"抖音"]) {
                         [allDYVideosArray addObject:model];
-                    } else if ([model.name isEqualToString:@"抖音"]) {
+                    } else if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
                         [allDYVideosArray addObject:model];
                     } else {
                         [allNoDYVideosArray addObject:model];
