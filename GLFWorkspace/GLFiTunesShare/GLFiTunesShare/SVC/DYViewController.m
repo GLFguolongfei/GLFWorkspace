@@ -123,6 +123,10 @@
 }
 
 - (void)prepareData {
+    if ((isOtherVideos && manager.allNoDYVideosArray.count == 0) || (manager.allDYVideosArray.count == 0)) {
+        return;
+    } 
+    
     [self hideAllHUD];
     isPlaying = NO;
     [currentVC playOrPauseVideo:isPlaying];

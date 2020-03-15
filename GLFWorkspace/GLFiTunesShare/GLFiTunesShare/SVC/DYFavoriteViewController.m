@@ -52,10 +52,10 @@
     favoriteArray = [favoriteArray mutableCopy];
     
     manager = [DocumentManager sharedDocumentManager];
-    if (manager.allDYVideosArray.count > 0) {
+    if (manager.allVideosArray.count > 0) {
         _dataArray = [[NSMutableArray alloc] init];
-        for (NSInteger i = 0; i < manager.allDYVideosArray.count; i++) {
-            FileModel *model = manager.allDYVideosArray[i];
+        for (NSInteger i = 0; i < manager.allVideosArray.count; i++) {
+            FileModel *model = manager.allVideosArray[i];
             if ([favoriteArray containsObject: model.name]) {
                 [_dataArray addObject:model];
             }
