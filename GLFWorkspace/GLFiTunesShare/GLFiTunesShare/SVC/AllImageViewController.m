@@ -146,7 +146,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
                     model.type = 2;
                     model.size = [GLFFileManager fileSize:model.path];
                     model.image = [UIImage imageWithContentsOfFile:model.path];
-                    if (model.size > 1000000) { // 大于1M
+                    if (model.size > 500000) { // 大于500K
                         model.scaleImage = nil;
                     } else {
                         model.scaleImage = model.image;
