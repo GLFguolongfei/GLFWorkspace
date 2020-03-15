@@ -26,6 +26,13 @@ HMSingletonM(DocumentManager)
         return;
     }
     isEaching = YES;
+    self.allArray = [[NSMutableArray alloc] init];
+    self.allFoldersArray = [[NSMutableArray alloc] init];
+    self.allFilesArray = [[NSMutableArray alloc] init];
+    self.allImagesArray = [[NSMutableArray alloc] init];
+    self.allVideosArray = [[NSMutableArray alloc] init];
+    self.allDYVideosArray = [[NSMutableArray alloc] init];
+    self.allNoDYVideosArray = [[NSMutableArray alloc] init];
     
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths objectAtIndex:0];

@@ -71,9 +71,11 @@
                 [_dataArray addObject:model];
             }
         }
-        selectIndex = arc4random() % _dataArray.count;
-        currentModel = _dataArray[selectIndex];
-        [self prepareView];
+        if (_dataArray.count > 0) {
+            selectIndex = arc4random() % _dataArray.count;
+            currentModel = _dataArray[selectIndex];
+            [self prepareView];
+        }
         NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
         [self showStringHUD:str second:1.5];
     }
@@ -293,18 +295,27 @@
 }
 
 - (void)clearArray {
-    editArray = [[NSMutableArray alloc] init];
-    selectIndex = 0;
-    
-    // 暂停当前播放
-    isPlaying = NO;
-    [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonState];
-    [self prepareView];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    for (NSInteger i = 0; i < editArray.count; i++) {
+        NSString *filePath = [NSString stringWithFormat:@"%@/%@", path, editArray[i]];
+        [GLFFileManager fileDelete:filePath];
+    }
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    [manager eachAllFiles:YES];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:@[] forKey:kRemove];
+    [userDefaults setObject:[[NSMutableArray alloc] init] forKey:kRemove];
     [userDefaults synchronize];
+
+    [self showHUD];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self showStringHUD:@"清空完成" second:1.5];
+    });
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.navigationController popViewControllerAnimated:YES];
+    });
 }
 
 #pragma mark UIPageViewControllerDataSource
