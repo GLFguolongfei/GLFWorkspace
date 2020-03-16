@@ -31,6 +31,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UIView *gestureView;
     BOOL isSuccess;
 
+    NSInteger pageCount;
+    NSInteger pageIndex;
+    
     UITableView *_tableView1;
     UITableView *_tableView2;
     UITableView *_tableView3;
@@ -62,6 +65,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     gravityBeahvior.magnitude = 2.0;
     // 3-添加重力仿真行为
     [animator addBehavior:gravityBeahvior];
+    
+    pageCount = 200;
+    pageIndex = 0;
     
     [self prepareData];
     [self prepareView];
@@ -159,59 +165,73 @@ static NSString *cellID3 = @"ShowTableViewCell3";
             [self hideAllHUD];
             imageArray = resultArray;
             self.title = [NSString stringWithFormat:@"所有图片(%lu)", (unsigned long)resultArray.count];
-            CGFloat height1 = 0;
-            CGFloat height2 = 0;
-            CGFloat height3 = 0;
-            CGFloat width = kScreenWidth/3;
-            for (NSInteger i = 0; i < resultArray.count; i++) {
-                FileModel *model = resultArray[i];
-                if (height1 <= height2 && height1 <= height3) {
-                    [_dataArray1 addObject:model];
-                    CGFloat height = width * model.image.size.height / model.image.size.width;
-                    height1 += height;
-                } else if (height2 <= height1 && height2 <= height3) {
-                    [_dataArray2 addObject:model];
-                    CGFloat height = width * model.image.size.height / model.image.size.width;
-                    height2 += height;
-                } else if (height3 <= height1 && height3 <= height2) {
-                    [_dataArray3 addObject:model];
-                    CGFloat height = width * model.image.size.height / model.image.size.width;
-                    height3 += height;
-                }
-            }
-            [_tableView1 reloadData];
-            [_tableView2 reloadData];
-            [_tableView3 reloadData];
-            dispatch_async(queue, ^{
-                for (NSInteger i = 0; i < _dataArray1.count; i++) {
-                    FileModel *model = _dataArray1[i];
-                    if (model.scaleImage == nil) {
-                        CGFloat scale = [self returnScaleSize:model.size];
-                        UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
-                        model.scaleImage = scaleImage;
-                        [_dataArray1 replaceObjectAtIndex:i withObject:model];
-                    }
-                }
-                for (NSInteger i = 0; i < _dataArray2.count; i++) {
-                    FileModel *model = _dataArray2[i];
-                    if (model.scaleImage == nil) {
-                        CGFloat scale = [self returnScaleSize:model.size];
-                        UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
-                        model.scaleImage = scaleImage;
-                        [_dataArray2 replaceObjectAtIndex:i withObject:model];
-                    }
-                }
-                for (NSInteger i = 0; i < _dataArray3.count; i++) {
-                    FileModel *model = _dataArray3[i];
-                    if (model.scaleImage == nil) {
-                        CGFloat scale = [self returnScaleSize:model.size];
-                        UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
-                        model.scaleImage = scaleImage;
-                        [_dataArray3 replaceObjectAtIndex:i withObject:model];
-                    }
-                }
-            });
+            [self prepareData2];
         });
+    });
+}
+
+- (void)prepareData2 {
+    CGFloat height1 = 0;
+    CGFloat height2 = 0;
+    CGFloat height3 = 0;
+    CGFloat width = kScreenWidth/3;
+    NSInteger count = imageArray.count;
+    if (imageArray.count - pageCount * pageIndex > pageCount) {
+        count = pageCount;
+    } else {
+        count = imageArray.count - pageCount * (pageIndex + 1);
+    }
+    [_dataArray1 removeAllObjects];
+    [_dataArray2 removeAllObjects];
+    [_dataArray3 removeAllObjects];
+    for (NSInteger i = 0; i < count; i++) {
+        FileModel *model = imageArray[pageCount * pageIndex + i];
+        if (height1 <= height2 && height1 <= height3) {
+            [_dataArray1 addObject:model];
+            CGFloat height = width * model.image.size.height / model.image.size.width;
+            height1 += height;
+        } else if (height2 <= height1 && height2 <= height3) {
+            [_dataArray2 addObject:model];
+            CGFloat height = width * model.image.size.height / model.image.size.width;
+            height2 += height;
+        } else if (height3 <= height1 && height3 <= height2) {
+            [_dataArray3 addObject:model];
+            CGFloat height = width * model.image.size.height / model.image.size.width;
+            height3 += height;
+        }
+    }
+    [_tableView1 reloadData];
+    [_tableView2 reloadData];
+    [_tableView3 reloadData];
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        for (NSInteger i = 0; i < _dataArray1.count; i++) {
+            FileModel *model = _dataArray1[i];
+            if (model.scaleImage == nil) {
+                CGFloat scale = [self returnScaleSize:model.size];
+                UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
+                model.scaleImage = scaleImage;
+                [_dataArray1 replaceObjectAtIndex:i withObject:model];
+            }
+        }
+        for (NSInteger i = 0; i < _dataArray2.count; i++) {
+            FileModel *model = _dataArray2[i];
+            if (model.scaleImage == nil) {
+                CGFloat scale = [self returnScaleSize:model.size];
+                UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
+                model.scaleImage = scaleImage;
+                [_dataArray2 replaceObjectAtIndex:i withObject:model];
+            }
+        }
+        for (NSInteger i = 0; i < _dataArray3.count; i++) {
+            FileModel *model = _dataArray3[i];
+            if (model.scaleImage == nil) {
+                CGFloat scale = [self returnScaleSize:model.size];
+                UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
+                model.scaleImage = scaleImage;
+                [_dataArray3 replaceObjectAtIndex:i withObject:model];
+            }
+        }
     });
 }
 
@@ -232,7 +252,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _tableView1.showsVerticalScrollIndicator = NO;
     _tableView1.tableFooterView = [UIView new];
     _tableView1.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView1.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+    _tableView1.contentInset = UIEdgeInsetsMake(0, 0, 200, 0);
 
     _tableView2 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
     _tableView2.delegate = self;
@@ -241,7 +261,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _tableView2.showsVerticalScrollIndicator = NO;
     _tableView2.tableFooterView = [UIView new];
     _tableView2.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView2.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+    _tableView2.contentInset = UIEdgeInsetsMake(0, 0, 200, 0);
 
     _tableView3 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3*2, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
     _tableView3.delegate = self;
@@ -249,7 +269,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [self.view addSubview:_tableView3];
     _tableView3.tableFooterView = [UIView new];
     _tableView3.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView3.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+    _tableView3.contentInset = UIEdgeInsetsMake(0, 0, 200, 0);
 
     [_tableView1 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID1];
     [_tableView2 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID2];
@@ -324,7 +344,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         isSuccess = !isSuccess;
         if (isSuccess) {
             [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
@@ -333,7 +353,29 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
     }];
-    [alertVC addAction:okAction];
+    [alertVC addAction:okAction1];
+    
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"上一页" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        pageIndex--;
+        [self prepareData2];
+    }];
+    if (pageIndex > 0) {
+        okAction2.enabled = YES;
+    } else {
+        okAction2.enabled = NO;
+    }
+    [alertVC addAction:okAction2];
+    
+    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"下一页" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        pageIndex++;
+        [self prepareData2];
+    }];
+    if (pageCount * (pageIndex + 1) < imageArray.count) {
+        okAction3.enabled = YES;
+    } else {
+        okAction3.enabled = NO;
+    }
+    [alertVC addAction:okAction3];
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }
