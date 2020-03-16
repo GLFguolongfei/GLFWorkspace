@@ -189,7 +189,7 @@ HMSingletonM(DocumentManager)
             }
             FileModel *model = self.allImagesArray[i];
             if (model.scaleImage == nil) {
-                NSLog(@"压缩图片(原尺寸): %f", model.size / 1000000.0);
+                NSLog(@"原尺寸: %f", model.size / 1000000.0);
                 count++;
                 CGFloat scale = [self returnScaleSize:model.size];
                 UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
