@@ -37,13 +37,15 @@
     isCanRecord = YES;
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     [manager setVideosImage:5];
-    [manager setScaleImage:5];
-    
+    [manager setScaleImage:2];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *record = [userDefaults objectForKey:kRecord];
     if ([record isEqualToString:@"1"] && isCanRecord) {

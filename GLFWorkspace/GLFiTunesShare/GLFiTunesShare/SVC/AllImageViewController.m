@@ -33,6 +33,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     DocumentManager *manager;
     NSTimer *timer; // 定时器
     
+    NSInteger scrollCount;
+
     UITableView *_tableView1;
     UITableView *_tableView2;
     UITableView *_tableView3;
@@ -65,12 +67,12 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     // 3-添加重力仿真行为
     [animator addBehavior:gravityBeahvior];
     
-    manager = [DocumentManager sharedDocumentManager];
     [self showHUD];
+    manager = [DocumentManager sharedDocumentManager];
     if (manager.allImagesArray.count > 0) {
         DocumentManager *manager = [DocumentManager sharedDocumentManager];
-        [manager setScaleImage:30];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [manager setScaleImage:10];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self prepareData];
         });
     }  else {
@@ -157,6 +159,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         [_tableView1 reloadData];
         [_tableView2 reloadData];
         [_tableView3 reloadData];
+        self.title = [NSString stringWithFormat:@"所有图片(%lu)", (unsigned long)manager.allImagesArray.count];
     }
 }
 
@@ -408,6 +411,36 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 
 - (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller {
     return self.view.frame;
+}
+
+#pragma mark UIScrollViewDelegate
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    // 停止类型1、停止类型2
+    BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
+    if (scrollToScrollStop) {
+        [self scrollViewDidEndScroll];
+    }
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (!decelerate) {
+        // 停止类型3
+        BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
+        if (dragToDragStop) {
+            [self scrollViewDidEndScroll];
+        }
+    }
+}
+
+- (void)scrollViewDidEndScroll {
+    NSLog(@"停止滚动了！！！");
+    scrollCount++;
+    if (scrollCount > 3) {
+        scrollCount = 0;
+        [self prepareData];
+    }
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    [manager setScaleImage:2];
 }
 
 #pragma mark Private Method

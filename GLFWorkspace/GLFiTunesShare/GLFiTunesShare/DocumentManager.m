@@ -13,6 +13,8 @@
 @interface DocumentManager()
 {
     BOOL isEaching;
+    BOOL isVideoSeting;
+    BOOL isScaleImageSeting;
     AVPlayer *player; // 千万不要用作局部变量
 }
 @end
@@ -148,10 +150,18 @@ HMSingletonM(DocumentManager)
         NSCalendarUnit type = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
         NSDateComponents *cmps = [calendar components:type fromDate:startDate toDate:endDate options:0];
         NSLog(@"全局遍历完成,一共用时: %ld分钟%ld秒", cmps.minute, cmps.second);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            isEaching = NO;
+        });
     });
 }
 
 - (void)setVideosImage:(NSInteger)maxCount {
+    if (isVideoSeting) {
+        return;
+    }
+    isVideoSeting = YES;
     if (maxCount <= 0) {
         maxCount = 10;
     }
@@ -173,10 +183,17 @@ HMSingletonM(DocumentManager)
                 [self.allVideosArray replaceObjectAtIndex:i withObject:model];
             }
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            isVideoSeting = NO;
+        });
     });
 }
 
 - (void)setScaleImage:(NSInteger)maxCount {
+    if (isScaleImageSeting) {
+        return;
+    }
+    isScaleImageSeting = YES;
     if (maxCount <= 0) {
         maxCount = 10;
     }
@@ -197,6 +214,9 @@ HMSingletonM(DocumentManager)
                 [self.allImagesArray replaceObjectAtIndex:i withObject:model];
             }
         }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            isScaleImageSeting = NO;
+        });
     });
 }
 
