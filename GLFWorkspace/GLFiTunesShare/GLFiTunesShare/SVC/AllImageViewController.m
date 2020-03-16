@@ -66,6 +66,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [animator addBehavior:gravityBeahvior];
     
     manager = [DocumentManager sharedDocumentManager];
+    [self showHUD];
     if (manager.allImagesArray.count > 0) {
         DocumentManager *manager = [DocumentManager sharedDocumentManager];
         [manager setScaleImage:30];
@@ -73,7 +74,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
             [self prepareData];
         });
     }  else {
-        [self showHUD];
         timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }
