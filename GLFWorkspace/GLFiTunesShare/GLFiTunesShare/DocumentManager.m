@@ -74,6 +74,11 @@ HMSingletonM(DocumentManager)
                 if ([CimgTypeArray containsObject:lowerType]) {
                     model.type = 2;
                     model.image = [UIImage imageWithContentsOfFile:model.path];
+                    if (model.size > 1000000) { // 大于1M
+                        model.scaleImage = nil;
+                    } else {
+                        model.scaleImage = model.image;
+                    }
                     [allImagesArray addObject:model];
                 } else if ([CvideoTypeArray containsObject:lowerType]) {
                     model.type = 3;
@@ -166,6 +171,30 @@ HMSingletonM(DocumentManager)
                     model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
                 #endif
                 [self.allVideosArray replaceObjectAtIndex:i withObject:model];
+            }
+        }
+    });
+}
+
+- (void)setScaleImage:(NSInteger)maxCount {
+    if (maxCount <= 0) {
+        maxCount = 10;
+    }
+    __block NSInteger count = 0;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        for (NSInteger i = 0; i < self.allImagesArray.count; i++) {
+            if (count >= maxCount) {
+                break;
+            }
+            FileModel *model = self.allImagesArray[i];
+            if (model.scaleImage == nil) {
+                NSLog(@"压缩图片(原尺寸): %f", model.size / 1000000.0);
+                count++;
+                CGFloat scale = [self returnScaleSize:model.size];
+                UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
+                model.scaleImage = scaleImage;
+                [self.allImagesArray replaceObjectAtIndex:i withObject:model];
             }
         }
     });
@@ -268,6 +297,25 @@ HMSingletonM(DocumentManager)
 
 - (void)stopPlay {
     [player pause];
+}
+
+#pragma mark Private Method
+- (CGFloat)returnScaleSize:(CGFloat)fileSize {
+    CGFloat scale = 0.1;
+    if (fileSize < 1000000) {
+        scale = 1;
+    } else if (fileSize < 2000000) {
+        scale = 0.8;
+    } else if (fileSize > 4000000) {
+        scale = 0.6;
+    } else if (fileSize < 6000000) {
+        scale = 0.4;
+    } else if (fileSize < 8000000) {
+        scale = 0.2;
+    } else {
+        scale = 0.1;
+    }
+    return scale;
 }
 
 

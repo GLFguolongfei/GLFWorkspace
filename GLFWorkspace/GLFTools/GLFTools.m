@@ -205,13 +205,15 @@
 #pragma mark 缩放
 // 等比率缩放
 + (UIImage *)scaleImage:(UIImage *)image toScale:(float)scaleSize {
-    UIGraphicsBeginImageContext(CGSizeMake(image.size.width * scaleSize, image.size.height * scaleSize));
-    [image drawInRect:CGRectMake(0, 0, image.size.width * scaleSize, image.size.height * scaleSize)];
+    CGFloat imageW = image.size.width * scaleSize;
+    CGFloat imageH = image.size.height * scaleSize;
+    UIGraphicsBeginImageContext(CGSizeMake(imageW, imageH));
+    [image drawInRect:CGRectMake(0, 0, imageW, imageH)];
     UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     return scaledImage;
 }
-                                
+
 // 自定长宽
 + (UIImage *)reSizeImage:(UIImage *)image toSize:(CGSize)reSize {
     UIGraphicsBeginImageContext(CGSizeMake(reSize.width, reSize.height));

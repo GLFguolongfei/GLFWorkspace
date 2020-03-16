@@ -19,7 +19,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 {
     UIDynamicAnimator *animator;          // 动画者
     UIGravityBehavior *gravityBeahvior;   // 仿真行为_重力
-    NSMutableArray *imageArray;
     
     UIImageView *bgImageView;
     
@@ -31,8 +30,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UIView *gestureView;
     BOOL isSuccess;
 
-    NSInteger pageCount;
-    NSInteger pageIndex;
+    DocumentManager *manager;
+    NSTimer *timer; // 定时器
     
     UITableView *_tableView1;
     UITableView *_tableView2;
@@ -66,10 +65,14 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     // 3-添加重力仿真行为
     [animator addBehavior:gravityBeahvior];
     
-    pageCount = 200;
-    pageIndex = 0;
-    
-    [self prepareData];
+    manager = [DocumentManager sharedDocumentManager];
+    if (manager.allImagesArray.count > 0) {
+        [self prepareData];
+    }  else {
+        [self showHUD];
+        timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    }
     [self prepareView];
 }
 
@@ -122,101 +125,35 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)prepareData {
-    [self showHUD];
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *hidden = [userDefaults objectForKey:kContentHidden];
-    
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        NSMutableArray *resultArray = [[NSMutableArray alloc] init];
-        NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
-        for (int i = 0; i < array.count; i++) {
-            if ([array[i] isEqualToString:@"Inbox"]) {
-                continue;
-            }
-            if ([hidden isEqualToString:@"0"] && [array[i] isEqualToString:@"郭龙飞"]) {
-                continue;
-            }
-            FileModel *model = [[FileModel alloc] init];
-            model.name = array[i];
-            model.path = [NSString stringWithFormat:@"%@/%@", path,model.name];
-            NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
-            if (fileType == 1) { // 文件
-                NSArray *array = [model.name componentsSeparatedByString:@"."];
-                NSString *lowerType = [array.lastObject lowercaseString];
-                if ([CimgTypeArray containsObject:lowerType]) {
-                    model.type = 2;
-                    model.size = [GLFFileManager fileSize:model.path];
-                    model.image = [UIImage imageWithContentsOfFile:model.path];
-                    if (model.size > 1000000) { // 大于1M
-                        model.scaleImage = nil;
-                    } else {
-                        model.scaleImage = model.image;
-                    }
-                    [resultArray addObject:model];
-                }
+    if (manager.allVideosArray.count > 0) {
+        [self hideAllHUD];
+        CGFloat height1 = 0;
+        CGFloat height2 = 0;
+        CGFloat height3 = 0;
+        CGFloat width = kScreenWidth/3;
+        _dataArray1 = [[NSMutableArray alloc] init];
+        _dataArray2 = [[NSMutableArray alloc] init];
+        _dataArray3 = [[NSMutableArray alloc] init];
+        for (NSInteger i = 0; i < manager.allImagesArray.count; i++) {
+            FileModel *model = manager.allImagesArray[i];
+            if (height1 <= height2 && height1 <= height3) {
+                [_dataArray1 addObject:model];
+                CGFloat height = width * model.image.size.height / model.image.size.width;
+                height1 += height;
+            } else if (height2 <= height1 && height2 <= height3) {
+                [_dataArray2 addObject:model];
+                CGFloat height = width * model.image.size.height / model.image.size.width;
+                height2 += height;
+            } else if (height3 <= height1 && height3 <= height2) {
+                [_dataArray3 addObject:model];
+                CGFloat height = width * model.image.size.height / model.image.size.width;
+                height3 += height;
             }
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideAllHUD];
-            imageArray = resultArray;
-            self.title = [NSString stringWithFormat:@"所有图片(%lu)", (unsigned long)resultArray.count];
-            [self prepareData2];
-            dispatch_async(queue, ^{
-                for (NSInteger i = 0; i < imageArray.count; i++) {
-                    FileModel *model = imageArray[i];
-                    if (model.scaleImage == nil) {
-                        CGFloat scale = [self returnScaleSize:model.size];
-                        UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
-                        model.scaleImage = scaleImage;
-                        [imageArray replaceObjectAtIndex:i withObject:model];
-                    }
-                }
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self prepareData2];
-                });
-            });
-        });
-    });
-}
-
-- (void)prepareData2 {
-    CGFloat height1 = 0;
-    CGFloat height2 = 0;
-    CGFloat height3 = 0;
-    CGFloat width = kScreenWidth/3;
-    NSInteger count = imageArray.count;
-    if (imageArray.count - pageCount * pageIndex > pageCount) {
-        count = pageCount;
-    } else {
-        count = imageArray.count - pageCount * pageIndex;
+        [_tableView1 reloadData];
+        [_tableView2 reloadData];
+        [_tableView3 reloadData];
     }
-    _dataArray1 = [[NSMutableArray alloc] init];
-    _dataArray2 = [[NSMutableArray alloc] init];
-    _dataArray3 = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < count; i++) {
-        FileModel *model = imageArray[pageCount * pageIndex + i];
-        if (height1 <= height2 && height1 <= height3) {
-            [_dataArray1 addObject:model];
-            CGFloat height = width * model.image.size.height / model.image.size.width;
-            height1 += height;
-        } else if (height2 <= height1 && height2 <= height3) {
-            [_dataArray2 addObject:model];
-            CGFloat height = width * model.image.size.height / model.image.size.width;
-            height2 += height;
-        } else if (height3 <= height1 && height3 <= height2) {
-            [_dataArray3 addObject:model];
-            CGFloat height = width * model.image.size.height / model.image.size.width;
-            height3 += height;
-        }
-    }
-    [_tableView1 reloadData];
-    [_tableView2 reloadData];
-    [_tableView3 reloadData];
 }
 
 - (void)prepareView {
@@ -299,9 +236,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         name = [NSString stringWithFormat:@"nv%ld", nnn];
     }
     UIImage *image = [UIImage imageNamed:name];
-    if (imageArray.count > 0) {
-        NSInteger mmm = arc4random() % imageArray.count;
-        FileModel *model = imageArray[mmm];
+    if (manager.allImagesArray.count > 0) {
+        NSInteger mmm = arc4random() % manager.allImagesArray.count;
+        FileModel *model = manager.allImagesArray[mmm];
         image = [UIImage imageWithContentsOfFile:model.path];
     }
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
@@ -328,7 +265,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         isSuccess = !isSuccess;
         if (isSuccess) {
             [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
@@ -337,29 +274,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
     }];
-    [alertVC addAction:okAction1];
-    
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"上一页" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        pageIndex--;
-        [self prepareData2];
-    }];
-    if (pageIndex > 0) {
-        okAction2.enabled = YES;
-    } else {
-        okAction2.enabled = NO;
-    }
-    [alertVC addAction:okAction2];
-    
-    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"下一页" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        pageIndex++;
-        [self prepareData2];
-    }];
-    if (pageCount * (pageIndex + 1) < imageArray.count) {
-        okAction3.enabled = YES;
-    } else {
-        okAction3.enabled = NO;
-    }
-    [alertVC addAction:okAction3];
+    [alertVC addAction:okAction];
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }
@@ -405,7 +320,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.scaleImage == nil) {
-            cell.scaleImageView.image = [self scaleImage:model.image toScale:0.1];
+            cell.scaleImageView.image = [GLFTools scaleImage:model.image toScale:0.1];
         } else {
             cell.scaleImageView.image = model.scaleImage;
         }
@@ -415,7 +330,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID2 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.scaleImage == nil) {
-            cell.scaleImageView.image = [self scaleImage:model.image toScale:0.1];
+            cell.scaleImageView.image = [GLFTools scaleImage:model.image toScale:0.1];
         } else {
             cell.scaleImageView.image = model.scaleImage;
         }
@@ -425,7 +340,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID3 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.scaleImage == nil) {
-            cell.scaleImageView.image = [self scaleImage:model.image toScale:0.1];
+            cell.scaleImageView.image = [GLFTools scaleImage:model.image toScale:0.1];
         } else {
             cell.scaleImageView.image = model.scaleImage;
         }
@@ -455,8 +370,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         }
     } else {
         DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
-        detailVC.selectIndex = [self returnIndex:imageArray with:model];
-        detailVC.fileArray = imageArray;
+        detailVC.selectIndex = [self returnIndex:manager.allImagesArray with:model];
+        detailVC.fileArray = manager.allImagesArray;
         [self.navigationController pushViewController:detailVC animated:YES];
     }
 }
@@ -492,33 +407,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 #pragma mark Private Method
-- (CGFloat)returnScaleSize:(CGFloat)fileSize {
-    CGFloat scale = 0.1;
-    if (fileSize <= 2000000) {
-        scale = 0.5;
-    } else if (fileSize > 2000000) {
-        scale = 0.2;
-    } else if (fileSize > 4000000) {
-        scale = 0.05;
-    } else if (fileSize > 8000000)  {
-        scale = 0.02;
-    } else {
-        scale = 0.01;
-    }
-    return scale;
-}
-
-// 压缩图片
-- (UIImage *)scaleImage:(UIImage *)image toScale:(float)scaleSize {
-    CGFloat imageW = image.size.width * scaleSize;
-    CGFloat imageH = image.size.height * scaleSize;
-    UIGraphicsBeginImageContext(CGSizeMake(imageW, imageH));
-    [image drawInRect:CGRectMake(0, 0, imageW, imageH)];
-    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return scaledImage;
-}
-
 // 获取元素在数组中的下标
 - (NSInteger)returnIndex:(NSArray *)array with:(FileModel *)model {
     NSInteger index = 0;

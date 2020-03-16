@@ -90,6 +90,7 @@
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     [manager eachAllFiles:NO];
     [manager setVideosImage:10];
+    [manager setScaleImage:10];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

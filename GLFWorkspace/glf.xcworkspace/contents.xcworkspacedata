@@ -8,6 +8,376 @@
       location = "group:GLFTools"
       name = "GLFTools">
       <Group
+         location = "group:SDWebImage"
+         name = "SDWebImage">
+         <Group
+            location = "group:Core"
+            name = "Core">
+            <FileRef
+               location = "group:SDAnimatedImageRep.h">
+            </FileRef>
+            <FileRef
+               location = "group:NSImage+Compatibility.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDDiskCache.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDAnimatedImageView+WebCache.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageIOCoder.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCoder.m">
+            </FileRef>
+            <FileRef
+               location = "group:NSButton+WebCache.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageGraphics.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIImageView+WebCache.h">
+            </FileRef>
+            <FileRef
+               location = "group:NSData+ImageContentType.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageTransformer.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCachesManager.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageTransition.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageLoadersManager.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageDownloaderOperation.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIImageView+HighlightedWebCache.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageFrame.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageGIFCoder.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCache.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageDownloaderConfig.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDAnimatedImage.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDAnimatedImageView.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIImage+ForceDecode.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCacheConfig.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageCacheKeyFilter.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIImage+Transform.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIImage+MemoryCacheCost.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageDownloader.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCacheDefine.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageLoader.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageCacheSerializer.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageIndicator.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIImage+GIF.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCodersManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIButton+WebCache.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageDownloaderRequestModifier.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIImage+MultiFormat.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDMemoryCache.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIImage+Metadata.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageCompat.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageAPNGCoder.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageError.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImagePrefetcher.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCoderHelper.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageOptionsProcessor.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIView+WebCache.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIView+WebCacheOperation.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageDefine.h">
+            </FileRef>
+            <FileRef
+               location = "group:NSButton+WebCache.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCoder.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageIOCoder.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDAnimatedImageView+WebCache.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDDiskCache.m">
+            </FileRef>
+            <FileRef
+               location = "group:NSImage+Compatibility.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDAnimatedImageRep.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDAnimatedImageView.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageDownloaderConfig.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDAnimatedImage.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCache.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageGIFCoder.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIImageView+HighlightedWebCache.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageFrame.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageDownloaderOperation.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageLoadersManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCachesManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageTransition.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageManager.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageTransformer.m">
+            </FileRef>
+            <FileRef
+               location = "group:NSData+ImageContentType.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIImageView+WebCache.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageOperation.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageGraphics.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageIndicator.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageCacheSerializer.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageLoader.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCacheDefine.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageDownloader.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIImage+MemoryCacheCost.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIImage+Transform.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCacheConfig.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageCacheKeyFilter.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIImage+ForceDecode.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageDefine.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCoderHelper.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageOptionsProcessor.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIView+WebCacheOperation.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIView+WebCache.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImagePrefetcher.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageAPNGCoder.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageError.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageCompat.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDMemoryCache.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIImage+Metadata.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIImage+MultiFormat.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIButton+WebCache.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDWebImageDownloaderRequestModifier.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCodersManager.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIImage+GIF.h">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:MapKit"
+            name = "MapKit">
+            <FileRef
+               location = "group:MKAnnotationView+WebCache.m">
+            </FileRef>
+            <FileRef
+               location = "group:MKAnnotationView+WebCache.h">
+            </FileRef>
+         </Group>
+         <Group
+            location = "group:Private"
+            name = "Private">
+            <FileRef
+               location = "group:SDWeakProxy.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCachesManagerOperation.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDInternalMacros.h">
+            </FileRef>
+            <FileRef
+               location = "group:NSBezierPath+RoundedCorners.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageAssetManager.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageAPNGCoderInternal.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDAsyncBlockOperation.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageGIFCoderInternal.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIColor+HexString.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDmetamacros.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDWeakProxy.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDInternalMacros.m">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageCachesManagerOperation.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDImageAssetManager.h">
+            </FileRef>
+            <FileRef
+               location = "group:SDAsyncBlockOperation.m">
+            </FileRef>
+            <FileRef
+               location = "group:NSBezierPath+RoundedCorners.m">
+            </FileRef>
+            <FileRef
+               location = "group:UIColor+HexString.m">
+            </FileRef>
+         </Group>
+      </Group>
+      <Group
          location = "group:WebViewJavascriptBridge"
          name = "WebViewJavascriptBridge">
          <FileRef

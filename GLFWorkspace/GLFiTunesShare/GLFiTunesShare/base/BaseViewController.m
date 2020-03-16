@@ -42,6 +42,7 @@
     
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     [manager setVideosImage:5];
+    [manager setScaleImage:5];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *record = [userDefaults objectForKey:kRecord];
