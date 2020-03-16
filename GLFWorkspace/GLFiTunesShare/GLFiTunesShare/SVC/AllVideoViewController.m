@@ -41,16 +41,12 @@ static NSString *cellID = @"VideoTableViewCell";
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"文字" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.title = @"所有视频";
-        
-    [self showHUD];
+            
     manager = [DocumentManager sharedDocumentManager];
     if (manager.allVideosArray.count > 0) {
-        DocumentManager *manager = [DocumentManager sharedDocumentManager];
-        [manager setVideosImage:20];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self prepareData];
-        });
+        [self prepareData];
     }  else {
+        [self showHUD];
         timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }

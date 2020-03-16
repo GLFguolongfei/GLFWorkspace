@@ -29,7 +29,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     
     UIView *gestureView;
     BOOL isSuccess;
-
+    
     DocumentManager *manager;
     NSTimer *timer; // 定时器
     
@@ -67,15 +67,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     // 3-添加重力仿真行为
     [animator addBehavior:gravityBeahvior];
     
-    [self showHUD];
     manager = [DocumentManager sharedDocumentManager];
     if (manager.allImagesArray.count > 0) {
-        DocumentManager *manager = [DocumentManager sharedDocumentManager];
-        [manager setScaleImage:10];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self prepareData];
-        });
+        [self prepareData];
     }  else {
+        [self showHUD];
         timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }
@@ -131,8 +127,15 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)prepareData {
-    if (manager.allVideosArray.count > 0) {
+    if (manager.allImagesArray.count > 0) {
         [self hideAllHUD];
+        [timer invalidate];
+        timer = nil;
+        NSInteger startIndex = 0;
+        if (manager.allImagesArray.count > 300) {
+            startIndex = arc4random() % (manager.allImagesArray.count - 300);
+            [self showStringHUD:@"图片太多，随机显示300张" second:1.5];
+        }
         CGFloat height1 = 0;
         CGFloat height2 = 0;
         CGFloat height3 = 0;
@@ -140,7 +143,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         _dataArray1 = [[NSMutableArray alloc] init];
         _dataArray2 = [[NSMutableArray alloc] init];
         _dataArray3 = [[NSMutableArray alloc] init];
-        for (NSInteger i = 0; i < manager.allImagesArray.count; i++) {
+        for (NSInteger i = startIndex; i < manager.allImagesArray.count; i++) {
             FileModel *model = manager.allImagesArray[i];
             if (height1 <= height2 && height1 <= height3) {
                 [_dataArray1 addObject:model];
@@ -272,7 +275,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         isSuccess = !isSuccess;
         if (isSuccess) {
             [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
@@ -281,7 +284,14 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
     }];
-    [alertVC addAction:okAction];
+    [alertVC addAction:okAction1];
+    
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"刷新数据" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self prepareData];
+        DocumentManager *manager = [DocumentManager sharedDocumentManager];
+        [manager setScaleImage:2];
+    }];
+    [alertVC addAction:okAction2];
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }
@@ -411,36 +421,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 
 - (CGRect)documentInteractionControllerRectForPreview:(UIDocumentInteractionController *)controller {
     return self.view.frame;
-}
-
-#pragma mark UIScrollViewDelegate
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    // 停止类型1、停止类型2
-    BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
-    if (scrollToScrollStop) {
-        [self scrollViewDidEndScroll];
-    }
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (!decelerate) {
-        // 停止类型3
-        BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
-        if (dragToDragStop) {
-            [self scrollViewDidEndScroll];
-        }
-    }
-}
-
-- (void)scrollViewDidEndScroll {
-    NSLog(@"停止滚动了！！！");
-    scrollCount++;
-    if (scrollCount > 3) {
-        scrollCount = 0;
-        [self prepareData];
-    }
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    [manager setScaleImage:2];
 }
 
 #pragma mark Private Method
