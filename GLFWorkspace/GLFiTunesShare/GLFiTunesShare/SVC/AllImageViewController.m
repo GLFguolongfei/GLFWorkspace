@@ -19,7 +19,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 {
     UIDynamicAnimator *animator;          // 动画者
     UIGravityBehavior *gravityBeahvior;   // 仿真行为_重力
-    NSArray *imageArray;
+    NSMutableArray *imageArray;
     
     UIImageView *bgImageView;
     
@@ -166,6 +166,20 @@ static NSString *cellID3 = @"ShowTableViewCell3";
             imageArray = resultArray;
             self.title = [NSString stringWithFormat:@"所有图片(%lu)", (unsigned long)resultArray.count];
             [self prepareData2];
+            dispatch_async(queue, ^{
+                for (NSInteger i = 0; i < imageArray.count; i++) {
+                    FileModel *model = imageArray[i];
+                    if (model.scaleImage == nil) {
+                        CGFloat scale = [self returnScaleSize:model.size];
+                        UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
+                        model.scaleImage = scaleImage;
+                        [imageArray replaceObjectAtIndex:i withObject:model];
+                    }
+                }
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self prepareData2];
+                });
+            });
         });
     });
 }
@@ -203,36 +217,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [_tableView1 reloadData];
     [_tableView2 reloadData];
     [_tableView3 reloadData];
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        for (NSInteger i = 0; i < _dataArray1.count; i++) {
-            FileModel *model = _dataArray1[i];
-            if (model.scaleImage == nil) {
-                CGFloat scale = [self returnScaleSize:model.size];
-                UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
-                model.scaleImage = scaleImage;
-                [_dataArray1 replaceObjectAtIndex:i withObject:model];
-            }
-        }
-        for (NSInteger m = 0; m < _dataArray2.count; m++) {
-            FileModel *model = _dataArray2[m];
-            if (model.scaleImage == nil) {
-                CGFloat scale = [self returnScaleSize:model.size];
-                UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
-                model.scaleImage = scaleImage;
-                [_dataArray2 replaceObjectAtIndex:m withObject:model];
-            }
-        }
-        for (NSInteger n = 0; n < _dataArray3.count; n++) {
-            FileModel *model = _dataArray3[n];
-            if (model.scaleImage == nil) {
-                CGFloat scale = [self returnScaleSize:model.size];
-                UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
-                model.scaleImage = scaleImage;
-                [_dataArray3 replaceObjectAtIndex:n withObject:model];
-            }
-        }
-    });
 }
 
 - (void)prepareView {
