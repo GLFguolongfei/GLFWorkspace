@@ -33,7 +33,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     DocumentManager *manager;
     NSTimer *timer; // 定时器
     
-    NSInteger scrollCount;
+    NSInteger pageCount;
+    NSInteger pageIndex;
 
     UITableView *_tableView1;
     UITableView *_tableView2;
@@ -58,6 +59,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _dataArray1 = [[NSMutableArray alloc] init];
     _dataArray2 = [[NSMutableArray alloc] init];
     _dataArray3 = [[NSMutableArray alloc] init];
+    
+    pageCount = 300;
+    pageIndex = 0;
 
     // 1-动画者
     animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -131,10 +135,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         [self hideAllHUD];
         [timer invalidate];
         timer = nil;
-        NSInteger startIndex = 0;
-        if (manager.allImagesArray.count > 300) {
-            startIndex = arc4random() % (manager.allImagesArray.count - 300);
-            [self showStringHUD:@"图片太多，随机显示300张" second:1.5];
+        NSInteger count = pageCount;
+        if (manager.allImagesArray.count - pageCount * pageIndex < pageCount) {
+            count = manager.allImagesArray.count - pageCount * pageIndex;
         }
         CGFloat height1 = 0;
         CGFloat height2 = 0;
@@ -143,8 +146,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         _dataArray1 = [[NSMutableArray alloc] init];
         _dataArray2 = [[NSMutableArray alloc] init];
         _dataArray3 = [[NSMutableArray alloc] init];
-        for (NSInteger i = startIndex; i < manager.allImagesArray.count; i++) {
-            FileModel *model = manager.allImagesArray[i];
+        for (NSInteger i = 0; i < count; i++) {
+            FileModel *model = manager.allImagesArray[pageCount * pageIndex + i];
             if (height1 <= height2 && height1 <= height3) {
                 [_dataArray1 addObject:model];
                 CGFloat height = width * model.image.size.height / model.image.size.width;
@@ -286,12 +289,33 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     }];
     [alertVC addAction:okAction1];
     
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"刷新数据" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    NSString *str1 = [NSString stringWithFormat:@"上一页(%ld)", pageIndex];
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:str1 style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        pageIndex--;
         [self prepareData];
         DocumentManager *manager = [DocumentManager sharedDocumentManager];
         [manager setScaleImage:2];
     }];
+    if (pageIndex == 0) {
+        okAction2.enabled = NO;
+    } else {
+        okAction2.enabled = YES;
+    }
     [alertVC addAction:okAction2];
+    
+    NSString *str2 = [NSString stringWithFormat:@"下一页(%ld)", pageIndex + 2];
+    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:str2 style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        pageIndex++;
+        [self prepareData];
+        DocumentManager *manager = [DocumentManager sharedDocumentManager];
+        [manager setScaleImage:2];
+    }];
+    if ((pageIndex + 1) * pageCount >= manager.allImagesArray.count) {
+        okAction3.enabled = NO;
+    } else {
+        okAction3.enabled = YES;
+    }
+    [alertVC addAction:okAction3];
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }
