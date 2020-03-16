@@ -327,7 +327,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.scaleImage == nil) {
-            cell.scaleImageView.image = [GLFTools scaleImage:model.image toScale:0.1];
+            cell.scaleImageView.image = [GLFTools scaleImage:model.image toScale:0.2];
         } else {
             cell.scaleImageView.image = model.scaleImage;
         }
@@ -337,7 +337,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID2 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.scaleImage == nil) {
-            cell.scaleImageView.image = [GLFTools scaleImage:model.image toScale:0.1];
+            cell.scaleImageView.image = [GLFTools scaleImage:model.image toScale:0.2];
         } else {
             cell.scaleImageView.image = model.scaleImage;
         }
@@ -347,7 +347,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID3 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.scaleImage == nil) {
-            cell.scaleImageView.image = [GLFTools scaleImage:model.image toScale:0.1];
+            cell.scaleImageView.image = [GLFTools scaleImage:model.image toScale:0.2];
         } else {
             cell.scaleImageView.image = model.scaleImage;
         }

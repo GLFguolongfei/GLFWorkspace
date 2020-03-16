@@ -324,13 +324,7 @@ HMSingletonM(DocumentManager)
     CGFloat scale = 0.1;
     if (fileSize < 1000000) {
         scale = 1;
-    } else if (fileSize < 2000000) {
-        scale = 0.8;
-    } else if (fileSize > 4000000) {
-        scale = 0.6;
-    } else if (fileSize < 6000000) {
-        scale = 0.4;
-    } else if (fileSize < 8000000) {
+    } else if (fileSize < 5000000) {
         scale = 0.2;
     } else {
         scale = 0.1;
