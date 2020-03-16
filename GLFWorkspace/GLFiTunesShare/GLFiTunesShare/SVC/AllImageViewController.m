@@ -179,11 +179,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     if (imageArray.count - pageCount * pageIndex > pageCount) {
         count = pageCount;
     } else {
-        count = imageArray.count - pageCount * (pageIndex + 1);
+        count = imageArray.count - pageCount * pageIndex;
     }
-    [_dataArray1 removeAllObjects];
-    [_dataArray2 removeAllObjects];
-    [_dataArray3 removeAllObjects];
+    _dataArray1 = [[NSMutableArray alloc] init];
+    _dataArray2 = [[NSMutableArray alloc] init];
+    _dataArray3 = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < count; i++) {
         FileModel *model = imageArray[pageCount * pageIndex + i];
         if (height1 <= height2 && height1 <= height3) {
@@ -214,22 +214,22 @@ static NSString *cellID3 = @"ShowTableViewCell3";
                 [_dataArray1 replaceObjectAtIndex:i withObject:model];
             }
         }
-        for (NSInteger i = 0; i < _dataArray2.count; i++) {
-            FileModel *model = _dataArray2[i];
+        for (NSInteger m = 0; m < _dataArray2.count; m++) {
+            FileModel *model = _dataArray2[m];
             if (model.scaleImage == nil) {
                 CGFloat scale = [self returnScaleSize:model.size];
                 UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
                 model.scaleImage = scaleImage;
-                [_dataArray2 replaceObjectAtIndex:i withObject:model];
+                [_dataArray2 replaceObjectAtIndex:m withObject:model];
             }
         }
-        for (NSInteger i = 0; i < _dataArray3.count; i++) {
-            FileModel *model = _dataArray3[i];
+        for (NSInteger n = 0; n < _dataArray3.count; n++) {
+            FileModel *model = _dataArray3[n];
             if (model.scaleImage == nil) {
                 CGFloat scale = [self returnScaleSize:model.size];
                 UIImage *scaleImage = [self scaleImage:model.image toScale:scale];
                 model.scaleImage = scaleImage;
-                [_dataArray3 replaceObjectAtIndex:i withObject:model];
+                [_dataArray3 replaceObjectAtIndex:n withObject:model];
             }
         }
     });
