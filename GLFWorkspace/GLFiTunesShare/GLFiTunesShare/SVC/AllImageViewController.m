@@ -67,7 +67,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     
     manager = [DocumentManager sharedDocumentManager];
     if (manager.allImagesArray.count > 0) {
-        [self prepareData];
+        DocumentManager *manager = [DocumentManager sharedDocumentManager];
+        [manager setScaleImage:30];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self prepareData];
+        });
     }  else {
         [self showHUD];
         timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
