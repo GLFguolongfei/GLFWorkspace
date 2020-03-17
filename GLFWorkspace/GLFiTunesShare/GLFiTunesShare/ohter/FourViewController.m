@@ -14,6 +14,7 @@
 {
     AVCaptureSession *captureSession;
     AVCaptureDeviceInput *captureDeviceInput;
+    AVCaptureDeviceInput *audioCaptureDeviceInput;
     AVCaptureMovieFileOutput *captureMovieFileOutput; // 视频输出流
     AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
     
@@ -88,7 +89,7 @@
         return;
     }
     
-    AVCaptureDeviceInput *audioCaptureDeviceInput = [[AVCaptureDeviceInput alloc]initWithDevice:audioCaptureDevice error:&error];
+    audioCaptureDeviceInput = [[AVCaptureDeviceInput alloc]initWithDevice:audioCaptureDevice error:&error];
     if (error) {
         NSLog(@"%@", error);
         return;
@@ -102,6 +103,8 @@
     
     // 3-AVCaptureMovieFileOutput
     captureMovieFileOutput = [[AVCaptureMovieFileOutput alloc]init];
+    // 默认值就是10秒,解决录制超过10秒没声音的Bug
+    captureMovieFileOutput.movieFragmentInterval = kCMTimeInvalid;
     
     // 将设备输出添加到会话中
     if ([captureSession canAddOutput:captureMovieFileOutput]) {
