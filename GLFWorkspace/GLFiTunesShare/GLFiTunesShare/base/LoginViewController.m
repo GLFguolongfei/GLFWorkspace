@@ -10,7 +10,7 @@
 #import <LocalAuthentication/LocalAuthentication.h>
 #import "RootViewController.h"
 
-@interface LoginViewController ()
+@interface LoginViewController ()<UITextFieldDelegate>
 {
     UITextField *textField;
     UIButton *button;
@@ -41,6 +41,7 @@
     textField.layer.cornerRadius = 5;
     textField.layer.borderWidth = 1;
     textField.layer.borderColor = [UIColor lightGrayColor].CGColor;
+//    textField.delegate = self;
     [self.view addSubview:textField];
     // 左侧加View
     CGRect frame = [textField frame];
@@ -147,6 +148,14 @@
             }
         }];
     }
+}
+
+#pragma mark UITextFieldDelegate
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
+    if (textField.text.length > 5) {
+        return NO;
+    }
+    return YES;
 }
 
 
