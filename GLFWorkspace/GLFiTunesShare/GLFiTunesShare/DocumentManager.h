@@ -26,6 +26,7 @@ HMSingletonH(DocumentManager)
 @property (nonatomic, strong) NSMutableArray *allDYVideosArray; // 抖音视频
 @property (nonatomic, strong) NSMutableArray *allNoDYVideosArray; // 其它视频(非抖音视频)
 
+#pragma mark 文件操作
 - (void)eachAllFiles:(BOOL)isForce;
 - (void)setVideosImage:(NSInteger)maxCount;
 - (void)setScaleImage:(NSInteger)maxCount;
@@ -35,6 +36,7 @@ HMSingletonH(DocumentManager)
 - (void)removeRemoveModel:(FileModel *)model;
 + (void)updateDocumentPaths;
 
+#pragma mark 播放音乐
 - (void)startPlay;
 - (void)stopPlay;
 

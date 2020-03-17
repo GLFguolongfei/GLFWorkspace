@@ -23,6 +23,8 @@
 
 HMSingletonM(DocumentManager)
 
+
+#pragma mark - 文件操作
 - (void)eachAllFiles:(BOOL)isForce {
     if (isEaching && !isForce) {
         return;
@@ -304,7 +306,7 @@ HMSingletonM(DocumentManager)
     }
 }
 
-#pragma mark -------- 背景音乐
+#pragma mark - 播放音乐
 - (void)startPlay {
     if (player) {
         [player play];
@@ -319,7 +321,7 @@ HMSingletonM(DocumentManager)
     [player pause];
 }
 
-#pragma mark Private Method
+#pragma mark - Private Method
 - (CGFloat)returnScaleSize:(CGFloat)fileSize {
     CGFloat scale = 0.1;
     if (fileSize < 1000000) {
