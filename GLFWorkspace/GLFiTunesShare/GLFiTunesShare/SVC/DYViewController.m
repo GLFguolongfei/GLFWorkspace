@@ -153,6 +153,9 @@
         timer = nil;
         _dataArray = manager.allDYVideosArray;
     }
+    if (selectIndex >= _dataArray.count) {
+        selectIndex = arc4random() % _dataArray.count;
+    }
     currentModel = _dataArray[selectIndex];
     [self prepareView];
     NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
