@@ -38,6 +38,19 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     [self reSetVCTitle];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *record = [userDefaults objectForKey:kRecord];
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    if ([record isEqualToString:@"1"]) {
+        if (![manager isRecording]) {
+            [manager startRecording];
+        }
+    } else {
+        if ([manager isRecording]) {
+            [manager stopRecording];
+        }
+    }
 }
 
 #pragma mark HUD指示器
@@ -198,9 +211,8 @@
 }
 
 - (void)reSetVCTitle {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *record = [userDefaults objectForKey:kRecord];
-    if ([record isEqualToString:@"1"]) {
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    if ([manager isRecording]) {
         if (![self.title hasPrefix:@"["] && ![self.title hasSuffix:@"]"]) {
             self.title = [NSString stringWithFormat:@"[%@]", self.title];
         }
