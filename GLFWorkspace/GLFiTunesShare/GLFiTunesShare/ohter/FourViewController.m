@@ -33,7 +33,7 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"自定义录像";
+    [self setVCTitle:@"自定义录像"];
 
     timeCount = 0;
     

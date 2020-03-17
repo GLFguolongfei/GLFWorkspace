@@ -39,14 +39,15 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     item1 = [[UIBarButtonItem alloc] initWithTitle:@"减小" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
     item2 = [[UIBarButtonItem alloc] initWithTitle:@"增大" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
-    self.title = @"所有视频";
+    [self setVCTitle:@"所有视频"];
     
     cellHeight = 100;
         
     manager = [DocumentManager sharedDocumentManager];
     if (manager.allVideosArray.count > 0) {
         _dataArray = manager.allVideosArray;
-        self.title = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+        NSString *titleStr = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+        [self setVCTitle:titleStr];
         [self prepareView];
     }
 }

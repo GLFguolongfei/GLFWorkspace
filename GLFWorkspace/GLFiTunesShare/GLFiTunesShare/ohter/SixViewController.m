@@ -22,8 +22,8 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"日常小玩意";
-
+    [self setVCTitle:@"日常小玩意"];
+    
     myDataArray = @[@"数学绘图"];
    
     CGRect react = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);

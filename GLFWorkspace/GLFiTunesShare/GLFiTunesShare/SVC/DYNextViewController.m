@@ -39,9 +39,9 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     if (self.pageType == 1) {
-        self.title = @"抖音短视频";
+        [self setVCTitle:@"抖音短视频"];
     } else {
-        self.title = @"垃圾篓视频";
+        [self setVCTitle:@"垃圾篓视频"];
         UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(clearArray)];
         self.navigationItem.rightBarButtonItem = barItem;
     }
@@ -221,7 +221,7 @@
 
 - (void)setLabelTitle {
     NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
-    self.title = array.lastObject;
+    [self setVCTitle:array.lastObject];
     
     NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
     CGRect calculateRect = [self.title boundingRectWithSize:CGSizeMake(kScreenWidth - 130, MAXFLOAT)

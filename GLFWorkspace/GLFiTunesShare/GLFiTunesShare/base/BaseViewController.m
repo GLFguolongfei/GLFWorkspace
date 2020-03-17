@@ -37,10 +37,10 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [self reSetTitle];
+    [self reSetVCTitle];
 }
 
-#pragma mark - HUD指示器
+#pragma mark HUD指示器
 // 功能:显示hud
 - (void)showHUD {
     [self hideAllHUD];
@@ -94,7 +94,7 @@
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
 
-#pragma mark - 发散光源
+#pragma mark 发散光源
 - (void)setupEmitter1 {
     // 1.设置 CAEmitterLayer
     colorBallLayer = [CAEmitterLayer layer];
@@ -191,8 +191,13 @@
     [snowEmitterLayer removeFromSuperlayer];
 }
 
-#pragma mark Tools
-- (void)reSetTitle {
+#pragma mark 设置标题
+- (void)setVCTitle:(NSString *)title {
+    self.title = title;
+    [self reSetVCTitle];
+}
+
+- (void)reSetVCTitle {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *record = [userDefaults objectForKey:kRecord];
     if ([record isEqualToString:@"1"]) {
@@ -207,5 +212,6 @@
         }
     }
 }
+
 
 @end

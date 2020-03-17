@@ -27,6 +27,8 @@
 - (void)setupEmitter1;
 - (void)setupEmitter2;
 - (void)removeEmitter;
-
+#pragma mark 设置标题
+- (void)setVCTitle:(NSString *)title;
+- (void)reSetVCTitle;
 
 @end

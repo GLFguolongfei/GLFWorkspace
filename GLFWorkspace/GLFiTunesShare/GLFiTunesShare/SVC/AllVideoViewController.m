@@ -40,7 +40,7 @@ static NSString *cellID = @"VideoTableViewCell";
     UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"图文" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"文字" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
-    self.title = @"所有视频";
+    [self setVCTitle:@"所有视频"];
             
     manager = [DocumentManager sharedDocumentManager];
     if (manager.allVideosArray.count > 0) {
@@ -90,7 +90,8 @@ static NSString *cellID = @"VideoTableViewCell";
         timer = nil;
         _dataArray = manager.allVideosArray;
         [_tableView reloadData];
-        self.title = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)manager.allVideosArray.count];
+        NSString *titleStr = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)manager.allVideosArray.count];
+        [self setVCTitle:titleStr];
     }
 }
 

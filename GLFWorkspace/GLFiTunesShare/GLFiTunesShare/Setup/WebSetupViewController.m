@@ -23,7 +23,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"设置内容显示";
+    [self setVCTitle:@"设置内容显示"];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *xuanfu = [userDefaults objectForKey:kWebContentXuanFu];
@@ -189,14 +189,16 @@
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kRecord];
-        [self showStringHUD:@"慎重打开, 很浪费空间的！！！" second:1.5];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self showStringHUD:@"慎重打开, 很浪费空间的！！！" second:2];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [manager startRecording];
+            [self reSetVCTitle];
         });
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kRecord];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [manager stopRecording];
+            [self reSetVCTitle];
         });
     }
     [[NSUserDefaults standardUserDefaults] synchronize];

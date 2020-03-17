@@ -219,9 +219,9 @@
 - (void)prepareInterface {
     // 导航栏UINavigationBar
     if (self.titleStr.length > 0) {
-        self.title = self.titleStr;
+        [self setVCTitle:self.titleStr];
     } else {
-        self.title = @"NSDocumentDirectory";
+        [self setVCTitle:@"NSDocumentDirectory"];
         UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
         self.navigationItem.leftBarButtonItem = item;
     }

@@ -44,7 +44,7 @@
     subVC.currentIndex = self.selectIndex;
     subVC.model = self.fileArray[self.selectIndex];
     NSArray *array = [subVC.model.name componentsSeparatedByString:@"/"];
-    self.title = array.lastObject;
+    [self setVCTitle:array.lastObject];
     currentVC = subVC;
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
@@ -157,7 +157,7 @@
     NSInteger currentIndex = currentVC.currentIndex;
     FileModel *currentModel = self.fileArray[currentIndex];
     NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
-    self.title = array.lastObject;
+    [self setVCTitle:array.lastObject];
 }
 
 // 结束滚动或翻页的时候触发

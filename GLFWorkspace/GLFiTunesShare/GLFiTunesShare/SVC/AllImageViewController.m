@@ -54,7 +54,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     self.view.backgroundColor = [UIColor whiteColor];
     item = [[UIBarButtonItem alloc] initWithTitle:@"自动播放" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
     self.navigationItem.rightBarButtonItem = item;
-    self.title = @"所有图片";
+    [self setVCTitle:@"所有图片"];
     
     _dataArray1 = [[NSMutableArray alloc] init];
     _dataArray2 = [[NSMutableArray alloc] init];
@@ -165,7 +165,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         [_tableView1 reloadData];
         [_tableView2 reloadData];
         [_tableView3 reloadData];
-        self.title = [NSString stringWithFormat:@"所有图片(%lu)", (unsigned long)manager.allImagesArray.count];
+        NSString *title = [NSString stringWithFormat:@"所有图片(%lu)", (unsigned long)manager.allImagesArray.count];
+        [self setVCTitle:title];
     }
 }
 

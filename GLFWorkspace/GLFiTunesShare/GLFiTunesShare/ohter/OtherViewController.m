@@ -28,7 +28,7 @@
     self.view.backgroundColor = [UIColor blackColor];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"测试功能" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
 //    self.navigationItem.rightBarButtonItem = item;
-    self.title = @"有趣功能";
+    [self setVCTitle:@"有趣功能"];
 
     for (NSInteger i = 0; i < 6; i++) {
         CGFloat width = (kScreenWidth - 60) / 2;

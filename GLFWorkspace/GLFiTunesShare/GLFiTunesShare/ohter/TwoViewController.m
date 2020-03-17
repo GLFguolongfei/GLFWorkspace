@@ -22,7 +22,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"iOS字体";
+    [self setVCTitle:@"iOS字体"];
 
     myDataArray = [UIFont familyNames];
     CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);

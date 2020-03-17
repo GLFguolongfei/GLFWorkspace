@@ -38,7 +38,7 @@
     SubViewController2 *subVC = [[SubViewController2 alloc] init];
     subVC.currentIndex = self.selectIndex;
     subVC.model = self.fileArray[self.selectIndex];
-    self.title = subVC.model.name;
+    [self setVCTitle:subVC.model.name];
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
 }
@@ -106,7 +106,7 @@
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
     NSInteger currentIndex = ((SubViewController2 *) pendingViewControllers[0]).currentIndex;
     FileModel *currentModel = self.fileArray[currentIndex];
-    self.title = currentModel.name;
+    [self setVCTitle:currentModel.name];
 }
 
 // 结束滚动或翻页的时候触发

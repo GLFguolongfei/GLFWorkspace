@@ -22,9 +22,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = [NSString stringWithFormat:@"%ld",self.selectIndex];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"选择" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction:)];
     self.navigationItem.rightBarButtonItem = item;
+    NSString *titleStr = [NSString stringWithFormat:@"%ld",self.selectIndex];
+    [self setVCTitle:titleStr];
 
     pageVC = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     pageVC.view.frame = self.view.bounds;
@@ -85,7 +86,8 @@
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers
 {
     NSInteger currentIndex = ((ImageSubViewController *) pendingViewControllers[0]).currentIndex;
-    self.title = [NSString stringWithFormat:@"%ld", currentIndex];
+    NSString *titleStr = [NSString stringWithFormat:@"%ld", currentIndex];
+    [self setVCTitle:titleStr];
 }
 
 // 结束滚动或翻页的时候触发

@@ -30,7 +30,7 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"自定义拍照";
+    [self setVCTitle:@"自定义拍照"];
 
     endScale = 1;
 

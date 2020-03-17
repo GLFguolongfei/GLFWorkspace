@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    self.title = @"测试功能";
+    [self setVCTitle:@"测试功能"];
     [self setupEmitter1];
     
 }

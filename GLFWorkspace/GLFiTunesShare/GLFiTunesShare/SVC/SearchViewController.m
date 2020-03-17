@@ -45,7 +45,7 @@
     item = [[UIBarButtonItem alloc] initWithTitle:@"文件夹" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
     self.navigationItem.rightBarButtonItem = item;
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"搜索";
+    [self setVCTitle:@"搜索"];
     
     myDataArray = [[NSMutableArray alloc] init];
     allDataArray = [[NSMutableArray alloc] init];

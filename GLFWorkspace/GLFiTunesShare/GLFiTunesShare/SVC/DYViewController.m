@@ -53,7 +53,7 @@
     barItem2 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStylePlain target:self action:@selector(removeVideo)];
     self.navigationItem.rightBarButtonItems = @[barItem1, barItem2];
     self.view.backgroundColor = [UIColor blackColor];
-    self.title = @"抖音短视频";
+    [self setVCTitle:@"抖音短视频"];
     
     isPlaying = NO;
     isOtherVideos = NO;
@@ -279,7 +279,7 @@
 
 - (void)setLabelTitle {
     NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
-    self.title = array.lastObject;
+    [self setVCTitle:array.lastObject];
     
     NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
     CGRect calculateRect = [self.title boundingRectWithSize:CGSizeMake(kScreenWidth - 130, MAXFLOAT)
