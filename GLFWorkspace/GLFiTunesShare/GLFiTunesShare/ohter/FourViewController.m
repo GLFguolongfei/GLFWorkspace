@@ -34,7 +34,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"自定义录像";
-    [self canRecord:NO];
 
     timeCount = 0;
     

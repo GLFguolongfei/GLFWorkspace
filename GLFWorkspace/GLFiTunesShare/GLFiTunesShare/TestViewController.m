@@ -22,7 +22,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
     self.title = @"测试功能";
-    [self canRecord:NO];
     [self setupEmitter1];
     
 }

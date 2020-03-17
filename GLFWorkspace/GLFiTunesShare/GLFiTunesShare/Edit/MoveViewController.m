@@ -29,7 +29,6 @@ static NSString *cellID = @"GLFTableViewCellID";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor lightGrayColor];
-    [self canRecord:NO];
 
     [self prepareInterface];
     [self prepareData];

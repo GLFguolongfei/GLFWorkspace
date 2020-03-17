@@ -19,7 +19,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = self.model.name;
-    [self canRecord:NO];
 
     CGSize size = [GLFTools calculatingStringSizeWithString:self.model.path ByFont:KFontBold(18) andSize:CGSizeMake(kScreenWidth-30, CGFLOAT_MAX)];
     self.pathHeightConstraint.constant = size.height + 30;

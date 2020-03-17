@@ -23,7 +23,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"数学绘图";
-    [self canRecord:NO];
     
     _drawingView = [[ZHFigureDrawingView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:_drawingView];

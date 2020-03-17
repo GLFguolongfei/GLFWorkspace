@@ -26,7 +26,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    [self canRecord:NO];
 
     maxScale = 20;
     minScale = 1;

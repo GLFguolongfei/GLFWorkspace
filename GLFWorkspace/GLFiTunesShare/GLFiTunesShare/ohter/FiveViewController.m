@@ -31,7 +31,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"日常小工具";
-    [self canRecord:NO];
 
     myDataArray = @[@"指南针",@"量角器",@"测噪音",@"测网速",@"水平仪",@"挂物矫正",@"尺子",@"镜子",@"扫描二维码条形码"];
    

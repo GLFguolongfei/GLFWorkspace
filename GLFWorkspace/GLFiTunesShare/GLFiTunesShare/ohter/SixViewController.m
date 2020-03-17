@@ -23,7 +23,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = @"日常小玩意";
-    [self canRecord:NO];
 
     myDataArray = @[@"数学绘图"];
    

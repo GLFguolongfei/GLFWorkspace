@@ -25,7 +25,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self canRecord:NO];
 
     // Logo
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((kScreenWidth-150)/2.0, 64, 150, 150)];

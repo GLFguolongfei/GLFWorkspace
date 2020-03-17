@@ -89,6 +89,13 @@
     
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     [manager eachAllFiles:NO];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *record = [userDefaults objectForKey:kRecord];
+    if ([record isEqualToString:@"1"]) {
+        if (![manager isRecording]) {
+            [manager startRecording];
+        }
+    }
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {

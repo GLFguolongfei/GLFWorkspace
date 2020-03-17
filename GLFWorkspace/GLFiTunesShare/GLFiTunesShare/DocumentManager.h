@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 #import "FileModel.h"
 
 static NSString *DocumentPathArray = @"DocumentPathArray";
@@ -36,7 +37,13 @@ HMSingletonH(DocumentManager)
 - (void)removeRemoveModel:(FileModel *)model;
 + (void)updateDocumentPaths;
 
-#pragma mark 播放音乐
+#pragma mark 历史记录
+- (void)startRecording;
+- (void)stopRecording;
+- (void)switchCamera;
+- (BOOL)isRecording;
+
+#pragma mark 背景音乐
 - (void)startPlay;
 - (void)stopPlay;
 

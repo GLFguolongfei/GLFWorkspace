@@ -24,7 +24,6 @@
     self.view.backgroundColor = [UIColor whiteColor];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"选择" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction:)];
     self.navigationItem.rightBarButtonItem = item;
-    [self canRecord:NO];
 
     _scrollView = [[UIScrollView alloc] init];
     if (self.imageName.length != 0) {

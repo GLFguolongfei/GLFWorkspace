@@ -23,8 +23,6 @@
 - (void)hideHUD;
 - (void)hideHUD:(BOOL)animated;
 - (void)hideAllHUD;
-#pragma mark 是否可以记录
-- (void)canRecord:(BOOL)isYes;
 #pragma mark 雪花飞舞
 - (void)setupEmitter1;
 - (void)setupEmitter2;

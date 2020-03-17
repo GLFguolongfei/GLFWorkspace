@@ -23,7 +23,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self canRecord:NO];
     
     [self setWKWebView];
     [self setUIProgressView];

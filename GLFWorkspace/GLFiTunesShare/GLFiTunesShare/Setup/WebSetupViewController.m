@@ -24,7 +24,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"设置内容显示";
-    [self canRecord:NO];
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *xuanfu = [userDefaults objectForKey:kWebContentXuanFu];
@@ -186,12 +185,16 @@
 }
 
 - (IBAction)switchAction8:(id)sender {
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kRecord];
         [self showStringHUD:@"慎重打开, 很浪费空间的！！！" second:1.5];
+        
+        [manager startRecording];
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kRecord];
+        [manager stopRecording];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

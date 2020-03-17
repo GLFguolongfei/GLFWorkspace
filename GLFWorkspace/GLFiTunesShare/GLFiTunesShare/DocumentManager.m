@@ -9,13 +9,27 @@
 #import "DocumentManager.h"
 #import <UserNotifications/UserNotifications.h>
 #import <CoreLocation/CoreLocation.h>
+#import <AVFoundation/AVFoundation.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
-@interface DocumentManager()
+@interface DocumentManager()<AVCaptureFileOutputRecordingDelegate>
 {
     BOOL isEaching;
     BOOL isVideoSeting;
     BOOL isScaleImageSeting;
-    AVPlayer *player; // 千万不要用作局部变量
+    
+    // 背景音乐
+    AVPlayer *player;
+    
+    // 历史记录
+    AVCaptureSession *captureSession;
+    AVCaptureDeviceInput *captureDeviceInput;
+    AVCaptureMovieFileOutput *captureMovieFileOutput;
+    AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
+    
+    BOOL isUseFrontFacingCamera; // 是否使用前置摄像头
+    
+    UIView *videoView;
 }
 @end
 
@@ -306,7 +320,7 @@ HMSingletonM(DocumentManager)
     }
 }
 
-#pragma mark - 播放音乐
+#pragma mark - 背景音乐
 - (void)startPlay {
     if (player) {
         [player play];
@@ -321,7 +335,153 @@ HMSingletonM(DocumentManager)
     [player pause];
 }
 
-#pragma mark - Private Method
+#pragma mark - 历史记录
+- (BOOL)isRecording {
+    if (captureMovieFileOutput) {
+        return [captureMovieFileOutput isRecording];
+    } else {
+        return NO;
+    }
+}
+
+// 开始录制
+- (void)startRecording {
+    [self configCamara:YES];
+    AVCaptureConnection *captureConnection = [captureMovieFileOutput connectionWithMediaType:AVMediaTypeVideo];
+    if (![captureMovieFileOutput isRecording]) {
+        [captureSession startRunning]; // 开启摄像头
+        // 预览图层和视频方向保持一致
+        captureConnection.videoOrientation = [captureVideoPreviewLayer connection].videoOrientation;
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *rootPaht = [paths objectAtIndex:0];
+        NSString *name = [self returnName];
+        NSString *outputFielPath = [NSString stringWithFormat:@"%@/郭龙飞/%@.mp4", rootPaht, name];
+        //  NSLog(@"save path is: %@", outputFielPath);
+        NSURL *fileUrl = [NSURL fileURLWithPath:outputFielPath];
+        [captureMovieFileOutput startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
+    }
+}
+
+// 结束录制
+- (void)stopRecording {
+    [self configCamara:NO];
+    if ([captureMovieFileOutput isRecording]) {
+        [captureMovieFileOutput stopRecording]; // 停止录制
+        [captureSession stopRunning]; // 关闭摄像头
+    }
+}
+
+// 切换前后摄像头
+- (void)switchCamera {
+    [captureSession startRunning];
+
+    AVCaptureDevicePosition desiredPosition;
+    if (isUseFrontFacingCamera) {
+        desiredPosition = AVCaptureDevicePositionBack;
+    } else {
+        desiredPosition = AVCaptureDevicePositionFront;
+    }
+    for (AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
+        if ([device position] == desiredPosition) {
+            [captureVideoPreviewLayer.session beginConfiguration];
+            for (AVCaptureInput *oldInput in captureVideoPreviewLayer.session.inputs) {
+                [[captureVideoPreviewLayer session] removeInput:oldInput];
+            }
+            AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
+            [captureVideoPreviewLayer.session addInput:input];
+            [captureVideoPreviewLayer.session commitConfiguration];
+            break;
+        }
+    }
+    isUseFrontFacingCamera = !isUseFrontFacingCamera;
+}
+
+- (void)configCamara:(BOOL)isRecord {
+    if (!isRecord) {
+        captureSession = nil;
+        captureDeviceInput = nil;
+        captureMovieFileOutput = nil;
+        captureVideoPreviewLayer = nil;
+        [captureVideoPreviewLayer removeFromSuperlayer];
+        return;
+    }
+    // 1-AVCaptureSession
+    captureSession = [[AVCaptureSession alloc]init];
+    captureSession.sessionPreset = AVCaptureSessionPreset1280x720;
+
+    // 2-AVCaptureDeviceInput
+    // 相机输入设备
+    AVCaptureDevice *camaraCaptureDevice = [self getCameraDeviceWithPosition:AVCaptureDevicePositionFront];
+    // 音频输入设备
+    AVCaptureDevice *audioCaptureDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
+    
+    NSError *error = nil;
+    captureDeviceInput = [[AVCaptureDeviceInput alloc] initWithDevice:camaraCaptureDevice error:&error];
+    if (error) {
+        NSLog(@"%@", error);
+        return;
+    }
+    
+    AVCaptureDeviceInput *audioCaptureDeviceInput = [[AVCaptureDeviceInput alloc]initWithDevice:audioCaptureDevice error:&error];
+    if (error) {
+        NSLog(@"%@", error);
+        return;
+    }
+    
+    // 将设备输入添加到会话中
+    if ([captureSession canAddInput:captureDeviceInput]) {
+        [captureSession addInput:captureDeviceInput];
+        [captureSession addInput:audioCaptureDeviceInput];
+    }
+    
+    // 3-AVCaptureMovieFileOutput
+    captureMovieFileOutput = [[AVCaptureMovieFileOutput alloc]init];
+    
+    // 将设备输出添加到会话中
+    if ([captureSession canAddOutput:captureMovieFileOutput]) {
+        [captureSession addOutput:captureMovieFileOutput];
+    }
+    
+    // 4-AVCaptureVideoPreviewLayer
+    captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
+    [captureVideoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
+    captureVideoPreviewLayer.frame = CGRectMake(0, 0, 0, 0);
+    
+    videoView = [[UIView alloc] init];
+    [videoView.layer addSublayer:captureVideoPreviewLayer];
+}
+
+
+#pragma mark AVCaptureFileOutputRecordingDelegate
+- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didStartRecordingToOutputFileAtURL:(NSURL *)fileURL fromConnections:(NSArray *)connections{
+    NSLog(@"开始录制...");
+}
+
+- (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error{
+    NSLog(@"视频录制完成.");
+}
+
+#pragma mark 私有方法
+// 取得指定位置的摄像头
+- (AVCaptureDevice *)getCameraDeviceWithPosition:(AVCaptureDevicePosition )position {
+    NSArray *cameras = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    for (AVCaptureDevice *camera in cameras) {
+        if ([camera position] == position) {
+            return camera;
+        }
+    }
+    return nil;
+}
+
+// 生成唯一不重复名称
+- (NSString *)returnName {
+    NSDateFormatter *dateFormat2 = [[NSDateFormatter alloc] init];
+    [dateFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+    NSString *dateStr = [dateFormat2 stringFromDate:[NSDate date]];
+    return dateStr;
+}
+
+// 返回压缩比例
 - (CGFloat)returnScaleSize:(CGFloat)fileSize {
     CGFloat scale = 0.1;
     if (fileSize < 1000000) {
