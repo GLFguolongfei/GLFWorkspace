@@ -37,22 +37,10 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *record = [userDefaults objectForKey:kRecord];
-    if ([record isEqualToString:@"1"]) {
-        if (![self.title hasPrefix:@"["] && ![self.title hasSuffix:@"]"]) {
-            self.title = [NSString stringWithFormat:@"[%@]", self.title];
-        }
-    } else {
-        if ([self.title hasPrefix:@"["] || [self.title hasSuffix:@"]"]) {
-            NSString *title = [self.title stringByReplacingOccurrencesOfString:@"[" withString:@""];
-            title = [self.title stringByReplacingOccurrencesOfString:@"]" withString:@""];
-            self.title = title;
-        }
-    }
+    [self reSetTitle];
 }
 
-#pragma mark ------- HUD指示器
+#pragma mark - HUD指示器
 // 功能:显示hud
 - (void)showHUD {
     [self hideAllHUD];
@@ -106,9 +94,7 @@
     [MBProgressHUD hideAllHUDsForView:self.view animated:YES];
 }
 
-
-
-#pragma mark -------- 发散光源
+#pragma mark - 发散光源
 - (void)setupEmitter1 {
     // 1.设置 CAEmitterLayer
     colorBallLayer = [CAEmitterLayer layer];
@@ -205,5 +191,21 @@
     [snowEmitterLayer removeFromSuperlayer];
 }
 
+#pragma mark Tools
+- (void)reSetTitle {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *record = [userDefaults objectForKey:kRecord];
+    if ([record isEqualToString:@"1"]) {
+        if (![self.title hasPrefix:@"["] && ![self.title hasSuffix:@"]"]) {
+            self.title = [NSString stringWithFormat:@"[%@]", self.title];
+        }
+    } else {
+        if ([self.title hasPrefix:@"["] || [self.title hasSuffix:@"]"]) {
+            NSString *title = [self.title stringByReplacingOccurrencesOfString:@"[" withString:@""];
+            title = [title stringByReplacingOccurrencesOfString:@"]" withString:@""];
+            self.title = title;
+        }
+    }
+}
 
 @end

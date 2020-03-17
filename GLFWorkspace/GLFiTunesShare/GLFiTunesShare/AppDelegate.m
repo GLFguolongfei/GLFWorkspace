@@ -30,10 +30,6 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
     [self resignUserNotification:application andOptions:launchOptions];
-    application.applicationIconBadgeNumber = 0;
-
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    [manager eachAllFiles:YES];
     
     // 让程序从容的崩溃
     // ----- 好像没起到作用,原因未知 -----
@@ -84,9 +80,11 @@
     } completion:^(BOOL finished) {
         [imageView removeFromSuperview];
     }];
-    
+}
+
+- (void)applicationDidBecomeActive:(UIApplication *)application {
     application.applicationIconBadgeNumber = 0;
-    
+
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     [manager eachAllFiles:NO];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -96,12 +94,6 @@
             [manager startRecording];
         }
     }
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-    // 不记录,否则太耗费空间了
-    [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kRecord];
-    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)applicationDidReceiveMemoryWarning:(UIApplication*)application {

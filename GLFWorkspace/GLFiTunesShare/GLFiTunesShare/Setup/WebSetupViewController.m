@@ -190,11 +190,14 @@
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kRecord];
         [self showStringHUD:@"慎重打开, 很浪费空间的！！！" second:1.5];
-        
-        [manager startRecording];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [manager startRecording];
+        });
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kRecord];
-        [manager stopRecording];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [manager stopRecording];
+        });
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

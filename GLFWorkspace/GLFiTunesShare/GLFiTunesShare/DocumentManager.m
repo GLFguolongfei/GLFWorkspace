@@ -356,7 +356,7 @@ HMSingletonM(DocumentManager)
         NSString *rootPaht = [paths objectAtIndex:0];
         NSString *name = [self returnName];
         NSString *outputFielPath = [NSString stringWithFormat:@"%@/郭龙飞/%@.mp4", rootPaht, name];
-        //  NSLog(@"save path is: %@", outputFielPath);
+        // NSLog(@"save path is: %@", outputFielPath);
         NSURL *fileUrl = [NSURL fileURLWithPath:outputFielPath];
         [captureMovieFileOutput startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
     }
@@ -364,10 +364,10 @@ HMSingletonM(DocumentManager)
 
 // 结束录制
 - (void)stopRecording {
-    [self configCamara:NO];
     if ([captureMovieFileOutput isRecording]) {
         [captureMovieFileOutput stopRecording]; // 停止录制
         [captureSession stopRunning]; // 关闭摄像头
+        [self configCamara:NO];
     }
 }
 
