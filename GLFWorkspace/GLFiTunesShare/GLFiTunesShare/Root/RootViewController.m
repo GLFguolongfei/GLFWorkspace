@@ -120,7 +120,7 @@
     NSLog(@"%@", self.pathStr);
     fileManager.currentPath = self.pathStr;
     if ([myTableView numberOfRowsInSection:0] == 0) {
-        [self showHUD];
+        [self showHUD:@"搜索中, 不要着急!"];
     }
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];

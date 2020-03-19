@@ -80,7 +80,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     if (manager.allImagesArray.count > 0) {
         [self prepareData];
     }  else {
-        [self showHUD];
+        [self showHUD:@"搜索中, 不要着急!"];
         timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }
@@ -136,10 +136,10 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)prepareData {
-    [self showHUD];
     item1.enabled = NO;
     item2.enabled = NO;
     if (manager.allImagesArray.count > 0) {
+        [self showHUD:@"转码中, 不要着急!"];
         [timer invalidate];
         timer = nil;
         NSInteger count = pageCount;

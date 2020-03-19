@@ -46,7 +46,7 @@ static NSString *cellID = @"VideoTableViewCell";
     if (manager.allVideosArray.count > 0) {
         [self prepareData];
     }  else {
-        [self showHUD];
+        [self showHUD:@"搜索中, 不要着急!"];
         timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     }
