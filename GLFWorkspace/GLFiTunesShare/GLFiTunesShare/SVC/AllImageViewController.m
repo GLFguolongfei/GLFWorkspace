@@ -163,25 +163,28 @@ static NSString *cellID3 = @"ShowTableViewCell3";
                 CGFloat height2 = 0;
                 CGFloat height3 = 0;
                 CGFloat width = kScreenWidth/3;
-               for (NSInteger i = 0; i < count; i++) {
-                   FileModel *model = manager.allImagesArray[pageCount * pageIndex + i];
-                   if (height1 <= height2 && height1 <= height3) {
-                       [_dataArray1 addObject:model];
-                       CGFloat height = width * model.image.size.height / model.image.size.width;
-                       height1 += height;
-                   } else if (height2 <= height1 && height2 <= height3) {
-                       [_dataArray2 addObject:model];
-                       CGFloat height = width * model.image.size.height / model.image.size.width;
-                       height2 += height;
-                   } else if (height3 <= height1 && height3 <= height2) {
-                       [_dataArray3 addObject:model];
-                       CGFloat height = width * model.image.size.height / model.image.size.width;
-                       height3 += height;
-                   }
-               }
-               [_tableView1 reloadData];
-               [_tableView2 reloadData];
-               [_tableView3 reloadData];
+                for (NSInteger i = 0; i < count; i++) {
+                    FileModel *model = manager.allImagesArray[pageCount * pageIndex + i];
+                    if (height1 <= height2 && height1 <= height3) {
+                        [_dataArray1 addObject:model];
+                        CGFloat height = width * model.image.size.height / model.image.size.width;
+                        height1 += height;
+                    } else if (height2 <= height1 && height2 <= height3) {
+                        [_dataArray2 addObject:model];
+                        CGFloat height = width * model.image.size.height / model.image.size.width;
+                        height2 += height;
+                    } else if (height3 <= height1 && height3 <= height2) {
+                        [_dataArray3 addObject:model];
+                        CGFloat height = width * model.image.size.height / model.image.size.width;
+                        height3 += height;
+                    }
+                }
+                [_tableView1 reloadData];
+                [_tableView2 reloadData];
+                [_tableView3 reloadData];
+                
+                [_tableView1 scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+
                 if (manager.allImagesArray.count - pageCount * pageIndex < pageCount) {
                     item1.enabled = NO;
                 } else {
