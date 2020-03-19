@@ -90,7 +90,7 @@ static NSString *cellID = @"VideoTableViewCell";
         timer = nil;
         _dataArray = manager.allVideosArray;
         [_tableView reloadData];
-        NSString *titleStr = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)manager.allVideosArray.count];
+        NSString *titleStr = [NSString stringWithFormat:@"视频(%lu)", (unsigned long)manager.allVideosArray.count];
         [self setVCTitle:titleStr];
     }
 }
@@ -297,36 +297,6 @@ static NSString *cellID = @"VideoTableViewCell";
 - (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit
 {
     [self showViewController:viewControllerToCommit sender:self];
-}
-
-#pragma mark UIScrollViewDelegate
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    // 停止类型1、停止类型2
-    BOOL scrollToScrollStop = !scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
-    if (scrollToScrollStop) {
-        [self scrollViewDidEndScroll];
-    }
-}
-
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    if (!decelerate) {
-        // 停止类型3
-        BOOL dragToDragStop = scrollView.tracking && !scrollView.dragging && !scrollView.decelerating;
-        if (dragToDragStop) {
-            [self scrollViewDidEndScroll];
-        }
-    }
-}
-
-- (void)scrollViewDidEndScroll {
-    NSLog(@"停止滚动了！！！");
-    scrollCount++;
-    if (scrollCount > 3) {
-        scrollCount = 0;
-        [self prepareData];
-    }
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    [manager setVideosImage:5];
 }
 
 #pragma mark Private Method

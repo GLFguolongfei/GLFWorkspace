@@ -30,9 +30,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    [manager setVideosImage:5];
-    [manager setScaleImage:2];
+
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -51,6 +49,13 @@
             [manager stopRecording];
         }
     }
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    [manager setVideosImage:5];
+    [manager setScaleImage:2];
 }
 
 #pragma mark HUD指示器

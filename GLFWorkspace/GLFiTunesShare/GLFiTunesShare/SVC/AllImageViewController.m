@@ -23,9 +23,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UIImageView *bgImageView;
     
     UIImageView *imageView;
-    UIBarButtonItem *item;
     UIVisualEffectView *visualEfView;
     BOOL isPlaying;
+    
+    UIBarButtonItem *item1;
+    UIBarButtonItem *item2;
     
     UIView *gestureView;
     BOOL isSuccess;
@@ -52,8 +54,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    item = [[UIBarButtonItem alloc] initWithTitle:@"自动播放" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
-    self.navigationItem.rightBarButtonItem = item;
+    item1 = [[UIBarButtonItem alloc] initWithTitle:@"下页" style:UIBarButtonItemStylePlain target:self action:@selector(nextPage)];
+    item2 = [[UIBarButtonItem alloc] initWithTitle:@"上页" style:UIBarButtonItemStylePlain target:self action:@selector(upPage)];
+    item1.enabled = NO;
+    item2.enabled = NO;
+    self.navigationItem.rightBarButtonItems = @[item1, item2];
     [self setVCTitle:@"所有图片"];
     
     _dataArray1 = [[NSMutableArray alloc] init];
@@ -131,41 +136,66 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)prepareData {
+    [self showHUD];
+    item1.enabled = NO;
+    item2.enabled = NO;
     if (manager.allImagesArray.count > 0) {
-        [self hideAllHUD];
         [timer invalidate];
         timer = nil;
         NSInteger count = pageCount;
         if (manager.allImagesArray.count - pageCount * pageIndex < pageCount) {
             count = manager.allImagesArray.count - pageCount * pageIndex;
         }
-        CGFloat height1 = 0;
-        CGFloat height2 = 0;
-        CGFloat height3 = 0;
-        CGFloat width = kScreenWidth/3;
-        _dataArray1 = [[NSMutableArray alloc] init];
-        _dataArray2 = [[NSMutableArray alloc] init];
-        _dataArray3 = [[NSMutableArray alloc] init];
-        for (NSInteger i = 0; i < count; i++) {
-            FileModel *model = manager.allImagesArray[pageCount * pageIndex + i];
-            if (height1 <= height2 && height1 <= height3) {
-                [_dataArray1 addObject:model];
-                CGFloat height = width * model.image.size.height / model.image.size.width;
-                height1 += height;
-            } else if (height2 <= height1 && height2 <= height3) {
-                [_dataArray2 addObject:model];
-                CGFloat height = width * model.image.size.height / model.image.size.width;
-                height2 += height;
-            } else if (height3 <= height1 && height3 <= height2) {
-                [_dataArray3 addObject:model];
-                CGFloat height = width * model.image.size.height / model.image.size.width;
-                height3 += height;
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_async(queue, ^{
+            for (NSInteger i = 0; i < count; i++) {
+                FileModel *model = manager.allImagesArray[pageCount * pageIndex + i];
+                if (model.scaleImage == nil) {
+                    [manager setModelScaleImage:model];
+                }
             }
-        }
-        [_tableView1 reloadData];
-        [_tableView2 reloadData];
-        [_tableView3 reloadData];
-        NSString *title = [NSString stringWithFormat:@"所有图片(%lu)", (unsigned long)manager.allImagesArray.count];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideAllHUD];
+                _dataArray1 = [[NSMutableArray alloc] init];
+                _dataArray2 = [[NSMutableArray alloc] init];
+                _dataArray3 = [[NSMutableArray alloc] init];
+                CGFloat height1 = 0;
+                CGFloat height2 = 0;
+                CGFloat height3 = 0;
+                CGFloat width = kScreenWidth/3;
+               for (NSInteger i = 0; i < count; i++) {
+                   FileModel *model = manager.allImagesArray[pageCount * pageIndex + i];
+                   if (height1 <= height2 && height1 <= height3) {
+                       [_dataArray1 addObject:model];
+                       CGFloat height = width * model.image.size.height / model.image.size.width;
+                       height1 += height;
+                   } else if (height2 <= height1 && height2 <= height3) {
+                       [_dataArray2 addObject:model];
+                       CGFloat height = width * model.image.size.height / model.image.size.width;
+                       height2 += height;
+                   } else if (height3 <= height1 && height3 <= height2) {
+                       [_dataArray3 addObject:model];
+                       CGFloat height = width * model.image.size.height / model.image.size.width;
+                       height3 += height;
+                   }
+               }
+               [_tableView1 reloadData];
+               [_tableView2 reloadData];
+               [_tableView3 reloadData];
+                if (manager.allImagesArray.count - pageCount * pageIndex < pageCount) {
+                    item1.enabled = NO;
+                } else {
+                    item1.enabled = YES;
+                }
+                if (pageIndex == 0) {
+                    item2.enabled = NO;
+                } else {
+                    item2.enabled = YES;
+                }
+            });
+        });
+        NSInteger allPage = manager.allImagesArray.count / pageCount + 1;
+        NSString *title = [NSString stringWithFormat:@"图片(%ld)(%ld/%ld)", manager.allImagesArray.count, pageIndex + 1, allPage];
         [self setVCTitle:title];
     }
 }
@@ -216,23 +246,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [self.view addSubview:visualEfView];
 }
 
-- (void)buttonAction {
-    isPlaying = !isPlaying;
-    if (isPlaying) {
-        item.title = @"停止播放";
-        visualEfView.alpha = 0.7;
-        if (imageView) {
-            [gravityBeahvior addItem:imageView];
-        }
-    } else {
-        item.title = @"自动播放";
-        [UIView animateWithDuration:4 animations:^{
-            visualEfView.alpha = 0;
-        }];
-    }
-    [self playImage];
-}
-
 - (void)playImage {
     if (!isPlaying) {
         return;
@@ -255,7 +268,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         FileModel *model = manager.allImagesArray[mmm];
         image = [UIImage imageWithContentsOfFile:model.path];
     }
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    imageView = [[UIImageView alloc] initWithImage:image];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
     imageView.center = CGPointMake(kScreenWidth / 2.0, -kScreenHeight);
@@ -290,35 +303,43 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     }];
     [alertVC addAction:okAction1];
     
-    NSString *str1 = [NSString stringWithFormat:@"上一页(%ld)", pageIndex];
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:str1 style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        pageIndex--;
-        [self prepareData];
-        DocumentManager *manager = [DocumentManager sharedDocumentManager];
-        [manager setScaleImage:2];
-    }];
-    if (pageIndex == 0) {
-        okAction2.enabled = NO;
+    NSString *buStr = @"";
+    if (isPlaying) {
+        buStr = @"停止播放";
     } else {
-        okAction2.enabled = YES;
+        buStr = @"自动播放";
     }
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:buStr style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        isPlaying = !isPlaying;
+        if (isPlaying) {
+            [UIView animateWithDuration:1 animations:^{
+                visualEfView.alpha = 0.7;
+            } completion:^(BOOL finished) {
+                [self playImage];
+            }];
+        } else {
+            [UIView animateWithDuration:1 animations:^{
+                imageView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight * 2);
+            } completion:^(BOOL finished) {
+                [UIView animateWithDuration:1 animations:^{
+                    visualEfView.alpha = 0;
+                }];
+            }];
+        }
+    }];
     [alertVC addAction:okAction2];
     
-    NSString *str2 = [NSString stringWithFormat:@"下一页(%ld)", pageIndex + 2];
-    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:str2 style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        pageIndex++;
-        [self prepareData];
-        DocumentManager *manager = [DocumentManager sharedDocumentManager];
-        [manager setScaleImage:2];
-    }];
-    if ((pageIndex + 1) * pageCount >= manager.allImagesArray.count) {
-        okAction3.enabled = NO;
-    } else {
-        okAction3.enabled = YES;
-    }
-    [alertVC addAction:okAction3];
-    
     [self presentViewController:alertVC animated:YES completion:nil];
+}
+
+- (void)nextPage {
+    pageIndex++;
+    [self prepareData];
+}
+
+- (void)upPage {
+    pageIndex--;
+    [self prepareData];
 }
 
 #pragma mark UITableViewDelegate

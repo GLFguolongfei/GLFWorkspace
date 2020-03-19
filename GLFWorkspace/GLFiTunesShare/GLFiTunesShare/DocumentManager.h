@@ -31,6 +31,7 @@ HMSingletonH(DocumentManager)
 - (void)eachAllFiles:(BOOL)isForce;
 - (void)setVideosImage:(NSInteger)maxCount;
 - (void)setScaleImage:(NSInteger)maxCount;
+- (void)setModelScaleImage:(FileModel *)model;
 - (void)addFavoriteModel:(FileModel *)model;
 - (void)removeFavoriteModel:(FileModel *)model;
 - (void)addRemoveModel:(FileModel *)model;

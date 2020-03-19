@@ -71,6 +71,12 @@
         name = [NSString stringWithFormat:@"mv%ld", nnn];
     }
     UIImage *image = [UIImage imageNamed:name];
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    if (manager.allImagesArray.count > 0) {
+        NSInteger mmm = arc4random() % manager.allImagesArray.count;
+        FileModel *model = manager.allImagesArray[mmm];
+        image = [UIImage imageWithContentsOfFile:model.path];
+    }
     imageView = [[UIImageView alloc] initWithImage:image];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     imageView.frame = CGRectMake(0, 0, 0, 0);

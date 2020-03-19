@@ -237,6 +237,14 @@ HMSingletonM(DocumentManager)
     });
 }
 
+- (void)setModelScaleImage:(FileModel *)model {
+    if (model.scaleImage == nil) {
+        CGFloat scale = [self returnScaleSize:model.size];
+        UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
+        model.scaleImage = scaleImage;
+    }
+}
+
 - (void)addFavoriteModel:(FileModel *)model {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *favoriteArray = [userDefaults objectForKey:kFavorite];
