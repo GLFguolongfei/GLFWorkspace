@@ -48,7 +48,7 @@ static NSString *cellID = @"VideoTableViewCell";
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     [self setVCTitle:@"所有视频"];
             
-    pageCount = 30;
+    pageCount = 1000;
     pageIndex = 0;
     
     manager = [DocumentManager sharedDocumentManager];
