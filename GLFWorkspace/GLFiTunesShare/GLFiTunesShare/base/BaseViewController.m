@@ -51,13 +51,6 @@
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    [manager setVideosImage:5];
-    [manager setScaleImage:2];
-}
-
 #pragma mark HUD指示器
 // 功能:显示hud
 - (void)showHUD {

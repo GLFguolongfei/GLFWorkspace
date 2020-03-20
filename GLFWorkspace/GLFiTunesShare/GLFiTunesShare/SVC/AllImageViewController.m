@@ -61,11 +61,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     [self setVCTitle:@"所有图片"];
     
-    _dataArray1 = [[NSMutableArray alloc] init];
-    _dataArray2 = [[NSMutableArray alloc] init];
-    _dataArray3 = [[NSMutableArray alloc] init];
-    
-    pageCount = 300;
+    pageCount = 100;
     pageIndex = 0;
 
     // 1-动画者
@@ -139,18 +135,26 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     item1.enabled = NO;
     item2.enabled = NO;
     if (manager.allImagesArray.count > 0) {
-        [self showHUD:@"转码中, 不要着急!"];
         [timer invalidate];
         timer = nil;
         NSInteger count = pageCount;
         if (manager.allImagesArray.count - pageCount * pageIndex < pageCount) {
             count = manager.allImagesArray.count - pageCount * pageIndex;
+        } else {
+            if (pageCount > manager.allImagesArray.count) {
+                count = manager.allImagesArray.count;
+            }
         }
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_async(queue, ^{
+            NSInteger times = 0;
             for (NSInteger i = 0; i < count; i++) {
                 FileModel *model = manager.allImagesArray[pageCount * pageIndex + i];
                 if (model.scaleImage == nil) {
+                    times++;
+                    if (times == 1) {
+                        [self showHUD:@"转码中, 不要着急!"];
+                    }
                     [manager setModelScaleImage:model];
                 }
             }
@@ -195,11 +199,12 @@ static NSString *cellID3 = @"ShowTableViewCell3";
                 } else {
                     item2.enabled = YES;
                 }
+                
+                NSInteger allPage = manager.allImagesArray.count / pageCount + 1;
+                NSString *title = [NSString stringWithFormat:@"图片(%ld)(%ld/%ld)", manager.allImagesArray.count, pageIndex + 1, allPage];
+                [self setVCTitle:title];
             });
         });
-        NSInteger allPage = manager.allImagesArray.count / pageCount + 1;
-        NSString *title = [NSString stringWithFormat:@"图片(%ld)(%ld/%ld)", manager.allImagesArray.count, pageIndex + 1, allPage];
-        [self setVCTitle:title];
     }
 }
 
@@ -220,7 +225,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _tableView1.showsVerticalScrollIndicator = NO;
     _tableView1.tableFooterView = [UIView new];
     _tableView1.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView1.contentInset = UIEdgeInsetsMake(0, 0, 200, 0);
+    _tableView1.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
 
     _tableView2 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
     _tableView2.delegate = self;
@@ -229,7 +234,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _tableView2.showsVerticalScrollIndicator = NO;
     _tableView2.tableFooterView = [UIView new];
     _tableView2.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView2.contentInset = UIEdgeInsetsMake(0, 0, 200, 0);
+    _tableView2.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
 
     _tableView3 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3*2, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
     _tableView3.delegate = self;
@@ -237,7 +242,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [self.view addSubview:_tableView3];
     _tableView3.tableFooterView = [UIView new];
     _tableView3.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView3.contentInset = UIEdgeInsetsMake(0, 0, 200, 0);
+    _tableView3.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
 
     [_tableView1 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID1];
     [_tableView2 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID2];

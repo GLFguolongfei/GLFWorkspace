@@ -23,7 +23,11 @@ static NSString *cellID = @"VideoTableViewCell";
     BOOL isSuccess;
     BOOL isShowImage;
     
-    NSInteger scrollCount;
+    UIBarButtonItem *item1;
+    UIBarButtonItem *item2;
+        
+    NSInteger pageCount;
+    NSInteger pageIndex;
     
     DocumentManager *manager;
     NSTimer *timer; // 定时器
@@ -37,11 +41,17 @@ static NSString *cellID = @"VideoTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"图文" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
-    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"文字" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
+    item1 = [[UIBarButtonItem alloc] initWithTitle:@"下页" style:UIBarButtonItemStylePlain target:self action:@selector(nextPage)];
+    item2 = [[UIBarButtonItem alloc] initWithTitle:@"上页" style:UIBarButtonItemStylePlain target:self action:@selector(upPage)];
+    item1.enabled = NO;
+    item2.enabled = NO;
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     [self setVCTitle:@"所有视频"];
             
+    isShowImage = YES;
+    pageCount = 30;
+    pageIndex = 0;
+    
     manager = [DocumentManager sharedDocumentManager];
     if (manager.allVideosArray.count > 0) {
         [self prepareData];
@@ -84,14 +94,57 @@ static NSString *cellID = @"VideoTableViewCell";
 }
 
 - (void)prepareData {
+    item1.enabled = NO;
+    item2.enabled = NO;
     if (manager.allVideosArray.count > 0) {
-        [self hideAllHUD];
         [timer invalidate];
         timer = nil;
-        _dataArray = manager.allVideosArray;
-        [_tableView reloadData];
-        NSString *titleStr = [NSString stringWithFormat:@"视频(%lu)", (unsigned long)manager.allVideosArray.count];
-        [self setVCTitle:titleStr];
+        NSInteger count = pageCount;
+        if (manager.allVideosArray.count - pageCount * pageIndex < pageCount) {
+            count = manager.allVideosArray.count - pageCount * pageIndex;
+        } else {
+            if (pageCount > manager.allVideosArray.count) {
+                count = manager.allVideosArray.count;
+            }
+        }
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_async(queue, ^{
+            NSInteger times = 0;
+            NSMutableArray *array = [[NSMutableArray alloc] init];
+            for (NSInteger i = 0; i < count; i++) {
+                FileModel *model = manager.allVideosArray[pageCount * pageIndex + i];
+                if (model.image == nil && isShowImage) {
+                    times++;
+                    if (times == 1) {
+                        [self showHUD:@"转码中, 不要着急!"];
+                    }
+                    [manager setModelVideosImage:model];
+                }
+                [array addObject:model];
+            }
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self hideAllHUD];
+                _dataArray = array;
+                [_tableView reloadData];
+                
+                [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
+
+                if (manager.allVideosArray.count - pageCount * pageIndex < pageCount) {
+                    item1.enabled = NO;
+                } else {
+                    item1.enabled = YES;
+                }
+                if (pageIndex == 0) {
+                    item2.enabled = NO;
+                } else {
+                    item2.enabled = YES;
+                }
+                
+                NSInteger allPage = manager.allVideosArray.count / pageCount + 1;
+                NSString *title = [NSString stringWithFormat:@"视频(%ld)(%ld/%ld)", manager.allVideosArray.count, pageIndex + 1, allPage];
+                [self setVCTitle:title];
+            });
+        });
     }
 }
 
@@ -124,7 +177,26 @@ static NSString *cellID = @"VideoTableViewCell";
     }];
     [alertVC addAction:okAction1];
     
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"实时视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    NSString *buStr = @"";
+    if (isShowImage) {
+        buStr = @"文本";
+    } else {
+        buStr = @"图文";
+    }
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:buStr style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        isShowImage = !isShowImage;
+        if (isShowImage) {
+            pageCount = 50;
+            pageIndex = 0;
+        } else {
+            pageCount = 1000;
+            pageIndex = 0;
+        }
+        [self prepareData];
+    }];
+    [alertVC addAction:okAction2];
+    
+    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"实时视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (manager.allVideosArray.count > 0) {
             AllVideoPlayViewController *vc = [[AllVideoPlayViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -132,49 +204,19 @@ static NSString *cellID = @"VideoTableViewCell";
             [self showStringHUD:@"等待遍历完成" second:1.5];
         }
     }];
-    [alertVC addAction:okAction2];
+    [alertVC addAction:okAction3];
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
-- (void)buttonAction1 {
-    [self showHUD];
-    
-    isShowImage = YES;
-    __block NSInteger count = 0;
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        NSArray *array = [_tableView indexPathsForVisibleRows];
-        NSInteger first = 0;
-        if (array.count > 0) {
-            NSIndexPath *indexPath = array.firstObject;
-            first = indexPath.row;
-        }
-        for (NSInteger i = first; i < _dataArray.count; i++) {
-            if (count >= 15) {
-                break;
-            }
-            FileModel *model = _dataArray[i];
-            if (model.image == nil) {
-                count++;
-                #if FirstTarget
-                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-                #else
-                    model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
-                #endif
-                [_dataArray replaceObjectAtIndex:i withObject:model];
-            }
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideAllHUD];
-            [_tableView reloadData];
-        });
-    });
+- (void)nextPage {
+    pageIndex++;
+    [self prepareData];
 }
 
-- (void)buttonAction2 {
-    isShowImage = NO;
-    [_tableView reloadData];
+- (void)upPage {
+    pageIndex--;
+    [self prepareData];
 }
 
 #pragma mark UITableViewDelegate

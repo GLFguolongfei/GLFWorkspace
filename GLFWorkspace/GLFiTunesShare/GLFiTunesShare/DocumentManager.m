@@ -174,67 +174,14 @@ HMSingletonM(DocumentManager)
     });
 }
 
-- (void)setVideosImage:(NSInteger)maxCount {
-    if (isVideoSeting) {
-        return;
+- (void)setModelVideosImage:(FileModel *)model {
+    if (model.image == nil) {
+        #if FirstTarget
+            model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
+        #else
+            model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+        #endif
     }
-    isVideoSeting = YES;
-    if (maxCount <= 0) {
-        maxCount = 10;
-    }
-    __block NSInteger count = 0;
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        for (NSInteger i = 0; i < self.allVideosArray.count; i++) {
-            if (count >= maxCount) {
-                break;
-            }
-            FileModel *model = self.allVideosArray[i];
-            if (model.image == nil) {
-                count++;
-                #if FirstTarget
-                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-                #else
-                    model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
-                #endif
-                [self.allVideosArray replaceObjectAtIndex:i withObject:model];
-            }
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            isVideoSeting = NO;
-        });
-    });
-}
-
-- (void)setScaleImage:(NSInteger)maxCount {
-    if (isScaleImageSeting) {
-        return;
-    }
-    isScaleImageSeting = YES;
-    if (maxCount <= 0) {
-        maxCount = 10;
-    }
-    __block NSInteger count = 0;
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        for (NSInteger i = 0; i < self.allImagesArray.count; i++) {
-            if (count >= maxCount) {
-                break;
-            }
-            FileModel *model = self.allImagesArray[i];
-            if (model.scaleImage == nil) {
-                NSLog(@"原尺寸: %f", model.size / 1000000.0);
-                count++;
-                CGFloat scale = [self returnScaleSize:model.size];
-                UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
-                model.scaleImage = scaleImage;
-                [self.allImagesArray replaceObjectAtIndex:i withObject:model];
-            }
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            isScaleImageSeting = NO;
-        });
-    });
 }
 
 - (void)setModelScaleImage:(FileModel *)model {

@@ -46,7 +46,7 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     manager = [DocumentManager sharedDocumentManager];
     if (manager.allVideosArray.count > 0) {
         _dataArray = manager.allVideosArray;
-        NSString *titleStr = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+        NSString *titleStr = [NSString stringWithFormat:@"视频(%lu)", (unsigned long)_dataArray.count];
         [self setVCTitle:titleStr];
         [self prepareView];
     }

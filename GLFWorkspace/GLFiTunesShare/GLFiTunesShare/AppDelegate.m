@@ -40,7 +40,6 @@
         ViewController *testVC = [[ViewController alloc] init];
         self.window.rootViewController = testVC;
     } else {
-        [DocumentManager updateDocumentPaths];
 #if FirstTarget
         RootViewController *rootVC = [[RootViewController alloc] init];
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:rootVC];
@@ -87,6 +86,7 @@
 
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     [manager eachAllFiles:NO];
+    [DocumentManager updateDocumentPaths];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *record = [userDefaults objectForKey:kRecord];
     if ([record isEqualToString:@"1"]) {
