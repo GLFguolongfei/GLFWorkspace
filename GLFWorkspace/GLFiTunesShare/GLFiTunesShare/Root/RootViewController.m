@@ -301,7 +301,7 @@
 
 // 选择
 - (void)buttonAction3:(id)sender {
-    UIBarButtonItem *item = sender;
+    UIBarButtonItem *item = sender;    
     if ([item.title isEqualToString:@"选择"]) {
         [self viewEditing:NO];
     } else {

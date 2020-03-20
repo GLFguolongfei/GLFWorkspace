@@ -56,10 +56,11 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-#if FirstTarget
     UIImage *image = [UIImage imageNamed:@"lunch5"];
+#if FirstTarget
+    image = [UIImage imageNamed:@"lunch5"];
 #elif SecondTarget
-    UIImage *image = [UIImage imageNamed:@"lunch2"];
+    image = [UIImage imageNamed:@"lunch2"];
     // 重新登陆
     LoginViewController *loginVC = [[LoginViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:loginVC];

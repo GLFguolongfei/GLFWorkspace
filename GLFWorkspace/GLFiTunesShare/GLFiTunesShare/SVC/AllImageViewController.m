@@ -131,6 +131,10 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [gestureView removeFromSuperview];
 }
 
+- (void)didReceiveMemoryWarning {
+    [self showStringHUD:@"收到内存警告" second:1.5];
+}
+
 - (void)prepareData {
     item1.enabled = NO;
     item2.enabled = NO;
