@@ -48,7 +48,6 @@ static NSString *cellID = @"VideoTableViewCell";
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     [self setVCTitle:@"所有视频"];
             
-    isShowImage = YES;
     pageCount = 30;
     pageIndex = 0;
     
