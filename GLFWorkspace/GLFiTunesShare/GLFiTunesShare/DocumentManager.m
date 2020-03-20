@@ -434,7 +434,7 @@ HMSingletonM(DocumentManager)
 // 生成唯一不重复名称
 - (NSString *)returnName {
     NSDateFormatter *dateFormat2 = [[NSDateFormatter alloc] init];
-    [dateFormat2 setDateFormat:@"yyyy-MM-dd HH:mm"];
+    [dateFormat2 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSString *dateStr = [dateFormat2 stringFromDate:[NSDate date]];
     return dateStr;
 }
