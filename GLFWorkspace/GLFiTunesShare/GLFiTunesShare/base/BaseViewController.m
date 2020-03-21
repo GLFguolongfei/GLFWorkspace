@@ -51,6 +51,10 @@
     }
 }
 
+- (void)didReceiveMemoryWarning {
+    [self showStringHUD:@"收到内存警告" second:1.5];
+}
+
 #pragma mark HUD指示器
 // 功能:显示hud
 - (void)showHUD {
