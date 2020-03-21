@@ -10,8 +10,8 @@
 #import <UIKit/UIKit.h>
 #import "FileModel.h"
 
-static NSString *DocumentPathArray = @"DocumentPathArray";
-static NSString *DocumentPathArrayUpdate = @"DocumentPathArrayUpdate";
+static NSString * _Nullable DocumentPathArray = @"DocumentPathArray";
+static NSString * _Nullable DocumentPathArrayUpdate = @"DocumentPathArrayUpdate";
 
 NS_ASSUME_NONNULL_BEGIN
 
