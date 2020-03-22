@@ -332,7 +332,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         if (model.size > 1000000) { // 大于1M
             cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
         } else {
-            cell.scaleImageView.image = model.image;
+            NSURL *url = [NSURL fileURLWithPath:model.path];
+            [cell.scaleImageView sd_setImageWithURL:url];
         }
         return cell;
     } else if (tableView == _tableView2) {
@@ -342,7 +343,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         if (model.size > 1000000) { // 大于1M
             cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
         } else {
-            cell.scaleImageView.image = model.image;
+            NSURL *url = [NSURL fileURLWithPath:model.path];
+            [cell.scaleImageView sd_setImageWithURL:url];
         }
         return cell;
     } else if (tableView == _tableView3) {
@@ -352,7 +354,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         if (model.size > 1000000) { // 大于1M
             cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
         } else {
-            cell.scaleImageView.image = model.image;
+            NSURL *url = [NSURL fileURLWithPath:model.path];
+            [cell.scaleImageView sd_setImageWithURL:url];
         }
         return cell;
     }
