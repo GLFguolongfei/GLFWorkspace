@@ -23,12 +23,6 @@ static NSString *cellID = @"VideoTableViewCell";
     BOOL isSuccess;
     BOOL isShowImage;
     
-    UIBarButtonItem *item1;
-    UIBarButtonItem *item2;
-        
-    NSInteger pageCount;
-    NSInteger pageIndex;
-    
     DocumentManager *manager;
     NSTimer *timer; // 定时器
 }
@@ -41,16 +35,11 @@ static NSString *cellID = @"VideoTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    item1 = [[UIBarButtonItem alloc] initWithTitle:@"下页" style:UIBarButtonItemStylePlain target:self action:@selector(nextPage)];
-    item2 = [[UIBarButtonItem alloc] initWithTitle:@"上页" style:UIBarButtonItemStylePlain target:self action:@selector(upPage)];
-    item1.enabled = NO;
-    item2.enabled = NO;
+    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"图文" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
+    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"文字" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
-    [self setVCTitle:@"所有视频"];
-            
-    pageCount = 1000;
-    pageIndex = 0;
-    
+    self.title = @"所有视频";
+        
     manager = [DocumentManager sharedDocumentManager];
     if (manager.allVideosArray.count > 0) {
         [self prepareData];
@@ -73,7 +62,7 @@ static NSString *cellID = @"VideoTableViewCell";
     self.navigationController.toolbar.hidden = YES;
     
     // 导航栏bg
-    gestureView = [[UIView alloc] initWithFrame:CGRectMake((kScreenWidth - 150) / 2, -20, 150, 64)];
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake(100, -20, kScreenWidth-200, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
     [self.navigationController.navigationBar addSubview:gestureView];
     
@@ -93,57 +82,15 @@ static NSString *cellID = @"VideoTableViewCell";
 }
 
 - (void)prepareData {
-    item1.enabled = NO;
-    item2.enabled = NO;
     if (manager.allVideosArray.count > 0) {
+        [self hideAllHUD];
         [timer invalidate];
         timer = nil;
-        NSInteger count = pageCount;
-        if (manager.allVideosArray.count - pageCount * pageIndex < pageCount) {
-            count = manager.allVideosArray.count - pageCount * pageIndex;
-        } else {
-            if (pageCount > manager.allVideosArray.count) {
-                count = manager.allVideosArray.count;
-            }
-        }
-        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-        dispatch_async(queue, ^{
-            NSInteger times = 0;
-            NSMutableArray *array = [[NSMutableArray alloc] init];
-            for (NSInteger i = 0; i < count; i++) {
-                FileModel *model = manager.allVideosArray[pageCount * pageIndex + i];
-                if (model.image == nil && isShowImage) {
-                    times++;
-                    if (times == 1) {
-                        [self showHUD:@"转码中, 不要着急!"];
-                    }
-                    [manager setModelVideosImage:model];
-                }
-                [array addObject:model];
-            }
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self hideAllHUD];
-                _dataArray = array;
-                [_tableView reloadData];
-                
-                [_tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
-
-                if (manager.allVideosArray.count - pageCount * pageIndex < pageCount) {
-                    item1.enabled = NO;
-                } else {
-                    item1.enabled = YES;
-                }
-                if (pageIndex == 0) {
-                    item2.enabled = NO;
-                } else {
-                    item2.enabled = YES;
-                }
-                
-                NSInteger allPage = manager.allVideosArray.count / pageCount + 1;
-                NSString *title = [NSString stringWithFormat:@"视频(%ld)(%ld/%ld)", manager.allVideosArray.count, pageIndex + 1, allPage];
-                [self setVCTitle:title];
-            });
-        });
+        _dataArray = manager.allVideosArray;
+        [_tableView reloadData];
+        
+        NSString *title = [NSString stringWithFormat:@"所有视频(%ld)", _dataArray.count];
+        [self setVCTitle:title];
     }
 }
 
@@ -165,7 +112,7 @@ static NSString *cellID = @"VideoTableViewCell";
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         isSuccess = !isSuccess;
         if (isSuccess) {
             [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
@@ -174,28 +121,9 @@ static NSString *cellID = @"VideoTableViewCell";
         }
         [[NSUserDefaults standardUserDefaults] synchronize];
     }];
-    [alertVC addAction:okAction1];
+    [alertVC addAction:okAction];
     
-    NSString *buStr = @"";
-    if (isShowImage) {
-        buStr = @"文本";
-    } else {
-        buStr = @"图文";
-    }
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:buStr style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        isShowImage = !isShowImage;
-        if (isShowImage) {
-            pageCount = 50;
-            pageIndex = 0;
-        } else {
-            pageCount = 1000;
-            pageIndex = 0;
-        }
-        [self prepareData];
-    }];
-    [alertVC addAction:okAction2];
-    
-    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"实时视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"实时视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (manager.allVideosArray.count > 0) {
             AllVideoPlayViewController *vc = [[AllVideoPlayViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -203,19 +131,49 @@ static NSString *cellID = @"VideoTableViewCell";
             [self showStringHUD:@"等待遍历完成" second:1.5];
         }
     }];
-    [alertVC addAction:okAction3];
+    [alertVC addAction:okAction2];
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
-- (void)nextPage {
-    pageIndex++;
-    [self prepareData];
+- (void)buttonAction1 {
+    [self showHUD];
+    
+    isShowImage = YES;
+    __block NSInteger count = 0;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSArray *array = [_tableView indexPathsForVisibleRows];
+        NSInteger first = 0;
+        if (array.count > 0) {
+            NSIndexPath *indexPath = array.firstObject;
+            first = indexPath.row;
+        }
+        for (NSInteger i = first; i < _dataArray.count; i++) {
+            if (count >= 15) {
+                break;
+            }
+            FileModel *model = _dataArray[i];
+            if (model.image == nil) {
+                count++;
+                #if FirstTarget
+                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
+                #else
+                    model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+                #endif
+                [_dataArray replaceObjectAtIndex:i withObject:model];
+            }
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideAllHUD];
+            [_tableView reloadData];
+        });
+    });
 }
 
-- (void)upPage {
-    pageIndex--;
-    [self prepareData];
+- (void)buttonAction2 {
+    isShowImage = NO;
+    [_tableView reloadData];
 }
 
 #pragma mark UITableViewDelegate
@@ -294,7 +252,7 @@ static NSString *cellID = @"VideoTableViewCell";
         // 显示预览
         BOOL canOpen = [documentController presentPreviewAnimated:YES];
         if (!canOpen) {
-            [self showStringHUD:@"沒有程序可以打开要分享的文件" second:1.5];
+            [self showStringHUD:@"沒有程序可以打开要分享的文件" second:2];
         }
     } else {
         // 进入详情页面

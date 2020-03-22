@@ -61,11 +61,6 @@
     playerLayer.frame = CGRectMake(10, 0, width, self.bounds.size.height);
     playerLayer.backgroundColor = KColorCCC.CGColor;
     [self.contentView.layer addSublayer:playerLayer];
-
-    CGRect rect = CGRectMake(width + 20, 0, kScreenWidth - 30 - width, self.bounds.size.height);
-//    if (width >= kScreenWidth - 60) {
-//        rect = CGRectMake(10, self.bounds.size.height - 30, kScreenWidth - 20, 20);
-//    }
     
     bgView = [[UIView alloc] init];
     bgView.backgroundColor = [UIColor whiteColor];
@@ -73,6 +68,7 @@
     bgView.hidden = YES;
     [self.contentView addSubview:bgView];
     
+    CGRect rect = CGRectMake(width + 20, 0, kScreenWidth - 30 - width, self.bounds.size.height);
     label = [[UILabel alloc] initWithFrame:rect];
     label.numberOfLines = 0;
     label.textColor = kSAColorWithStr(@"555555");
@@ -86,7 +82,7 @@
        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
     attributes:attrbute
        context:nil];
-    if (width >= kScreenWidth - 20 || calculateRect.size.height > self.bounds.size.height) {
+    if (width >= kScreenWidth - 20) {
         calculateRect = [label.text boundingRectWithSize:CGSizeMake(kScreenWidth - 30, MAXFLOAT)
            options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
         attributes:attrbute

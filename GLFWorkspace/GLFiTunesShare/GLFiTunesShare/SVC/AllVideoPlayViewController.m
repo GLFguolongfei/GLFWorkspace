@@ -25,6 +25,8 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     UIBarButtonItem *item2;
     CGFloat cellHeight;
     
+    NSIndexPath *firstIndexPath;
+    
     DocumentManager *manager;
 }
 @end
@@ -41,12 +43,12 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     [self setVCTitle:@"所有视频"];
     
-    cellHeight = 100;
+    cellHeight = 90;
         
     manager = [DocumentManager sharedDocumentManager];
     if (manager.allVideosArray.count > 0) {
         _dataArray = manager.allVideosArray;
-        NSString *titleStr = [NSString stringWithFormat:@"视频(%lu)", (unsigned long)_dataArray.count];
+        NSString *titleStr = [NSString stringWithFormat:@"视频(%ld)", _dataArray.count];
         [self setVCTitle:titleStr];
         [self prepareView];
     }
@@ -115,11 +117,7 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 }
 
 - (void)buttonAction1 {
-    if (cellHeight > 200) {
-        cellHeight -= 40;
-    } else {
-        cellHeight -= 20;
-    }
+    cellHeight -= 30;
     if (cellHeight <= 60) {
         item1.enabled = NO;
         item2.enabled = YES;
@@ -128,15 +126,12 @@ static NSString *cellID = @"PlayVideoTableViewCell";
         item2.enabled = YES;
     }
     [_tableView reloadData];
+    [_tableView scrollToRowAtIndexPath:firstIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void)buttonAction2 {
-    if (cellHeight > 200) {
-        cellHeight += 60;
-    } else {
-        cellHeight += 20;
-    }
-    if (cellHeight >= kScreenHeight) {
+    cellHeight += 30;
+    if (cellHeight >= 330) {
         item1.enabled = YES;
         item2.enabled = NO;
     } else {
@@ -144,6 +139,7 @@ static NSString *cellID = @"PlayVideoTableViewCell";
         item2.enabled = YES;
     }
     [_tableView reloadData];
+    [_tableView scrollToRowAtIndexPath:firstIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 #pragma mark UITableViewDelegate
@@ -270,11 +266,16 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 
 - (void)scrollViewDidEndScroll {
     NSLog(@"停止滚动了！！！");
+    NSInteger count = 0;
     NSArray *array = [_tableView indexPathsForVisibleRows];
     for (NSInteger i = 0; i < _dataArray.count; i++) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
         PlayVideoTableViewCell *cell = [_tableView cellForRowAtIndexPath:indexPath];
         if ([array containsObject:indexPath]) {
+            if (count == 0) {
+                firstIndexPath = indexPath;
+            }
+            count++;
             [cell playOrPauseVideo:YES];
         } else {
             [cell playOrPauseVideo:NO];
