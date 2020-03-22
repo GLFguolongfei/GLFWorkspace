@@ -40,6 +40,8 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *record = [userDefaults objectForKey:kRecord];
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
+//    [manager setVideosImage:5];
+//    [manager setScaleImage:3];
     if ([record isEqualToString:@"1"]) {
         if (![manager isRecording]) {
             [manager startRecording];

@@ -169,6 +169,51 @@ HMSingletonM(DocumentManager)
     });
 }
 
+- (void)setVideosImage:(NSInteger)maxCount {
+    if (maxCount <= 0) {
+        maxCount = 10;
+    }
+    __block NSInteger count = 0;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        for (NSInteger i = 0; i < self.allVideosArray.count; i++) {
+            if (count >= maxCount) {
+                break;
+            }
+            FileModel *model = self.allVideosArray[i];
+            if (model.image == nil) {
+                count++;
+                #if FirstTarget
+                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
+                #else
+                    model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+                #endif
+            }
+        }
+    });
+}
+
+- (void)setScaleImage:(NSInteger)maxCount {
+    if (maxCount <= 0) {
+        maxCount = 10;
+    }
+    __block NSInteger count = 0;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        for (NSInteger i = 0; i < self.allVideosArray.count; i++) {
+            if (count >= maxCount) {
+                break;
+            }
+            FileModel *model = self.allVideosArray[i];
+            if (model.scaleImage == nil) {
+                CGFloat scale = [self returnScaleSize:model.size];
+                UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
+                model.scaleImage = scaleImage;
+            }
+        }
+    });
+}
+
 - (void)setModelVideosImage:(FileModel *)model {
     if (model.image == nil) {
         #if FirstTarget
@@ -176,6 +221,14 @@ HMSingletonM(DocumentManager)
         #else
             model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
         #endif
+    }
+}
+
+- (void)setModelScaleImage:(FileModel *)model {
+    if (model.scaleImage == nil) {
+        CGFloat scale = [self returnScaleSize:model.size];
+        UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
+        model.scaleImage = scaleImage;
     }
 }
 
