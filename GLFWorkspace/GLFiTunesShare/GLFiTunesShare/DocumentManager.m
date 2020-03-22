@@ -205,7 +205,7 @@ HMSingletonM(DocumentManager)
                 break;
             }
             FileModel *model = self.allVideosArray[i];
-            if (model.scaleImage == nil) {
+            if (model.size > 1000000) { // 大于1M
                 CGFloat scale = [self returnScaleSize:model.size];
                 UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
                 model.scaleImage = scaleImage;
