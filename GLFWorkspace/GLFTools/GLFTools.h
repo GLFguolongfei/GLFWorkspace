@@ -40,4 +40,6 @@
 #pragma mark 转换成时分秒
 + (NSString *)timeFormatted:(NSInteger)totalSeconds;
 
++ (UIColor *)randomColor;
+
 @end

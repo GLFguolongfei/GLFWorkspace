@@ -329,22 +329,31 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         FileModel *model = _dataArray1[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        NSURL *url = [NSURL fileURLWithPath:model.path];
-        [cell.scaleImageView sd_setImageWithURL:url];
+        if (model.size > 1000000) { // 大于1M
+            cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
+        } else {
+            cell.scaleImageView.image = model.image;
+        }
         return cell;
     } else if (tableView == _tableView2) {
         FileModel *model = _dataArray2[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID2 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        NSURL *url = [NSURL fileURLWithPath:model.path];
-        [cell.scaleImageView sd_setImageWithURL:url];
+        if (model.size > 1000000) { // 大于1M
+            cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
+        } else {
+            cell.scaleImageView.image = model.image;
+        }
         return cell;
     } else if (tableView == _tableView3) {
         FileModel *model = _dataArray3[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID3 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        NSURL *url = [NSURL fileURLWithPath:model.path];
-        [cell.scaleImageView sd_setImageWithURL:url];
+        if (model.size > 1000000) { // 大于1M
+            cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
+        } else {
+            cell.scaleImageView.image = model.image;
+        }
         return cell;
     }
     return nil;
