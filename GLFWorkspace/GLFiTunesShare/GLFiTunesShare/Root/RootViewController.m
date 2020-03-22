@@ -25,7 +25,7 @@
     
     NSIndexPath *editIndexPath;
     NSMutableArray *editArray;
-    
+
     UIView *gestureView;
     BOOL isSuccess;
 }
@@ -179,14 +179,11 @@
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideAllHUD];
-            // 有更新才更新
-            if (allSize != currentSize) {
-                [myDataArray removeAllObjects];
-                // 显示文件夹排在前面
-                [myDataArray addObjectsFromArray:cArray];
-                [myDataArray addObjectsFromArray:bArray];
-                [myTableView reloadData];
-            }
+            [myDataArray removeAllObjects];
+            // 显示文件夹排在前面
+            [myDataArray addObjectsFromArray:cArray];
+            [myDataArray addObjectsFromArray:bArray];
+            [myTableView reloadData];
         });
     });
 }
