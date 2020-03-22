@@ -10,7 +10,6 @@
 #import "ShowTableViewCell.h"
 #import "DetailViewController2.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
-#import "UIImageView+WebCache.h"
 
 static NSString *cellID1 = @"ShowTableViewCell1";
 static NSString *cellID2 = @"ShowTableViewCell2";
