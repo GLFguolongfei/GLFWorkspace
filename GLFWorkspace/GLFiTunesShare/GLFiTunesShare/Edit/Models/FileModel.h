@@ -19,13 +19,9 @@
 @property (nonatomic, assign) CGSize videoSize;         // 视频尺寸(只有视频有)
 @property (nonatomic, assign) NSInteger count;          // 子文件数目(只有文件夹有)
 
-
-
 // 如果Model为图片,image就是那张图
 // 如果Model为视频,image就是视频缩略图
 // 如果Model为其它类型(文件夹等),image为nil
 @property (nonatomic, copy) UIImage *image;
-// 缩略图
-@property (nonatomic, copy) UIImage *scaleImage;
 
 @end

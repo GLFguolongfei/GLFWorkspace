@@ -93,11 +93,6 @@ HMSingletonM(DocumentManager)
                 if ([CimgTypeArray containsObject:lowerType]) {
                     model.type = 2;
                     model.image = [UIImage imageWithContentsOfFile:model.path];
-                    if (model.size > 1000000) { // 大于1M
-                        model.scaleImage = nil;
-                    } else {
-                        model.scaleImage = model.image;
-                    }
                     [allImagesArray addObject:model];
                 } else if ([CvideoTypeArray containsObject:lowerType]) {
                     model.type = 3;
@@ -181,14 +176,6 @@ HMSingletonM(DocumentManager)
         #else
             model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
         #endif
-    }
-}
-
-- (void)setModelScaleImage:(FileModel *)model {
-    if (model.scaleImage == nil) {
-        CGFloat scale = [self returnScaleSize:model.size];
-        UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
-        model.scaleImage = scaleImage;
     }
 }
 

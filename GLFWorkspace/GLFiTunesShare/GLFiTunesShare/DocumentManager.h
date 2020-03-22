@@ -30,7 +30,6 @@ HMSingletonH(DocumentManager)
 #pragma mark 文件操作
 - (void)eachAllFiles:(BOOL)isForce;
 - (void)setModelVideosImage:(FileModel *)model;
-- (void)setModelScaleImage:(FileModel *)model;
 - (void)addFavoriteModel:(FileModel *)model;
 - (void)removeFavoriteModel:(FileModel *)model;
 - (void)addRemoveModel:(FileModel *)model;

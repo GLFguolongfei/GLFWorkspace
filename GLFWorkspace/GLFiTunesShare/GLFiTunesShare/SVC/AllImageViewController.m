@@ -330,34 +330,22 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         FileModel *model = _dataArray1[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if (model.scaleImage == nil) {
-            cell.scaleImageView.image = [GLFTools scaleImage:model.image toScale:0.2];
-        } else {
-            NSURL *url = [NSURL fileURLWithPath:model.path];
-            [cell.scaleImageView sd_setImageWithURL:url];
-        }
+        NSURL *url = [NSURL fileURLWithPath:model.path];
+        [cell.scaleImageView sd_setImageWithURL:url];
         return cell;
     } else if (tableView == _tableView2) {
         FileModel *model = _dataArray2[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID2 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if (model.scaleImage == nil) {
-            cell.scaleImageView.image = [GLFTools scaleImage:model.image toScale:0.2];
-        } else {
-            NSURL *url = [NSURL fileURLWithPath:model.path];
-            [cell.scaleImageView sd_setImageWithURL:url];
-        }
+        NSURL *url = [NSURL fileURLWithPath:model.path];
+        [cell.scaleImageView sd_setImageWithURL:url];
         return cell;
     } else if (tableView == _tableView3) {
         FileModel *model = _dataArray3[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID3 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        if (model.scaleImage == nil) {
-            cell.scaleImageView.image = [GLFTools scaleImage:model.image toScale:0.2];
-        } else {
-            NSURL *url = [NSURL fileURLWithPath:model.path];
-            [cell.scaleImageView sd_setImageWithURL:url];
-        }
+        NSURL *url = [NSURL fileURLWithPath:model.path];
+        [cell.scaleImageView sd_setImageWithURL:url];
         return cell;
     }
     return nil;
