@@ -46,7 +46,16 @@
     if (tabbarHidden.integerValue) {
         rect = kScreen;
     }
-    _wkWebView = [[WKWebView alloc] initWithFrame:rect];
+    
+    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+    config.allowsInlineMediaPlayback = YES; // 是否允许内联(YES)或使用本机全屏控制器(NO)，默认是NO。
+    if (@available(iOS 10.0, *)) {
+        config.mediaTypesRequiringUserActionForPlayback = NO;
+    } else {
+        config.mediaPlaybackRequiresUserAction = NO; // 把手动播放设置NO ios(8.0, 9.0)
+    }
+
+    _wkWebView = [[WKWebView alloc] initWithFrame:rect configuration:config];
     _wkWebView.UIDelegate = self;
     _wkWebView.navigationDelegate = self;
     [self.view addSubview:_wkWebView];

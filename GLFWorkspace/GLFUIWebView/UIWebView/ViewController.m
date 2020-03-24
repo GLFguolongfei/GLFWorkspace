@@ -110,9 +110,36 @@
 }
 
 - (void)goURLVC:(NSString *)urlStr {
-    WKWebViewController *vc = [[WKWebViewController alloc] init];
-    vc.urlStr = urlStr;
-    [self.navigationController pushViewController:vc animated:YES];
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"前往页面" message:urlStr preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertVC addAction:cancelAction];
+    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"UIWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        self.ipTextView.text = urlStr;
+        WebViewController *vc = [[WebViewController alloc] init];
+        vc.urlStr = urlStr;
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
+    [alertVC addAction:okAction1];
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"WKWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        self.ipTextView.text = urlStr;
+        WKWebViewController *vc = [[WKWebViewController alloc] init];
+        vc.urlStr = urlStr;
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
+    [alertVC addAction:okAction2];
+    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"SFSafariViewController" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        self.ipTextView.text = urlStr;
+        NSURL *url = [NSURL URLWithString:urlStr];
+        SFSafariViewController *sfViewControllr = [[SFSafariViewController alloc] initWithURL:url];
+//      sfViewControllr.delegate = self;
+        [self presentViewController:sfViewControllr animated:YES completion:^{
+            
+        }];
+    }];
+    [alertVC addAction:okAction3];
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 #pragma mark Events
@@ -128,37 +155,7 @@
             [self showStringHUD:error.localizedDescription second:2];
         } else {
             NSLog(@"扫描结果：%@", result);
-            
-            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"扫描结果" message:result preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                
-            }];
-            [alertVC addAction:cancelAction];
-            UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"UIWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                self.ipTextView.text = result;
-                WebViewController *vc = [[WebViewController alloc] init];
-                vc.urlStr = result;
-                [self.navigationController pushViewController:vc animated:YES];
-            }];
-            [alertVC addAction:okAction1];
-            UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"WKWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                self.ipTextView.text = result;
-                WKWebViewController *vc = [[WKWebViewController alloc] init];
-                vc.urlStr = result;
-                [self.navigationController pushViewController:vc animated:YES];
-            }];
-            [alertVC addAction:okAction2];
-            UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"SFSafariViewController" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                self.ipTextView.text = result;
-                NSURL *url = [NSURL URLWithString:result];
-                SFSafariViewController *sfViewControllr = [[SFSafariViewController alloc] initWithURL:url];
-//                sfViewControllr.delegate = self;
-                [self presentViewController:sfViewControllr animated:YES completion:^{
-                    
-                }];
-            }];
-            [alertVC addAction:okAction3];
-            [self presentViewController:alertVC animated:YES completion:nil];
+            [self goURLVC:result];
         }
     }];
     [scanVc setHistoryCallBack:^(NSArray *result) {
@@ -187,15 +184,15 @@
 
 - (void)buttonAction2:(UIButton *)button {
     [self.view endEditing:YES];
-    WKWebViewController *vc = [[WKWebViewController alloc] init];
+    NSString *urlStr = @"";
     if (button.tag == 100) {
-        vc.urlStr = @"http://192.168.1.123:60108/abroadDetail?productId=174";
+        urlStr = @"http://192.168.1.123:60108/abroadDetail?productId=174";
     } else if (button.tag == 101) {
-        vc.urlStr = @"http://192.168.1.121:60108/abroadDetail?productId=174";
+        urlStr = @"http://192.168.1.121:60108/abroadDetail?productId=174";
     } else {
-        vc.urlStr = @"http://www.baidu.com";
+        urlStr = @"http://www.baidu.com";
     }
-    [self.navigationController pushViewController:vc animated:YES];
+    [self goURLVC:urlStr];
 }
 
 #pragma mark Tools
