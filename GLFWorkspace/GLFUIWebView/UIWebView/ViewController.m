@@ -19,7 +19,7 @@
 // Tools
 #import "LewPopupViewController.h"
 
-@interface ViewController ()<UITextViewDelegate>
+@interface ViewController ()<UITextViewDelegate,SFSafariViewControllerDelegate>
 
 @end
 
@@ -133,7 +133,7 @@
         self.ipTextView.text = urlStr;
         NSURL *url = [NSURL URLWithString:urlStr];
         SFSafariViewController *sfViewControllr = [[SFSafariViewController alloc] initWithURL:url];
-//      sfViewControllr.delegate = self;
+        sfViewControllr.delegate = self;
         [self presentViewController:sfViewControllr animated:YES completion:^{
             
         }];
@@ -244,6 +244,24 @@
         return NO;
     }
     return YES;
+}
+
+#pragma mark SFSafariViewControllerDelegate
+// 会在用户点击动作(Action)按钮(底部工具栏中间的按钮)的时候调用
+// 可以传入UIActivity的数组,创建添加一些自定义的各类插件式的服务,比如分享到微信、微博什么的
+- (NSArray<UIActivity *> *)safariViewController:(SFSafariViewController *)controller activityItemsForURL:(NSURL *)URL title:(nullable NSString *)title {
+    NSLog(@"点击Action按钮: %@ %@", URL, title);
+    return nil;
+}
+
+// Done按钮
+- (void)safariViewControllerDidFinish:(SFSafariViewController *)controller {
+    NSLog(@"点击Done按钮");
+}
+
+// 页面加载完成
+- (void)safariViewController:(SFSafariViewController *)controller didCompleteInitialLoad:(BOOL)didLoadSuccessfully {
+    NSLog(@"页面加载完成");
 }
 
 
