@@ -23,6 +23,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"ImageModel" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
+    self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"UIKit动力学"];
 
     // 1-动画者
@@ -54,6 +56,14 @@
 // 运动被意外取消时执行
 - (void)motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent *)event {
     NSLog(@"motion cancel: %ld %@", motion, event);
+}
+
+- (void)buttonAction {
+    if (imageView.contentMode == UIViewContentModeScaleAspectFill) {
+        imageView.contentMode = UIViewContentModeScaleAspectFit;
+    } else {
+        imageView.contentMode = UIViewContentModeScaleAspectFill;
+    }
 }
 
 - (void)showImage {
