@@ -41,7 +41,7 @@
     
 //    DocumentManager *manager = [DocumentManager sharedDocumentManager];
 //    [manager startPlay];
-    
+        
     fileManager = [GLFFileManager sharedFileManager];
     myDataArray = [[NSMutableArray alloc] init];
     editArray = [[NSMutableArray alloc] init];

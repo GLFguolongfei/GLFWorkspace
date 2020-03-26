@@ -40,6 +40,7 @@
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"有趣功能" style:UIBarButtonItemStylePlain target:self action:@selector(button5)];
     self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"设置"];
+    self.canHiddenNaviBar = YES;
 
     // 设置背景图片
     bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];

@@ -27,6 +27,8 @@
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"scale_big"] style:UIBarButtonItemStylePlain target:self action:@selector(playViewLandscape)];
     self.navigationItem.rightBarButtonItems = @[item];
     self.view.backgroundColor = [UIColor blackColor];
+    self.canHiddenNaviBar = YES;
+    self.canHiddenToolBar = YES;
     
     isPlaying = NO;
     

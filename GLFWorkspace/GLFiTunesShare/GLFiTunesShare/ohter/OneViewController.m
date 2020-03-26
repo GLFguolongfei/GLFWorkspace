@@ -13,6 +13,7 @@
     UIDynamicAnimator *animator;          // 动画者
     UIGravityBehavior *gravityBeahvior;   // 仿真行为_重力
     UIImageView *imageView;
+    UIViewContentMode *contentMode;
 }
 @end
 
@@ -26,6 +27,9 @@
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"ImageModel" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
     self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"UIKit动力学"];
+    self.canHiddenNaviBar = YES;
+    
+    contentMode = UIViewContentModeScaleAspectFill;
 
     // 1-动画者
     animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -35,34 +39,25 @@
     [animator addBehavior:gravityBeahvior];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [self.navigationController setNavigationBarHidden:NO animated:YES];
+}
+
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self showImage];
 }
 
-// 运动开始时执行
-- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-    // 这里只处理摇晃事件
-    if (motion == UIEventSubtypeMotionShake) {
-        NSLog(@"motion begin: %ld %@", motion, event);
-        [self showImage];
-    }
-}
-
-// 运动结束后执行
-- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-    NSLog(@"motion end: %ld %@", motion, event);
-}
-
-// 运动被意外取消时执行
-- (void)motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent *)event {
-    NSLog(@"motion cancel: %ld %@", motion, event);
-}
-
 - (void)buttonAction {
-    if (imageView.contentMode == UIViewContentModeScaleAspectFill) {
-        imageView.contentMode = UIViewContentModeScaleAspectFit;
+    if (contentMode == UIViewContentModeScaleAspectFill) {
+        contentMode = UIViewContentModeScaleAspectFit;
     } else {
-        imageView.contentMode = UIViewContentModeScaleAspectFill;
+        contentMode = UIViewContentModeScaleAspectFill;
     }
 }
 
@@ -88,7 +83,7 @@
         image = [UIImage imageWithContentsOfFile:model.path];
     }
     imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.contentMode = UIViewContentModeScaleAspectFill;
+    imageView.contentMode = contentMode;
     imageView.frame = CGRectMake(0, 0, 0, 0);
     imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
     imageView.alpha = 0;
