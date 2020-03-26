@@ -41,6 +41,7 @@
     self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"设置"];
     self.canHiddenNaviBar = YES;
+    self.canHiddenToolBar = YES;
 
     // 设置背景图片
     bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
@@ -170,8 +171,9 @@
     view.addAngle = touch.force * 3;
     waterView2.addPointX = touch.force / 10;
     NSLog(@"%@", [NSString stringWithFormat:@"%f", touch.force]);
-    if (self.navigationController.toolbar.hidden ) {
+    if (self.navigationController.toolbar.hidden) {
         [self.navigationController setToolbarHidden:NO animated:YES];
+        [self.navigationController setNavigationBarHidden:NO animated:YES];
     } else {
         [self.navigationController setToolbarHidden:YES animated:YES];
     }
