@@ -26,6 +26,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UIVisualEffectView *visualEfView;
     BOOL isPlaying;
     
+    BOOL isHiddenNavi;
+    
     UIBarButtonItem *item;
     
     UIView *gestureView;
@@ -33,6 +35,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     
     DocumentManager *manager;
     NSTimer *timer; // 定时器
+    
+    FileModel *currentModel;
 
     UITableView *_tableView1;
     UITableView *_tableView2;
@@ -53,6 +57,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     item = [[UIBarButtonItem alloc] initWithTitle:@"自动播放" style:UIBarButtonItemStylePlain target:self action:@selector(autoPlay)];
     self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"所有图片"];
+    self.canHiddenNaviBar = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
 
     // 1-动画者
     animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -225,13 +232,20 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         NSInteger mmm = arc4random() % manager.allImagesArray.count;
         FileModel *model = manager.allImagesArray[mmm];
         image = [UIImage imageWithContentsOfFile:model.path];
+        currentModel = model;
     }
     imageView = [[UIImageView alloc] initWithImage:image];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
-    imageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
-    imageView.center = CGPointMake(kScreenWidth / 2.0, -kScreenHeight);
+    imageView.frame = CGRectMake(0, 0, 0, 0);
+    imageView.center = self.view.center;
+    imageView.transform = CGAffineTransformMakeRotation(-135.0);
     [UIView animateWithDuration:1 animations:^{
-        imageView.center = CGPointMake(kScreenWidth / 2.0, (kScreenHeight-64) / 2.0 + 64);
+        imageView.transform = CGAffineTransformIdentity;
+        if (isHiddenNavi) {
+            imageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+        } else {
+            imageView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+        }
     }];
     [self.view addSubview:imageView];
     // 3秒后回到主线程执行Block中的代码
@@ -240,6 +254,10 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         [gravityBeahvior addItem:imageView];
         [self playImage];
     });
+    imageView.userInteractionEnabled = YES;
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    [tapGesture addTarget:self action:@selector(showImage)];
+    [imageView addGestureRecognizer:tapGesture];
 }
 
 - (void)setState {
@@ -282,6 +300,41 @@ static NSString *cellID3 = @"ShowTableViewCell3";
                 visualEfView.alpha = 0;
             }];
         }];
+    }
+}
+
+- (void)naviBarChange:(NSNotification *)notify {
+    NSDictionary *dict = notify.userInfo;
+    if ([dict[@"isHidden"] isEqualToString: @"1"]) {
+        isHiddenNavi = YES;
+        _tableView1.frame = CGRectMake(0, 0, kScreenWidth/3, kScreenHeight);
+        _tableView2.frame = CGRectMake(kScreenWidth/3, 0, kScreenWidth/3, kScreenHeight);
+        _tableView3.frame = CGRectMake(kScreenWidth/3*2, 0, kScreenWidth/3, kScreenHeight);
+    } else {
+        isHiddenNavi = NO;
+        _tableView1.frame = CGRectMake(0, 64, kScreenWidth/3, kScreenHeight-64);
+        _tableView2.frame = CGRectMake(kScreenWidth/3, 64, kScreenWidth/3, kScreenHeight-64);
+        _tableView3.frame = CGRectMake(kScreenWidth/3*2, 64, kScreenWidth/3, kScreenHeight-64);
+    }
+}
+
+- (void)showImage {
+    if (currentModel) {
+        if (isSuccess) {
+            NSURL *url = [NSURL fileURLWithPath:currentModel.path];
+            UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
+            documentController.delegate = self;
+            // 显示预览
+            BOOL canOpen = [documentController presentPreviewAnimated:YES];
+            if (!canOpen) {
+                [self showStringHUD:@"沒有程序可以打开要分享的文件" second:1.5];
+            }
+        } else {
+            DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
+            detailVC.selectIndex = [self returnIndex:manager.allImagesArray with:currentModel];
+            detailVC.fileArray = manager.allImagesArray;
+            [self.navigationController pushViewController:detailVC animated:YES];
+        }
     }
 }
 

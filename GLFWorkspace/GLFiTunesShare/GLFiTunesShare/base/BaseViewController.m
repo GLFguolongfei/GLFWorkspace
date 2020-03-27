@@ -62,16 +62,24 @@
         if (self.navigationController.navigationBar.hidden == YES) {
             if (self.canHiddenNaviBar) {
                 [self.navigationController setNavigationBarHidden:NO animated:YES];
+                NSDictionary *dict = @{@"isHidden": @"0"};
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NaviBarChange" object:self userInfo:dict];
             }
             if (self.canHiddenToolBar) {
                 [self.navigationController setToolbarHidden:NO animated:YES];
+                NSDictionary *dict = @{@"isHidden": @"0"};
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ToolBarChange" object:self userInfo:dict];
             }
         } else {
             if (self.canHiddenNaviBar) {
                 [self.navigationController setNavigationBarHidden:YES animated:YES];
+                NSDictionary *dict = @{@"isHidden": @"1"};
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NaviBarChange" object:self userInfo:dict];
             }
             if (self.canHiddenToolBar) {
                 [self.navigationController setToolbarHidden:YES animated:YES];
+                NSDictionary *dict = @{@"isHidden": @"1"};
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ToolBarChange" object:self userInfo:dict];
             }
         }
     }
