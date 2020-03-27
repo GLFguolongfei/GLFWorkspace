@@ -51,7 +51,7 @@
         CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 200 + 80 * ceil(i / 3), width, 50);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
         if (i == 0) {
-            [button setTitle:@"选择地址" forState:UIControlStateNormal];
+            [button setTitle:@"历史记录" forState:UIControlStateNormal];
         } else if (i == 1)  {
             [button setTitle:@"清除缓存" forState:UIControlStateNormal];
         } else {
