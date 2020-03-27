@@ -26,7 +26,8 @@
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-    [self presentDocumentPicker];
+    [self selectMedia];
+//    [self presentDocumentPicker];
 }
 
 #pragma mark Events
@@ -68,11 +69,11 @@
 }
 
 - (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
-    NSLog(@"%@", controller);
+    NSLog(@"111%@", controller);
 }
 
 - (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
-    NSLog(@"%@", url);
+    NSLog(@"222%@", url);
 }
 
 
