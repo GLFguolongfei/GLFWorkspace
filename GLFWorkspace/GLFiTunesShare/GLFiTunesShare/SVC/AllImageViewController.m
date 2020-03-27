@@ -331,9 +331,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.size > 1000000) { // 大于1M
             cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
+            cell.textLabel.text = model.name;
         } else {
             NSURL *url = [NSURL fileURLWithPath:model.path];
             [cell.scaleImageView sd_setImageWithURL:url];
+            cell.textLabel.text = @"";
         }
         return cell;
     } else if (tableView == _tableView2) {
@@ -342,9 +344,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.size > 1000000) { // 大于1M
             cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
+            cell.textLabel.text = model.name;
         } else {
             NSURL *url = [NSURL fileURLWithPath:model.path];
             [cell.scaleImageView sd_setImageWithURL:url];
+            cell.textLabel.text = @"";
         }
         return cell;
     } else if (tableView == _tableView3) {
@@ -353,9 +357,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.size > 1000000) { // 大于1M
             cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
+            cell.textLabel.text = model.name;
         } else {
             NSURL *url = [NSURL fileURLWithPath:model.path];
             [cell.scaleImageView sd_setImageWithURL:url];
+            cell.textLabel.text = @"";
         }
         return cell;
     }
