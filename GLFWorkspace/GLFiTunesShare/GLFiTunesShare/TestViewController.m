@@ -10,7 +10,7 @@
 #import "WKWebViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 
-@interface TestViewController ()<MPMediaPickerControllerDelegate>
+@interface TestViewController ()<MPMediaPickerControllerDelegate, UIDocumentPickerDelegate>
 
 @end
 
@@ -20,21 +20,34 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
     [self setVCTitle:@"测试功能"];
-    [self setupEmitter1];
     
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-//    WKWebViewController *vc = [[WKWebViewController alloc] init];
-//    [self.navigationController pushViewController:vc animated:YES];
-    
-//    MPMediaPickerController *mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes:MPMediaTypeAny];
-//    mediaPicker.allowsPickingMultipleItems = YES;  // 是否允许一次选择多个
-//    mediaPicker.prompt = @"请选择要播放的音乐";       // 提示文字
-//    mediaPicker.delegate = self;                   // 设置选择器代理
-//    [self presentViewController:mediaPicker animated:YES completion:nil];
+    [self presentDocumentPicker];
+}
+
+#pragma mark Events
+- (void)webView {
+    WKWebViewController *vc = [[WKWebViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)selectMedia {
+    MPMediaPickerController *mediaPicker = [[MPMediaPickerController alloc] initWithMediaTypes:MPMediaTypeAny];
+    mediaPicker.allowsPickingMultipleItems = YES;  // 是否允许一次选择多个
+    mediaPicker.prompt = @"请选择要播放的音乐";       // 提示文字
+    mediaPicker.delegate = self;                   // 设置选择器代理
+    [self presentViewController:mediaPicker animated:YES completion:nil];
+}
+
+- (void)presentDocumentPicker {
+    NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code ", @"public.image", @"public.audiovisual-content", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
+    UIDocumentPickerViewController *documentPickerViewController = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeOpen];
+    documentPickerViewController.delegate = self;
+    [self presentViewController:documentPickerViewController animated:YES completion:nil];
 }
 
 #pragma mark MPMediaPickerControllerDelegate
@@ -47,6 +60,19 @@
 // 取消选择
 - (void)mediaPickerDidCancel:(MPMediaPickerController *)mediaPicker {
     [mediaPicker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark UIDocumentPickerDelegate
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls {
+    NSLog(@"%@", urls);
+}
+
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
+    NSLog(@"%@", controller);
+}
+
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
+    NSLog(@"%@", url);
 }
 
 

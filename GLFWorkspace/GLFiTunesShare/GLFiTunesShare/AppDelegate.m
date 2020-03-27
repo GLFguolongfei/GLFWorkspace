@@ -10,6 +10,7 @@
 #import "RootViewController.h"
 #import "LoginViewController.h"
 #import "ViewController.h"
+#import "TestViewController.h"
 #import "MoveViewController.h"
 #import "UncaughtExceptionHandler.h"
 // 防止低版本找不到头文件出现问题
@@ -35,9 +36,9 @@
     // ----- 好像没起到作用,原因未知 -----
     InstallUncaughtExceptionHandler();
     
-    BOOL isTestFounction = NO;
+    BOOL isTestFounction = YES;
     if (isTestFounction) {
-        ViewController *testVC = [[ViewController alloc] init];
+        TestViewController *testVC = [[TestViewController alloc] init];
         self.window.rootViewController = testVC;
     } else {
 #if FirstTarget

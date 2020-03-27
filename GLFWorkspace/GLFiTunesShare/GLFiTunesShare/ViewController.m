@@ -26,9 +26,5 @@
     // 3.[iOS数据共享] 为你的App提供把文件传输给其它App和接收其它App传来的文件的功能
 }
 
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
- 
-}
-
 
 @end
