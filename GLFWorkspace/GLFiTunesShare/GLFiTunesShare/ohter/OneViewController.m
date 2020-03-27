@@ -14,6 +14,7 @@
     UIGravityBehavior *gravityBeahvior;   // 仿真行为_重力
     UIImageView *imageView;
     UIViewContentMode *contentMode;
+    UILabel *label;
 }
 @end
 
@@ -32,7 +33,7 @@
     contentMode = UIViewContentModeScaleAspectFill;
     
     CGRect labelRect = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
-    UILabel *label = [[UILabel alloc] initWithFrame:labelRect];
+    label = [[UILabel alloc] initWithFrame:labelRect];
     label.backgroundColor = [UIColor clearColor];
     [self.view addSubview:label];
     
@@ -67,9 +68,12 @@
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self showImage];
+    label.hidden = YES;
+    self.view.backgroundColor = [UIColor blackColor];
 }
 
 - (void)buttonAction {
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
     if (contentMode == UIViewContentModeScaleAspectFill) {
         contentMode = UIViewContentModeScaleAspectFit;
     } else {

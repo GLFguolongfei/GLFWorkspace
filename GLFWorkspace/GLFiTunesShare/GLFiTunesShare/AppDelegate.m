@@ -36,7 +36,7 @@
     // ----- 好像没起到作用,原因未知 -----
     InstallUncaughtExceptionHandler();
     
-    BOOL isTestFounction = YES;
+    BOOL isTestFounction = NO;
     if (isTestFounction) {
         TestViewController *testVC = [[TestViewController alloc] init];
         self.window.rootViewController = testVC;
