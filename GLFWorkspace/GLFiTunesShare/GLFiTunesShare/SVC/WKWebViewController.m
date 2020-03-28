@@ -40,9 +40,9 @@
     self.wkWebView.navigationDelegate = self;
     [self.view addSubview:self.wkWebView];
     
-    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"bd" ofType:@"webarchive"];
-    NSURL *url = [NSURL URLWithString:filePath];
-//    NSURL *url = [NSURL URLWithString:@"https://www.baidu.com"];
+//    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"bd" ofType:@"webarchive"];
+//    NSURL *url = [NSURL URLWithString:filePath];
+    NSURL *url = [NSURL URLWithString:self.urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [self.wkWebView loadRequest:request];
 }

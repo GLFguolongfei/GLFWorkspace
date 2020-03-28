@@ -19,6 +19,7 @@
 
 // ViewController
 #import "BaseViewController.h"
+#import "WKWebViewController.h"
 // Tools
 #import "MBProgressHUD.h"
 #import "Base64.h"
