@@ -107,7 +107,14 @@
         textField.text = @"";
         RootViewController *rootVC = [[RootViewController alloc] init];
         rootVC.moveModel = self.moveModel;
-        [self.navigationController pushViewController:rootVC animated:YES];
+        UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:rootVC];
+        // 翻转模式
+        //     UIModalTransitionStyleCoverVertical = 0, // 底部弹出(默认)
+        //     UIModalTransitionStyleFlipHorizontal,    // 翻转
+        //     UIModalTransitionStyleCrossDissolve,     // 闪现
+        //     UIModalTransitionStylePartialCurl        // 翻页
+        navi.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        [self presentViewController:navi animated:YES completion:nil];
     } else {
         if (str.length == 0) {
             [self showStringHUD:@"请输入密码" second:1.5];
@@ -138,7 +145,14 @@
                 dispatch_async(dispatch_get_main_queue(), ^{
                     RootViewController *rootVC = [[RootViewController alloc] init];
                     rootVC.moveModel = self.moveModel;
-                    [self.navigationController pushViewController:rootVC animated:YES];
+                    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:rootVC];
+                    // 翻转模式
+                    //     UIModalTransitionStyleCoverVertical = 0, // 底部弹出(默认)
+                    //     UIModalTransitionStyleFlipHorizontal,    // 翻转
+                    //     UIModalTransitionStyleCrossDissolve,     // 闪现
+                    //     UIModalTransitionStylePartialCurl        // 翻页
+                    navi.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+                    [self presentViewController:navi animated:YES completion:nil];
                 });
             }
             if (error) { // 指纹识别出现错误,回主线程更新UI,弹出提示框

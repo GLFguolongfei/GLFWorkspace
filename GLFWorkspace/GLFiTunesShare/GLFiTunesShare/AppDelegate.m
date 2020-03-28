@@ -63,9 +63,7 @@
 #elif SecondTarget
     image = [UIImage imageNamed:@"lunch2"];
     // 重新登陆
-    LoginViewController *loginVC = [[LoginViewController alloc] init];
-    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:loginVC];
-    self.window.rootViewController = navi;
+    [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
 #else
     NSLog(@"---------------------- 其它Target ----------------------");
 #endif
