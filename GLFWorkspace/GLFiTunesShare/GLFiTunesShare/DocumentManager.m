@@ -40,6 +40,131 @@ HMSingletonM(DocumentManager)
 
 
 #pragma mark - 文件操作
++ (void)eachAllFilesWithType:(NSInteger)eachType andFinish:(FinishBlock)callBlock {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *hidden = [userDefaults objectForKey:kContentHidden];
+        
+    NSDate *startDate = [NSDate date];
+
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSMutableArray *allArray = [[NSMutableArray alloc] init];
+        NSMutableArray *allFoldersArray = [[NSMutableArray alloc] init];
+        NSMutableArray *allFilesArray = [[NSMutableArray alloc] init];
+        NSMutableArray *allImagesArray = [[NSMutableArray alloc] init];
+        NSMutableArray *allVideosArray = [[NSMutableArray alloc] init];
+        NSMutableArray *allDYVideosArray = [[NSMutableArray alloc] init];
+        NSMutableArray *allNoDYVideosArray = [[NSMutableArray alloc] init];
+        NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
+        for (int i = 0; i < array.count; i++) {
+            // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
+            // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
+            if ([array[i] isEqualToString:@"Inbox"]) {
+                continue;
+            }
+            if ([hidden isEqualToString:@"0"] && [CHiddenPaths containsObject:array[i]]) {
+                continue;
+            }
+            FileModel *model = [[FileModel alloc] init];
+            model.name = array[i];
+            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+            model.attributes = [GLFFileManager attributesOfItemAtPath:model.path];
+            NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
+            if (fileType == 1) { // 文件
+                model.size = [GLFFileManager fileSize:model.path];
+                NSArray *array = [model.name componentsSeparatedByString:@"."];
+                NSString *lowerType = [array.lastObject lowercaseString];
+                if (eachType == 3 && [CimgTypeArray containsObject:lowerType]) {
+                    model.type = 2;
+                    model.image = [UIImage imageWithContentsOfFile:model.path];
+                    [allImagesArray addObject:model];
+                } else if ((eachType == 4 || eachType == 5 || eachType == 6) && [CvideoTypeArray containsObject:lowerType]) {
+                    model.type = 3;
+//                    #if FirstTarget
+//                        model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
+//                    #else
+//                        model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+//                    #endif
+                    model.image = nil;
+                    if (eachType == 4) {
+                        [allVideosArray addObject:model];
+                    }
+                    CGSize size = [GLFTools videoSizeWithPath:model.path];
+                    model.videoSize = size;
+                    
+                    NSArray *array = [model.name componentsSeparatedByString:@"/"];
+                    NSString *name = array.firstObject;
+                    if ([name isEqualToString:@"抖音"]) {
+                        if (eachType == 5) {
+                            [allDYVideosArray addObject:model];
+                        }
+                    } else if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
+                        if (eachType == 5) {
+                            [allDYVideosArray addObject:model];
+                        }
+                    } else {
+                        if (eachType == 6) {
+                            [allNoDYVideosArray addObject:model];
+                        }
+                    }
+                } else {
+                    model.type = 4;
+                }
+                if (eachType == 2) {
+                    [allFilesArray addObject:model];
+                }
+            } else if (eachType == 1 && fileType == 2) { // 文件夹
+                model.type = 1;
+                model.size = [GLFFileManager fileSizeForDir:model.path];
+                model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
+                [allFoldersArray addObject:model];
+            }
+        }
+        // 显示文件夹排在前面
+        if (eachType == 0) {
+            [allArray addObjectsFromArray:allFoldersArray];
+            [allArray addObjectsFromArray:allFilesArray];
+        }
+        NSDate *endDate = [NSDate date];
+        NSCalendar *calendar = [NSCalendar currentCalendar];
+        NSCalendarUnit type = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+        NSDateComponents *cmps = [calendar components:type fromDate:startDate toDate:endDate options:0];
+        
+        NSArray *resultArray = nil;
+        NSString *msgType = @"";
+        if (eachType == 0) {
+            resultArray = allArray;
+            msgType = @"所有类型";
+        } else if (eachType == 1) {
+            resultArray = allFoldersArray;
+            msgType = @"文件夹";
+        } else if (eachType == 2) {
+            resultArray = allFilesArray;
+            msgType = @"文件";
+        } else if (eachType == 3) {
+            resultArray = allImagesArray;
+            msgType = @"图片";
+        } else if (eachType == 4) {
+            resultArray = allVideosArray;
+            msgType = @"视频";
+        } else if (eachType == 5) {
+            resultArray = allDYVideosArray;
+            msgType = @"抖音视频";
+        } else if (eachType == 6) {
+            resultArray = allNoDYVideosArray;
+            msgType = @"非抖音视频";
+        }
+        NSLog(@"全局遍历「%@」完成,一共用时: %ld分钟%ld秒", msgType, cmps.minute, cmps.second);
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            callBlock(resultArray);
+        });
+    });
+}
+
 - (void)eachAllFiles:(BOOL)isForce {
     if (isEaching && !isForce) {
         return;

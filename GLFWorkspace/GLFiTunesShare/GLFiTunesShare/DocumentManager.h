@@ -13,6 +13,8 @@
 static NSString * _Nullable DocumentPathArray = @"DocumentPathArray";
 static NSString * _Nullable DocumentPathArrayUpdate = @"DocumentPathArrayUpdate";
 
+typedef void (^FinishBlock) (NSArray *_Nullable);
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface DocumentManager : NSObject
@@ -28,6 +30,8 @@ HMSingletonH(DocumentManager)
 @property (nonatomic, strong) NSMutableArray *allNoDYVideosArray; // 其它视频(非抖音视频)
 
 #pragma mark 文件操作
+// type 0-全部 1-文件夹 2-文件 3-图片 4-视频 5-抖音视频 6-其它视频
++ (void)eachAllFilesWithType:(NSInteger)eachType andFinish:(FinishBlock)callBlock;
 - (void)eachAllFiles:(BOOL)isForce;
 - (void)setVideosImage:(NSInteger)maxCount;
 - (void)setScaleImage:(NSInteger)maxCount;

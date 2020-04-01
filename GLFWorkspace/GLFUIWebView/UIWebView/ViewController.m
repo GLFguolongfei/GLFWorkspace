@@ -75,6 +75,8 @@
             [button setTitle:@"Test1" forState:UIControlStateNormal];
         } else if (i == 1)  {
             [button setTitle:@"Test2" forState:UIControlStateNormal];
+        } else if (i == 2)  {
+            [button setTitle:@"Ant Design Mobile" forState:UIControlStateNormal];
         } else {
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
@@ -189,6 +191,8 @@
         urlStr = @"http://192.168.1.123:60108/abroadDetail?productId=174";
     } else if (button.tag == 101) {
         urlStr = @"http://192.168.1.121:60108/abroadDetail?productId=174";
+    } else if (button.tag == 102) {
+        urlStr = @"https://mobile.ant.design/kitchen-sink/";
     } else {
         urlStr = @"http://www.baidu.com";
     }
