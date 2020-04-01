@@ -67,7 +67,7 @@
         [self.view addSubview:button];
     }
     
-    for (NSInteger i = 0; i < 3; i++) {
+    for (NSInteger i = 0; i < 4; i++) {
         CGFloat width = (kScreenWidth - 60) / 3;
         CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 270 + 80 * ceil(i / 3), width, 50);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
