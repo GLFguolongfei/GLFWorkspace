@@ -38,6 +38,7 @@
         rect = kScreen;
     }
     _webView = [[UIWebView alloc] initWithFrame:rect];
+    _webView.dataDetectorTypes = UIDataDetectorTypeAll; // 设定使电话号码、网址、电子邮件和符合格式的日期等文字变为链接文字
     _webView.scalesPageToFit = YES;
     _webView.delegate = self;
     [self.view addSubview:_webView];
