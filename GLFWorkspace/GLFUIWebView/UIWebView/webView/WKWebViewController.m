@@ -48,7 +48,8 @@
     }
     
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-    config.allowsInlineMediaPlayback = YES; // 是否允许内联(YES)或使用本机全屏控制器(NO)，默认是NO。
+    config.dataDetectorTypes =UIDataDetectorTypeAll; // 设定使电话号码、网址、电子邮件和符合格式的日期等文字变为链接文字
+    config.allowsInlineMediaPlayback = YES; // 是否允许内联(YES)或使用本机全屏控制器(NO),默认是NO
     if (@available(iOS 10.0, *)) {
         config.mediaTypesRequiringUserActionForPlayback = NO;
     } else {
