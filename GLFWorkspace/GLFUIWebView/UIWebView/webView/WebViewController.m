@@ -26,7 +26,10 @@
     item1 = [[UIBarButtonItem alloc] initWithTitle:@"W前进" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
     item2 = [[UIBarButtonItem alloc] initWithTitle:@"W回退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
+    self.canHiddenNaviBar = YES;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
+
     [self setWebView];
 }
 
@@ -76,6 +79,15 @@
 - (void)buttonAction2:(id)sender {
     if (_webView.canGoBack) {
         [_webView goBack];
+    }
+}
+
+- (void)naviBarChange:(NSNotification *)notify {
+    NSDictionary *dict = notify.userInfo;
+    if ([dict[@"isHidden"] isEqualToString: @"1"]) {
+        _webView.frame = kScreen;
+    } else {
+        _webView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
     }
 }
 

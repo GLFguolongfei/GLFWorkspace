@@ -12,6 +12,10 @@
 // --- 父视图控制器
 @interface BaseViewController : UIViewController
 
+// 是否可以隐藏导航栏
+@property (nonatomic, assign) BOOL canHiddenNaviBar;
+@property (nonatomic, assign) BOOL canHiddenToolBar;
+
 #pragma mark HUD透明指示器
 // 功能:显示hud
 - (void)showHUD;

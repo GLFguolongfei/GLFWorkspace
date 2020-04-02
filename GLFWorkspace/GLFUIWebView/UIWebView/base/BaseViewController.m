@@ -20,8 +20,51 @@
     [super viewDidLoad];
     // 不需要添加额外的滚动区域
     self.automaticallyAdjustsScrollViewInsets = NO;
-    
+    self.canHiddenNaviBar = NO;
+    self.canHiddenToolBar = NO;
 }
+
+// 运动开始时执行
+- (void)motionBegan:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    // 这里只处理摇晃事件
+    if (motion == UIEventSubtypeMotionShake) {
+        NSLog(@"motion begin: %ld %@", motion, event);
+        if (self.navigationController.navigationBar.hidden == YES) {
+            if (self.canHiddenNaviBar) {
+                [self.navigationController setNavigationBarHidden:NO animated:YES];
+                NSDictionary *dict = @{@"isHidden": @"0"};
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NaviBarChange" object:self userInfo:dict];
+            }
+            if (self.canHiddenToolBar) {
+                [self.navigationController setToolbarHidden:NO animated:YES];
+                NSDictionary *dict = @{@"isHidden": @"0"};
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ToolBarChange" object:self userInfo:dict];
+            }
+        } else {
+            if (self.canHiddenNaviBar) {
+                [self.navigationController setNavigationBarHidden:YES animated:YES];
+                NSDictionary *dict = @{@"isHidden": @"1"};
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NaviBarChange" object:self userInfo:dict];
+            }
+            if (self.canHiddenToolBar) {
+                [self.navigationController setToolbarHidden:YES animated:YES];
+                NSDictionary *dict = @{@"isHidden": @"1"};
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"ToolBarChange" object:self userInfo:dict];
+            }
+        }
+    }
+}
+
+// 运动结束后执行
+- (void)motionEnded:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    NSLog(@"motion end: %ld %@", motion, event);
+}
+
+// 运动被意外取消时执行
+- (void)motionCancelled:(UIEventSubtype)motion withEvent:(UIEvent *)event {
+    NSLog(@"motion cancel: %ld %@", motion, event);
+}
+
 
 #pragma mark hud
 // 功能:显示hud
