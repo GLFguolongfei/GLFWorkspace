@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 
-@interface FileModel : NSObject
+@interface FileModel : NSObject<NSCoding>
 
 @property (nonatomic, strong) NSString *name;           // 名字(含扩展名)
 @property (nonatomic, strong) NSString *path;           // 全路径(含最后的名字以及扩展名)

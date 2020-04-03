@@ -134,11 +134,6 @@
         CGFloat allSize = 0;
         CGFloat currentSize = 0;
         for (int i = 0; i < array.count; i++) {
-            // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
-            // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
-            if ([array[i] isEqualToString:@"Inbox"]) {
-                continue;
-            }
             if ([hidden isEqualToString:@"0"] && [CHiddenPaths containsObject:array[i]]) {
                 continue;
             }
@@ -330,7 +325,8 @@
     for (NSInteger i = 0; i < editArray.count; i++) {
         FileModel *model = editArray[i];
         if ([CHiddenPaths containsObject:model.name]) {
-            [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:1.5];
+            NSString *msg = [NSString stringWithFormat:@"特殊文件夹【%@】不可以移动", model.name];
+            [self showStringHUD:msg second:1.5];
             [self viewEditing:YES];
             return;
         }
@@ -346,7 +342,8 @@
     for (NSInteger i = 0; i < editArray.count; i++) {
         FileModel *model = editArray[i];
         if ([CHiddenPaths containsObject:model.name]) {
-            [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:1.5];
+            NSString *msg = [NSString stringWithFormat:@"特殊文件夹【%@】不可以删除", model.name];
+            [self showStringHUD:msg second:1.5];
             [self viewEditing:YES];
             return;
         }
@@ -574,7 +571,8 @@
 - (void)deleteAction {
     FileModel *model = myDataArray[editIndexPath.row];
     if ([CHiddenPaths containsObject:model.name]) {
-        [self showStringHUD:@"文件夹【郭龙飞】不可以删除" second:1.5];
+        NSString *msg = [NSString stringWithFormat:@"特殊文件夹【%@】不可以删除", model.name];
+        [self showStringHUD:msg second:1.5];
         [self viewEditing:YES];
         return;
     }
@@ -619,7 +617,8 @@
 - (void)renameAction {
     FileModel *model = myDataArray[editIndexPath.row];
     if ([CHiddenPaths containsObject:model.name]) {
-        [self showStringHUD:@"文件夹【郭龙飞】不可以重命名" second:1.5];
+        NSString *msg = [NSString stringWithFormat:@"特殊文件夹【%@】不可以重命名", model.name];
+        [self showStringHUD:msg second:1.5];
         [self viewEditing:YES];
         return;
     }
@@ -651,7 +650,8 @@
 - (void)moveAction {
     FileModel *model = myDataArray[editIndexPath.row];
     if ([CHiddenPaths containsObject:model.name]) {
-        [self showStringHUD:@"文件夹【郭龙飞】不可以移动" second:1.5];
+        NSString *msg = [NSString stringWithFormat:@"特殊文件夹【%@】不可以移动", model.name];
+        [self showStringHUD:msg second:1.5];
         [self viewEditing:YES];
         return;
     }

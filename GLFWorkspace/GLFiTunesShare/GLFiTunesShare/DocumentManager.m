@@ -288,6 +288,26 @@ HMSingletonM(DocumentManager)
         NSDateComponents *cmps = [calendar components:type fromDate:startDate toDate:endDate options:0];
         NSLog(@"全局遍历完成,一共用时: %ld分钟%ld秒", cmps.minute, cmps.second);
         
+        NSString *archiverPath1 = [path stringByAppendingPathComponent:@"GLFConfig/allArray.plist"];
+        BOOL isSuccess1 = [NSKeyedArchiver archiveRootObject:allArray toFile:archiverPath1];
+        NSString *archiverPath2 = [path stringByAppendingPathComponent:@"GLFConfig/allFoldersArray.plist"];
+        BOOL isSuccess2 = [NSKeyedArchiver archiveRootObject:allFoldersArray toFile:archiverPath2];
+        NSString *archiverPath3 = [path stringByAppendingPathComponent:@"GLFConfig/allFilesArray.plist"];
+        BOOL isSuccess3 = [NSKeyedArchiver archiveRootObject:allFilesArray toFile:archiverPath3];
+        NSString *archiverPath4 = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
+        BOOL isSuccess4 = [NSKeyedArchiver archiveRootObject:allImagesArray toFile:archiverPath4];
+        NSString *archiverPath5 = [path stringByAppendingPathComponent:@"GLFConfig/allVideosArray.plist"];
+        BOOL isSuccess5 = [NSKeyedArchiver archiveRootObject:allVideosArray toFile:archiverPath5];
+        NSString *archiverPath6 = [path stringByAppendingPathComponent:@"GLFConfig/allDYVideosArray.plist"];
+        BOOL isSuccess6 = [NSKeyedArchiver archiveRootObject:allDYVideosArray toFile:archiverPath6];
+        NSString *archiverPath7 = [path stringByAppendingPathComponent:@"GLFConfig/allNoDYVideosArray.plist"];
+        BOOL isSuccess7 = [NSKeyedArchiver archiveRootObject:allNoDYVideosArray toFile:archiverPath7];
+        if (isSuccess1 & isSuccess2 & isSuccess3 & isSuccess4 & isSuccess5 & isSuccess6 & isSuccess7) {
+            NSLog(@"archiver success");
+        } else {
+            NSLog(@"archiver error");
+        }
+        
         dispatch_async(dispatch_get_main_queue(), ^{
             isEaching = NO;
         });

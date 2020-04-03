@@ -75,7 +75,9 @@
 #define kRemove             @"kRemove"
 #define CimgTypeArray    @[@"png", @"jpeg", @"jpg", @"gif"]
 #define CvideoTypeArray  @[@"mp4", @"rmvb", @"avi", @"mov", @"mkv"]
-#define CHiddenPaths     @[@"郭龙飞"]
+// 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
+// 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
+#define CHiddenPaths     @[@"Inbox", @"GLFConfig", @"郭龙飞"]
 
 
 #define IOS10_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 10.0)
