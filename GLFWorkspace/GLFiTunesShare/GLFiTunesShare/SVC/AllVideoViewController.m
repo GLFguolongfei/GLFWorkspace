@@ -22,9 +22,6 @@ static NSString *cellID = @"VideoTableViewCell";
     UIView *gestureView;
     BOOL isSuccess;
     BOOL isShowImage;
-    
-    DocumentManager *manager;
-    NSTimer *timer; // 定时器
 }
 @end
 
@@ -39,16 +36,11 @@ static NSString *cellID = @"VideoTableViewCell";
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"文字" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.title = @"所有视频";
+    
+    _dataArray = [[NSMutableArray alloc] init];
         
-    manager = [DocumentManager sharedDocumentManager];
-    if (manager.allVideosArray.count > 0) {
-        [self prepareData];
-    }  else {
-        [self showHUD:@"搜索中, 不要着急!"];
-        timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    }
     [self prepareView];
+    [self prepareData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -82,16 +74,20 @@ static NSString *cellID = @"VideoTableViewCell";
 }
 
 - (void)prepareData {
-    if (manager.allVideosArray.count > 0) {
-        [self hideAllHUD];
-        [timer invalidate];
-        timer = nil;
-        _dataArray = manager.allVideosArray;
-        [_tableView reloadData];
-        
-        NSString *title = [NSString stringWithFormat:@"所有视频(%ld)", _dataArray.count];
-        [self setVCTitle:title];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allVideosArray.plist"];
+    NSArray *arr = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+    _dataArray = [arr mutableCopy];
+    for (NSInteger i = 0; i < _dataArray.count; i++) {
+        FileModel *model = _dataArray[i];
+        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
     }
+    [_tableView reloadData];
+    
+    NSString *title = [NSString stringWithFormat:@"所有视频(%ld)", _dataArray.count];
+    [self setVCTitle:title];
 }
 
 - (void)prepareView {
