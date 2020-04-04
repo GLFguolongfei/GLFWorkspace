@@ -131,12 +131,8 @@ static NSString *cellID = @"VideoTableViewCell";
     }
     
     UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"实时视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        if (manager.allVideosArray.count > 0) {
-            AllVideoPlayViewController *vc = [[AllVideoPlayViewController alloc] init];
-            [self.navigationController pushViewController:vc animated:YES];
-        } else {
-            [self showStringHUD:@"等待遍历完成" second:1.5];
-        }
+        AllVideoPlayViewController *vc = [[AllVideoPlayViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
     }];
     [alertVC addAction:okAction3];
     
