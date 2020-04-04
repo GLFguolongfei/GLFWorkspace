@@ -57,11 +57,11 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    UIImage *image = [UIImage imageNamed:@"lunch5"];
+    UIImage *image = [UIImage imageNamed:@"lunch1"];
 #if FirstTarget
     image = [UIImage imageNamed:@"lunch5"];
 #elif SecondTarget
-    image = [UIImage imageNamed:@"lunch2"];
+    image = [UIImage imageNamed:@"lunch6"];
     // 重新登陆
     [self.window.rootViewController dismissViewControllerAnimated:YES completion:nil];
 #else

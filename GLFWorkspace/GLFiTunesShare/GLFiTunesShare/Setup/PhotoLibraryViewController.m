@@ -99,27 +99,23 @@ static NSString *cellID = @"cellID";
     [collectionViewArray removeAllObjects];
     [nameArray removeAllObjects];
     if (isSuccess) {
-        for (NSInteger i = 0; i < 9; i++) {
+        for (NSInteger i = 1; i <= 9; i++) {
             NSString *name = [NSString stringWithFormat:@"bgview%ld", i];
             [nameArray addObject:name];
         }
-        for (NSInteger i = 0; i < 13; i++) {
+        for (NSInteger i = 1; i <= 11; i++) {
             NSString *name = [NSString stringWithFormat:@"mv%ld", i];
             [nameArray addObject:name];
         }
-        for (int i = 0; i < nameArray.count; i++) {
-            UIImage *image = [UIImage imageNamed:nameArray[i]];
-            [collectionViewArray addObject:image];
-        }
     } else {
-        for (NSInteger i = 0; i < 32; i++) {
+        for (NSInteger i = 1; i <= 29; i++) {
             NSString *name = [NSString stringWithFormat:@"nv%ld", i];
             [nameArray addObject:name];
         }
-        for (int i = 0; i < nameArray.count; i++) {
-            UIImage *image = [UIImage imageNamed:nameArray[i]];
-            [collectionViewArray addObject:image];
-        }
+    }
+    for (int i = 0; i < nameArray.count; i++) {
+        UIImage *image = [UIImage imageNamed:nameArray[i]];
+        [collectionViewArray addObject:image];
     }
     [collectionView reloadData];
 }

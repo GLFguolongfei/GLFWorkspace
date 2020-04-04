@@ -19,7 +19,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lunch2" translatesAutoresizingMaskIntoConstraints="NO" id="tLf-Ya-qxn">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lunch6" translatesAutoresizingMaskIntoConstraints="NO" id="tLf-Ya-qxn">
                                 <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
                             </imageView>
                         </subviews>
@@ -38,6 +38,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="lunch2" width="480" height="374"/>
+        <image name="lunch6" width="320" height="569"/>
     </resources>
 </document>
