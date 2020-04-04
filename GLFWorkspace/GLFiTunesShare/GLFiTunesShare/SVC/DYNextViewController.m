@@ -308,8 +308,7 @@
         NSString *filePath = [NSString stringWithFormat:@"%@/%@", path, editArray[i]];
         [GLFFileManager fileDelete:filePath];
     }
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    [manager eachAllFiles:YES];
+    [DocumentManager eachAllFiles];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     [userDefaults setObject:[[NSMutableArray alloc] init] forKey:kRemove];

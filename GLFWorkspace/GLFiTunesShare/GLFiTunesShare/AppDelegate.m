@@ -84,12 +84,12 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     application.applicationIconBadgeNumber = 0;
 
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    [manager eachAllFiles:NO];
+    [DocumentManager eachAllFiles];
     [DocumentManager updateDocumentPaths];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *record = [userDefaults objectForKey:kRecord];
     if ([record isEqualToString:@"1"]) {
+        DocumentManager *manager = [DocumentManager sharedDocumentManager];
         if (![manager isRecording]) {
             [manager startRecording];
         }

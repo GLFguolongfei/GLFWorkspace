@@ -96,10 +96,20 @@
         name = [NSString stringWithFormat:@"mv%ld", nnn];
     }
     UIImage *image = [UIImage imageNamed:name];
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    if (manager.allImagesArray.count > 0) {
-        NSInteger mmm = arc4random() % manager.allImagesArray.count;
-        FileModel *model = manager.allImagesArray[mmm];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
+    NSArray *arr = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+    NSMutableArray *allImagesArray = [arr mutableCopy];
+    for (NSInteger i = 0; i < allImagesArray.count; i++) {
+        FileModel *model = allImagesArray[i];
+        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+        model.image = [UIImage imageWithContentsOfFile:model.path];
+    }
+    if (allImagesArray.count > 0) {
+        NSInteger mmm = arc4random() % allImagesArray.count;
+        FileModel *model = allImagesArray[mmm];
         image = [UIImage imageWithContentsOfFile:model.path];
     }
     imageView = [[UIImageView alloc] initWithImage:image];

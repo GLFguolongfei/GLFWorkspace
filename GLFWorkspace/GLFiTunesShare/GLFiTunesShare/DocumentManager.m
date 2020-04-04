@@ -14,7 +14,6 @@
 
 @interface DocumentManager()<AVCaptureFileOutputRecordingDelegate>
 {
-    BOOL isEaching;
     BOOL isVideoSeting;
     BOOL isScaleImageSeting;
     
@@ -38,144 +37,7 @@ HMSingletonM(DocumentManager)
 
 
 #pragma mark - 文件操作
-+ (void)eachAllFilesWithType:(NSInteger)eachType andFinish:(FinishBlock)callBlock {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *hidden = [userDefaults objectForKey:kContentHidden];
-        
-    NSDate *startDate = [NSDate date];
-
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        NSMutableArray *allArray = [[NSMutableArray alloc] init];
-        NSMutableArray *allFoldersArray = [[NSMutableArray alloc] init];
-        NSMutableArray *allFilesArray = [[NSMutableArray alloc] init];
-        NSMutableArray *allImagesArray = [[NSMutableArray alloc] init];
-        NSMutableArray *allVideosArray = [[NSMutableArray alloc] init];
-        NSMutableArray *allDYVideosArray = [[NSMutableArray alloc] init];
-        NSMutableArray *allNoDYVideosArray = [[NSMutableArray alloc] init];
-        NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
-        for (int i = 0; i < array.count; i++) {
-            // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
-            // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
-            if ([array[i] isEqualToString:@"Inbox"]) {
-                continue;
-            }
-            if ([hidden isEqualToString:@"0"] && [CHiddenPaths containsObject:array[i]]) {
-                continue;
-            }
-            FileModel *model = [[FileModel alloc] init];
-            model.name = array[i];
-            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-            model.attributes = [GLFFileManager attributesOfItemAtPath:model.path];
-            NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
-            if (fileType == 1) { // 文件
-                model.size = [GLFFileManager fileSize:model.path];
-                NSArray *array = [model.name componentsSeparatedByString:@"."];
-                NSString *lowerType = [array.lastObject lowercaseString];
-                if (eachType == 3 && [CimgTypeArray containsObject:lowerType]) {
-                    model.type = 2;
-                    model.image = [UIImage imageWithContentsOfFile:model.path];
-                    [allImagesArray addObject:model];
-                } else if ((eachType == 4 || eachType == 5 || eachType == 6) && [CvideoTypeArray containsObject:lowerType]) {
-                    model.type = 3;
-//                    #if FirstTarget
-//                        model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-//                    #else
-//                        model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
-//                    #endif
-                    model.image = nil;
-                    if (eachType == 4) {
-                        [allVideosArray addObject:model];
-                    }
-                    CGSize size = [GLFTools videoSizeWithPath:model.path];
-                    model.videoSize = size;
-                    
-                    NSArray *array = [model.name componentsSeparatedByString:@"/"];
-                    NSString *name = array.firstObject;
-                    if ([name isEqualToString:@"抖音"]) {
-                        if (eachType == 5) {
-                            [allDYVideosArray addObject:model];
-                        }
-                    } else if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
-                        if (eachType == 5) {
-                            [allDYVideosArray addObject:model];
-                        }
-                    } else {
-                        if (eachType == 6) {
-                            [allNoDYVideosArray addObject:model];
-                        }
-                    }
-                } else {
-                    model.type = 4;
-                }
-                if (eachType == 2) {
-                    [allFilesArray addObject:model];
-                }
-            } else if (eachType == 1 && fileType == 2) { // 文件夹
-                model.type = 1;
-                model.size = [GLFFileManager fileSizeForDir:model.path];
-                model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
-                [allFoldersArray addObject:model];
-            }
-        }
-        // 显示文件夹排在前面
-        if (eachType == 0) {
-            [allArray addObjectsFromArray:allFoldersArray];
-            [allArray addObjectsFromArray:allFilesArray];
-        }
-        NSDate *endDate = [NSDate date];
-        NSCalendar *calendar = [NSCalendar currentCalendar];
-        NSCalendarUnit type = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
-        NSDateComponents *cmps = [calendar components:type fromDate:startDate toDate:endDate options:0];
-        
-        NSArray *resultArray = nil;
-        NSString *msgType = @"";
-        if (eachType == 0) {
-            resultArray = allArray;
-            msgType = @"所有类型";
-        } else if (eachType == 1) {
-            resultArray = allFoldersArray;
-            msgType = @"文件夹";
-        } else if (eachType == 2) {
-            resultArray = allFilesArray;
-            msgType = @"文件";
-        } else if (eachType == 3) {
-            resultArray = allImagesArray;
-            msgType = @"图片";
-        } else if (eachType == 4) {
-            resultArray = allVideosArray;
-            msgType = @"视频";
-        } else if (eachType == 5) {
-            resultArray = allDYVideosArray;
-            msgType = @"抖音视频";
-        } else if (eachType == 6) {
-            resultArray = allNoDYVideosArray;
-            msgType = @"非抖音视频";
-        }
-        NSLog(@"全局遍历「%@」完成,一共用时: %ld分钟%ld秒", msgType, cmps.minute, cmps.second);
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
-            callBlock(resultArray);
-        });
-    });
-}
-
-- (void)eachAllFiles:(BOOL)isForce {
-    if (isEaching && !isForce) {
-        return;
-    }
-    isEaching = YES;
-    self.allArray = [[NSMutableArray alloc] init];
-    self.allFoldersArray = [[NSMutableArray alloc] init];
-    self.allFilesArray = [[NSMutableArray alloc] init];
-    self.allImagesArray = [[NSMutableArray alloc] init];
-    self.allVideosArray = [[NSMutableArray alloc] init];
-    self.allDYVideosArray = [[NSMutableArray alloc] init];
-    self.allNoDYVideosArray = [[NSMutableArray alloc] init];
-    
++ (void)eachAllFiles {    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths objectAtIndex:0];
     
@@ -215,7 +77,7 @@ HMSingletonM(DocumentManager)
                 NSString *lowerType = [array.lastObject lowercaseString];
                 if ([CimgTypeArray containsObject:lowerType]) {
                     model.type = 2;
-                    model.image = [UIImage imageWithContentsOfFile:model.path];
+//                    model.image = [UIImage imageWithContentsOfFile:model.path];
                     [allImagesArray addObject:model];
                 } else if ([CvideoTypeArray containsObject:lowerType]) {
                     model.type = 3;
@@ -224,7 +86,6 @@ HMSingletonM(DocumentManager)
 //                    #else
 //                        model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
 //                    #endif
-                    model.image = nil;
                     [allVideosArray addObject:model];
                     CGSize size = [GLFTools videoSizeWithPath:model.path];
                     model.videoSize = size;
@@ -233,7 +94,7 @@ HMSingletonM(DocumentManager)
                     NSString *name = array.firstObject;
                     if ([name isEqualToString:@"抖音"]) {
                         [allDYVideosArray addObject:model];
-                    } else if (size.width / size.height < (kScreenWidth + 200) / kScreenHeight) {
+                    } else if ((size.width / size.height) < ((kScreenWidth + 200) / kScreenHeight)) {
                         [allDYVideosArray addObject:model];
                     } else {
                         [allNoDYVideosArray addObject:model];
@@ -272,14 +133,7 @@ HMSingletonM(DocumentManager)
         // 显示文件夹排在前面
         [allArray addObjectsFromArray:allFoldersArray];
         [allArray addObjectsFromArray:allFilesArray];
-        // 赋值
-        self.allArray = allArray;
-        self.allFoldersArray = allFoldersArray;
-        self.allFilesArray = allFilesArray;
-        self.allImagesArray = allImagesArray;
-        self.allVideosArray = allVideosArray;
-        self.allDYVideosArray = allDYVideosArray;
-        self.allNoDYVideosArray = allNoDYVideosArray;
+        // 遍历用时
         NSDate *endDate = [NSDate date];
         NSCalendar *calendar = [NSCalendar currentCalendar];
         NSCalendarUnit type = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
@@ -307,72 +161,9 @@ HMSingletonM(DocumentManager)
         }
         
         dispatch_async(dispatch_get_main_queue(), ^{
-            isEaching = NO;
+            
         });
     });
-}
-
-- (void)setVideosImage:(NSInteger)maxCount {
-    if (maxCount <= 0) {
-        maxCount = 10;
-    }
-    __block NSInteger count = 0;
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        for (NSInteger i = 0; i < self.allVideosArray.count; i++) {
-            if (count >= maxCount) {
-                break;
-            }
-            FileModel *model = self.allVideosArray[i];
-            if (model.image == nil) {
-                count++;
-                #if FirstTarget
-                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-                #else
-                    model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
-                #endif
-            }
-        }
-    });
-}
-
-- (void)setScaleImage:(NSInteger)maxCount {
-    if (maxCount <= 0) {
-        maxCount = 10;
-    }
-    __block NSInteger count = 0;
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        for (NSInteger i = 0; i < self.allVideosArray.count; i++) {
-            if (count >= maxCount) {
-                break;
-            }
-            FileModel *model = self.allVideosArray[i];
-            if (model.size > 1000000) { // 大于1M
-                CGFloat scale = [self returnScaleSize:model.size];
-                UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
-                model.scaleImage = scaleImage;
-            }
-        }
-    });
-}
-
-- (void)setModelVideosImage:(FileModel *)model {
-    if (model.image == nil) {
-        #if FirstTarget
-            model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-        #else
-            model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
-        #endif
-    }
-}
-
-- (void)setModelScaleImage:(FileModel *)model {
-    if (model.scaleImage == nil) {
-        CGFloat scale = [self returnScaleSize:model.size];
-        UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
-        model.scaleImage = scaleImage;
-    }
 }
 
 - (void)addFavoriteModel:(FileModel *)model {
