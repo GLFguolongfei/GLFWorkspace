@@ -19,8 +19,6 @@
     NSMutableArray *_dataArray;
     FileModel *currentModel;
     
-    DocumentManager *manager;
-
     NSMutableArray *editArray;
     UIButton *editButton;
     
@@ -62,23 +60,31 @@
     }
     editArray = [editArray mutableCopy];
     
-    manager = [DocumentManager sharedDocumentManager];
-    if (manager.allVideosArray.count > 0) {
-        _dataArray = [[NSMutableArray alloc] init];
-        for (NSInteger i = 0; i < manager.allVideosArray.count; i++) {
-            FileModel *model = manager.allVideosArray[i];
-            if ([editArray containsObject: model.name]) {
-                [_dataArray addObject:model];
-            }
-        }
-        if (_dataArray.count > 0) {
-            selectIndex = arc4random() % _dataArray.count;
-            currentModel = _dataArray[selectIndex];
-            [self prepareView];
-        }
-        NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
-        [self showStringHUD:str second:1.5];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allVideosArray.plist"];
+    NSArray *arr = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+    NSMutableArray *allVideosArray = [arr mutableCopy];
+    for (NSInteger i = 0; i < allVideosArray.count; i++) {
+        FileModel *model = allVideosArray[i];
+        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
     }
+    
+    _dataArray = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < allVideosArray.count; i++) {
+        FileModel *model = allVideosArray[i];
+        if ([editArray containsObject: model.name]) {
+            [_dataArray addObject:model];
+        }
+    }
+    if (_dataArray.count > 0) {
+        selectIndex = arc4random() % _dataArray.count;
+        currentModel = _dataArray[selectIndex];
+        [self prepareView];
+    }
+    NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+    [self showStringHUD:str second:1.5];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -248,6 +254,7 @@
 }
 
 - (void)favoriteAction {
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if (self.pageType == 1) {
         if ([editArray containsObject:currentModel.name]) {
             [editArray removeObject:currentModel.name];
