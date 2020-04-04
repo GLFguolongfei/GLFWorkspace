@@ -321,15 +321,14 @@
 }
 
 - (void)favoriteAction {
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if ([favoriteArray containsObject:currentModel.name]) {
         [favoriteArray removeObject:currentModel.name];
-        [manager removeFavoriteModel:currentModel];
         [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+        [DocumentManager removeFavoriteModel:currentModel];
     } else {
         [favoriteArray addObject:currentModel.name];
-        [manager addFavoriteModel:currentModel];
         [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+        [DocumentManager addFavoriteModel:currentModel];
     }
     
     if (favoriteArray.count > 0) {
@@ -340,15 +339,14 @@
 }
 
 - (void)removeAction {
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if ([removeArray containsObject:currentModel.name]) {
         [removeArray removeObject:currentModel.name];
-        [manager removeRemoveModel:currentModel];
         [removeButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+        [DocumentManager removeRemoveModel:currentModel];
     } else {
         [removeArray addObject:currentModel.name];
-        [manager addRemoveModel:currentModel];
         [removeButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+        [DocumentManager addRemoveModel:currentModel];
     }
     
     if (removeArray.count > 0) {

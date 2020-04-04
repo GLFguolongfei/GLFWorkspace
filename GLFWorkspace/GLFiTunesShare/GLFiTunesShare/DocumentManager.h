@@ -24,10 +24,10 @@ HMSingletonH(DocumentManager)
 #pragma mark 文件操作
 + (void)eachAllFiles;
 + (void)updateDocumentPaths;
-- (void)addFavoriteModel:(FileModel *)model;
-- (void)removeFavoriteModel:(FileModel *)model;
-- (void)addRemoveModel:(FileModel *)model;
-- (void)removeRemoveModel:(FileModel *)model;
++ (void)addFavoriteModel:(FileModel *)model;
++ (void)removeFavoriteModel:(FileModel *)model;
++ (void)addRemoveModel:(FileModel *)model;
++ (void)removeRemoveModel:(FileModel *)model;
 
 #pragma mark 历史记录
 @property (nonatomic, assign) BOOL isUseBackFacingCamera; // 是否使用后置摄像头

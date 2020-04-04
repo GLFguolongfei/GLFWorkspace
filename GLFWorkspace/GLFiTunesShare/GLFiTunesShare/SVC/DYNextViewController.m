@@ -254,26 +254,25 @@
 }
 
 - (void)favoriteAction {
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if (self.pageType == 1) {
         if ([editArray containsObject:currentModel.name]) {
             [editArray removeObject:currentModel.name];
-            [manager removeFavoriteModel:currentModel];
             [editButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+            [DocumentManager removeFavoriteModel:currentModel];
         } else {
             [editArray addObject:currentModel.name];
-            [manager addFavoriteModel:currentModel];
             [editButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+            [DocumentManager addFavoriteModel:currentModel];
         }
     } else {
         if ([editArray containsObject:currentModel.name]) {
             [editArray removeObject:currentModel.name];
-            [manager removeRemoveModel:currentModel];
             [editButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+            [DocumentManager removeRemoveModel:currentModel];
         } else {
             [editArray addObject:currentModel.name];
-            [manager addRemoveModel:currentModel];
             [editButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+            [DocumentManager addRemoveModel:currentModel];
         }
     }
 }

@@ -37,192 +37,138 @@ HMSingletonM(DocumentManager)
 
 
 #pragma mark - 文件操作
-+ (void)eachAllFiles {    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *hidden = [userDefaults objectForKey:kContentHidden];
-    
-    NSDate *startDate = [NSDate date];
-    
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        NSLog(@"全局遍历开始");
-        NSMutableArray *allArray = [[NSMutableArray alloc] init];
-        NSMutableArray *allFoldersArray = [[NSMutableArray alloc] init];
-        NSMutableArray *allFilesArray = [[NSMutableArray alloc] init];
-        NSMutableArray *allImagesArray = [[NSMutableArray alloc] init];
-        NSMutableArray *allVideosArray = [[NSMutableArray alloc] init];
-        NSMutableArray *allDYVideosArray = [[NSMutableArray alloc] init];
-        NSMutableArray *allNoDYVideosArray = [[NSMutableArray alloc] init];
-        NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
-        for (int i = 0; i < array.count; i++) {
-            // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
-            // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
-            if ([array[i] isEqualToString:@"Inbox"]) {
-                continue;
-            }
-            if ([hidden isEqualToString:@"0"] && [CHiddenPaths containsObject:array[i]]) {
-                continue;
-            }
-            FileModel *model = [[FileModel alloc] init];
-            model.name = array[i];
-            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-            model.attributes = [GLFFileManager attributesOfItemAtPath:model.path];
-            NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
-            if (fileType == 1) { // 文件
-                model.size = [GLFFileManager fileSize:model.path];
-                NSArray *array = [model.name componentsSeparatedByString:@"."];
-                NSString *lowerType = [array.lastObject lowercaseString];
-                if ([CimgTypeArray containsObject:lowerType]) {
-                    model.type = 2;
-//                    model.image = [UIImage imageWithContentsOfFile:model.path];
-                    [allImagesArray addObject:model];
-                } else if ([CvideoTypeArray containsObject:lowerType]) {
-                    model.type = 3;
-//                    #if FirstTarget
-//                        model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-//                    #else
-//                        model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
-//                    #endif
-                    [allVideosArray addObject:model];
-                    CGSize size = [GLFTools videoSizeWithPath:model.path];
-                    model.videoSize = size;
-                    
-                    NSArray *array = [model.name componentsSeparatedByString:@"/"];
-                    NSString *name = array.firstObject;
-                    if ([name isEqualToString:@"抖音"]) {
-                        [allDYVideosArray addObject:model];
-                    } else if ((size.width / size.height) < ((kScreenWidth + 200) / kScreenHeight)) {
-                        [allDYVideosArray addObject:model];
-                    } else {
-                        [allNoDYVideosArray addObject:model];
-                    }
-                } else {
-                    model.type = 4;
++ (void)eachAllFiles {
+    @synchronized(self) { // ------ 加互斥锁
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths objectAtIndex:0];
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSString *hidden = [userDefaults objectForKey:kContentHidden];
+        
+        NSDate *startDate = [NSDate date];
+        
+        dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        dispatch_async(queue, ^{
+            NSLog(@"全局遍历开始");
+            NSMutableArray *allArray = [[NSMutableArray alloc] init];
+            NSMutableArray *allFoldersArray = [[NSMutableArray alloc] init];
+            NSMutableArray *allFilesArray = [[NSMutableArray alloc] init];
+            NSMutableArray *allImagesArray = [[NSMutableArray alloc] init];
+            NSMutableArray *allVideosArray = [[NSMutableArray alloc] init];
+            NSMutableArray *allDYVideosArray = [[NSMutableArray alloc] init];
+            NSMutableArray *allNoDYVideosArray = [[NSMutableArray alloc] init];
+            NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
+            for (int i = 0; i < array.count; i++) {
+                // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
+                // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
+                if ([array[i] isEqualToString:@"Inbox"]) {
+                    continue;
                 }
-                [allFilesArray addObject:model];
-            } else if (fileType == 2) { // 文件夹
-                model.type = 1;
-                model.size = [GLFFileManager fileSizeForDir:model.path];
-                model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
-                [allFoldersArray addObject:model];
-                if ([model.name isEqualToString:@"郭龙飞"] && model.size > 1000000000) {
-                    UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-                    content.title = @"存储通知";
-                    content.subtitle = [NSString stringWithFormat:@"存储过大"];
-                    content.body = @"存储的东西太多了";
-                    content.badge = @1;
-                    content.sound = [UNNotificationSound defaultSound];
-                    content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
-                    
-                    UNTimeIntervalNotificationTrigger *intervalTrigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:5 repeats:NO];
-                    NSString *requestIdentifier = @"Dely.X.time";
-                    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier content:content trigger:intervalTrigger];
-                    
-                    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-                    [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
-                        if (!error) {
-                            NSLog(@"本地推送添加成功: %@", requestIdentifier);
+                if ([hidden isEqualToString:@"0"] && [CHiddenPaths containsObject:array[i]]) {
+                    continue;
+                }
+                FileModel *model = [[FileModel alloc] init];
+                model.name = array[i];
+                model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+                model.attributes = [GLFFileManager attributesOfItemAtPath:model.path];
+                NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
+                if (fileType == 1) { // 文件
+                    model.size = [GLFFileManager fileSize:model.path];
+                    NSArray *array = [model.name componentsSeparatedByString:@"."];
+                    NSString *lowerType = [array.lastObject lowercaseString];
+                    if ([CimgTypeArray containsObject:lowerType]) {
+                        model.type = 2;
+                        // model.image = [UIImage imageWithContentsOfFile:model.path];
+                        [allImagesArray addObject:model];
+                    } else if ([CvideoTypeArray containsObject:lowerType]) {
+                        model.type = 3;
+                        // #if FirstTarget
+                        //      model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
+                        // #else
+                        //      model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+                        // #endif
+                        [allVideosArray addObject:model];
+                        CGSize size = [GLFTools videoSizeWithPath:model.path];
+                        model.videoSize = size;
+                        
+                        NSArray *array = [model.name componentsSeparatedByString:@"/"];
+                        NSString *name = array.firstObject;
+                        if ([name isEqualToString:@"抖音"]) {
+                            [allDYVideosArray addObject:model];
+                        } else if ((size.width / size.height) < ((kScreenWidth + 200) / kScreenHeight)) {
+                            [allDYVideosArray addObject:model];
+                        } else {
+                            [allNoDYVideosArray addObject:model];
                         }
-                    }];
+                    } else {
+                        model.type = 4;
+                    }
+                    [allFilesArray addObject:model];
+                } else if (fileType == 2) { // 文件夹
+                    model.type = 1;
+                    model.size = [GLFFileManager fileSizeForDir:model.path];
+                    model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
+                    [allFoldersArray addObject:model];
+                    if ([model.name isEqualToString:@"郭龙飞"] && model.size > 1000000000) {
+                        UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+                        content.title = @"存储通知";
+                        content.subtitle = [NSString stringWithFormat:@"存储过大"];
+                        content.body = @"存储的东西太多了";
+                        content.badge = @1;
+                        content.sound = [UNNotificationSound defaultSound];
+                        content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
+                        
+                        UNTimeIntervalNotificationTrigger *intervalTrigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:5 repeats:NO];
+                        NSString *requestIdentifier = @"Dely.X.time";
+                        UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier content:content trigger:intervalTrigger];
+                        
+                        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+                        [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+                            if (!error) {
+                                NSLog(@"本地推送添加成功: %@", requestIdentifier);
+                            }
+                        }];
+                    }
                 }
             }
-        }
-        // 显示文件夹排在前面
-        [allArray addObjectsFromArray:allFoldersArray];
-        [allArray addObjectsFromArray:allFilesArray];
-        // 遍历用时
-        NSDate *endDate = [NSDate date];
-        NSCalendar *calendar = [NSCalendar currentCalendar];
-        NSCalendarUnit type = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
-        NSDateComponents *cmps = [calendar components:type fromDate:startDate toDate:endDate options:0];
-        NSLog(@"全局遍历完成,一共用时: %ld分钟%ld秒", cmps.minute, cmps.second);
-        
-        NSString *archiverPath1 = [path stringByAppendingPathComponent:@"GLFConfig/allArray.plist"];
-        BOOL isSuccess1 = [NSKeyedArchiver archiveRootObject:allArray toFile:archiverPath1];
-        NSString *archiverPath2 = [path stringByAppendingPathComponent:@"GLFConfig/allFoldersArray.plist"];
-        BOOL isSuccess2 = [NSKeyedArchiver archiveRootObject:allFoldersArray toFile:archiverPath2];
-        NSString *archiverPath3 = [path stringByAppendingPathComponent:@"GLFConfig/allFilesArray.plist"];
-        BOOL isSuccess3 = [NSKeyedArchiver archiveRootObject:allFilesArray toFile:archiverPath3];
-        NSString *archiverPath4 = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
-        BOOL isSuccess4 = [NSKeyedArchiver archiveRootObject:allImagesArray toFile:archiverPath4];
-        NSString *archiverPath5 = [path stringByAppendingPathComponent:@"GLFConfig/allVideosArray.plist"];
-        BOOL isSuccess5 = [NSKeyedArchiver archiveRootObject:allVideosArray toFile:archiverPath5];
-        NSString *archiverPath6 = [path stringByAppendingPathComponent:@"GLFConfig/allDYVideosArray.plist"];
-        BOOL isSuccess6 = [NSKeyedArchiver archiveRootObject:allDYVideosArray toFile:archiverPath6];
-        NSString *archiverPath7 = [path stringByAppendingPathComponent:@"GLFConfig/allNoDYVideosArray.plist"];
-        BOOL isSuccess7 = [NSKeyedArchiver archiveRootObject:allNoDYVideosArray toFile:archiverPath7];
-        if (isSuccess1 & isSuccess2 & isSuccess3 & isSuccess4 & isSuccess5 & isSuccess6 & isSuccess7) {
-            NSLog(@"archiver success");
-        } else {
-            NSLog(@"archiver error");
-        }
-        
-        dispatch_async(dispatch_get_main_queue(), ^{
+            // 显示文件夹排在前面
+            [allArray addObjectsFromArray:allFoldersArray];
+            [allArray addObjectsFromArray:allFilesArray];
+            // 遍历用时
+            NSDate *endDate = [NSDate date];
+            NSCalendar *calendar = [NSCalendar currentCalendar];
+            NSCalendarUnit type = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
+            NSDateComponents *cmps = [calendar components:type fromDate:startDate toDate:endDate options:0];
+            NSLog(@"全局遍历完成,一共用时: %ld分钟%ld秒", cmps.minute, cmps.second);
             
+            NSString *archiverPath1 = [path stringByAppendingPathComponent:@"GLFConfig/allArray.plist"];
+            BOOL isSuccess1 = [NSKeyedArchiver archiveRootObject:allArray toFile:archiverPath1];
+            NSString *archiverPath2 = [path stringByAppendingPathComponent:@"GLFConfig/allFoldersArray.plist"];
+            BOOL isSuccess2 = [NSKeyedArchiver archiveRootObject:allFoldersArray toFile:archiverPath2];
+            NSString *archiverPath3 = [path stringByAppendingPathComponent:@"GLFConfig/allFilesArray.plist"];
+            BOOL isSuccess3 = [NSKeyedArchiver archiveRootObject:allFilesArray toFile:archiverPath3];
+            NSString *archiverPath4 = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
+            BOOL isSuccess4 = [NSKeyedArchiver archiveRootObject:allImagesArray toFile:archiverPath4];
+            NSString *archiverPath5 = [path stringByAppendingPathComponent:@"GLFConfig/allVideosArray.plist"];
+            BOOL isSuccess5 = [NSKeyedArchiver archiveRootObject:allVideosArray toFile:archiverPath5];
+            NSString *archiverPath6 = [path stringByAppendingPathComponent:@"GLFConfig/allDYVideosArray.plist"];
+            BOOL isSuccess6 = [NSKeyedArchiver archiveRootObject:allDYVideosArray toFile:archiverPath6];
+            NSString *archiverPath7 = [path stringByAppendingPathComponent:@"GLFConfig/allNoDYVideosArray.plist"];
+            BOOL isSuccess7 = [NSKeyedArchiver archiveRootObject:allNoDYVideosArray toFile:archiverPath7];
+            if (isSuccess1 & isSuccess2 & isSuccess3 & isSuccess4 & isSuccess5 & isSuccess6 & isSuccess7) {
+                NSLog(@"archiver success");
+            } else {
+                NSLog(@"archiver error");
+            }
         });
-    });
-}
-
-- (void)addFavoriteModel:(FileModel *)model {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *favoriteArray = [userDefaults objectForKey:kFavorite];
-    if (!favoriteArray) {
-        favoriteArray = [[NSMutableArray alloc] init];
-    } else {
-        favoriteArray = [favoriteArray mutableCopy];
     }
-    [favoriteArray addObject:model.name];
-    [userDefaults setObject:favoriteArray forKey:kFavorite];
-    [userDefaults synchronize];
-}
-
-- (void)removeFavoriteModel:(FileModel *)model {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *favoriteArray = [userDefaults objectForKey:kFavorite];
-    if (!favoriteArray) {
-        favoriteArray = [[NSMutableArray alloc] init];
-    } else {
-        favoriteArray = [favoriteArray mutableCopy];
-    }
-    [favoriteArray removeObject:model.name];
-    [userDefaults setObject:favoriteArray forKey:kFavorite];
-    [userDefaults synchronize];
-}
-
-- (void)addRemoveModel:(FileModel *)model {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *removeArray = [userDefaults objectForKey:kRemove];
-    if (!removeArray) {
-        removeArray = [[NSMutableArray alloc] init];
-    } else {
-        removeArray = [removeArray mutableCopy];
-    }
-    [removeArray addObject:model.name];
-    [userDefaults setObject:removeArray forKey:kRemove];
-    [userDefaults synchronize];
-}
-
-- (void)removeRemoveModel:(FileModel *)model {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *removeArray = [userDefaults objectForKey:kRemove];
-    if (!removeArray) {
-        removeArray = [[NSMutableArray alloc] init];
-    } else {
-        removeArray = [removeArray mutableCopy];
-    }
-    [removeArray removeObject:model.name];
-    [userDefaults setObject:removeArray forKey:kRemove];
-    [userDefaults synchronize];
 }
 
 + (void)updateDocumentPaths {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *documentPath = [paths objectAtIndex:0];
-    // 遍历
     @synchronized(self) { // ------ 加互斥锁
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentPath = [paths objectAtIndex:0];
+        
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString *hidden = [userDefaults objectForKey:kContentHidden];
         
@@ -248,6 +194,58 @@ HMSingletonM(DocumentManager)
             });
         });
     }
+}
+
++ (void)addFavoriteModel:(FileModel *)model {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *favoriteArray = [userDefaults objectForKey:kFavorite];
+    if (!favoriteArray) {
+        favoriteArray = [[NSMutableArray alloc] init];
+    } else {
+        favoriteArray = [favoriteArray mutableCopy];
+    }
+    [favoriteArray addObject:model.name];
+    [userDefaults setObject:favoriteArray forKey:kFavorite];
+    [userDefaults synchronize];
+}
+
++ (void)removeFavoriteModel:(FileModel *)model {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *favoriteArray = [userDefaults objectForKey:kFavorite];
+    if (!favoriteArray) {
+        favoriteArray = [[NSMutableArray alloc] init];
+    } else {
+        favoriteArray = [favoriteArray mutableCopy];
+    }
+    [favoriteArray removeObject:model.name];
+    [userDefaults setObject:favoriteArray forKey:kFavorite];
+    [userDefaults synchronize];
+}
+
++ (void)addRemoveModel:(FileModel *)model {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *removeArray = [userDefaults objectForKey:kRemove];
+    if (!removeArray) {
+        removeArray = [[NSMutableArray alloc] init];
+    } else {
+        removeArray = [removeArray mutableCopy];
+    }
+    [removeArray addObject:model.name];
+    [userDefaults setObject:removeArray forKey:kRemove];
+    [userDefaults synchronize];
+}
+
++ (void)removeRemoveModel:(FileModel *)model {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSMutableArray *removeArray = [userDefaults objectForKey:kRemove];
+    if (!removeArray) {
+        removeArray = [[NSMutableArray alloc] init];
+    } else {
+        removeArray = [removeArray mutableCopy];
+    }
+    [removeArray removeObject:model.name];
+    [userDefaults setObject:removeArray forKey:kRemove];
+    [userDefaults synchronize];
 }
 
 #pragma mark - 背景音乐
