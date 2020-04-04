@@ -33,10 +33,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UIView *gestureView;
     BOOL isSuccess;
     
-    DocumentManager *manager;
-    NSTimer *timer; // 定时器
-    
     FileModel *currentModel;
+    
+    NSMutableArray *allImagesArray;
 
     UITableView *_tableView1;
     UITableView *_tableView2;
@@ -69,15 +68,12 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     // 3-添加重力仿真行为
     [animator addBehavior:gravityBeahvior];
     
-    manager = [DocumentManager sharedDocumentManager];
-    if (manager.allImagesArray.count > 0) {
-        [self prepareData];
-    }  else {
-        [self showHUD:@"搜索中, 不要着急!"];
-        timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    }
+    _dataArray1 = [[NSMutableArray alloc] init];
+    _dataArray2 = [[NSMutableArray alloc] init];
+    _dataArray3 = [[NSMutableArray alloc] init];
+    
     [self prepareView];
+    [self prepareData];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -129,40 +125,47 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)prepareData {
-    if (manager.allImagesArray.count > 0) {
-        [self hideAllHUD];
-        [timer invalidate];
-        timer = nil;
-        _dataArray1 = [[NSMutableArray alloc] init];
-        _dataArray2 = [[NSMutableArray alloc] init];
-        _dataArray3 = [[NSMutableArray alloc] init];
-        CGFloat height1 = 0;
-        CGFloat height2 = 0;
-        CGFloat height3 = 0;
-        CGFloat width = kScreenWidth/3;
-        for (NSInteger i = 0; i < manager.allImagesArray.count; i++) {
-            FileModel *model = manager.allImagesArray[i];
-            if (height1 <= height2 && height1 <= height3) {
-                [_dataArray1 addObject:model];
-                CGFloat height = width * model.image.size.height / model.image.size.width;
-                height1 += height;
-            } else if (height2 <= height1 && height2 <= height3) {
-                [_dataArray2 addObject:model];
-                CGFloat height = width * model.image.size.height / model.image.size.width;
-                height2 += height;
-            } else if (height3 <= height1 && height3 <= height2) {
-                [_dataArray3 addObject:model];
-                CGFloat height = width * model.image.size.height / model.image.size.width;
-                height3 += height;
-            }
-        }
-        [_tableView1 reloadData];
-        [_tableView2 reloadData];
-        [_tableView3 reloadData];
-        
-        NSString *title = [NSString stringWithFormat:@"所有图片(%ld)", manager.allImagesArray.count];
-        [self setVCTitle:title];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
+    NSArray *arr = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+    allImagesArray = [arr mutableCopy];
+    for (NSInteger i = 0; i < allImagesArray.count; i++) {
+        FileModel *model = allImagesArray[i];
+        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+        model.image = [UIImage imageWithContentsOfFile:model.path];
     }
+    
+    _dataArray1 = [[NSMutableArray alloc] init];
+    _dataArray2 = [[NSMutableArray alloc] init];
+    _dataArray3 = [[NSMutableArray alloc] init];
+    CGFloat height1 = 0;
+    CGFloat height2 = 0;
+    CGFloat height3 = 0;
+    CGFloat width = kScreenWidth/3;
+    for (NSInteger i = 0; i < allImagesArray.count; i++) {
+        FileModel *model = allImagesArray[i];
+        if (height1 <= height2 && height1 <= height3) {
+            [_dataArray1 addObject:model];
+            CGFloat height = width * model.image.size.height / model.image.size.width;
+            height1 += height;
+        } else if (height2 <= height1 && height2 <= height3) {
+            [_dataArray2 addObject:model];
+            CGFloat height = width * model.image.size.height / model.image.size.width;
+            height2 += height;
+        } else if (height3 <= height1 && height3 <= height2) {
+            [_dataArray3 addObject:model];
+            CGFloat height = width * model.image.size.height / model.image.size.width;
+            height3 += height;
+        }
+    }
+    [_tableView1 reloadData];
+    [_tableView2 reloadData];
+    [_tableView3 reloadData];
+    
+    NSString *title = [NSString stringWithFormat:@"所有图片(%ld)", allImagesArray.count];
+    [self setVCTitle:title];
 }
 
 - (void)prepareView {
@@ -228,9 +231,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         name = [NSString stringWithFormat:@"nv%ld", nnn];
     }
     UIImage *image = [UIImage imageNamed:name];
-    if (manager.allImagesArray.count > 0) {
-        NSInteger mmm = arc4random() % manager.allImagesArray.count;
-        FileModel *model = manager.allImagesArray[mmm];
+    if (allImagesArray.count > 0) {
+        NSInteger mmm = arc4random() % allImagesArray.count;
+        FileModel *model = allImagesArray[mmm];
         image = [UIImage imageWithContentsOfFile:model.path];
         currentModel = model;
     }
@@ -342,8 +345,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
             }
         } else {
             DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
-            detailVC.selectIndex = [self returnIndex:manager.allImagesArray with:currentModel];
-            detailVC.fileArray = manager.allImagesArray;
+            detailVC.selectIndex = [self returnIndex:allImagesArray with:currentModel];
+            detailVC.fileArray = allImagesArray;
             [self.navigationController pushViewController:detailVC animated:YES];
         }
     }
@@ -449,8 +452,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         }
     } else {
         DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
-        detailVC.selectIndex = [self returnIndex:manager.allImagesArray with:model];
-        detailVC.fileArray = manager.allImagesArray;
+        detailVC.selectIndex = [self returnIndex:allImagesArray with:model];
+        detailVC.fileArray = allImagesArray;
         [self.navigationController pushViewController:detailVC animated:YES];
     }
 }
