@@ -134,6 +134,11 @@
         CGFloat allSize = 0;
         CGFloat currentSize = 0;
         for (int i = 0; i < array.count; i++) {
+            // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
+            // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
+            if ([@"Inbox" isEqualToString:array[i]]) {
+                continue;
+            }
             if ([hidden isEqualToString:@"0"] && [CHiddenPaths containsObject:array[i]]) {
                 continue;
             }
