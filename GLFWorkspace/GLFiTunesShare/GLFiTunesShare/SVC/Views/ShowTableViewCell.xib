@@ -19,28 +19,16 @@
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="T6t-TS-oQO">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="200"/>
                     </imageView>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="EaN-8g-lX3">
-                        <rect key="frame" x="5" y="5" width="310" height="190"/>
-                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <nil key="highlightedColor"/>
-                    </label>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="EaN-8g-lX3" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="5" id="5Rd-M5-dXf"/>
-                    <constraint firstAttribute="trailing" secondItem="EaN-8g-lX3" secondAttribute="trailing" constant="5" id="DdC-7T-xs6"/>
                     <constraint firstItem="T6t-TS-oQO" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="HEa-pw-mpr"/>
                     <constraint firstAttribute="bottom" secondItem="T6t-TS-oQO" secondAttribute="bottom" id="Kyi-B7-6Kv"/>
                     <constraint firstAttribute="trailing" secondItem="T6t-TS-oQO" secondAttribute="trailing" id="Ofo-zN-9gT"/>
                     <constraint firstItem="T6t-TS-oQO" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="ghg-2P-9Oi"/>
-                    <constraint firstItem="EaN-8g-lX3" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="5" id="lcI-pU-LXX"/>
-                    <constraint firstAttribute="bottom" secondItem="EaN-8g-lX3" secondAttribute="bottom" constant="5" id="wWG-Ev-bGb"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="scaleImageView" destination="T6t-TS-oQO" id="F5h-Jh-0XB"/>
-                <outlet property="textLabel" destination="EaN-8g-lX3" id="Ydm-MX-t7q"/>
             </connections>
             <point key="canvasLocation" x="-413" y="7"/>
         </tableViewCell>

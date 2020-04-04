@@ -27,9 +27,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     BOOL isPlaying;
     
     BOOL isHiddenNavi;
-    
-    UIBarButtonItem *item;
-    
+        
     UIView *gestureView;
     BOOL isSuccess;
     
@@ -53,7 +51,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    item = [[UIBarButtonItem alloc] initWithTitle:@"自动播放" style:UIBarButtonItemStylePlain target:self action:@selector(autoPlay)];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"缩略图" style:UIBarButtonItemStylePlain target:self action:@selector(scaleImage)];
     self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"所有图片"];
     self.canHiddenNaviBar = YES;
@@ -293,20 +291,29 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         [alertVC addAction:okAction2];
     }
     
+    NSString *str = @"";
+    if (isPlaying) {
+        str = @"停止播放";
+    } else {
+        str = @"自动播放";
+    }
+    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:str style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self autoPlay];
+    }];
+    [alertVC addAction:okAction3];
+    
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 - (void)autoPlay {
     isPlaying = !isPlaying;
     if (isPlaying) {
-        item.title = @"停止播放";
         [UIView animateWithDuration:1 animations:^{
             visualEfView.alpha = 0.7;
         } completion:^(BOOL finished) {
             [self playImage];
         }];
     } else {
-        item.title = @"自动播放";
         [UIView animateWithDuration:1 animations:^{
             imageView.center = CGPointMake(kScreenWidth / 2.0, kScreenHeight * 2);
         } completion:^(BOOL finished) {
@@ -315,6 +322,81 @@ static NSString *cellID3 = @"ShowTableViewCell3";
             }];
         }];
     }
+}
+
+- (void)scaleImage {
+    [self showHUD];
+
+    __block NSInteger count1 = 0;
+    __block NSInteger count2 = 0;
+    __block NSInteger count3 = 0;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSArray *array1 = [_tableView1 indexPathsForVisibleRows];
+        NSArray *array2 = [_tableView2 indexPathsForVisibleRows];
+        NSArray *array3 = [_tableView3 indexPathsForVisibleRows];
+
+        NSInteger first1 = 0;
+        if (array1.count > 0) {
+            NSIndexPath *indexPath = array1.firstObject;
+            first1 = indexPath.row;
+        }
+        NSInteger first2 = 0;
+        if (array2.count > 0) {
+            NSIndexPath *indexPath = array2.firstObject;
+            first2 = indexPath.row;
+        }
+        NSInteger first3 = 0;
+        if (array3.count > 0) {
+            NSIndexPath *indexPath = array3.firstObject;
+            first3 = indexPath.row;
+        }
+        for (NSInteger i = first1; i < _dataArray1.count; i++) {
+            if (count1 >= 5) {
+                break;
+            }
+            FileModel *model = _dataArray1[i];
+            if (model.size > 1000000) { // 大于1M
+                count1++;
+                CGFloat scale = [self returnScaleSize:model.size];
+                UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
+                model.scaleImage = scaleImage;
+                [_dataArray1 replaceObjectAtIndex:i withObject:model];
+            }
+        }
+        for (NSInteger i = first2; i < _dataArray2.count; i++) {
+            if (count2 >= 5) {
+                break;
+            }
+            FileModel *model = _dataArray2[i];
+            if (model.size > 1000000) { // 大于1M
+                count1++;
+                CGFloat scale = [self returnScaleSize:model.size];
+                UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
+                model.scaleImage = scaleImage;
+                [_dataArray2 replaceObjectAtIndex:i withObject:model];
+            }
+        }
+        for (NSInteger i = first3; i < _dataArray3.count; i++) {
+            if (count3 >= 5) {
+                break;
+            }
+            FileModel *model = _dataArray3[i];
+            if (model.size > 1000000) { // 大于1M
+                count3++;
+                CGFloat scale = [self returnScaleSize:model.size];
+                UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
+                model.scaleImage = scaleImage;
+                [_dataArray3 replaceObjectAtIndex:i withObject:model];
+            }
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideAllHUD];
+            [_tableView1 reloadData];
+            [_tableView2 reloadData];
+            [_tableView3 reloadData];
+        });
+    });
 }
 
 - (void)naviBarChange:(NSNotification *)notify {
@@ -393,12 +475,13 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.size > 1000000) { // 大于1M
-            cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
-            cell.textLabel.text = model.name;
+            if (model.scaleImage != nil) {
+                cell.scaleImageView.image = model.scaleImage;
+            } else {
+                cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
+            }
         } else {
-            NSURL *url = [NSURL fileURLWithPath:model.path];
-            [cell.scaleImageView sd_setImageWithURL:url];
-            cell.textLabel.text = @"";
+            cell.scaleImageView.image = model.image;
         }
         return cell;
     } else if (tableView == _tableView2) {
@@ -406,12 +489,13 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID2 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.size > 1000000) { // 大于1M
-            cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
-            cell.textLabel.text = model.name;
+            if (model.scaleImage != nil) {
+                cell.scaleImageView.image = model.scaleImage;
+            } else {
+                cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
+            }
         } else {
-            NSURL *url = [NSURL fileURLWithPath:model.path];
-            [cell.scaleImageView sd_setImageWithURL:url];
-            cell.textLabel.text = @"";
+            cell.scaleImageView.image = model.image;
         }
         return cell;
     } else if (tableView == _tableView3) {
@@ -419,12 +503,13 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID3 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         if (model.size > 1000000) { // 大于1M
-            cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
-            cell.textLabel.text = model.name;
+            if (model.scaleImage != nil) {
+                cell.scaleImageView.image = model.scaleImage;
+            } else {
+                cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
+            }
         } else {
-            NSURL *url = [NSURL fileURLWithPath:model.path];
-            [cell.scaleImageView sd_setImageWithURL:url];
-            cell.textLabel.text = @"";
+            cell.scaleImageView.image = model.image;
         }
         return cell;
     }
@@ -499,6 +584,19 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         }
     }
     return index;
+}
+
+// 返回压缩比例
+- (CGFloat)returnScaleSize:(CGFloat)fileSize {
+    CGFloat scale = 0.1;
+    if (fileSize < 1000000) {
+        scale = 1;
+    } else if (fileSize < 5000000) {
+        scale = 0.2;
+    } else {
+        scale = 0.1;
+    }
+    return scale;
 }
 
 

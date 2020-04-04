@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface ShowTableViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *scaleImageView;
-@property (weak, nonatomic) IBOutlet UILabel *textLabel;
 
 
 @end
