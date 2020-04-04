@@ -123,7 +123,18 @@ static NSString *cellID = @"VideoTableViewCell";
     }];
     [alertVC addAction:okAction];
     
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"实时视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    if (manager.isRecording) {
+        UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"切换方向" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [manager switchCamera];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self reSetVCTitle];
+            });
+        }];
+        [alertVC addAction:okAction2];
+    }
+    
+    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"实时视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (manager.allVideosArray.count > 0) {
             AllVideoPlayViewController *vc = [[AllVideoPlayViewController alloc] init];
             [self.navigationController pushViewController:vc animated:YES];
@@ -131,7 +142,7 @@ static NSString *cellID = @"VideoTableViewCell";
             [self showStringHUD:@"等待遍历完成" second:1.5];
         }
     }];
-    [alertVC addAction:okAction2];
+    [alertVC addAction:okAction3];
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }

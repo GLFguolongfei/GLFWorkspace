@@ -44,6 +44,8 @@ HMSingletonH(DocumentManager)
 + (void)updateDocumentPaths;
 
 #pragma mark 历史记录
+@property (nonatomic, assign) BOOL isUseBackFacingCamera; // 是否使用后置摄像头
+
 - (void)startRecording;
 - (void)stopRecording;
 - (void)switchCamera;

@@ -27,9 +27,7 @@
     AVCaptureDeviceInput *audioCaptureDeviceInput;
     AVCaptureMovieFileOutput *captureMovieFileOutput;
     AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
-    
-    BOOL isUseFrontFacingCamera; // 是否使用前置摄像头
-    
+        
     UIView *videoView;
 }
 @end
@@ -514,27 +512,8 @@ HMSingletonM(DocumentManager)
 
 // 切换前后摄像头
 - (void)switchCamera {
-    [captureSession startRunning];
-
-    AVCaptureDevicePosition desiredPosition;
-    if (isUseFrontFacingCamera) {
-        desiredPosition = AVCaptureDevicePositionBack;
-    } else {
-        desiredPosition = AVCaptureDevicePositionFront;
-    }
-    for (AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
-        if ([device position] == desiredPosition) {
-            [captureVideoPreviewLayer.session beginConfiguration];
-            for (AVCaptureInput *oldInput in captureVideoPreviewLayer.session.inputs) {
-                [[captureVideoPreviewLayer session] removeInput:oldInput];
-            }
-            AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
-            [captureVideoPreviewLayer.session addInput:input];
-            [captureVideoPreviewLayer.session commitConfiguration];
-            break;
-        }
-    }
-    isUseFrontFacingCamera = !isUseFrontFacingCamera;
+    self.isUseBackFacingCamera = !self.isUseBackFacingCamera;
+    [self startRecording];
 }
 
 - (void)configCamara:(BOOL)isRecord {
@@ -553,7 +532,13 @@ HMSingletonM(DocumentManager)
 
     // 2-AVCaptureDeviceInput
     // 相机输入设备
-    AVCaptureDevice *camaraCaptureDevice = [self getCameraDeviceWithPosition:AVCaptureDevicePositionFront];
+    AVCaptureDevicePosition desiredPosition;
+    if (self.isUseBackFacingCamera) {
+        desiredPosition = AVCaptureDevicePositionBack;
+    } else {
+        desiredPosition = AVCaptureDevicePositionFront;
+    }
+    AVCaptureDevice *camaraCaptureDevice = [self getCameraDeviceWithPosition:desiredPosition];
     // 音频输入设备
     AVCaptureDevice *audioCaptureDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
     

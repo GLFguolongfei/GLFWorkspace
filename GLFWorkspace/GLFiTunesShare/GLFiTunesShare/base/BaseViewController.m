@@ -260,8 +260,16 @@
 - (void)reSetVCTitle {
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if ([manager isRecording]) {
-        if (![self.title hasPrefix:@"["] && ![self.title hasSuffix:@"]"]) {
-            self.title = [NSString stringWithFormat:@"[%@]", self.title];
+        if (manager.isUseBackFacingCamera) {
+            NSString *title = [self.title stringByReplacingOccurrencesOfString:@"[" withString:@""];
+            if (![title hasSuffix:@"]"]) {
+                self.title = [NSString stringWithFormat:@"%@]", title];
+            }
+        } else {
+            NSString *title = [self.title stringByReplacingOccurrencesOfString:@"]" withString:@""];
+            if (![title hasPrefix:@"["]) {
+                self.title = [NSString stringWithFormat:@"[%@", title];
+            }
         }
     } else {
         if ([self.title hasPrefix:@"["] || [self.title hasSuffix:@"]"]) {
