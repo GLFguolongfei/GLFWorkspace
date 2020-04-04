@@ -73,21 +73,13 @@ static NSString *cellID = @"VideoTableViewCell";
     [gestureView removeFromSuperview];
 }
 
-- (void)prepareData {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allVideosArray.plist"];
-    NSArray *arr = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
-    _dataArray = [arr mutableCopy];
-    for (NSInteger i = 0; i < _dataArray.count; i++) {
-        FileModel *model = _dataArray[i];
-        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
-        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-    }
-    [_tableView reloadData];
-    
-    NSString *title = [NSString stringWithFormat:@"所有视频(%ld)", _dataArray.count];
-    [self setVCTitle:title];
+- (void)prepareData {    
+    [DocumentManager getAllVideosArray:^(NSArray * array) {
+        _dataArray = [array mutableCopy];
+        [_tableView reloadData];
+        NSString *title = [NSString stringWithFormat:@"所有视频(%ld)", _dataArray.count];
+        [self setVCTitle:title];
+    }];
 }
 
 - (void)prepareView {

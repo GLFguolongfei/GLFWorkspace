@@ -248,6 +248,141 @@ HMSingletonM(DocumentManager)
     [userDefaults synchronize];
 }
 
++ (void)getAllArray:(CallBack)callBack {
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths objectAtIndex:0];
+        NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allArray.plist"];
+        NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+        for (NSInteger i = 0; i < array.count; i++) {
+            FileModel *model = array[i];
+            // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (callBack) {
+                callBack(array);
+            }
+        });
+    });
+}
++ (void)getAllFoldersArray:(CallBack)callBack {
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths objectAtIndex:0];
+        NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allFoldersArray.plist"];
+        NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+        for (NSInteger i = 0; i < array.count; i++) {
+            FileModel *model = array[i];
+            // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (callBack) {
+                callBack(array);
+            }
+        });
+    });
+}
++ (void)getAllFilesArray:(CallBack)callBack {
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths objectAtIndex:0];
+        NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allFilesArray.plist"];
+        NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+        for (NSInteger i = 0; i < array.count; i++) {
+            FileModel *model = array[i];
+            // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (callBack) {
+                callBack(array);
+            }
+        });
+    });
+}
++ (void)getAllImagesArray:(CallBack)callBack {
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths objectAtIndex:0];
+        NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
+        NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+        for (NSInteger i = 0; i < array.count; i++) {
+            FileModel *model = array[i];
+            // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+            model.image = [UIImage imageWithContentsOfFile:model.path];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (callBack) {
+                callBack(array);
+            }
+        });
+    });
+}
++ (void)getAllVideosArray:(CallBack)callBack {
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths objectAtIndex:0];
+        NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allVideosArray.plist"];
+        NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+        for (NSInteger i = 0; i < array.count; i++) {
+            FileModel *model = array[i];
+            // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (callBack) {
+                callBack(array);
+            }
+        });
+    });
+}
++ (void)getAllDYVideosArray:(CallBack)callBack {
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths objectAtIndex:0];
+        NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allDYVideosArray.plist"];
+        NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+        for (NSInteger i = 0; i < array.count; i++) {
+            FileModel *model = array[i];
+            // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (callBack) {
+                callBack(array);
+            }
+        });
+    });
+}
++ (void)getAllNoDYVideosArray:(CallBack)callBack {
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths objectAtIndex:0];
+        NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allNoDYVideosArray.plist"];
+        NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+        for (NSInteger i = 0; i < array.count; i++) {
+            FileModel *model = array[i];
+            // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (callBack) {
+                callBack(array);
+            }
+        });
+    });
+}
+
 #pragma mark - 背景音乐
 - (void)startPlay {
     if (player) {

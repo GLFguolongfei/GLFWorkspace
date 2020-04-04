@@ -202,13 +202,22 @@ static NSString *cellID = @"cellID";
 }
 
 - (void)buttonAction:(id)sender {
-    // 存储
-    NSString *name = nameArray[self.title.integerValue];
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:@"0" forKey:IsUseBackImagePath];
-    [userDefaults setObject:name forKey:BackImageName];
-    [userDefaults synchronize];
-    [self.navigationController popViewControllerAnimated:YES];
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"" message:@"确定将此图片设为背景图？" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"再想想" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+
+    }];
+    [alertVC addAction:cancelAction];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        // 存储
+        NSString *name = nameArray[self.title.integerValue];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:@"0" forKey:IsUseBackImagePath];
+        [userDefaults setObject:name forKey:BackImageName];
+        [userDefaults synchronize];
+        [self.navigationController popViewControllerAnimated:YES];
+    }];
+    [alertVC addAction:okAction];
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 #pragma mark UICollectionViewDelegate

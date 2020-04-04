@@ -123,47 +123,38 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)prepareData {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
-    NSArray *arr = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
-    allImagesArray = [arr mutableCopy];
-    for (NSInteger i = 0; i < allImagesArray.count; i++) {
-        FileModel *model = allImagesArray[i];
-        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
-        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-        model.image = [UIImage imageWithContentsOfFile:model.path];
-    }
-    
-    _dataArray1 = [[NSMutableArray alloc] init];
-    _dataArray2 = [[NSMutableArray alloc] init];
-    _dataArray3 = [[NSMutableArray alloc] init];
-    CGFloat height1 = 0;
-    CGFloat height2 = 0;
-    CGFloat height3 = 0;
-    CGFloat width = kScreenWidth/3;
-    for (NSInteger i = 0; i < allImagesArray.count; i++) {
-        FileModel *model = allImagesArray[i];
-        if (height1 <= height2 && height1 <= height3) {
-            [_dataArray1 addObject:model];
-            CGFloat height = width * model.image.size.height / model.image.size.width;
-            height1 += height;
-        } else if (height2 <= height1 && height2 <= height3) {
-            [_dataArray2 addObject:model];
-            CGFloat height = width * model.image.size.height / model.image.size.width;
-            height2 += height;
-        } else if (height3 <= height1 && height3 <= height2) {
-            [_dataArray3 addObject:model];
-            CGFloat height = width * model.image.size.height / model.image.size.width;
-            height3 += height;
+    [DocumentManager getAllImagesArray:^(NSArray * array) {
+        allImagesArray = [array mutableCopy];
+        _dataArray1 = [[NSMutableArray alloc] init];
+        _dataArray2 = [[NSMutableArray alloc] init];
+        _dataArray3 = [[NSMutableArray alloc] init];
+        CGFloat height1 = 0;
+        CGFloat height2 = 0;
+        CGFloat height3 = 0;
+        CGFloat width = kScreenWidth/3;
+        for (NSInteger i = 0; i < allImagesArray.count; i++) {
+            FileModel *model = allImagesArray[i];
+            if (height1 <= height2 && height1 <= height3) {
+                [_dataArray1 addObject:model];
+                CGFloat height = width * model.image.size.height / model.image.size.width;
+                height1 += height;
+            } else if (height2 <= height1 && height2 <= height3) {
+                [_dataArray2 addObject:model];
+                CGFloat height = width * model.image.size.height / model.image.size.width;
+                height2 += height;
+            } else if (height3 <= height1 && height3 <= height2) {
+                [_dataArray3 addObject:model];
+                CGFloat height = width * model.image.size.height / model.image.size.width;
+                height3 += height;
+            }
         }
-    }
-    [_tableView1 reloadData];
-    [_tableView2 reloadData];
-    [_tableView3 reloadData];
-    
-    NSString *title = [NSString stringWithFormat:@"所有图片(%ld)", allImagesArray.count];
-    [self setVCTitle:title];
+        [_tableView1 reloadData];
+        [_tableView2 reloadData];
+        [_tableView3 reloadData];
+        
+        NSString *title = [NSString stringWithFormat:@"所有图片(%ld)", allImagesArray.count];
+        [self setVCTitle:title];
+    }];
 }
 
 - (void)prepareView {

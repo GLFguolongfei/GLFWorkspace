@@ -53,42 +53,21 @@
     myDataArray = [[NSMutableArray alloc] init];
     allArray = [[NSMutableArray alloc] init];
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *archiverPath1 = [path stringByAppendingPathComponent:@"GLFConfig/allArray.plist"];
-    NSArray *arr1 = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath1];
-    allArray = [arr1 mutableCopy];
-    for (NSInteger i = 0; i < allArray.count; i++) {
-        FileModel *model = allArray[i];
-        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
-        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-    }
-    NSString *archiverPath2 = [path stringByAppendingPathComponent:@"GLFConfig/allFilesArray.plist"];
-    NSArray *arr2 = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath2];
-    allFilesArray = [arr2 mutableCopy];
-    for (NSInteger i = 0; i < allFilesArray.count; i++) {
-        FileModel *model = allFilesArray[i];
-        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
-        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-    }
-    NSString *archiverPath3 = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
-    NSArray *arr3 = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath3];
-    allImagesArray = [arr3 mutableCopy];
-    for (NSInteger i = 0; i < allImagesArray.count; i++) {
-        FileModel *model = allImagesArray[i];
-        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
-        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-    }
-    NSString *archiverPath4 = [path stringByAppendingPathComponent:@"GLFConfig/allVideosArray.plist"];
-    NSArray *arr4 = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath4];
-    allVideosArray = [arr4 mutableCopy];
-    for (NSInteger i = 0; i < allVideosArray.count; i++) {
-        FileModel *model = allVideosArray[i];
-        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
-        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-    }
-    
-    [self prepareView];
+    [DocumentManager getAllArray:^(NSArray * array) {
+        allArray = [array mutableCopy];
+    }];
+    [DocumentManager getAllFilesArray:^(NSArray * array) {
+        allFilesArray = [array mutableCopy];
+        [self prepareView];
+    }];
+    [DocumentManager getAllImagesArray:^(NSArray * array) {
+        allImagesArray = [array mutableCopy];
+        [self prepareView];
+    }];
+    [DocumentManager getAllVideosArray:^(NSArray * array) {
+        allVideosArray = [array mutableCopy];
+        [self prepareView];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

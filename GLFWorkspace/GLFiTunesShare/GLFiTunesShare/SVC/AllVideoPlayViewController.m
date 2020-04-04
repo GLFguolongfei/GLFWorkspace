@@ -25,7 +25,7 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     UIBarButtonItem *item2;
     CGFloat cellHeight;
     
-    NSIndexPath *firstIndexPath;    
+    NSIndexPath *firstIndexPath;
 }
 @end
 
@@ -43,19 +43,12 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     
     cellHeight = 90;
         
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allVideosArray.plist"];
-    NSArray *arr = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
-    _dataArray = [arr mutableCopy];
-    for (NSInteger i = 0; i < _dataArray.count; i++) {
-        FileModel *model = _dataArray[i];
-        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
-        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-    }
-    NSString *titleStr = [NSString stringWithFormat:@"视频(%ld)", _dataArray.count];
-    [self setVCTitle:titleStr];
-    [self prepareView];
+    [DocumentManager getAllVideosArray:^(NSArray * array) {
+        _dataArray = [array mutableCopy];
+        NSString *titleStr = [NSString stringWithFormat:@"视频(%ld)", _dataArray.count];
+        [self setVCTitle:titleStr];
+        [self prepareView];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

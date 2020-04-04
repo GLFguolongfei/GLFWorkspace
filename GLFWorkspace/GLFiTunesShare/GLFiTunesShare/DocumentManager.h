@@ -13,7 +13,7 @@
 static NSString * _Nullable DocumentPathArray = @"DocumentPathArray";
 static NSString * _Nullable DocumentPathArrayUpdate = @"DocumentPathArrayUpdate";
 
-typedef void (^FinishBlock) (NSArray *_Nullable);
+typedef void (^CallBack) (NSArray *_Nullable);
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,6 +28,13 @@ HMSingletonH(DocumentManager)
 + (void)removeFavoriteModel:(FileModel *)model;
 + (void)addRemoveModel:(FileModel *)model;
 + (void)removeRemoveModel:(FileModel *)model;
++ (void)getAllArray:(CallBack)callBack;
++ (void)getAllFoldersArray:(CallBack)callBack;
++ (void)getAllFilesArray:(CallBack)callBack;
++ (void)getAllImagesArray:(CallBack)callBack;
++ (void)getAllVideosArray:(CallBack)callBack;
++ (void)getAllDYVideosArray:(CallBack)callBack;
++ (void)getAllNoDYVideosArray:(CallBack)callBack;
 
 #pragma mark 历史记录
 @property (nonatomic, assign) BOOL isUseBackFacingCamera; // 是否使用后置摄像头

@@ -60,31 +60,22 @@
     }
     editArray = [editArray mutableCopy];
     
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allVideosArray.plist"];
-    NSArray *arr = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
-    NSMutableArray *allVideosArray = [arr mutableCopy];
-    for (NSInteger i = 0; i < allVideosArray.count; i++) {
-        FileModel *model = allVideosArray[i];
-        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
-        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-    }
-    
-    _dataArray = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < allVideosArray.count; i++) {
-        FileModel *model = allVideosArray[i];
-        if ([editArray containsObject: model.name]) {
-            [_dataArray addObject:model];
+    [DocumentManager getAllVideosArray:^(NSArray * array) {
+        _dataArray = [[NSMutableArray alloc] init];
+        for (NSInteger i = 0; i < array.count; i++) {
+            FileModel *model = array[i];
+            if ([editArray containsObject: model.name]) {
+                [_dataArray addObject:model];
+            }
         }
-    }
-    if (_dataArray.count > 0) {
-        selectIndex = arc4random() % _dataArray.count;
-        currentModel = _dataArray[selectIndex];
-        [self prepareView];
-    }
-    NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
-    [self showStringHUD:str second:1.5];
+        if (_dataArray.count > 0) {
+            selectIndex = arc4random() % _dataArray.count;
+            currentModel = _dataArray[selectIndex];
+            [self prepareView];
+        }
+        NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+        [self showStringHUD:str second:1.5];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -15,6 +15,8 @@
     UIImageView *imageView;
     UIViewContentMode *contentMode;
     UILabel *label;
+    
+    NSMutableArray *allImagesArray;
 }
 @end
 
@@ -54,6 +56,10 @@
     gravityBeahvior = [[UIGravityBehavior alloc] init];
     // 3-添加重力仿真行为
     [animator addBehavior:gravityBeahvior];
+    
+    [DocumentManager getAllImagesArray:^(NSArray * array) {
+        allImagesArray = [array mutableCopy];
+    }];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -96,17 +102,6 @@
         name = [NSString stringWithFormat:@"mv%ld", nnn];
     }
     UIImage *image = [UIImage imageNamed:name];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
-    NSArray *arr = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
-    NSMutableArray *allImagesArray = [arr mutableCopy];
-    for (NSInteger i = 0; i < allImagesArray.count; i++) {
-        FileModel *model = allImagesArray[i];
-        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
-        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-        model.image = [UIImage imageWithContentsOfFile:model.path];
-    }
     if (allImagesArray.count > 0) {
         NSInteger mmm = arc4random() % allImagesArray.count;
         FileModel *model = allImagesArray[mmm];

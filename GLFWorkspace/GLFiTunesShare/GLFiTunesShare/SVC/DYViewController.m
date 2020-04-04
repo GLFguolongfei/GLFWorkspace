@@ -135,31 +135,28 @@
     [currentVC playOrPauseVideo:isPlaying];
     [self setButtonState];
     if (isOtherVideos) {
-        NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allNoDYVideosArray.plist"];
-        NSArray *arr = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
-        _dataArray = [arr mutableCopy];
-        for (NSInteger i = 0; i < _dataArray.count; i++) {
-            FileModel *model = _dataArray[i];
-            // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
-            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-        }
+        [DocumentManager getAllNoDYVideosArray:^(NSArray * array) {
+            _dataArray = [array mutableCopy];
+            if (selectIndex >= _dataArray.count) {
+               selectIndex = arc4random() % _dataArray.count;
+           }
+           currentModel = _dataArray[selectIndex];
+           [self prepareView];
+           NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+           [self showStringHUD:str second:1.5];
+        }];
     } else {
-        NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allDYVideosArray.plist"];
-        NSArray *arr = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
-        _dataArray = [arr mutableCopy];
-        for (NSInteger i = 0; i < _dataArray.count; i++) {
-            FileModel *model = _dataArray[i];
-            // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
-            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-        }
+        [DocumentManager getAllDYVideosArray:^(NSArray * array) {
+            _dataArray = [array mutableCopy];
+            if (selectIndex >= _dataArray.count) {
+                selectIndex = arc4random() % _dataArray.count;
+            }
+            currentModel = _dataArray[selectIndex];
+            [self prepareView];
+            NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
+            [self showStringHUD:str second:1.5];
+        }];
     }
-    if (selectIndex >= _dataArray.count) {
-        selectIndex = arc4random() % _dataArray.count;
-    }
-    currentModel = _dataArray[selectIndex];
-    [self prepareView];
-    NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
-    [self showStringHUD:str second:1.5];
 }
 
 - (void)prepareView {
