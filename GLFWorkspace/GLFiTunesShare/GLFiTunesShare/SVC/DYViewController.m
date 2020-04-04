@@ -20,14 +20,11 @@
     NSMutableArray *_dataArray;
     FileModel *currentModel;
     
-    DocumentManager *manager;
-
     NSMutableArray *favoriteArray;
     UIButton *favoriteButton;
     NSMutableArray *removeArray;
     UIButton *removeButton;
     
-    NSTimer *timer; // 定时器
     BOOL isOtherVideos;
     
     UIView *gestureView;
@@ -108,14 +105,7 @@
         barItem2.enabled = NO;
     }
     
-    manager = [DocumentManager sharedDocumentManager];
-    if (manager.allDYVideosArray.count > 0) {
-        [self prepareData];
-    } else {
-        [self showHUD];
-        timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(prepareData) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    }
+    [self prepareData];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -138,20 +128,30 @@
 }
 
 - (void)prepareData {
-    if ((isOtherVideos && manager.allNoDYVideosArray.count == 0) || (manager.allDYVideosArray.count == 0)) {
-        return;
-    } 
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
     
-    [self hideAllHUD];
     isPlaying = NO;
     [currentVC playOrPauseVideo:isPlaying];
     [self setButtonState];
     if (isOtherVideos) {
-        _dataArray = manager.allNoDYVideosArray;
-    } else if (manager.allDYVideosArray.count > 0) {
-        [timer invalidate];
-        timer = nil;
-        _dataArray = manager.allDYVideosArray;
+        NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allNoDYVideosArray.plist"];
+        NSArray *arr = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+        _dataArray = [arr mutableCopy];
+        for (NSInteger i = 0; i < _dataArray.count; i++) {
+            FileModel *model = _dataArray[i];
+            // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+        }
+    } else {
+        NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allDYVideosArray.plist"];
+        NSArray *arr = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+        _dataArray = [arr mutableCopy];
+        for (NSInteger i = 0; i < _dataArray.count; i++) {
+            FileModel *model = _dataArray[i];
+            // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+        }
     }
     if (selectIndex >= _dataArray.count) {
         selectIndex = arc4random() % _dataArray.count;
@@ -309,26 +309,19 @@
 }
 
 - (void)favoriteVideo {
-    if (manager.allVideosArray.count > 0) {
-        DYNextViewController *vc = [[DYNextViewController alloc] init];
-        vc.pageType = 1;
-        [self.navigationController pushViewController:vc animated:YES];
-    } else {
-        [self showStringHUD:@"等待遍历完成" second:1.5];
-    }
+    DYNextViewController *vc = [[DYNextViewController alloc] init];
+    vc.pageType = 1;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)removeVideo {
-    if (manager.allVideosArray.count > 0) {
-        DYNextViewController *vc = [[DYNextViewController alloc] init];
-        vc.pageType = 2;
-        [self.navigationController pushViewController:vc animated:YES];
-    } else {
-        [self showStringHUD:@"等待遍历完成" second:1.5];
-    }
+    DYNextViewController *vc = [[DYNextViewController alloc] init];
+    vc.pageType = 2;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)favoriteAction {
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if ([favoriteArray containsObject:currentModel.name]) {
         [favoriteArray removeObject:currentModel.name];
         [manager removeFavoriteModel:currentModel];
@@ -347,6 +340,7 @@
 }
 
 - (void)removeAction {
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if ([removeArray containsObject:currentModel.name]) {
         [removeArray removeObject:currentModel.name];
         [manager removeRemoveModel:currentModel];
