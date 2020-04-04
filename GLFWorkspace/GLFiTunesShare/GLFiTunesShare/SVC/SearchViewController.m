@@ -20,7 +20,10 @@
     UISearchBar *searchBar;
     UITableView *myTableView;
     NSMutableArray *myDataArray;
-    NSMutableArray *allDataArray;
+    NSMutableArray *allArray;
+    NSMutableArray *allFilesArray;
+    NSMutableArray *allImagesArray;
+    NSMutableArray *allVideosArray;
     
     UIBarButtonItem *item;
     
@@ -48,14 +51,43 @@
     [self setVCTitle:@"搜索"];
     
     myDataArray = [[NSMutableArray alloc] init];
-    allDataArray = [[NSMutableArray alloc] init];
+    allArray = [[NSMutableArray alloc] init];
     
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    if (manager.allArray.count > 0) {
-        allDataArray = manager.allArray;
-    } else {
-        [self prepareData];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *archiverPath1 = [path stringByAppendingPathComponent:@"GLFConfig/allArray.plist"];
+    NSArray *arr1 = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath1];
+    allArray = [arr1 mutableCopy];
+    for (NSInteger i = 0; i < allArray.count; i++) {
+        FileModel *model = allArray[i];
+        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
     }
+    NSString *archiverPath2 = [path stringByAppendingPathComponent:@"GLFConfig/allFilesArray.plist"];
+    NSArray *arr2 = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath2];
+    allFilesArray = [arr2 mutableCopy];
+    for (NSInteger i = 0; i < allFilesArray.count; i++) {
+        FileModel *model = allFilesArray[i];
+        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+    }
+    NSString *archiverPath3 = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
+    NSArray *arr3 = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath3];
+    allImagesArray = [arr3 mutableCopy];
+    for (NSInteger i = 0; i < allImagesArray.count; i++) {
+        FileModel *model = allImagesArray[i];
+        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+    }
+    NSString *archiverPath4 = [path stringByAppendingPathComponent:@"GLFConfig/allVideosArray.plist"];
+    NSArray *arr4 = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath4];
+    allVideosArray = [arr4 mutableCopy];
+    for (NSInteger i = 0; i < allVideosArray.count; i++) {
+        FileModel *model = allVideosArray[i];
+        // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+        model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+    }
+    
     [self prepareView];
 }
 
@@ -93,70 +125,6 @@
     [self resignFirstResponder];
 }
 
-- (void)prepareData {
-    [self showHUD];
-    
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *hidden = [userDefaults objectForKey:kContentHidden];
-    
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        NSMutableArray *cArray = [[NSMutableArray alloc] init];
-        NSMutableArray *bArray = [[NSMutableArray alloc] init];
-        NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
-        for (int i = 0; i < array.count; i++) {
-            if ([array[i] isEqualToString:@"Inbox"]) {
-                continue;
-            }
-            if ([hidden isEqualToString:@"0"] && [array[i] isEqualToString:@"郭龙飞"]) {
-                continue;
-            }
-            FileModel *model = [[FileModel alloc] init];
-            model.name = array[i];
-            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
-            model.attributes = [GLFFileManager attributesOfItemAtPath:model.path];
-            NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
-            if (fileType == 1) { // 文件
-                model.size = [GLFFileManager fileSize:model.path];
-                NSArray *array = [model.name componentsSeparatedByString:@"."];
-                NSString *lowerType = [array.lastObject lowercaseString];
-                if ([CimgTypeArray containsObject:lowerType]) {
-                    model.type = 2;
-                    model.image = [UIImage imageWithContentsOfFile:model.path];
-                } else if ([CvideoTypeArray containsObject:lowerType]) {
-                    model.type = 3;
-//                    #if FirstTarget
-//                        model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-//                    #else
-//                        model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
-//                    #endif
-                    model.image = nil;
-                } else if ([lowerType isEqualToString:@"ds_store"]) {
-                    continue;
-                } else {
-                    model.type = 4;
-                }
-                [bArray addObject:model];
-            } else if (fileType == 2) { // 文件夹
-                model.type = 1;
-                model.size = [GLFFileManager fileSizeForDir:model.path];
-                model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
-                [cArray addObject:model];
-            }
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideAllHUD];
-            // 显示文件夹排在前面
-            [allDataArray addObjectsFromArray:cArray];
-            [allDataArray addObjectsFromArray:bArray];
-            NSLog(@"总共文件(夹)数量: %ld", allDataArray.count);
-        });
-    });
-}
-
 - (void)prepareView {
     // UISearchBar的frame只有高度有效
     searchBar = [[UISearchBar alloc]initWithFrame:CGRectMake(0, 64, kScreenWidth, 60)];
@@ -189,24 +157,19 @@
 }
 
 - (void)prepareInfoView {
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    if (manager.allArray.count == 0) {
-        return;
-    }
-    
     CGFloat allFilesArraySize = 0;
     CGFloat allImagesArraySize = 0;
     CGFloat allVideosArraySize = 0;
-    for (NSInteger i = 0; i < manager.allFilesArray.count; i++) {
-        FileModel *model = manager.allFilesArray[i];
+    for (NSInteger i = 0; i < allFilesArray.count; i++) {
+        FileModel *model = allFilesArray[i];
         allFilesArraySize += model.size;
     }
-    for (NSInteger i = 0; i < manager.allImagesArray.count; i++) {
-        FileModel *model = manager.allImagesArray[i];
+    for (NSInteger i = 0; i < allImagesArray.count; i++) {
+        FileModel *model = allImagesArray[i];
         allImagesArraySize += model.size;
     }
-    for (NSInteger i = 0; i < manager.allVideosArray.count; i++) {
-        FileModel *model = manager.allVideosArray[i];
+    for (NSInteger i = 0; i < allVideosArray.count; i++) {
+        FileModel *model = allVideosArray[i];
         allVideosArraySize += model.size;
     }
     
@@ -224,18 +187,18 @@
         if (i == 0) {
             label1 = label;
             NSString *sizeStr = [GLFFileManager returenSizeStr:allFilesArraySize];
-            label.text = [NSString stringWithFormat:@"总共: %ld    大小: %@", manager.allFilesArray.count, sizeStr];
+            label.text = [NSString stringWithFormat:@"总共: %ld    大小: %@", allFilesArray.count, sizeStr];
         } else if (i == 1) {
             label2 = label;
             NSString *sizeStr = [GLFFileManager returenSizeStr:allImagesArraySize];
-            label.text = [NSString stringWithFormat:@"图片: %ld    大小: %@", manager.allImagesArray.count, sizeStr];
+            label.text = [NSString stringWithFormat:@"图片: %ld    大小: %@", allImagesArray.count, sizeStr];
         } else if (i == 2) {
             label3 = label;
             NSString *sizeStr = [GLFFileManager returenSizeStr:allVideosArraySize];
-            label.text = [NSString stringWithFormat:@"视频: %ld    大小: %@", manager.allVideosArray.count, sizeStr];
+            label.text = [NSString stringWithFormat:@"视频: %ld    大小: %@", allVideosArray.count, sizeStr];
         } else if (i == 3) {
             label4 = label;
-            NSInteger count = manager.allFilesArray.count - manager.allImagesArray.count - manager.allVideosArray.count;
+            NSInteger count = allFilesArray.count - allImagesArray.count - allVideosArray.count;
             CGFloat size = allFilesArraySize - allImagesArraySize - allVideosArraySize;
             NSString *sizeStr = [GLFFileManager returenSizeStr:size];
             label.text = [NSString stringWithFormat:@"其它: %ld    大小: %@", count, sizeStr];
@@ -266,11 +229,11 @@
         label4.hidden = NO;
         return;
     }
-    for (NSInteger i = 0; i < allDataArray.count; i++) {
-        if (myDataArray.count > 300) {
+    for (NSInteger i = 0; i < allArray.count; i++) {
+        if (myDataArray.count > 200) {
             break;
         }
-        FileModel *model = allDataArray[i];
+        FileModel *model = allArray[i];
         if ([model.name containsString:searchBar.text]) {
             if (isDir) {
                 if (model.type == 1) {
@@ -286,8 +249,8 @@
     [myTableView reloadData];
     if (myDataArray.count == 0) {
         [self showStringHUD:@"未搜到任何内容" second:1.5];
-    } else if (myDataArray.count > 300) {
-        [self showStringHUD:@"搜到的内容过多, 只展示前300条" second:1.5];
+    } else if (myDataArray.count > 200) {
+        [self showStringHUD:@"搜到的内容过多, 只展示前200条" second:1.5];
     }
     if (myDataArray.count > 0) {
         view.hidden = YES;
