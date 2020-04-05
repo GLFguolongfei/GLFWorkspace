@@ -98,17 +98,14 @@
 - (void)testOne:(CGContextRef)context andRect:(CGRect)rect {
     // 1-获取上下文路径等
     CGMutablePathRef path = CGPathCreateMutable();
-    
-    // 2、设置线的宽度 及 填充颜色
+    // 2-设置线的宽度和填充颜色
     CGContextSetLineWidth(context, 1);
     CGContextSetFillColorWithColor(context, [downWaterColor CGColor]);
-    
-    // 3、设置当前path点的位置
+    // 3-设置当前path点的位置
     float y = _currentLinePointY;
     CGPathMoveToPoint(path, NULL, 0, y);
-    
-    // 4、画 开始为上的波浪
-    for(float x=0; x<=kScreenWidth; x++){
+    // 4-开始为上的波浪
+    for(float x = 0; x <= kScreenWidth; x++){
         y = a * sin(x/180*M_PI + 4*b/M_PI) * (-15) + _currentLinePointY;
         if (x == 0) {
             upLeftX = 0;
@@ -132,8 +129,8 @@
     CGContextDrawPath(context, kCGPathStroke); // 画轮廓
     
     CGPathAddLineToPoint(path, nil, 0, upLeftY);
-    // 5、画 开始为下得波浪
-    for(float x=0; x<=kScreenWidth; x++){
+    // 5-开始为下得波浪
+    for(float x = 0; x <= kScreenWidth; x++){
         y = a * sin(x/180*M_PI + 4*b/M_PI) * 15 + _currentLinePointY;
         if (x == 0) {
             downLeftX = 0;
@@ -160,36 +157,30 @@
 }
 
 - (void)testTwo:(CGContextRef)context andRect:(CGRect)rect {
-    // 1、获取上下文路径等
+    // 1-获取上下文路径等
     CGMutablePathRef path = CGPathCreateMutable();
-    
-    // 2、设置线的宽度 及 填充颜色
+    // 2-设置线的宽度和填充颜色
     CGContextSetLineWidth(context, 1);
     CGContextSetFillColorWithColor(context, [upWaterColor CGColor]);
-    
-    // 3、设置当前path点的位置
+    // 3-设置当前path点的位置
     float y = _currentLinePointY;
     CGPathMoveToPoint(path, NULL, 0, y);
-    
-    // 4、画 开始为上的波浪
-    for(float x=0; x<=kScreenWidth; x++){
+    // 4-开始为上的波浪
+    for(float x = 0; x <= kScreenWidth; x++){
         y = a * sin(x/180*M_PI + 4*b/M_PI) * (-15) + _currentLinePointY;
         CGPathAddLineToPoint(path, nil, x, y);
     }
-    
-    // 5、将 上波浪的终点 与 下波浪的始点 连接
+    // 5-将上波浪的终点与下波浪的始点连接
     CGPathAddLineToPoint(path, nil, kScreenWidth, downRightY);
-    
-    // 6、开始为下得波浪
+    // 6-开始为下得波浪
     for(float x=kScreenWidth; x>=0; x--){
         y = a * sin(x/180*M_PI + 4*b/M_PI) * 15 + _currentLinePointY;
         CGPathAddLineToPoint(path, nil, x, y);
     }
-    
-    // 7、连成一个闭合的曲线
+    // 7-连成一个闭合的曲线
     CGPathAddLineToPoint(path, nil, 0, upLeftX);
     
-    // 8、填充颜色
+    // 8-填充颜色
     CGContextAddPath(context, path);
     CGContextFillPath(context); // 只填充颜色(注意、想要填充 必须是闭合的曲线)
     CGContextDrawPath(context, kCGPathStroke); // 画轮廓
