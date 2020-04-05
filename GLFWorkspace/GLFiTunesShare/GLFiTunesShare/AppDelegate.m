@@ -149,6 +149,15 @@
     } else { // 本地通知
         NSLog(@"---------- iOS10前台收到本地通知");
         NSLog(@"body:%@,title:%@,subtitle:%@,badge:%@,sound:%@,userInfo:%@",body,title,subtitle,badge,sound,userInfo);
+        
+        UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:title message:body preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *destructAction = [UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            
+        }];
+        [alertVC addAction:destructAction];
+        
+        [self.window.rootViewController presentViewController:alertVC animated:YES completion:nil];
     }
     completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert); // 需要执行这个方法,选择是否提醒用户,有Badge、Sound、Alert三种类型可以设置
 }

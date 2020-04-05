@@ -111,14 +111,14 @@ HMSingletonM(DocumentManager)
                     [allFoldersArray addObject:model];
                     if ([model.name isEqualToString:@"郭龙飞"] && model.size > 1000000000) {
                         UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-                        content.title = @"存储通知";
+                        content.title = @"通知";
                         content.subtitle = [NSString stringWithFormat:@"存储过大"];
                         content.body = @"存储的东西太多了";
                         content.badge = @1;
                         content.sound = [UNNotificationSound defaultSound];
                         content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
                         
-                        UNTimeIntervalNotificationTrigger *intervalTrigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:5 repeats:NO];
+                        UNTimeIntervalNotificationTrigger *intervalTrigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats:NO];
                         NSString *requestIdentifier = @"Dely.X.time";
                         UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier content:content trigger:intervalTrigger];
                         

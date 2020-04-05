@@ -96,7 +96,7 @@
 }
 
 - (void)didReceiveMemoryWarning {
-//    [self showStringHUD:@"收到内存警告" second:1.5];
+    [self showStringHUD:@"收到内存警告" second:1];
     NSLog(@"收到内存警告");
 }
 
