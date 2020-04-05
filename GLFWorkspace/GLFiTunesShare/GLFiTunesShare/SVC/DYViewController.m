@@ -46,8 +46,8 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    barItem1 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"favorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
-    barItem2 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"delete"] style:UIBarButtonItemStylePlain target:self action:@selector(removeVideo)];
+    barItem1 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dyFavorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
+    barItem2 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dyDelete"] style:UIBarButtonItemStylePlain target:self action:@selector(removeVideo)];
     self.navigationItem.rightBarButtonItems = @[barItem1, barItem2];
     self.view.backgroundColor = [UIColor blackColor];
     [self setVCTitle:@"抖音短视频"];
@@ -183,9 +183,9 @@
     CGRect buttonRect = CGRectMake(20, 20, 80, 80);
     favoriteButton = [[UIButton alloc] initWithFrame:buttonRect];
     if ([favoriteArray containsObject:currentModel.name]) {
-        [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+        [favoriteButton setImage:[UIImage imageNamed:@"dyFavoriteBig"] forState:UIControlStateNormal];
     } else {
-        [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+        [favoriteButton setImage:[UIImage imageNamed:@"dyNofavoriteBig"] forState:UIControlStateNormal];
     }
     [favoriteButton addTarget:self action:@selector(favoriteAction) forControlEvents:UIControlEventTouchUpInside];
     favoriteButton.backgroundColor = [UIColor colorWithWhite:1 alpha:0.7];
@@ -201,9 +201,9 @@
     CGRect buttonRect2 = CGRectMake(20, 20, 80, 80);
     removeButton = [[UIButton alloc] initWithFrame:buttonRect2];
     if ([removeArray containsObject:currentModel.name]) {
-        [removeButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+        [removeButton setImage:[UIImage imageNamed:@"dyDeleteBig"] forState:UIControlStateNormal];
     } else {
-        [removeButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+        [removeButton setImage:[UIImage imageNamed:@"dyNodeleteBig"] forState:UIControlStateNormal];
     }
     [removeButton addTarget:self action:@selector(removeAction) forControlEvents:UIControlEventTouchUpInside];
     removeButton.backgroundColor = [UIColor colorWithWhite:1 alpha:0.7];
@@ -320,11 +320,11 @@
 - (void)favoriteAction {
     if ([favoriteArray containsObject:currentModel.name]) {
         [favoriteArray removeObject:currentModel.name];
-        [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+        [favoriteButton setImage:[UIImage imageNamed:@"dyNofavoriteBig"] forState:UIControlStateNormal];
         [DocumentManager removeFavoriteModel:currentModel];
     } else {
         [favoriteArray addObject:currentModel.name];
-        [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+        [favoriteButton setImage:[UIImage imageNamed:@"dyFavoriteBig"] forState:UIControlStateNormal];
         [DocumentManager addFavoriteModel:currentModel];
     }
     
@@ -338,11 +338,11 @@
 - (void)removeAction {
     if ([removeArray containsObject:currentModel.name]) {
         [removeArray removeObject:currentModel.name];
-        [removeButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+        [removeButton setImage:[UIImage imageNamed:@"dyNodeleteBig"] forState:UIControlStateNormal];
         [DocumentManager removeRemoveModel:currentModel];
     } else {
         [removeArray addObject:currentModel.name];
-        [removeButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+        [removeButton setImage:[UIImage imageNamed:@"dyDeleteBig"] forState:UIControlStateNormal];
         [DocumentManager addRemoveModel:currentModel];
     }
     
@@ -453,15 +453,15 @@
         }
         
         if ([favoriteArray containsObject:currentModel.name]) {
-            [favoriteButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+            [favoriteButton setImage:[UIImage imageNamed:@"dyFavoriteBig"] forState:UIControlStateNormal];
         } else {
-            [favoriteButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+            [favoriteButton setImage:[UIImage imageNamed:@"dyNofavoriteBig"] forState:UIControlStateNormal];
         }
         
         if ([removeArray containsObject:currentModel.name]) {
-            [removeButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+            [removeButton setImage:[UIImage imageNamed:@"dyDeleteBig"] forState:UIControlStateNormal];
         } else {
-            [removeButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+            [removeButton setImage:[UIImage imageNamed:@"dyNodeleteBig"] forState:UIControlStateNormal];
         }
     }
 }

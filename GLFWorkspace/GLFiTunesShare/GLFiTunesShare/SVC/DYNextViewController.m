@@ -138,15 +138,15 @@
     editButton = [[UIButton alloc] initWithFrame:buttonRect];
     if (self.pageType == 1) {
         if ([editArray containsObject:currentModel.name]) {
-            [editButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"dyFavoriteBig"] forState:UIControlStateNormal];
         } else {
-            [editButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"dyNofavoriteBig"] forState:UIControlStateNormal];
         }
     } else {
         if ([editArray containsObject:currentModel.name]) {
-            [editButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"dyDeleteBig"] forState:UIControlStateNormal];
         } else {
-            [editButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"dyNodeleteBig"] forState:UIControlStateNormal];
         }
     }
     [editButton addTarget:self action:@selector(favoriteAction) forControlEvents:UIControlEventTouchUpInside];
@@ -248,21 +248,21 @@
     if (self.pageType == 1) {
         if ([editArray containsObject:currentModel.name]) {
             [editArray removeObject:currentModel.name];
-            [editButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"dyNofavoriteBig"] forState:UIControlStateNormal];
             [DocumentManager removeFavoriteModel:currentModel];
         } else {
             [editArray addObject:currentModel.name];
-            [editButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"dyFavoriteBig"] forState:UIControlStateNormal];
             [DocumentManager addFavoriteModel:currentModel];
         }
     } else {
         if ([editArray containsObject:currentModel.name]) {
             [editArray removeObject:currentModel.name];
-            [editButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"dyNodeleteBig"] forState:UIControlStateNormal];
             [DocumentManager removeRemoveModel:currentModel];
         } else {
             [editArray addObject:currentModel.name];
-            [editButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+            [editButton setImage:[UIImage imageNamed:@"dyDeleteBig"] forState:UIControlStateNormal];
             [DocumentManager addRemoveModel:currentModel];
         }
     }
@@ -370,15 +370,15 @@
         
         if (self.pageType == 1) {
             if ([editArray containsObject:currentModel.name]) {
-                [editButton setImage:[UIImage imageNamed:@"favoriteBig"] forState:UIControlStateNormal];
+                [editButton setImage:[UIImage imageNamed:@"dyFavoriteBig"] forState:UIControlStateNormal];
             } else {
-                [editButton setImage:[UIImage imageNamed:@"nofavoriteBig"] forState:UIControlStateNormal];
+                [editButton setImage:[UIImage imageNamed:@"dyNofavoriteBig"] forState:UIControlStateNormal];
             }
         } else {
             if ([editArray containsObject:currentModel.name]) {
-                [editButton setImage:[UIImage imageNamed:@"deleteBig"] forState:UIControlStateNormal];
+                [editButton setImage:[UIImage imageNamed:@"dyDeleteBig"] forState:UIControlStateNormal];
             } else {
-                [editButton setImage:[UIImage imageNamed:@"nodeleteBig"] forState:UIControlStateNormal];
+                [editButton setImage:[UIImage imageNamed:@"dyNodeleteBig"] forState:UIControlStateNormal];
             }
         }
     }
