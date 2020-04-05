@@ -54,8 +54,8 @@
         jia = NO;
         
         // ------- 水的颜色可以设置
-        upWaterColor = [UIColor colorWithRed:0/255.0f green:191/255.0f blue:190/255.0f alpha:1];
-        downWaterColor = [UIColor colorWithRed:0/255.0f green:170/255.0f blue:169/255.0f alpha:1];
+        upWaterColor = [UIColor colorWithRed:29/255.0f green:174/255.0f blue:232/255.0f alpha:1];
+        downWaterColor = [UIColor colorWithRed:24/255.0f green:151/255.0f blue:218/255.0f alpha:1];
         // 水的高度可以设置
         _currentLinePointY = kScreenHeight-150;
         
@@ -96,7 +96,7 @@
 }
 
 - (void)testOne:(CGContextRef)context andRect:(CGRect)rect {
-    // 1、获取上下文路径等
+    // 1-获取上下文路径等
     CGMutablePathRef path = CGPathCreateMutable();
     
     // 2、设置线的宽度 及 填充颜色

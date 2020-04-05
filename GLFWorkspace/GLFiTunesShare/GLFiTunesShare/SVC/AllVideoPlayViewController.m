@@ -141,7 +141,7 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 
 - (void)buttonAction2 {
     cellHeight += 30;
-    if (cellHeight >= 330) {
+    if (cellHeight >= 240) {
         item1.enabled = YES;
         item2.enabled = NO;
     } else {
