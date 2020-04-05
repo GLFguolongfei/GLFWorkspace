@@ -123,7 +123,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)prepareData {
+    [self showHUD:@"加载中, 不要着急!"];
     [DocumentManager getAllImagesArray:^(NSArray * array) {
+        [self hideAllHUD];
         allImagesArray = [array mutableCopy];
         _dataArray1 = [[NSMutableArray alloc] init];
         _dataArray2 = [[NSMutableArray alloc] init];
@@ -316,8 +318,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)scaleImage {
-    [self showHUD];
-
+    [self showHUD:@"加载中, 不要着急!"];
     __block NSInteger count1 = 0;
     __block NSInteger count2 = 0;
     __block NSInteger count3 = 0;

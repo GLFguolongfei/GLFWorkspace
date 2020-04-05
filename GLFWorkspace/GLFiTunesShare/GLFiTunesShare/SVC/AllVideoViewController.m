@@ -73,8 +73,10 @@ static NSString *cellID = @"VideoTableViewCell";
     [gestureView removeFromSuperview];
 }
 
-- (void)prepareData {    
+- (void)prepareData {
+    [self showHUD:@"加载中, 不要着急!"];
     [DocumentManager getAllVideosArray:^(NSArray * array) {
+        [self hideAllHUD];
         _dataArray = [array mutableCopy];
         [_tableView reloadData];
         NSString *title = [NSString stringWithFormat:@"所有视频(%ld)", _dataArray.count];
@@ -132,8 +134,7 @@ static NSString *cellID = @"VideoTableViewCell";
 }
 
 - (void)buttonAction1 {
-    [self showHUD];
-    
+    [self showHUD:@"加载中, 不要着急!"];
     isShowImage = YES;
     __block NSInteger count = 0;
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);

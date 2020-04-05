@@ -43,7 +43,9 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     
     cellHeight = 90;
         
+    [self showHUD:@"加载中, 不要着急!"];
     [DocumentManager getAllVideosArray:^(NSArray * array) {
+        [self hideAllHUD];
         _dataArray = [array mutableCopy];
         NSString *titleStr = [NSString stringWithFormat:@"视频(%ld)", _dataArray.count];
         [self setVCTitle:titleStr];

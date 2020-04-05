@@ -169,7 +169,7 @@ static NSString *cellID = @"GLFTableViewCellID";
 }
 
 - (void)moveTo:(NSString *)path {
-    [self showHUD];
+    [self showHUD:@"移动中, 不要着急!"];
     for (int i = 0; i < self.modelArray.count; i++) {
         FileModel *model = self.modelArray[i];
         NSString *toPath = [NSString stringWithFormat:@"%@/%@/%@", documentPath, path, model.name];

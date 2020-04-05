@@ -304,7 +304,7 @@
     [userDefaults setObject:[[NSMutableArray alloc] init] forKey:kRemove];
     [userDefaults synchronize];
 
-    [self showHUD];
+    [self showHUD:@"清理中, 不要着急!"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self showStringHUD:@"清空完成" second:2];
     });
