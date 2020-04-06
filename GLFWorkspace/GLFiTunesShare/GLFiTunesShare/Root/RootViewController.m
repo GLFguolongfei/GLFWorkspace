@@ -652,6 +652,9 @@
             if (success) {
                 [self prepareData];
                 [DocumentManager updateDocumentPaths];
+            } else {
+                [self showStringHUD:@"重命名失败" second:1.5];
+                [self viewEditing:YES];
             }
         }
     }];
