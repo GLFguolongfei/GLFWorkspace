@@ -86,7 +86,7 @@ static NSString *cellID = @"cellID";
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"更换数据源" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"更多壁纸" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self prepareData];
     }];
     [alertVC addAction:okAction];
@@ -108,7 +108,11 @@ static NSString *cellID = @"cellID";
             [nameArray addObject:name];
         }
     } else {
-        for (NSInteger i = 1; i <= 29; i++) {
+        for (NSInteger i = 1; i <= 9; i++) {
+            NSString *name = [NSString stringWithFormat:@"bg%ld", i];
+            [nameArray addObject:name];
+        }
+        for (NSInteger i = 1; i <= 26; i++) {
             NSString *name = [NSString stringWithFormat:@"nv%ld", i];
             [nameArray addObject:name];
         }
