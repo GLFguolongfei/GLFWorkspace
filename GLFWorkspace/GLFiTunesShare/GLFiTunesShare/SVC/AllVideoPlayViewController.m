@@ -19,7 +19,7 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     NSMutableArray *_dataArray;
     
     UIView *gestureView;
-    BOOL isSuccess;
+    BOOL isShowDefault;
     
     UIBarButtonItem *item1;
     UIBarButtonItem *item2;
@@ -57,9 +57,9 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     [super viewWillAppear:animated];
     NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
     if ([type isEqualToString:@"1"]) {
-        isSuccess = YES;
+        isShowDefault = YES;
     } else {
-        isSuccess = NO;
+        isShowDefault = NO;
     }
     self.navigationController.toolbar.hidden = YES;
     
@@ -102,8 +102,8 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     [alertVC addAction:cancelAction];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        isSuccess = !isSuccess;
-        if (isSuccess) {
+        isShowDefault = !isShowDefault;
+        if (isShowDefault) {
             [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
         } else {
             [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"RootShowType"];
@@ -189,7 +189,7 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     FileModel *model = _dataArray[indexPath.row];
     NSString *mute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
     NSString *min = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMin];
-    if (isSuccess && !mute.integerValue && !min.integerValue) {
+    if (isShowDefault && !mute.integerValue && !min.integerValue) {
         NSURL *url = [NSURL fileURLWithPath:model.path];
         UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
         documentController.delegate = self;

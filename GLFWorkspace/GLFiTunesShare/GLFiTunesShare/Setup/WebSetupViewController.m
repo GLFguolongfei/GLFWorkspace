@@ -11,8 +11,7 @@
 @interface WebSetupViewController ()
 {
     UIView *gestureView;
-    BOOL isSuccess;
-    BOOL isSu;
+    BOOL isOC; // is Other Control
 }
 @end
 
@@ -51,7 +50,7 @@
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    isSu = false;
+    isOC = false;
     // 导航栏bg
     gestureView = [[UIView alloc] initWithFrame:CGRectMake((kScreenWidth - 150) / 2, -20, 150, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
@@ -81,14 +80,14 @@
     [alertVC addAction:cancelAction];
     
     NSString *title = @"其它控制";
-    if (isSu) {
+    if (isOC) {
         title = @"Other Control";
     }
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         self.switch5.hidden = !self.switch6.hidden;
         self.label5.hidden = !self.label6.hidden;
-        if (isSu) {
+        if (isOC) {
             self.switch6.hidden = !self.switch6.hidden;
             self.label6.hidden = !self.label6.hidden;
             self.switch7.hidden = !self.switch7.hidden;
@@ -103,7 +102,7 @@
 }
 
 - (void)tapGesture:(UITapGestureRecognizer *)gesture {
-    isSu = YES;
+    isOC = YES;
 }
 
 - (IBAction)switchAction1:(id)sender {

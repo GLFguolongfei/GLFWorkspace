@@ -29,7 +29,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     BOOL isHiddenNavi;
         
     UIView *gestureView;
-    BOOL isSuccess;
+    BOOL isShowDefault;
     
     FileModel *currentModel;
     
@@ -78,9 +78,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [super viewWillAppear:animated];
     NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
     if ([type isEqualToString:@"1"]) {
-        isSuccess = YES;
+        isShowDefault = YES;
     } else {
-        isSuccess = NO;
+        isShowDefault = NO;
     }
     // 1.设置背景图片
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -263,8 +263,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [alertVC addAction:cancelAction];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        isSuccess = !isSuccess;
-        if (isSuccess) {
+        isShowDefault = !isShowDefault;
+        if (isShowDefault) {
             [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
         } else {
             [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"RootShowType"];
@@ -408,7 +408,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 
 - (void)showImage {
     if (currentModel) {
-        if (isSuccess) {
+        if (isShowDefault) {
             NSURL *url = [NSURL fileURLWithPath:currentModel.path];
             UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
             documentController.delegate = self;
@@ -518,7 +518,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         model = _dataArray3[indexPath.row];
     }
     
-    if (isSuccess) {
+    if (isShowDefault) {
         NSURL *url = [NSURL fileURLWithPath:model.path];
         UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
         documentController.delegate = self;

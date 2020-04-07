@@ -23,7 +23,7 @@
 {
     UIImageView *bgImageView;
     UIView *gestureView;
-    BOOL isSuccess;
+    BOOL isShowDefault;
     
     MyView *view;
     WaterView2 *waterView2;
@@ -107,9 +107,9 @@
     [super viewWillAppear:animated];
     NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
     if ([type isEqualToString:@"1"]) {
-        isSuccess = YES;
+        isShowDefault = YES;
     } else {
-        isSuccess = NO;
+        isShowDefault = NO;
     }
     // 1.设置背景图片
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -209,8 +209,8 @@
     [alertVC addAction:cancelAction];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        isSuccess = !isSuccess;
-        if (isSuccess) {
+        isShowDefault = !isShowDefault;
+        if (isShowDefault) {
             [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
         } else {
             [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"RootShowType"];

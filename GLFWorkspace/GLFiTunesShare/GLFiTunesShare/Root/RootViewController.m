@@ -27,7 +27,7 @@
     NSMutableArray *editArray;
 
     UIView *gestureView;
-    BOOL isSuccess;
+    BOOL isShowDefault;
 }
 @end
 
@@ -53,9 +53,9 @@
     [super viewWillAppear:animated];
     NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
     if ([type isEqualToString:@"1"]) {
-        isSuccess = YES;
+        isShowDefault = YES;
     } else {
-        isSuccess = NO;
+        isShowDefault = NO;
     }
     self.navigationController.navigationBar.hidden = NO;
     self.navigationController.toolbarHidden = YES;
@@ -247,8 +247,8 @@
     [alertVC addAction:cancelAction];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        isSuccess = !isSuccess;
-        if (isSuccess) {
+        isShowDefault = !isShowDefault;
+        if (isShowDefault) {
             [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
         } else {
             [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"RootShowType"];
@@ -495,7 +495,7 @@
         NSString *min = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMin];
         NSArray *array = [model.name componentsSeparatedByString:@"."];
         NSString *lowerType = [array.lastObject lowercaseString];
-        if (isSuccess && (![CvideoTypeArray containsObject:lowerType] || ([CvideoTypeArray containsObject:lowerType] && !mute.integerValue && !min.integerValue))) {
+        if (isShowDefault && (![CvideoTypeArray containsObject:lowerType] || ([CvideoTypeArray containsObject:lowerType] && !mute.integerValue && !min.integerValue))) {
             NSURL *url = [NSURL fileURLWithPath:model.path];
             UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
             documentController.delegate = self;

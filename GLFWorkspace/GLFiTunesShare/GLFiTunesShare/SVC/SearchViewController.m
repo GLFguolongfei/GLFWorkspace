@@ -28,7 +28,7 @@
     UIBarButtonItem *item;
     
     UIImageView *bgImageView;
-    BOOL isSuccess;
+    BOOL isShowDefault;
     BOOL isDir;
     
     UIView *view;
@@ -75,9 +75,9 @@
     [self.navigationController setToolbarHidden:YES animated:YES];
     NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
     if ([type isEqualToString:@"1"]) {
-        isSuccess = YES;
+        isShowDefault = YES;
     } else {
-        isSuccess = NO;
+        isShowDefault = NO;
     }
     // 1.设置背景图片
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
@@ -327,7 +327,7 @@
         NSString *min = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMin];
         NSArray *array = [model.name componentsSeparatedByString:@"."];
         NSString *lowerType = [array.lastObject lowercaseString];
-        if (isSuccess && (![CvideoTypeArray containsObject:lowerType] || ([CvideoTypeArray containsObject:lowerType] && !mute.integerValue && !min.integerValue))) {
+        if (isShowDefault && (![CvideoTypeArray containsObject:lowerType] || ([CvideoTypeArray containsObject:lowerType] && !mute.integerValue && !min.integerValue))) {
             NSURL *url = [NSURL fileURLWithPath:model.path];
             UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
             documentController.delegate = self;

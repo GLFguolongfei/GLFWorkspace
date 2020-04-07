@@ -28,7 +28,6 @@
     BOOL isOtherVideos;
     
     UIView *gestureView;
-    BOOL isSuccess;
     
     UILabel *label;
     

@@ -23,7 +23,6 @@
     UIButton *editButton;
     
     UIView *gestureView;
-    BOOL isSuccess;
     
     UILabel *label;
 }

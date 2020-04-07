@@ -31,7 +31,7 @@ static NSString *cellID = @"cellID";
     UIImageView *background;
     
     UIView *gestureView;
-    BOOL isSuccess;
+    BOOL isShowMore;
 }
 @end
 
@@ -95,10 +95,10 @@ static NSString *cellID = @"cellID";
 }
 
 - (void)prepareData {
-    isSuccess = !isSuccess;
+    isShowMore = !isShowMore;
     [collectionViewArray removeAllObjects];
     [nameArray removeAllObjects];
-    if (isSuccess) {
+    if (isShowMore) {
         for (NSInteger i = 1; i <= 9; i++) {
             NSString *name = [NSString stringWithFormat:@"bgview%ld", i];
             [nameArray addObject:name];
