@@ -61,7 +61,8 @@ HMSingletonM(DocumentManager)
                 if ([array[i] isEqualToString:@"Inbox"]) {
                     continue;
                 }
-                if ([CHiddenPaths containsObject:array[i]]) {
+                NSArray *names = [array[i] componentsSeparatedByString:@"/"];
+                if ([CHiddenPaths containsObject:names.firstObject]) {
                     continue;
                 }
                 FileModel *model = [[FileModel alloc] init];
@@ -174,7 +175,8 @@ HMSingletonM(DocumentManager)
                 NSString *path = [NSString stringWithFormat:@"%@/%@", documentPath, array[i]];
                 NSInteger fileType = [GLFFileManager fileExistsAtPath:path];
                 if (fileType == 2) { // 只显示文件夹
-                    if ([CHiddenPaths containsObject:array[i]]) {
+                    NSArray *names = [array[i] componentsSeparatedByString:@"/"];
+                    if ([CHiddenPaths containsObject:names.firstObject]) {
                         continue;
                     } else {
                         [documentPathArray addObject:array[i]];
