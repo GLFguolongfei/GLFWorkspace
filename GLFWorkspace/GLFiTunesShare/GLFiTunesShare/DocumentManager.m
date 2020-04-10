@@ -383,6 +383,29 @@ HMSingletonM(DocumentManager)
     });
 }
 
+#pragma mark - 其它
+// 获取背景图
++ (UIImage *)getBackgroundImage {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
+    NSString *backName = [userDefaults objectForKey:BackImageName];
+    NSArray *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+    NSString *cachePath = [cachePaths objectAtIndex:0];
+    NSString *filePath = [cachePath stringByAppendingString:@"/image.png"];
+    UIImage *backImage;
+    if (isUseBackImagePath.integerValue) {
+        backImage = [UIImage imageWithContentsOfFile:filePath];
+    } else {
+        backImage = [UIImage imageNamed:backName];
+    }
+    if (backImage == nil) {
+        backImage = [UIImage imageNamed:@"bgview"];
+        [userDefaults setObject:@"bgview" forKey:BackImageName];
+        [userDefaults synchronize];
+    }
+    return backImage;
+}
+
 #pragma mark - 背景音乐
 - (void)startPlay {
     if (player) {

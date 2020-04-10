@@ -79,25 +79,6 @@
     } else {
         isShowDefault = NO;
     }
-    // 1.设置背景图片
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
-    NSString *backName = [userDefaults objectForKey:BackImageName];
-    NSArray *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *cachePath = [cachePaths objectAtIndex:0];
-    NSString *filePath = [cachePath stringByAppendingString:@"/image.png"];
-    UIImage *backImage;
-    if (isUseBackImagePath.integerValue) {
-        backImage = [UIImage imageWithContentsOfFile:filePath];
-    } else {
-        backImage = [UIImage imageNamed:backName];
-    }
-    if (backImage == nil) {
-        backImage = [UIImage imageNamed:@"bgview"];
-        [userDefaults setObject:@"bgview" forKey:BackImageName];
-        [userDefaults synchronize];
-    }
-    bgImageView.image = backImage;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -125,6 +106,7 @@
     // 设置背景图片
     bgImageView = [[UIImageView alloc] initWithFrame:myTableView.frame];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
+    bgImageView.image = [DocumentManager getBackgroundImage];
     myTableView.backgroundView = bgImageView;
     UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
     visualEfView.frame = kScreen;

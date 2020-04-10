@@ -46,6 +46,7 @@
     // 设置背景图片
     bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
+    bgImageView.image = [DocumentManager getBackgroundImage];
     [self.view addSubview:bgImageView];
     UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
     visualEfView.frame = kScreen;
@@ -111,25 +112,6 @@
     } else {
         isShowDefault = NO;
     }
-    // 1.设置背景图片
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *isUseBackImagePath = [userDefaults objectForKey:IsUseBackImagePath];
-    NSString *backName = [userDefaults objectForKey:BackImageName];
-    NSArray *cachePaths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
-    NSString *cachePath = [cachePaths objectAtIndex:0];
-    NSString *filePath = [cachePath stringByAppendingString:@"/image.png"];
-    UIImage *backImage;
-    if (isUseBackImagePath.integerValue) {
-        backImage = [UIImage imageWithContentsOfFile:filePath];
-    } else {
-        backImage = [UIImage imageNamed:backName];
-    }
-    if (backImage == nil) {
-        backImage = [UIImage imageNamed:@"bgView2"];
-        [userDefaults setObject:@"bgView2" forKey:BackImageName];
-        [userDefaults synchronize];
-    }
-    bgImageView.image = backImage;
     // 导航栏bg
     gestureView = [[UIView alloc] initWithFrame:CGRectMake((kScreenWidth - 150) / 2, -20, 150, 64)];
     gestureView.backgroundColor = [UIColor clearColor];

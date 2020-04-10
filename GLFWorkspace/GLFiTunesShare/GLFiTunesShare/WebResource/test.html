@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,
+    minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
+    <title>测试页</title>
+</head>
+<body>
+<p>测试页</p>
+
+<script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript">
+    // 采用正则表达式获取地址栏参数
+    // alert(GetQueryString("name"));
+    function GetQueryString(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return decodeURI(r[2]);
+        }
+        return null;
+    }
+
+    let url = GetQueryString('url')
+    url = 'file://' + url
+    alert(url)
+
+    let script = document.createElement('script')
+    script.type = 'text/javascript'
+    script.async = true
+    script.src = url
+    document.head.appendChild(script)
+
+    $.get(url, function(data,status) {
+        console.log(data);
+        console.log(status);
+        alert('123')
+        alert(data.length)
+    });
+</script>
+</body>
+</html>

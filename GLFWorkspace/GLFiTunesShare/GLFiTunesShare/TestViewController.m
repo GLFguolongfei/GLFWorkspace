@@ -29,7 +29,10 @@
 //    [self testWebView];
 //    [self testMediaPicker];
 //    [self testDocumentPicker];
-    [self testArchiverData];
+//    [self testArchiverData];
+    
+    WKWebViewController *vc = [[WKWebViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark Events

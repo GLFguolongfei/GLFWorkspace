@@ -40,9 +40,21 @@
     self.wkWebView.navigationDelegate = self;
     [self.view addSubview:self.wkWebView];
     
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allArray.plist"];
+    NSString *urlStr = [NSString stringWithFormat:@"?url=%@", archiverPath];
+
+    
 //    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"bd" ofType:@"webarchive"];
 //    NSURL *url = [NSURL URLWithString:filePath];
-    NSURL *url = [NSURL URLWithString:self.urlStr];
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"html"];
+//    filePath = [NSString stringWithFormat:@"%@?url=123", filePath];
+    NSLog(@"%@", filePath);
+//    NSURL *url = [NSURL URLWithString:filePath];
+    NSURL *relativeURL = [NSURL fileURLWithPath:filePath];
+    NSURL *url = [NSURL URLWithString:urlStr relativeToURL:relativeURL];
+//    NSURL *url = [NSURL URLWithString:self.urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [self.wkWebView loadRequest:request];
 }

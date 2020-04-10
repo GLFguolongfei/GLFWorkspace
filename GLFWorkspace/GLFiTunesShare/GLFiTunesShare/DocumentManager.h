@@ -36,6 +36,10 @@ HMSingletonH(DocumentManager)
 + (void)getAllDYVideosArray:(CallBack)callBack;
 + (void)getAllNoDYVideosArray:(CallBack)callBack;
 
+#pragma mark 其它
+// 获取背景图
++ (UIImage *)getBackgroundImage;
+
 #pragma mark 历史记录
 @property (nonatomic, assign) BOOL isUseBackFacingCamera; // 是否使用后置摄像头
 

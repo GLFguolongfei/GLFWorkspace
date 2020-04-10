@@ -39,7 +39,8 @@
     BOOL isTestFounction = NO;
     if (isTestFounction) {
         TestViewController *testVC = [[TestViewController alloc] init];
-        self.window.rootViewController = testVC;
+        UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:testVC];
+        self.window.rootViewController = navi;
     } else {
 #if FirstTarget
         RootViewController *rootVC = [[RootViewController alloc] init];
