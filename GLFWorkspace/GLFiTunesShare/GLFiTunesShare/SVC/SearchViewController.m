@@ -29,7 +29,6 @@
     
     UIImageView *bgImageView;
     BOOL isShowDefault;
-    BOOL isDir;
     
     UIView *view;
     UILabel *label1;
@@ -45,7 +44,7 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    item = [[UIBarButtonItem alloc] initWithTitle:@"文件夹" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
+    item = [[UIBarButtonItem alloc] initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
     self.navigationItem.rightBarButtonItem = item;
     self.view.backgroundColor = [UIColor whiteColor];
     [self setVCTitle:@"搜索"];
@@ -53,21 +52,40 @@
     myDataArray = [[NSMutableArray alloc] init];
     allArray = [[NSMutableArray alloc] init];
     
+    [self showHUD:@"加载中, 不要着急!"];
+    __block NSInteger count = 0;
     [DocumentManager getAllArray:^(NSArray * array) {
         allArray = [array mutableCopy];
+        count++;
+        if (count >= 4) {
+            [self hideAllHUD];
+        }
     }];
     [DocumentManager getAllFilesArray:^(NSArray * array) {
         allFilesArray = [array mutableCopy];
-        [self prepareView];
+        count++;
+        if (count >= 4) {
+            [self hideAllHUD];
+            [self prepareInfoView];
+        }
     }];
     [DocumentManager getAllImagesArray:^(NSArray * array) {
         allImagesArray = [array mutableCopy];
-        [self prepareView];
+        count++;
+        if (count >= 4) {
+            [self hideAllHUD];
+            [self prepareInfoView];
+        }
     }];
     [DocumentManager getAllVideosArray:^(NSArray * array) {
         allVideosArray = [array mutableCopy];
-        [self prepareView];
+        count++;
+        if (count >= 4) {
+            [self hideAllHUD];
+            [self prepareInfoView];
+        }
     }];
+    [self prepareView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -112,9 +130,6 @@
     visualEfView.frame = kScreen;
     visualEfView.alpha = 0.5;
     [bgImageView addSubview:visualEfView];
-    
-    // info
-    [self prepareInfoView];
 }
 
 - (void)prepareInfoView {
@@ -169,12 +184,7 @@
 }
 
 - (void)buttonAction {
-    isDir = !isDir;
-    if (isDir) {
-        item.title = @"文夹";
-    } else {
-        item.title = @"文件夹";
-    }
+    searchBar.text = @"";
     [self search];
 }
 
@@ -196,15 +206,7 @@
         }
         FileModel *model = allArray[i];
         if ([model.name containsString:searchBar.text]) {
-            if (isDir) {
-                if (model.type == 1) {
-                    [myDataArray addObject:model];
-                }
-            } else {
-                if (model.type != 1) {
-                    [myDataArray addObject:model];
-                }
-            }
+            [myDataArray addObject:model];
         }
     }
     [myTableView reloadData];
