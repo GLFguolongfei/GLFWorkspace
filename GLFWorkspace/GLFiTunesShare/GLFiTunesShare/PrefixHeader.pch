@@ -74,7 +74,7 @@
 #define kFavorite           @"kFavorite"
 #define kRemove             @"kRemove"
 #define CimgTypeArray    @[@"png", @"jpeg", @"jpg", @"gif"]
-#define CvideoTypeArray  @[@"mp4", @"rmvb", @"avi", @"mov", @"mkv"]
+#define CvideoTypeArray  @[@"mp4", @"rmvb", @"avi", @"mov", @"mkv", @"flv"]
 
 #define CHiddenPaths     @[@"GLFConfig", @"郭龙飞"]
 
