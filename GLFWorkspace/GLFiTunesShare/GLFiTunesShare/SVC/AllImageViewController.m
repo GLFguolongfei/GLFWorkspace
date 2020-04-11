@@ -155,6 +155,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [bgImageView addSubview:visualEfView2];
     
     _tableView1 = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
+    _tableView1.backgroundColor = [UIColor clearColor];
     _tableView1.delegate = self;
     _tableView1.dataSource = self;
     [self.view addSubview:_tableView1];
@@ -164,6 +165,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _tableView1.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
 
     _tableView2 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
+    _tableView2.backgroundColor = [UIColor clearColor];
     _tableView2.delegate = self;
     _tableView2.dataSource = self;
     [self.view addSubview:_tableView2];
@@ -173,6 +175,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _tableView2.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
 
     _tableView3 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3*2, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
+    _tableView3.backgroundColor = [UIColor clearColor];
     _tableView3.delegate = self;
     _tableView3.dataSource = self;
     [self.view addSubview:_tableView3];
@@ -451,11 +454,12 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         FileModel *model = _dataArray1[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID1 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = [UIColor clearColor];
         if (model.size > 1000000) { // 大于1M
             if (model.scaleImage != nil) {
                 cell.scaleImageView.image = model.scaleImage;
             } else {
-                cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
+                cell.scaleImageView.image = [UIImage imageWithColor:[UIColor clearColor]];
             }
         } else {
             cell.scaleImageView.image = model.image;
@@ -465,11 +469,12 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         FileModel *model = _dataArray2[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID2 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = [UIColor clearColor];
         if (model.size > 1000000) { // 大于1M
             if (model.scaleImage != nil) {
                 cell.scaleImageView.image = model.scaleImage;
             } else {
-                cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
+                cell.scaleImageView.image = [UIImage imageWithColor:[UIColor clearColor]];
             }
         } else {
             cell.scaleImageView.image = model.image;
@@ -479,11 +484,12 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         FileModel *model = _dataArray3[indexPath.row];
         ShowTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID3 forIndexPath:indexPath];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.backgroundColor = [UIColor clearColor];
         if (model.size > 1000000) { // 大于1M
             if (model.scaleImage != nil) {
                 cell.scaleImageView.image = model.scaleImage;
             } else {
-                cell.scaleImageView.image = [UIImage imageWithColor:[GLFTools randomColor]];
+                cell.scaleImageView.image = [UIImage imageWithColor:[UIColor clearColor]];
             }
         } else {
             cell.scaleImageView.image = model.image;
