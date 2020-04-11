@@ -59,6 +59,10 @@
     }
     self.navigationController.navigationBar.hidden = NO;
     self.navigationController.toolbarHidden = YES;
+    
+    // 设置背景图片
+    bgImageView.image = [DocumentManager getBackgroundImage];
+    
     // 2.设置数据源
     [self prepareData];
     // 导航栏bg

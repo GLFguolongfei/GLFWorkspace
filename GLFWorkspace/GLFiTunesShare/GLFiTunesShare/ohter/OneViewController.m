@@ -32,7 +32,7 @@
     [self setVCTitle:@"UIKit动力学"];
     self.canHiddenNaviBar = YES;
     
-    contentMode = UIViewContentModeScaleAspectFill;
+    contentMode = UIViewContentModeScaleAspectFit;
     
     CGRect labelRect = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
     label = [[UILabel alloc] initWithFrame:labelRect];
@@ -62,28 +62,22 @@
     }];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-}
-
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
-    [self.navigationController setNavigationBarHidden:NO animated:YES];
-}
-
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self showImage];
     label.hidden = YES;
-    self.view.backgroundColor = [UIColor blackColor];
+    [UIView animateWithDuration:1 animations:^{
+        self.view.backgroundColor = [UIColor blackColor];
+    }];
 }
 
 - (void)buttonAction {
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
     if (contentMode == UIViewContentModeScaleAspectFill) {
         contentMode = UIViewContentModeScaleAspectFit;
     } else {
         contentMode = UIViewContentModeScaleAspectFill;
+    }
+    if (imageView) {
+        imageView.contentMode = contentMode;
     }
 }
 

@@ -97,6 +97,8 @@
     } else {
         isShowDefault = NO;
     }
+    // 设置背景图片
+    bgImageView.image = [DocumentManager getBackgroundImage];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {

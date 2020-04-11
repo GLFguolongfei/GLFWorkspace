@@ -83,6 +83,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         isShowDefault = NO;
     }
     
+    // 设置背景图片
+    bgImageView.image = [DocumentManager getBackgroundImage];
+    
     // 导航栏bg
     gestureView = [[UIView alloc] initWithFrame:CGRectMake((kScreenWidth - 150) / 2, -20, 150, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
