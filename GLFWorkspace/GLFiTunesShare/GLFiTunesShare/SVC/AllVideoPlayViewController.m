@@ -18,6 +18,8 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     UITableView *_tableView;
     NSMutableArray *_dataArray;
     
+    UIImageView *bgImageView;
+    
     UIView *gestureView;
     BOOL isShowDefault;
     
@@ -91,6 +93,16 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     _tableView.tableFooterView = [UIView new];
     
     [_tableView registerClass:[PlayVideoTableViewCell class] forCellReuseIdentifier:cellID];
+    
+    // 设置背景图片
+    bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    bgImageView.contentMode = UIViewContentModeScaleAspectFill;
+    bgImageView.image = [DocumentManager getBackgroundImage];
+    _tableView.backgroundView = bgImageView;
+    UIVisualEffectView *visualEfView2 = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView2.frame = kScreen;
+    visualEfView2.alpha = 0.5;
+    [bgImageView addSubview:visualEfView2];
 }
 
 - (void)setState {
@@ -172,6 +184,7 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {    
     PlayVideoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.backgroundColor = [UIColor clearColor];
 
     FileModel *model = _dataArray[indexPath.row];
     cell.model = model;

@@ -71,7 +71,7 @@
     CGRect rect = CGRectMake(width + 20, 0, kScreenWidth - 30 - width, self.bounds.size.height);
     label = [[UILabel alloc] initWithFrame:rect];
     label.numberOfLines = 0;
-    label.textColor = kSAColorWithStr(@"555555");
+    label.textColor = [UIColor whiteColor];
     [self.contentView addSubview:label];
     
     NSArray *array = [self.model.name componentsSeparatedByString:@"/"];

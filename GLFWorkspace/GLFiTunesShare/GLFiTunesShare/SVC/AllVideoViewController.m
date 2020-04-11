@@ -19,6 +19,8 @@ static NSString *cellID = @"VideoTableViewCell";
     UITableView *_tableView;
     NSMutableArray *_dataArray;
     
+    UIImageView *bgImageView;
+    
     UIView *gestureView;
     BOOL isShowDefault;
     BOOL isShowImage;
@@ -86,12 +88,23 @@ static NSString *cellID = @"VideoTableViewCell";
 
 - (void)prepareView {
     _tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight-64) style:UITableViewStylePlain];
+    _tableView.backgroundColor = [UIColor clearColor];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     [self.view addSubview:_tableView];
     _tableView.tableFooterView = [UIView new];
     
     [_tableView registerNib:[UINib nibWithNibName:@"VideoTableViewCell" bundle:nil] forCellReuseIdentifier:cellID];
+    
+    // 设置背景图片
+    bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    bgImageView.contentMode = UIViewContentModeScaleAspectFill;
+    bgImageView.image = [DocumentManager getBackgroundImage];
+    _tableView.backgroundView = bgImageView;
+    UIVisualEffectView *visualEfView2 = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView2.frame = kScreen;
+    visualEfView2.alpha = 0.5;
+    [bgImageView addSubview:visualEfView2];
 }
 
 - (void)setState {
@@ -182,7 +195,7 @@ static NSString *cellID = @"VideoTableViewCell";
         if (width > kScreenWidth / 2) {
             width = kScreenWidth / 2;
         }
-        NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
+        NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:16]};
         CGRect rect = [name boundingRectWithSize:CGSizeMake(kScreenWidth - 30 - width, MAXFLOAT)
                                         options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
                                      attributes:attrbute
@@ -209,9 +222,11 @@ static NSString *cellID = @"VideoTableViewCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     VideoTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellID forIndexPath:indexPath];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    cell.backgroundColor = [UIColor clearColor];
 
     FileModel *model = _dataArray[indexPath.row];
     NSArray *array = [model.name componentsSeparatedByString:@"/"];
+    cell.vTextLabel.textColor = [UIColor whiteColor];
     cell.vTextLabel.text = array.lastObject;
     cell.vTextLabel.numberOfLines = 0;
     
