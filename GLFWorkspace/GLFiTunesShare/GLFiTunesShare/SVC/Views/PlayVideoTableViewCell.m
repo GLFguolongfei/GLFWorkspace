@@ -88,7 +88,6 @@
         attributes:attrbute
            context:nil];
         label.frame = CGRectMake(15, self.bounds.size.height - 5 - calculateRect.size.height, kScreenWidth - 30, calculateRect.size.height);
-        label.textColor = KColorThree;
         
         bgView.hidden = NO;
         bgView.frame = CGRectMake(10, self.bounds.size.height - 10 - calculateRect.size.height, kScreenWidth - 20, calculateRect.size.height + 10);
