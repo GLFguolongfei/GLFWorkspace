@@ -402,6 +402,30 @@ HMSingletonM(DocumentManager)
     return backImage;
 }
 
++ (NSString *)mimeTypeForFileAtPath1:(NSString *)path {
+    // 1-创建一个请求
+    NSURL *url = [NSURL fileURLWithPath:path];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    // 2-发送请求(返回响应)
+    NSURLResponse *response = nil;
+    [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
+    // 3-获得MIMEType
+    return response.MIMEType;
+}
+
++ (NSString *)mimeTypeForFileAtPath2:(NSString *)path {
+    if (![[[NSFileManager alloc] init] fileExistsAtPath:path]) {
+        return nil;
+    }
+    CFStringRef UTI = UTTypeCreatePreferredIdentifierForTag(kUTTagClassFilenameExtension, (__bridge CFStringRef)[path pathExtension], NULL);
+    CFStringRef MIMEType = UTTypeCopyPreferredTagWithClass (UTI, kUTTagClassMIMEType);
+    CFRelease(UTI);
+    if (!MIMEType) {
+        return @"application/octet-stream";
+    }
+    return (__bridge NSString *)(MIMEType);
+}
+
 #pragma mark - 背景音乐
 - (void)startPlay {
     if (player) {

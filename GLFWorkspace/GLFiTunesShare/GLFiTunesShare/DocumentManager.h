@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 #import "FileModel.h"
 
 static NSString * _Nullable DocumentPathArray = @"DocumentPathArray";
@@ -39,6 +40,8 @@ HMSingletonH(DocumentManager)
 #pragma mark 其它
 // 获取背景图
 + (UIImage *)getBackgroundImage;
++ (NSString *)mimeTypeForFileAtPath1:(NSString *)path;
++ (NSString *)mimeTypeForFileAtPath2:(NSString *)path;
 
 #pragma mark 历史记录
 @property (nonatomic, assign) BOOL isUseBackFacingCamera; // 是否使用后置摄像头
