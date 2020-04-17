@@ -109,6 +109,8 @@
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kWebContentXuanFu];
+        self.switch4.on = NO;
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentBorder];
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentXuanFu];
     }
@@ -119,6 +121,8 @@
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kWebContentImg];
+        self.switch4.on = NO;
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentBorder];
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentImg];
     }
@@ -129,6 +133,8 @@
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kWebContentFont];
+        self.switch4.on = NO;
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentBorder];
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentFont];
     }
@@ -139,6 +145,12 @@
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kWebContentBorder];
+        self.switch1.on = NO;
+        self.switch2.on = NO;
+        self.switch3.on = NO;
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentXuanFu];
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentImg];
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentFont];
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentBorder];
     }
