@@ -517,19 +517,17 @@
                 detailVC.fileArray = imageArray;
                 [self.navigationController pushViewController:detailVC animated:YES];
             } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
-                NSString *MIMEType = [DocumentManager mimeTypeForFileAtPath2:model.path];
-                BOOL isCanPlay = [AVURLAsset isPlayableExtendedMIMEType:MIMEType];
-                NSLog(@"%d", isCanPlay);
-                if (isCanPlay) {
-                    DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
-                    detailVC.selectIndex = [self returnIndex:videoArray with:model];
-                    detailVC.fileArray = videoArray;
-                    [self.navigationController pushViewController:detailVC animated:YES];
-                } else {
-                    NSURL *url = [NSURL fileURLWithPath:model.path];
-                    MPMoviePlayerViewController *playVc = [[MPMoviePlayerViewController alloc] initWithContentURL:url];
-                    [self presentViewController:playVc animated:YES completion:nil];
-                }
+//                NSString *MIMEType = [DocumentManager mimeTypeForFileAtPath2:model.path];
+//                BOOL isCanPlay = [AVURLAsset isPlayableExtendedMIMEType:MIMEType];
+//                NSLog(@"%d", isCanPlay);
+//                if (!isCanPlay) {
+//                    [self showStringHUD:@"不支持该视频格式" second:1.5];
+//                }
+                
+                DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
+                detailVC.selectIndex = [self returnIndex:videoArray with:model];
+                detailVC.fileArray = videoArray;
+                [self.navigationController pushViewController:detailVC animated:YES];
             } else { // 其它文件类型
                 DetailViewController *detailVC = [[DetailViewController alloc] init];
                 detailVC.selectIndex = [self returnIndex:fileArray with:model];
