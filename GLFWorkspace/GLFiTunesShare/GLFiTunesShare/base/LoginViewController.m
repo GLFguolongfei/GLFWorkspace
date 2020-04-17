@@ -157,7 +157,8 @@
             }
             if (error) { // 指纹识别出现错误,回主线程更新UI,弹出提示框
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    [self showStringHUD:error.localizedDescription second:1.5];
+                    NSLog(@"%@", error.localizedDescription);
+//                    [self showStringHUD:error.localizedDescription second:1];
                 });
             }
         }];

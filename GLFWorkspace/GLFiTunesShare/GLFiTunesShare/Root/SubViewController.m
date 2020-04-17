@@ -58,9 +58,9 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    [self hideAllHUD];
-    NSLog(@"webViewDidFinishLoad");
     [self setWebView:webView];
+//    [self hideAllHUD];
+    NSLog(@"webViewDidFinishLoad");
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
@@ -86,53 +86,86 @@
         NSMutableString *js = [NSMutableString string];
         if (xuanfu.integerValue) {
             // 删除页面上的广告悬浮框
-            [js appendString:@"var mmmDivArray = document.getElementsByTagName('div');"];
-            [js appendString:@"for(var i=0; i<mmmDivArray.length; i++) {"];
-            [js appendString:@"    var element = mmmDivArray[i];"];
+            [js appendString:@"var array1 = document.getElementsByTagName('div');"];
+            [js appendString:@"for(var i=0; i<array1.length; i++) {"];
+            [js appendString:@"    var element = array1[i];"];
             [js appendString:@"    if (element.style.zIndex>0 || element.style.position=='fixed') {"];
-            [js appendString:@"        element.style.display = 'none';"];
+            [js appendString:@"        element.remove();"];
             [js appendString:@"    }"];
             [js appendString:@"}"];
         }
         if (img.integerValue) {
             // 隐藏所有图片
-            [js appendString:@"var mmmImgArray = document.getElementsByTagName('img');"];
-            [js appendString:@"for (var i = 0; i < mmmImgArray.length; i++) {"];
-            [js appendString:@"    var element = mmmImgArray[i];"];
-            [js appendString:@"    element.style.display = 'none';"];
+            [js appendString:@"var array2 = document.getElementsByTagName('img');"];
+            [js appendString:@"for (var i = 0; i < array2.length; i++) {"];
+            [js appendString:@"    var element = array2[i];"];
+            [js appendString:@"    element.remove();"];
             [js appendString:@"}"];
         }
         if (font.integerValue) {
             // div标签字体大小
-            [js appendString:@"var nnnDivArray = document.getElementsByTagName('div');"];
-            [js appendString:@"for(var i=0;i<nnnDivArray.length;i++) {"];
-            [js appendString:@"    var element = nnnDivArray[i];"];
-            [js appendString:@"    if (element.style.fontSize < 28) {"];
-            [js appendString:@"        element.style.fontSize = '28px';"];
-            [js appendString:@"        element.style.lineHeight = '40px';"];
+            [js appendString:@"var array3 = document.getElementsByTagName('div') || [];"];
+            [js appendString:@"var array4 = document.getElementsByTagName('span') || [];"];
+            [js appendString:@"var array5 = document.getElementsByTagName('p') || [];"];
+            [js appendString:@"var array6 = document.getElementsByTagName('a') || [];"];
+            [js appendString:@"console.log(array3);"];
+            [js appendString:@"for(var i=0; i<array3.length;i++) {"];
+            [js appendString:@"    var element = array3[i];"];
+            [js appendString:@"    if (element.innerText == '') {"];
+            [js appendString:@"        element.remove();"];
             [js appendString:@"    } else {"];
-            [js appendString:@"        element.style.fontSize = '32px';"];
-            [js appendString:@"        element.style.lineHeight = '45px';"];
+            [js appendString:@"        element.style.display = 'inline-block';"];
             [js appendString:@"    }"];
+            [js appendString:@"    element.style.fontSize = '48px';"];
+            [js appendString:@"    element.style.lineHeight = '64px';"];
+            [js appendString:@"    element.style.width = '100%';"];
             [js appendString:@"}"];
-            // p标签字体变大
-            [js appendString:@"var mmmPArray = document.getElementsByTagName('p');"];
-            [js appendString:@"for (var i = 0; i < mmmPArray.length; i++) {"];
-            [js appendString:@"    var element = mmmPArray[i];"];
-            [js appendString:@"    if (element.style.fontSize < 28) {"];
-            [js appendString:@"        element.style.fontSize = '28px';"];
-            [js appendString:@"        element.style.lineHeight = '40px';"];
+            [js appendString:@"for(var i=0; i<array4.length;i++) {"];
+            [js appendString:@"    var element = array4[i];"];
+            [js appendString:@"    if (element.innerText == '') {"];
+            [js appendString:@"        element.remove();"];
             [js appendString:@"    } else {"];
-            [js appendString:@"        element.style.fontSize = '32px';"];
-            [js appendString:@"        element.style.lineHeight = '45px';"];
+            [js appendString:@"        element.style.display = 'inline-block';"];
             [js appendString:@"    }"];
+            [js appendString:@"    element.style.fontSize = '48px';"];
+            [js appendString:@"    element.style.lineHeight = '64px';"];
+            [js appendString:@"    element.style.width = '100%';"];
+            [js appendString:@"}"];
+            [js appendString:@"for(var i=0; i<array5.length;i++) {"];
+            [js appendString:@"    var element = array5[i];"];
+            [js appendString:@"    if (element.innerText == '') {"];
+            [js appendString:@"        element.remove();"];
+            [js appendString:@"    } else {"];
+            [js appendString:@"        element.style.display = 'inline-block';"];
+            [js appendString:@"    }"];
+            [js appendString:@"    element.style.fontSize = '48px';"];
+            [js appendString:@"    element.style.lineHeight = '64px';"];
+            [js appendString:@"    element.style.width = '100%';"];
+            [js appendString:@"}"];
+            [js appendString:@"for(var i=0; i<array6.length;i++) {"];
+            [js appendString:@"    var element = array6[i];"];
+            [js appendString:@"    if (element.innerText == '') {"];
+            [js appendString:@"        element.remove();"];
+            [js appendString:@"    } else {"];
+            [js appendString:@"        element.style.display = 'inline-block';"];
+            [js appendString:@"    }"];
+            [js appendString:@"    element.style.fontSize = '48px';"];
+            [js appendString:@"    element.style.lineHeight = '64px';"];
+            [js appendString:@"    element.style.width = '100%';"];
             [js appendString:@"}"];
         }
         if (border.integerValue) {
             // 内容距离边界一定距离
             [js appendString:@"document.body.style.padding = '20px';"];
         }
+        
+//        [js appendString:@"var viewport = document.createElement('meta');"];
+//        [js appendString:@"viewport.name = 'viewport';"];
+//        [js appendString:@"viewport.content = 'width=device-width,initial-scale=1.0';"];
+//        [js appendString:@"document.head.appendChild(viewport);"];
+        
         [webView stringByEvaluatingJavaScriptFromString:js];
+        [self hideAllHUD];
     });
 }
 
