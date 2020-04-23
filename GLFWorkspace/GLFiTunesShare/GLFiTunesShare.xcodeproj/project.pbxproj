@@ -259,6 +259,20 @@
 		6F19EE0823F3143300C438DE /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F19EE0623F3143300C438DE /* SearchViewController.m */; };
 		6F1C540223C8F523000122FB /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */; };
 		6F1C540323C8F523000122FB /* UncaughtExceptionHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */; };
+		6F1D45C02451CDA80093599F /* SelectItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45BF2451CDA80093599F /* SelectItemView.m */; };
+		6F1D45C12451CDA80093599F /* SelectItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45BF2451CDA80093599F /* SelectItemView.m */; };
+		6F1D45D02451CEEA0093599F /* LewPopupViewAnimationFade.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45C62451CEEA0093599F /* LewPopupViewAnimationFade.m */; };
+		6F1D45D12451CEEA0093599F /* LewPopupViewAnimationFade.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45C62451CEEA0093599F /* LewPopupViewAnimationFade.m */; };
+		6F1D45D22451CEEA0093599F /* UIViewController+LewPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45C92451CEEA0093599F /* UIViewController+LewPopupViewController.m */; };
+		6F1D45D32451CEEA0093599F /* UIViewController+LewPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45C92451CEEA0093599F /* UIViewController+LewPopupViewController.m */; };
+		6F1D45D42451CEEA0093599F /* LewPopupViewAnimationSpring.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45CA2451CEEA0093599F /* LewPopupViewAnimationSpring.m */; };
+		6F1D45D52451CEEA0093599F /* LewPopupViewAnimationSpring.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45CA2451CEEA0093599F /* LewPopupViewAnimationSpring.m */; };
+		6F1D45D62451CEEA0093599F /* LewPopupViewAnimationDrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45CB2451CEEA0093599F /* LewPopupViewAnimationDrop.m */; };
+		6F1D45D72451CEEA0093599F /* LewPopupViewAnimationDrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45CB2451CEEA0093599F /* LewPopupViewAnimationDrop.m */; };
+		6F1D45D82451CEEA0093599F /* LewPopupViewAnimationSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45CC2451CEEA0093599F /* LewPopupViewAnimationSlide.m */; };
+		6F1D45D92451CEEA0093599F /* LewPopupViewAnimationSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45CC2451CEEA0093599F /* LewPopupViewAnimationSlide.m */; };
+		6F1D45DA2451CEEA0093599F /* LewPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45CF2451CEEA0093599F /* LewPopupBackgroundView.m */; };
+		6F1D45DB2451CEEA0093599F /* LewPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1D45CF2451CEEA0093599F /* LewPopupBackgroundView.m */; };
 		6F1EEB001FB1A4060046389D /* DetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAD91FB1A4060046389D /* DetailViewController.m */; };
 		6F1EEB041FB1A4060046389D /* FileInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1EEAE01FB1A4060046389D /* FileInfoViewController.m */; };
 		6F1EEB051FB1A4060046389D /* FileInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 6F1EEAE11FB1A4060046389D /* FileInfoViewController.xib */; };
@@ -728,6 +742,21 @@
 		6F19EE0623F3143300C438DE /* SearchViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SearchViewController.m; sourceTree = "<group>"; };
 		6F1C540023C8F523000122FB /* UncaughtExceptionHandler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UncaughtExceptionHandler.m; sourceTree = "<group>"; };
 		6F1C540123C8F523000122FB /* UncaughtExceptionHandler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UncaughtExceptionHandler.h; sourceTree = "<group>"; };
+		6F1D45BE2451CDA80093599F /* SelectItemView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SelectItemView.h; sourceTree = "<group>"; };
+		6F1D45BF2451CDA80093599F /* SelectItemView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SelectItemView.m; sourceTree = "<group>"; };
+		6F1D45C32451CEEA0093599F /* LewPopupViewAnimationSpring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LewPopupViewAnimationSpring.h; sourceTree = "<group>"; };
+		6F1D45C42451CEEA0093599F /* UIViewController+LewPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LewPopupViewController.h"; sourceTree = "<group>"; };
+		6F1D45C52451CEEA0093599F /* LewPopupViewAnimationDrop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LewPopupViewAnimationDrop.h; sourceTree = "<group>"; };
+		6F1D45C62451CEEA0093599F /* LewPopupViewAnimationFade.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LewPopupViewAnimationFade.m; sourceTree = "<group>"; };
+		6F1D45C72451CEEA0093599F /* LewPopupViewAnimationSlide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LewPopupViewAnimationSlide.h; sourceTree = "<group>"; };
+		6F1D45C82451CEEA0093599F /* LewPopupBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LewPopupBackgroundView.h; sourceTree = "<group>"; };
+		6F1D45C92451CEEA0093599F /* UIViewController+LewPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LewPopupViewController.m"; sourceTree = "<group>"; };
+		6F1D45CA2451CEEA0093599F /* LewPopupViewAnimationSpring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LewPopupViewAnimationSpring.m; sourceTree = "<group>"; };
+		6F1D45CB2451CEEA0093599F /* LewPopupViewAnimationDrop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LewPopupViewAnimationDrop.m; sourceTree = "<group>"; };
+		6F1D45CC2451CEEA0093599F /* LewPopupViewAnimationSlide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LewPopupViewAnimationSlide.m; sourceTree = "<group>"; };
+		6F1D45CD2451CEEA0093599F /* LewPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LewPopupViewController.h; sourceTree = "<group>"; };
+		6F1D45CE2451CEEA0093599F /* LewPopupViewAnimationFade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LewPopupViewAnimationFade.h; sourceTree = "<group>"; };
+		6F1D45CF2451CEEA0093599F /* LewPopupBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LewPopupBackgroundView.m; sourceTree = "<group>"; };
 		6F1EEAD81FB1A4060046389D /* DetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailViewController.h; sourceTree = "<group>"; };
 		6F1EEAD91FB1A4060046389D /* DetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailViewController.m; sourceTree = "<group>"; };
 		6F1EEADF1FB1A4060046389D /* FileInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FileInfoViewController.h; sourceTree = "<group>"; };
@@ -1260,6 +1289,7 @@
 		6F0E95E91FA4135B0029DDD6 /* GLFTools */ = {
 			isa = PBXGroup;
 			children = (
+				6F1D45C22451CEEA0093599F /* popupViewController */,
 				6F0995A0241F524300B8C681 /* SDWebImage */,
 				6F01DFD62401720D00F64623 /* Masonry */,
 				6F01DF8D240155D400F64623 /* FDFullscreenPopGesture */,
@@ -1362,6 +1392,26 @@
 				6F0E960C1FA4135B0029DDD6 /* WaterView2.m */,
 			);
 			path = WaterVolatility;
+			sourceTree = "<group>";
+		};
+		6F1D45C22451CEEA0093599F /* popupViewController */ = {
+			isa = PBXGroup;
+			children = (
+				6F1D45C32451CEEA0093599F /* LewPopupViewAnimationSpring.h */,
+				6F1D45C42451CEEA0093599F /* UIViewController+LewPopupViewController.h */,
+				6F1D45C52451CEEA0093599F /* LewPopupViewAnimationDrop.h */,
+				6F1D45C62451CEEA0093599F /* LewPopupViewAnimationFade.m */,
+				6F1D45C72451CEEA0093599F /* LewPopupViewAnimationSlide.h */,
+				6F1D45C82451CEEA0093599F /* LewPopupBackgroundView.h */,
+				6F1D45C92451CEEA0093599F /* UIViewController+LewPopupViewController.m */,
+				6F1D45CA2451CEEA0093599F /* LewPopupViewAnimationSpring.m */,
+				6F1D45CB2451CEEA0093599F /* LewPopupViewAnimationDrop.m */,
+				6F1D45CC2451CEEA0093599F /* LewPopupViewAnimationSlide.m */,
+				6F1D45CD2451CEEA0093599F /* LewPopupViewController.h */,
+				6F1D45CE2451CEEA0093599F /* LewPopupViewAnimationFade.h */,
+				6F1D45CF2451CEEA0093599F /* LewPopupBackgroundView.m */,
+			);
+			path = popupViewController;
 			sourceTree = "<group>";
 		};
 		6F1EEAD71FB1A4060046389D /* Root */ = {
@@ -1753,6 +1803,8 @@
 				6F14401423F28A5E00C7C201 /* VideoTableViewCell.xib */,
 				6F9388C0241BF8B90024DBB9 /* PlayVideoTableViewCell.h */,
 				6F9388C1241BF8B90024DBB9 /* PlayVideoTableViewCell.m */,
+				6F1D45BE2451CDA80093599F /* SelectItemView.h */,
+				6F1D45BF2451CDA80093599F /* SelectItemView.m */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -2010,6 +2062,7 @@
 				6F1EEB121FB1A4060046389D /* BaseViewController.m in Sources */,
 				6F4C2C3124004C9A0094D193 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				6F01E0422401722B00F64623 /* ZHDrawingLineLayer.m in Sources */,
+				6F1D45DA2451CEEA0093599F /* LewPopupBackgroundView.m in Sources */,
 				6F151569241E4F7D00621247 /* DYNextViewController.m in Sources */,
 				6F099672241F524300B8C681 /* UIView+WebCacheOperation.m in Sources */,
 				6F099684241F524300B8C681 /* SDInternalMacros.m in Sources */,
@@ -2036,6 +2089,7 @@
 				6F01E0502401722B00F64623 /* ZHDrawingThreeDCoordinateLayer.m in Sources */,
 				6F1EEB091FB1A4060046389D /* RootViewController.m in Sources */,
 				6F4C2BF224004C0D0094D193 /* ZJ_RulesLineModel.m in Sources */,
+				6F1D45D42451CEEA0093599F /* LewPopupViewAnimationSpring.m in Sources */,
 				6F0E960D1FA4135B0029DDD6 /* Base64.m in Sources */,
 				6F0E96211FA4135B0029DDD6 /* PhotoStackView.m in Sources */,
 				6F01E0462401722B00F64623 /* ZHDrawingRighTangleLayer.m in Sources */,
@@ -2048,6 +2102,7 @@
 				6F09962A241F524300B8C681 /* UIImage+Transform.m in Sources */,
 				6F4C2C4924004C9A0094D193 /* AFSecurityPolicy.m in Sources */,
 				6F06F9E323F04FF8006E5C97 /* FourViewController.m in Sources */,
+				6F1D45D82451CEEA0093599F /* LewPopupViewAnimationSlide.m in Sources */,
 				6F1EEB001FB1A4060046389D /* DetailViewController.m in Sources */,
 				6F0E96271FA4135B0029DDD6 /* WaterView2.m in Sources */,
 				6F06F9E823F05721006E5C97 /* NSString+Hash.m in Sources */,
@@ -2141,6 +2196,7 @@
 				6FBA0FA823E8113200899522 /* OneViewController.m in Sources */,
 				6F01E05E2401722B00F64623 /* ZHDrawingCosineLayer.m in Sources */,
 				6F06F9DF23F04FCF006E5C97 /* ThreeViewController.m in Sources */,
+				6F1D45D22451CEEA0093599F /* UIViewController+LewPopupViewController.m in Sources */,
 				6F4C2BFA24004C0D0094D193 /* QQL_ProtractorViewController.m in Sources */,
 				6F4C2C4524004C9A0094D193 /* AFURLRequestSerialization.m in Sources */,
 				6F4C2C0024004C0D0094D193 /* QQL_MirrorViewController.m in Sources */,
@@ -2150,6 +2206,7 @@
 				6F09968A241F524300B8C681 /* UIColor+HexString.m in Sources */,
 				6F01E0662401722B00F64623 /* ZHDrawingOvalLayer.m in Sources */,
 				6F01E0582401722B00F64623 /* ZHDrawingTriangleLayer.m in Sources */,
+				6F1D45D62451CEEA0093599F /* LewPopupViewAnimationDrop.m in Sources */,
 				6F01E0522401722B00F64623 /* ZHDrawingTriangularPyramidLayer.m in Sources */,
 				6F22EB3B23FBEB7C00A30691 /* DYViewController.m in Sources */,
 				6FBA0FA523E80C4400899522 /* OtherViewController.m in Sources */,
@@ -2176,6 +2233,7 @@
 				6F4C2C4124004C9A0094D193 /* AFHTTPSessionManager.m in Sources */,
 				6F09966E241F524300B8C681 /* SDWebImageDefine.m in Sources */,
 				6F4C2C3724004C9A0094D193 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				6F1D45D02451CEEA0093599F /* LewPopupViewAnimationFade.m in Sources */,
 				6F4C2BE224004C0D0094D193 /* QQL_LevelViewController.m in Sources */,
 				6F099682241F524300B8C681 /* SDWeakProxy.m in Sources */,
 				6FE944EA20BE7D4C005A46AD /* MoveViewController.m in Sources */,
@@ -2183,6 +2241,7 @@
 				6F099688241F524300B8C681 /* NSBezierPath+RoundedCorners.m in Sources */,
 				6F09961E241F524300B8C681 /* SDImageCoder.m in Sources */,
 				6F099632241F524300B8C681 /* SDWebImageIndicator.m in Sources */,
+				6F1D45C02451CDA80093599F /* SelectItemView.m in Sources */,
 				6F09962C241F524300B8C681 /* SDWebImageDownloader.m in Sources */,
 				6F1EEB0D1FB1A4060046389D /* EditTableViewCell.m in Sources */,
 				6F01DFFA2401720D00F64623 /* NSArray+MASAdditions.m in Sources */,
@@ -2224,6 +2283,7 @@
 				6F1EEB271FB1ADD50046389D /* RootViewController.m in Sources */,
 				6F4C2C3224004C9A0094D193 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				6F01E0432401722B00F64623 /* ZHDrawingLineLayer.m in Sources */,
+				6F1D45DB2451CEEA0093599F /* LewPopupBackgroundView.m in Sources */,
 				6F15156A241E4F7D00621247 /* DYNextViewController.m in Sources */,
 				6F099673241F524300B8C681 /* UIView+WebCacheOperation.m in Sources */,
 				6F099685241F524300B8C681 /* SDInternalMacros.m in Sources */,
@@ -2250,6 +2310,7 @@
 				6F01E0512401722B00F64623 /* ZHDrawingThreeDCoordinateLayer.m in Sources */,
 				6F1EEB291FB1ADD50046389D /* SubViewController.m in Sources */,
 				6F4C2BF324004C0D0094D193 /* ZJ_RulesLineModel.m in Sources */,
+				6F1D45D52451CEEA0093599F /* LewPopupViewAnimationSpring.m in Sources */,
 				6F1EEB2B1FB1ADD50046389D /* FileInfoViewController.m in Sources */,
 				6F1EEB2C1FB1ADD50046389D /* SetupViewController.m in Sources */,
 				6F01E0472401722B00F64623 /* ZHDrawingRighTangleLayer.m in Sources */,
@@ -2262,6 +2323,7 @@
 				6F09962B241F524300B8C681 /* UIImage+Transform.m in Sources */,
 				6F1EEB2D1FB1ADD50046389D /* PhotoLibraryViewController.m in Sources */,
 				6F4C2C4A24004C9A0094D193 /* AFSecurityPolicy.m in Sources */,
+				6F1D45D92451CEEA0093599F /* LewPopupViewAnimationSlide.m in Sources */,
 				6F06F9E423F04FF8006E5C97 /* FourViewController.m in Sources */,
 				6F1EEB2F1FB1ADD50046389D /* WebSetupViewController.m in Sources */,
 				6F06F9E923F05721006E5C97 /* NSString+Hash.m in Sources */,
@@ -2355,6 +2417,7 @@
 				6FBA0FAA23E8113700899522 /* OtherViewController.m in Sources */,
 				6F01E05F2401722B00F64623 /* ZHDrawingCosineLayer.m in Sources */,
 				6F06F9E023F04FCF006E5C97 /* ThreeViewController.m in Sources */,
+				6F1D45D32451CEEA0093599F /* UIViewController+LewPopupViewController.m in Sources */,
 				6F4C2BFB24004C0D0094D193 /* QQL_ProtractorViewController.m in Sources */,
 				6F4C2C4624004C9A0094D193 /* AFURLRequestSerialization.m in Sources */,
 				6F4C2C0124004C0D0094D193 /* QQL_MirrorViewController.m in Sources */,
@@ -2364,6 +2427,7 @@
 				6F09968B241F524300B8C681 /* UIColor+HexString.m in Sources */,
 				6F01E0672401722B00F64623 /* ZHDrawingOvalLayer.m in Sources */,
 				6F01E0592401722B00F64623 /* ZHDrawingTriangleLayer.m in Sources */,
+				6F1D45D72451CEEA0093599F /* LewPopupViewAnimationDrop.m in Sources */,
 				6F01E0532401722B00F64623 /* ZHDrawingTriangularPyramidLayer.m in Sources */,
 				6F22EB3C23FBEB7C00A30691 /* DYViewController.m in Sources */,
 				6F91B4501F81615B00A9C616 /* ViewController.m in Sources */,
@@ -2390,6 +2454,7 @@
 				6F4C2C4224004C9A0094D193 /* AFHTTPSessionManager.m in Sources */,
 				6F09966F241F524300B8C681 /* SDWebImageDefine.m in Sources */,
 				6F4C2C3824004C9A0094D193 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				6F1D45D12451CEEA0093599F /* LewPopupViewAnimationFade.m in Sources */,
 				6F4C2BE324004C0D0094D193 /* QQL_LevelViewController.m in Sources */,
 				6F099683241F524300B8C681 /* SDWeakProxy.m in Sources */,
 				6FE944EB20BE7D4C005A46AD /* MoveViewController.m in Sources */,
@@ -2397,6 +2462,7 @@
 				6F099689241F524300B8C681 /* NSBezierPath+RoundedCorners.m in Sources */,
 				6F09961F241F524300B8C681 /* SDImageCoder.m in Sources */,
 				6F099633241F524300B8C681 /* SDWebImageIndicator.m in Sources */,
+				6F1D45C12451CDA80093599F /* SelectItemView.m in Sources */,
 				6F09962D241F524300B8C681 /* SDWebImageDownloader.m in Sources */,
 				6F0E96101FA4135B0029DDD6 /* NSDate+Help.m in Sources */,
 				6F01DFFB2401720D00F64623 /* NSArray+MASAdditions.m in Sources */,

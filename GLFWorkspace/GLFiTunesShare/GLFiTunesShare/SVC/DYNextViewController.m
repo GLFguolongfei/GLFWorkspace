@@ -8,6 +8,7 @@
 
 #import "DYNextViewController.h"
 #import "DYNextSubViewController.h"
+#import "SelectItemView.h"
 
 @interface DYNextViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 {
@@ -73,7 +74,7 @@
             [self prepareView];
         }
         NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
-        [self showStringHUD:str second:1.5];
+        [self showStringHUD:str second:2];
     }];
 }
 
@@ -275,19 +276,31 @@
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"随机播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        // 暂停当前播放
-        isPlaying = NO;
-        [currentVC playOrPauseVideo:isPlaying];
-        [self setButtonState];
-        // 切换视频
-        selectIndex = arc4random() % _dataArray.count;
-        [self prepareView];
-        [self showStringHUD:@"随机播放" second:1.5];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"选择播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        SelectItemView *selectView = [[SelectItemView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
+        selectView.parentVC = self;
+        selectView.pageType = 2;
+        selectView.dataArray = _dataArray;
+        selectView.currentModel = currentModel;
+        selectView.backgroundColor = [UIColor whiteColor];
+        [self lew_presentPopupView:selectView animation:[LewPopupViewAnimationSpring new] dismissed:^{
+            NSLog(@"动画结束");
+        }];
     }];
     [alertVC addAction:okAction];
     
     [self presentViewController:alertVC animated:YES completion:nil];
+}
+
+- (void)playRandom:(NSInteger)index {
+    // 暂停当前播放
+    isPlaying = NO;
+    [currentVC playOrPauseVideo:isPlaying];
+    [self setButtonState];
+    // 切换视频
+    selectIndex = index;
+    [self prepareView];
+    [self showStringHUD:@"切换成功" second:1.5];
 }
 
 - (void)clearArray {

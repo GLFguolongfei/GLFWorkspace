@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DYViewController : BaseViewController
 
+- (void)playRandom:(NSInteger)index;
+
 @end
 
 NS_ASSUME_NONNULL_END

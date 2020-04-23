@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign) NSInteger pageType; // 1-喜欢 2-垃圾篓
 
+- (void)playRandom:(NSInteger)index;
+
 @end
 
 NS_ASSUME_NONNULL_END

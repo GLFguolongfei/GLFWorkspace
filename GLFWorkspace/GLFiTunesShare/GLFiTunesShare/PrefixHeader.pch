@@ -26,6 +26,7 @@
 #import "GLFTools.h"
 #import "GLFFileManager.h"
 #import "DocumentManager.h"
+#import "LewPopupViewController.h"
 // Models
 #import "FileModel.h"
 // Categorys

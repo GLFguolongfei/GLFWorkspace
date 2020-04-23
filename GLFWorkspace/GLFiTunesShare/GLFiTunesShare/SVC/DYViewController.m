@@ -9,6 +9,7 @@
 #import "DYViewController.h"
 #import "DYSubViewController.h"
 #import "DYNextViewController.h"
+#import "SelectItemView.h"
 
 @interface DYViewController ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 {
@@ -127,9 +128,6 @@
 }
 
 - (void)prepareData {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    
     isPlaying = NO;
     [currentVC playOrPauseVideo:isPlaying];
     [self setButtonState];
@@ -142,7 +140,7 @@
            currentModel = _dataArray[selectIndex];
            [self prepareView];
            NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
-           [self showStringHUD:str second:1.5];
+           [self showStringHUD:str second:2];
         }];
     } else {
         [DocumentManager getAllDYVideosArray:^(NSArray * array) {
@@ -153,7 +151,7 @@
             currentModel = _dataArray[selectIndex];
             [self prepareView];
             NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
-            [self showStringHUD:str second:1.5];
+            [self showStringHUD:str second:2];
         }];
     }
 }
@@ -365,31 +363,37 @@
     }];
     [alertVC addAction:okAction1];
     
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"随机播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        // 暂停当前播放
-        isPlaying = NO;
-        [currentVC playOrPauseVideo:isPlaying];
-        [self setButtonState];
-        // 切换视频
-        selectIndex = arc4random() % _dataArray.count;
-        [self prepareView];
-        [self showStringHUD:@"随机播放" second:1.5];
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"选择播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        SelectItemView *selectView = [[SelectItemView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
+        selectView.parentVC = self;
+        selectView.pageType = 1;
+        selectView.dataArray = _dataArray;
+        selectView.currentModel = currentModel;
+        selectView.backgroundColor = [UIColor whiteColor];
+        [self lew_presentPopupView:selectView animation:[LewPopupViewAnimationSpring new] dismissed:^{
+            NSLog(@"动画结束");
+        }];
     }];
     [alertVC addAction:okAction2];
     
-    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"抖音视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        isOtherVideos = NO;
+    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"更多视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        isOtherVideos = !isOtherVideos;
         [self prepareData];
     }];
     [alertVC addAction:okAction3];
     
-    UIAlertAction *okAction4 = [UIAlertAction actionWithTitle:@"其它视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        isOtherVideos = YES;
-        [self prepareData];
-    }];
-    [alertVC addAction:okAction4];
-    
     [self presentViewController:alertVC animated:YES completion:nil];
+}
+
+- (void)playRandom:(NSInteger)index {
+    // 暂停当前播放
+    isPlaying = NO;
+    [currentVC playOrPauseVideo:isPlaying];
+    [self setButtonState];
+    // 切换视频
+    selectIndex = index;
+    [self prepareView];
+    [self showStringHUD:@"切换成功" second:1.5];
 }
 
 #pragma mark UIPageViewControllerDataSource
