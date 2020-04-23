@@ -30,6 +30,7 @@
     myTableView = [[UITableView alloc] initWithFrame:tableFrame style:UITableViewStylePlain];
     myTableView.delegate = self;
     myTableView.dataSource = self;
+    myTableView.backgroundColor = [UIColor clearColor];
     [self addSubview:myTableView];
     myTableView.tableFooterView = [[UIView alloc] init];
     
@@ -88,10 +89,11 @@
     }
     
     FileModel *model = self.dataArray[indexPath.row];
-    cell.textLabel.text = [NSString stringWithFormat:@"【%ld】%@", indexPath.row + 1, model.name];
+    NSArray *array = [model.name componentsSeparatedByString:@"/"];
+    cell.textLabel.text = [NSString stringWithFormat:@"【%ld】%@", indexPath.row + 1, array.lastObject];
 //    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", indexPath.row];
     if ([model.name isEqualToString:self.currentModel.name]) {
-        cell.textLabel.textColor = [UIColor blackColor];
+        cell.textLabel.textColor = KNavgationBarColor;
         cell.detailTextLabel.textColor = [UIColor blackColor];
         cell.accessoryType = UITableViewCellAccessoryCheckmark;
     } else {

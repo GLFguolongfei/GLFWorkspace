@@ -242,7 +242,6 @@ static NSString *cellID = @"VideoTableViewCell";
         cell.imageViewWidthConstraint.constant = 0;
     }
     
-
     // 3D Touch 可用!
     if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {
         // 给Cell注册3DTouch的peek和pop功能
