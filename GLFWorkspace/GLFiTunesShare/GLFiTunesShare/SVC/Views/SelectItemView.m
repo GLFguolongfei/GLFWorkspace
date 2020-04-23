@@ -88,8 +88,8 @@
     }
     
     FileModel *model = self.dataArray[indexPath.row];
-    cell.textLabel.text = model.name;
-//    cell.detailTextLabel.text = model.path;
+    cell.textLabel.text = [NSString stringWithFormat:@"【%ld】%@", indexPath.row + 1, model.name];
+//    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d", indexPath.row];
     if ([model.name isEqualToString:self.currentModel.name]) {
         cell.textLabel.textColor = [UIColor blackColor];
         cell.detailTextLabel.textColor = [UIColor blackColor];
