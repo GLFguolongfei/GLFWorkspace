@@ -126,22 +126,22 @@ static NSString *cellID = @"VideoTableViewCell";
     }];
     [alertVC addAction:okAction];
     
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"实时视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        AllVideoPlayViewController *vc = [[AllVideoPlayViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
+    [alertVC addAction:okAction2];
+    
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if (manager.isRecording) {
-        UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"切换方向" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"切换方向" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [manager switchCamera];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self reSetVCTitle];
             });
         }];
-        [alertVC addAction:okAction2];
+        [alertVC addAction:okAction3];
     }
-    
-    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"实时视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        AllVideoPlayViewController *vc = [[AllVideoPlayViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
-    }];
-    [alertVC addAction:okAction3];
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }

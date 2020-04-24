@@ -261,27 +261,27 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     }];
     [alertVC addAction:okAction];
     
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    if (manager.isRecording) {
-        UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"切换方向" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            [manager switchCamera];
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                [self reSetVCTitle];
-            });
-        }];
-        [alertVC addAction:okAction2];
-    }
-    
     NSString *str = @"";
     if (isPlaying) {
         str = @"停止播放";
     } else {
         str = @"自动播放";
     }
-    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:str style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:str style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self autoPlay];
     }];
-    [alertVC addAction:okAction3];
+    [alertVC addAction:okAction2];
+    
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    if (manager.isRecording) {
+        UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"切换方向" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [manager switchCamera];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self reSetVCTitle];
+            });
+        }];
+        [alertVC addAction:okAction3];
+    }
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }
