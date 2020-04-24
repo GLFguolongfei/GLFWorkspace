@@ -71,7 +71,10 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row == 0) { // 数学图形
         MathViewController *VC = [[MathViewController alloc] init];
-        [self.navigationController pushViewController:VC animated:YES];
+//        [self.navigationController pushViewController:VC animated:YES];
+        [self presentViewController:VC animated:YES completion:^{
+            
+        }];
     }
 }
 

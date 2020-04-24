@@ -26,10 +26,31 @@
     
     _drawingView = [[ZHFigureDrawingView alloc] initWithFrame:self.view.frame];
     [self.view addSubview:_drawingView];
+    
+    CGRect viewFrame = CGRectMake(20, 20, 80, 80);
+    UIView *bgview = [[UIView alloc] initWithFrame:viewFrame];
+    bgview.backgroundColor = KNavgationBarColor;
+    bgview.alpha = 0.5;
+    bgview.layer.cornerRadius = 40;
+    bgview.layer.masksToBounds = YES;
+    [self.view addSubview:bgview];
+    CGRect buttonFrame = CGRectMake(20, 20, 80, 80);
+    UIButton *button = [[UIButton alloc] initWithFrame:buttonFrame];
+    [button setTitle:@"返回" forState:UIControlStateNormal];
+    [button setBackgroundColor:[UIColor clearColor]];
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [button addTarget:self action:@selector(buttonAction) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:button];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
+- (void)buttonAction {
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     // 禁用右滑返回
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
