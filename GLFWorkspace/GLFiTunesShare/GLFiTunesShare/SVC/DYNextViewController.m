@@ -277,6 +277,7 @@
     [alertVC addAction:cancelAction];
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"选择播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self hiddenNaviBar];
         SelectItemView *selectView = [[SelectItemView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
         selectView.parentVC = self;
         selectView.pageType = 2;
