@@ -19,8 +19,6 @@
     UILabel *label;
     UIProgressView *progressView;
     NSTimer *timer;
-    
-    BOOL isSeeking;
 }
 @end
 
@@ -133,10 +131,6 @@
 
 // 视频快进快退
 - (void)playerForwardOrRewind:(BOOL)isForward {
-    if (isSeeking) {
-        return;
-    }
-    isSeeking = YES;
     NSInteger currentTime = (NSInteger)CMTimeGetSeconds(playerItem.currentTime);
     NSInteger duration = (NSInteger)CMTimeGetSeconds(playerItem.duration);
     NSInteger interval = 10;
@@ -165,9 +159,7 @@
         time = 0;
     }
     CMTime dragedCMTime = CMTimeMake(time, 1);
-    [player seekToTime:dragedCMTime toleranceBefore:kCMTimeZero toleranceAfter:kCMTimeZero completionHandler:^(BOOL finished) {
-        isSeeking = NO;
-    }];
+    [player seekToTime:dragedCMTime];
 }
 
 // 视频横竖屏
