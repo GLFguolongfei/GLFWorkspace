@@ -37,8 +37,11 @@ static NSString *cellID = @"VideoTableViewCell";
     UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"图文" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"文字" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
-    self.title = @"所有视频";
+    [self setVCTitle:@"所有视频"];
+    self.canHiddenNaviBar = YES;
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
+
     _dataArray = [[NSMutableArray alloc] init];
         
     [self prepareView];
@@ -105,6 +108,15 @@ static NSString *cellID = @"VideoTableViewCell";
     visualEfView2.frame = kScreen;
     visualEfView2.alpha = 0.5;
     [bgImageView addSubview:visualEfView2];
+}
+
+- (void)naviBarChange:(NSNotification *)notify {
+    NSDictionary *dict = notify.userInfo;
+    if ([dict[@"isHidden"] isEqualToString: @"1"]) {
+        _tableView.frame = kScreen;
+    } else {
+        _tableView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    }
 }
 
 - (void)setState {

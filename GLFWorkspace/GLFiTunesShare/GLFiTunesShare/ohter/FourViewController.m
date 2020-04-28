@@ -35,7 +35,10 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setVCTitle:@"自定义录像"];
-
+    self.canHiddenNaviBar = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
+    
     timeCount = 0;
     
     [self configCamara];
@@ -66,6 +69,19 @@
         [self.navigationController setNavigationBarHidden:YES animated:YES];
         [UIView animateWithDuration:0.25 animations:^{
             timeLabel.frame = CGRectMake(15, 20, kScreenWidth - 30, 40);
+        }];
+    }
+}
+
+- (void)naviBarChange:(NSNotification *)notify {
+    NSDictionary *dict = notify.userInfo;
+    if ([dict[@"isHidden"] isEqualToString: @"1"]) {
+        [UIView animateWithDuration:0.25 animations:^{
+            timeLabel.frame = CGRectMake(15, 20, kScreenWidth - 30, 40);
+        }];
+    } else {
+        [UIView animateWithDuration:0.25 animations:^{
+            timeLabel.frame = CGRectMake(15, 64, kScreenWidth - 30, 40);
         }];
     }
 }

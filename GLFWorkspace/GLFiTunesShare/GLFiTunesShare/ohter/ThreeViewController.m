@@ -31,7 +31,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setVCTitle:@"自定义拍照"];
-
+    self.canHiddenNaviBar = YES;
+    
     endScale = 1;
 
     [self configCamara];

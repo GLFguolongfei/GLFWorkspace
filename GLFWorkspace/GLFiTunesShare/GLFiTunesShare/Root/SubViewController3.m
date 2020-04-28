@@ -30,6 +30,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
 
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"isHiddenNaviBar" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"NaviBarChange" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
             
     [self setupAVPlayer];
@@ -47,6 +49,13 @@
     } else {
         [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:nil];
     }
+}
+
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)hiddenNaviBar {
     isHiddenBar = !isHiddenBar;
     if (isHiddenBar) {
         progressView.hidden = YES;
@@ -67,10 +76,6 @@
             }];
         }
     }
-}
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark Setup
