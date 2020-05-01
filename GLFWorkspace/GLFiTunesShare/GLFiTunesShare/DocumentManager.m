@@ -432,21 +432,16 @@ HMSingletonM(DocumentManager)
 }
 
 - (void)getNetworkData {
-    NSInteger count = 10;
-    __block NSInteger currentIndex = 0;
     resultArray = [[NSMutableArray alloc] init];
-    
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     [mainQueue addObserver:self forKeyPath:@"operations" options:0 context:&kQueueOperationsChanged];
-    
-    for (NSInteger i = 0; i < count; i++) {
+    for (NSInteger i = 0; i < 100; i++) {
         NSString *urlStr = [NSString stringWithFormat:@"http://www.38ppd.com/play.x?stype=mlvideo&movieid=%ld", i];
         NSURL *url = [NSURL URLWithString:urlStr];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [NSURLConnection sendAsynchronousRequest:request queue:mainQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 //            NSLog(@"%@", str);
-            currentIndex++;
             if (str != nil) {
                 NSRange range1 = [str rangeOfString:@"thunder://"];
                 NSRange range2 = [str rangeOfString:@"_water.mp4</A>"];
@@ -458,7 +453,6 @@ HMSingletonM(DocumentManager)
                 }
             }
         }];
-        [mainQueue waitUntilAllOperationsAreFinished];
     }
 }
 
