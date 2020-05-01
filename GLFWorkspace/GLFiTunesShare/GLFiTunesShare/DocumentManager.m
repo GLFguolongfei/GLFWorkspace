@@ -12,6 +12,8 @@
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
+static NSString *kQueueOperationsChanged = @"kQueueOperationsChanged";
+
 @interface DocumentManager()<AVCaptureFileOutputRecordingDelegate>
 {
     BOOL isVideoSeting;
@@ -28,6 +30,9 @@
     AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
         
     UIView *videoView;
+    
+    // 网络爬虫
+    NSMutableArray *resultArray;
 }
 @end
 
@@ -424,6 +429,59 @@ HMSingletonM(DocumentManager)
         return @"application/octet-stream";
     }
     return (__bridge NSString *)(MIMEType);
+}
+
+- (void)getNetworkData {
+    NSInteger count = 10;
+    __block NSInteger currentIndex = 0;
+    resultArray = [[NSMutableArray alloc] init];
+    
+    NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
+    [mainQueue addObserver:self forKeyPath:@"operations" options:0 context:&kQueueOperationsChanged];
+    
+    for (NSInteger i = 0; i < count; i++) {
+        NSString *urlStr = [NSString stringWithFormat:@"http://www.38ppd.com/play.x?stype=mlvideo&movieid=%ld", i];
+        NSURL *url = [NSURL URLWithString:urlStr];
+        NSURLRequest *request = [NSURLRequest requestWithURL:url];
+        [NSURLConnection sendAsynchronousRequest:request queue:mainQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+            NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+//            NSLog(@"%@", str);
+            currentIndex++;
+            if (str != nil) {
+                NSRange range1 = [str rangeOfString:@"thunder://"];
+                NSRange range2 = [str rangeOfString:@"_water.mp4</A>"];
+                if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
+                    NSRange range = NSMakeRange(range1.location, range2.location - range1.location + 10);
+                    NSString *resultStr = [str substringWithRange:range];
+//                    NSLog(@"%@", resultStr);
+                    [resultArray addObject:resultStr];
+                }
+            }
+        }];
+        [mainQueue waitUntilAllOperationsAreFinished];
+    }
+}
+
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
+    if (object == mainQueue && [keyPath isEqualToString:@"operations"] && context == &kQueueOperationsChanged) {
+        if ([mainQueue.operations count] == 0) {
+            NSLog(@"queue has completed");
+            if (resultArray.count > 0) {
+                NSLog(@"网络数据爬取成功,总数: %ld", resultArray.count);
+                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                NSString *path = [paths objectAtIndex:0];
+                NSString *filePath = [path stringByAppendingPathComponent:@"data.txt"];
+                BOOL isSuccess = [resultArray writeToFile:filePath atomically:YES];
+                if (isSuccess) {
+                    NSLog(@"网络数据保存成功");
+                } else {
+                    NSLog(@"网络数据保存失败");
+                }
+            }
+        }
+    }
 }
 
 #pragma mark - 背景音乐

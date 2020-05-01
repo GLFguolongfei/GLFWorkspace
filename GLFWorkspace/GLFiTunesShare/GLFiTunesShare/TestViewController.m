@@ -31,8 +31,12 @@
 //    [self testDocumentPicker];
 //    [self testArchiverData];
     
-    WKWebViewController *vc = [[WKWebViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
+    // 网络爬虫
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    [manager getNetworkData];
+    
+//    WKWebViewController *vc = [[WKWebViewController alloc] init];
+//    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark Events
