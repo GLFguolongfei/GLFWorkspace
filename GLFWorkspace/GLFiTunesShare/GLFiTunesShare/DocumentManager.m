@@ -30,9 +30,6 @@ static NSString *kQueueOperationsChanged = @"kQueueOperationsChanged";
     AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
         
     UIView *videoView;
-    
-    // 网络爬虫
-    NSMutableArray *resultArray;
 }
 @end
 
@@ -431,50 +428,41 @@ HMSingletonM(DocumentManager)
     return (__bridge NSString *)(MIMEType);
 }
 
-- (void)getNetworkData {
-    resultArray = [[NSMutableArray alloc] init];
++ (void)getNetworkData {
+    NSMutableArray *resultArray = [[NSMutableArray alloc] init];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
-    [mainQueue addObserver:self forKeyPath:@"operations" options:0 context:&kQueueOperationsChanged];
-    for (NSInteger i = 0; i < 100; i++) {
+    for (NSInteger i = 0; i < 200; i++) {
+        // http://www.38ppd.com/play.x?stype=mlvideo&movieid=13453
+        // http://www.38ppd.com/zpmp4.x?stype=zpmp4&zpmp4id=4503
         NSString *urlStr = [NSString stringWithFormat:@"http://www.38ppd.com/play.x?stype=mlvideo&movieid=%ld", i];
         NSURL *url = [NSURL URLWithString:urlStr];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [NSURLConnection sendAsynchronousRequest:request queue:mainQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-//            NSLog(@"%@", str);
+            // NSLog(@"%@", str);
             if (str != nil) {
                 NSRange range1 = [str rangeOfString:@"thunder://"];
                 NSRange range2 = [str rangeOfString:@"_water.mp4</A>"];
                 if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
                     NSRange range = NSMakeRange(range1.location, range2.location - range1.location + 10);
                     NSString *resultStr = [str substringWithRange:range];
-//                    NSLog(@"%@", resultStr);
+                    // NSLog(@"%@", resultStr);
                     [resultArray addObject:resultStr];
+                    if (resultArray.count / 10 == 0) {
+                        NSLog(@"网络数据爬取成功,总数: %ld", resultArray.count);
+                        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+                        NSString *path = [paths objectAtIndex:0];
+                        NSString *filePath = [path stringByAppendingPathComponent:@"data.txt"];
+                        BOOL isSuccess = [resultArray writeToFile:filePath atomically:YES];
+                        if (isSuccess) {
+                            NSLog(@"网络数据保存成功");
+                        } else {
+                            NSLog(@"网络数据保存失败");
+                        }
+                    }
                 }
             }
         }];
-    }
-}
-
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
-    if (object == mainQueue && [keyPath isEqualToString:@"operations"] && context == &kQueueOperationsChanged) {
-        if ([mainQueue.operations count] == 0) {
-            NSLog(@"queue has completed");
-            if (resultArray.count > 0) {
-                NSLog(@"网络数据爬取成功,总数: %ld", resultArray.count);
-                NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                NSString *path = [paths objectAtIndex:0];
-                NSString *filePath = [path stringByAppendingPathComponent:@"data.txt"];
-                BOOL isSuccess = [resultArray writeToFile:filePath atomically:YES];
-                if (isSuccess) {
-                    NSLog(@"网络数据保存成功");
-                } else {
-                    NSLog(@"网络数据保存失败");
-                }
-            }
-        }
     }
 }
 
