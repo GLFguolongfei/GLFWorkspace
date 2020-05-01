@@ -429,8 +429,8 @@ HMSingletonM(DocumentManager)
 }
 
 + (void)getNetworkData {
-    NSInteger endCount = 2000;
-    __block NSInteger startIndex = 1500;
+    NSInteger endCount = 4500;
+    __block NSInteger startIndex = 4000;
     
     NSMutableArray *resultArray = [[NSMutableArray alloc] init];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
