@@ -431,22 +431,24 @@ HMSingletonM(DocumentManager)
 + (void)getNetworkData {
     NSMutableArray *resultArray = [[NSMutableArray alloc] init];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
-    for (NSInteger i = 0; i < 200; i++) {
+    for (NSInteger i = 0; i < 4503; i++) {
         // http://www.38ppd.com/play.x?stype=mlvideo&movieid=13453
         // http://www.38ppd.com/zpmp4.x?stype=zpmp4&zpmp4id=4503
-        NSString *urlStr = [NSString stringWithFormat:@"http://www.38ppd.com/play.x?stype=mlvideo&movieid=%ld", i];
+        NSString *urlStr = [NSString stringWithFormat:@"http://www.38ppd.com/zpmp4.x?stype=zpmp4&zpmp4id=%ld", i];
         NSURL *url = [NSURL URLWithString:urlStr];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [NSURLConnection sendAsynchronousRequest:request queue:mainQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            // NSLog(@"%@", str);
+//            NSLog(@"%@", str);
             if (str != nil) {
-                NSRange range1 = [str rangeOfString:@"thunder://"];
-                NSRange range2 = [str rangeOfString:@"_water.mp4</A>"];
+//                NSRange range1 = [str rangeOfString:@"thunder://"];
+//                NSRange range2 = [str rangeOfString:@"_water.mp4</A>"];
+                NSRange range1 = [str rangeOfString:@"<source src="];
+                NSRange range2 = [str rangeOfString:@"type=\"video/mp4\""];
                 if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
                     NSRange range = NSMakeRange(range1.location, range2.location - range1.location + 10);
                     NSString *resultStr = [str substringWithRange:range];
-                    // NSLog(@"%@", resultStr);
+//                    NSLog(@"%@", resultStr);
                     [resultArray addObject:resultStr];
                     if (resultArray.count % 10 == 0) {
                         NSLog(@"网络数据爬取成功,总数: %ld", resultArray.count);
