@@ -429,9 +429,12 @@ HMSingletonM(DocumentManager)
 }
 
 + (void)getNetworkData {
+    NSInteger endCount = 2000;
+    __block NSInteger startIndex = 1500;
+    
     NSMutableArray *resultArray = [[NSMutableArray alloc] init];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
-    for (NSInteger i = 0; i < 4503; i++) {
+    for (NSInteger i = startIndex; i < endCount; i++) {
         // http://www.38ppd.com/play.x?stype=mlvideo&movieid=13453
         // http://www.38ppd.com/zpmp4.x?stype=zpmp4&zpmp4id=4503
         NSString *urlStr = [NSString stringWithFormat:@"http://www.38ppd.com/zpmp4.x?stype=zpmp4&zpmp4id=%ld", i];
@@ -440,6 +443,7 @@ HMSingletonM(DocumentManager)
         [NSURLConnection sendAsynchronousRequest:request queue:mainQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 //            NSLog(@"%@", str);
+            startIndex++;
             if (str != nil) {
 //                NSRange range1 = [str rangeOfString:@"thunder://"];
 //                NSRange range2 = [str rangeOfString:@"_water.mp4</A>"];
@@ -450,7 +454,8 @@ HMSingletonM(DocumentManager)
                     NSString *resultStr = [str substringWithRange:range];
 //                    NSLog(@"%@", resultStr);
                     [resultArray addObject:resultStr];
-                    if (resultArray.count % 10 == 0) {
+                    NSLog(@"%ld, %ld, %ld", endCount, startIndex, resultArray.count);
+                    if (startIndex >= endCount - 1) {
                         NSLog(@"网络数据爬取成功,总数: %ld", resultArray.count);
                         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                         NSString *path = [paths objectAtIndex:0];
