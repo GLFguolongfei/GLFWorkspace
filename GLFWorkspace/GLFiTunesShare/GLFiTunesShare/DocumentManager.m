@@ -448,7 +448,7 @@ HMSingletonM(DocumentManager)
                     NSString *resultStr = [str substringWithRange:range];
                     // NSLog(@"%@", resultStr);
                     [resultArray addObject:resultStr];
-                    if (resultArray.count / 10 == 0) {
+                    if (resultArray.count % 10 == 0) {
                         NSLog(@"网络数据爬取成功,总数: %ld", resultArray.count);
                         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                         NSString *path = [paths objectAtIndex:0];

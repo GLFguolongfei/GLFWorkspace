@@ -32,8 +32,7 @@
 //    [self testArchiverData];
     
     // 网络爬虫
-    DocumentManager *manager = [DocumentManager sharedDocumentManager];
-    [manager getNetworkData];
+    [DocumentManager getNetworkData];
     
 //    WKWebViewController *vc = [[WKWebViewController alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];

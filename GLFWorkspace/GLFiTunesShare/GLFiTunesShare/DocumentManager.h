@@ -43,7 +43,7 @@ HMSingletonH(DocumentManager)
 + (NSString *)mimeTypeForFileAtPath1:(NSString *)path;
 + (NSString *)mimeTypeForFileAtPath2:(NSString *)path;
 // 网络爬虫
-- (void)getNetworkData;
++ (void)getNetworkData;
 
 #pragma mark 历史记录
 @property (nonatomic, assign) BOOL isUseBackFacingCamera; // 是否使用后置摄像头
