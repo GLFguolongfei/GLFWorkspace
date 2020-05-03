@@ -33,6 +33,7 @@ HMSingletonH(DocumentManager)
 + (void)getAllFoldersArray:(CallBack)callBack;
 + (void)getAllFilesArray:(CallBack)callBack;
 + (void)getAllImagesArray:(CallBack)callBack;
++ (void)getAllImagesArray:(CallBack)callBack startIndex:(NSInteger)imgStart lengthCount:(NSInteger)imgLength;
 + (void)getAllVideosArray:(CallBack)callBack;
 + (void)getAllDYVideosArray:(CallBack)callBack;
 + (void)getAllNoDYVideosArray:(CallBack)callBack;

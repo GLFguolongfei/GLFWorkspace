@@ -323,6 +323,37 @@ HMSingletonM(DocumentManager)
         });
     });
 }
++ (void)getAllImagesArray:(CallBack)callBack startIndex:(NSInteger)imgStart lengthCount:(NSInteger)imgLength {
+    __block NSInteger imgIndex = imgStart;
+    __block NSInteger count = 0;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths objectAtIndex:0];
+        NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
+        NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+        NSMutableArray *resultArray = [[NSMutableArray alloc] init];
+        if (imgIndex > array.count-1) {
+            imgIndex = 0;
+        }
+        for (NSInteger i = imgIndex; i < array.count; i++) {
+            if (count > imgLength) {
+                break;
+            }
+            count++;
+            FileModel *model = array[i];
+            // 注意: 每次运行path的哈希码都会变化,因此要重新赋值
+            model.path = [NSString stringWithFormat:@"%@/%@", path, model.name];
+            model.image = [UIImage imageWithContentsOfFile:model.path];
+            [resultArray addObject:model];
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if (callBack) {
+                callBack(resultArray);
+            }
+        });
+    });
+}
 + (void)getAllVideosArray:(CallBack)callBack {
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{

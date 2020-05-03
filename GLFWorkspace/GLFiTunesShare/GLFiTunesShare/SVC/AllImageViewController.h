@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AllImageViewController : BaseViewController
 
+@property (nonatomic, assign) NSInteger start;
+
 @end
 
 NS_ASSUME_NONNULL_END

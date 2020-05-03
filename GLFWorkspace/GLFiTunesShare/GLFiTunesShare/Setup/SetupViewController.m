@@ -42,6 +42,8 @@
     [self setVCTitle:@"设置"];
     self.canHiddenNaviBar = YES;
     self.canHiddenToolBar = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imagePageSelect:) name:@"ImagePageSelect" object:nil];
 
     // 设置背景图片
     bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
@@ -242,6 +244,19 @@
 - (void)button5 {
     OtherViewController *otherVC = [[OtherViewController alloc] init];
     [self.navigationController pushViewController:otherVC animated:YES];
+}
+
+- (void)imagePageSelect:(NSNotification *)notify {
+    NSString *name = notify.name;
+    NSString *object = notify.object;
+    NSDictionary *dict = notify.userInfo;
+    NSLog(@"接受到的广播频率是: %@, 广播对象是: %@, 内容为: %@", name, object, dict);
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        AllImageViewController *imageVC = [[AllImageViewController alloc] init];
+        imageVC.start = [dict[@"start"] integerValue];
+        [self.navigationController pushViewController:imageVC animated:YES];
+    });
 }
 
 #pragma mark UIActionSheetDelegate
