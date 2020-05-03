@@ -53,24 +53,12 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    // 右侧按钮
-    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"略图" style:UIBarButtonItemStylePlain target:self action:@selector(scaleImage)];
-    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"页码" style:UIBarButtonItemStylePlain target:self action:@selector(pageImage)];
-    self.navigationItem.rightBarButtonItems = @[item1, item2];
-    // 右侧按钮
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
-    NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
-    if (array.count <= 600) {
-        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"缩略图" style:UIBarButtonItemStylePlain target:self action:@selector(scaleImage)];
-        self.navigationItem.rightBarButtonItem = item;
-    }
-    // 标题
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"缩略图" style:UIBarButtonItemStylePlain target:self action:@selector(scaleImage)];
+    self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"所有图片"];
     self.canHiddenNaviBar = YES;
     
-    pageCount = 500;
+    pageCount = 600;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
 
@@ -122,26 +110,37 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [gestureView removeFromSuperview];
 }
 
+- (void)didReceiveMemoryWarning {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (void)prepareData {
     [self showHUD:@"加载中, 不要着急!"];
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths objectAtIndex:0];
     NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
-    NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
-    if (array.count <= 600) {
+    NSArray *allArray = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
+    if (allArray.count > 600) {
+        UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"略图" style:UIBarButtonItemStylePlain target:self action:@selector(scaleImage)];
+        UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"页码" style:UIBarButtonItemStylePlain target:self action:@selector(pageImage)];
+        self.navigationItem.rightBarButtonItems = @[item1, item2];
+    }
+    if (self.start == 0) {
         [DocumentManager getAllImagesArray:^(NSArray * array) {
             [self hideAllHUD];
-            [self rePrepareData:array showAllImg:YES];
+            [self rePrepareData:array];
         }];
     } else {
         [DocumentManager getAllImagesArray:^(NSArray * array) {
             [self hideAllHUD];
-            [self rePrepareData:array showAllImg:NO];
+            [self rePrepareData:array];
         } startIndex:self.start lengthCount:pageCount];
     }
+    NSString *title = [NSString stringWithFormat:@"所有图片(%ld)", allArray.count];
+    [self setVCTitle:title];
 }
 
-- (void)rePrepareData:(NSArray *)array showAllImg:(BOOL)isAll {
+- (void)rePrepareData:(NSArray *)array {
     allImagesArray = [array mutableCopy];
     _dataArray1 = [[NSMutableArray alloc] init];
     _dataArray2 = [[NSMutableArray alloc] init];
@@ -169,12 +168,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     [_tableView1 reloadData];
     [_tableView2 reloadData];
     [_tableView3 reloadData];
-    
-    NSString *title = [NSString stringWithFormat:@"所有图片(%ld)", allImagesArray.count];
-    if (!isAll) {
-        title = [NSString stringWithFormat:@"图片(%ld)", allImagesArray.count];
-    }
-    [self setVCTitle:title];
 }
 
 - (void)prepareView {
