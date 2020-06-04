@@ -47,7 +47,7 @@
         } else if (i == 5)  {
             [button setTitle:@"日常小玩意" forState:UIControlStateNormal];
         } else if (i == 6) {
-            [button setTitle:@"iskytripLogin 打卡" forState:UIControlStateNormal];
+            [button setTitle:@"iskytrip 打卡" forState:UIControlStateNormal];
         }
         [button setBackgroundColor:[UIColor clearColor]];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
