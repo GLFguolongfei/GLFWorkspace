@@ -36,6 +36,13 @@
     // ----- 好像没起到作用,原因未知 -----
     InstallUncaughtExceptionHandler();
     
+    // 上班打卡
+    [self iskytrip:2];
+    [self iskytrip:3];
+    [self iskytrip:4];
+    [self iskytrip:5];
+    [self iskytrip:6];
+
     BOOL isTestFounction = NO;
     if (isTestFounction) {
         TestViewController *testVC = [[TestViewController alloc] init];
@@ -151,6 +158,11 @@
         NSLog(@"---------- iOS10前台收到本地通知");
         NSLog(@"body:%@,title:%@,subtitle:%@,badge:%@,sound:%@,userInfo:%@",body,title,subtitle,badge,sound,userInfo);
         
+        NSString *type = userInfo[@"NotificationType"];
+        if ([type isEqualToString:@"iskytrip"]) {
+            [DocumentManager iskytripLogin];
+        }
+        
         UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:title message:body preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *destructAction = [UIAlertAction actionWithTitle:@"知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -214,6 +226,37 @@
     [[UIApplication sharedApplication] registerForRemoteNotifications];
 }
 
+- (void)iskytrip:(NSInteger)weekday {
+    // 1.创建一个触发器(trigger)
+    // 在每周一的14点3分提醒
+    NSDateComponents *components = [[NSDateComponents alloc] init];
+    components.weekday = weekday;
+    components.hour = 9;
+    components.minute = 0;
+    // components: 日期 repeats: 是否重复
+    UNCalendarNotificationTrigger *calendarTrigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:components repeats:YES];
+    
+    // 2.创建推送的内容(UNMutableNotificationContent)
+    UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+    content.title = @"通知";
+    content.subtitle = [NSString stringWithFormat:@"上班打卡"];
+    content.body = [NSString stringWithFormat:@"自动打卡%ld", weekday];;
+    content.badge = @1;
+    content.sound = [UNNotificationSound defaultSound];
+    content.userInfo = @{@"NotificationType": @"iskytrip"};
+    
+    // 3.创建推送请求(UNNotificationRequest)
+    NSString *requestIdentifier = [NSString stringWithFormat:@"iskytrip%ld", weekday];
+    UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier content:content trigger:calendarTrigger];
+    
+    // 4.推送请求添加到推送管理中心(UNUserNotificationCenter)中
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+        if (!error) {
+            NSLog(@"本地推送添加成功: %@", requestIdentifier);
+        }
+    }];
+}
 
 
 @end

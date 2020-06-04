@@ -30,7 +30,7 @@
 //    self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"有趣功能"];
 
-    for (NSInteger i = 0; i < 6; i++) {
+    for (NSInteger i = 0; i < 7; i++) {
         CGFloat width = (kScreenWidth - 60) / 2;
         CGRect frame = CGRectMake(20 * (i % 2 + 1) + width * (i % 2), 100 + 80 * ceil(i / 2), width, 60);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
@@ -46,8 +46,8 @@
             [button setTitle:@"日常小工具" forState:UIControlStateNormal];
         } else if (i == 5)  {
             [button setTitle:@"日常小玩意" forState:UIControlStateNormal];
-        } else {
-            [button setTitle:@"测试" forState:UIControlStateNormal];
+        } else if (i == 6) {
+            [button setTitle:@"iskytripLogin" forState:UIControlStateNormal];
         }
         [button setBackgroundColor:[UIColor clearColor]];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -96,6 +96,8 @@
     } else if (button.tag == 105) {
         SixViewController *vc = [[SixViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
+    } else if (button.tag == 106) {
+        [DocumentManager iskytripLogin];
     }
 }
 

@@ -504,6 +504,52 @@ HMSingletonM(DocumentManager)
     }
 }
 
+// 公司上班登陆
++ (void)iskytripLogin {
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSString *bodyStr = @"username=0060&password=xKu18V7RRnntrPV8fvHlQA==&token_jpush=appstore 141fe1da9e3c87113aa&type=odoo";
+    
+    NSURL *url = [NSURL URLWithString:@"https://iskytrip.peoplus.cn/api/ERoadIDs/Session"];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    request.HTTPMethod = @"POST";
+    request.HTTPBody = [bodyStr dataUsingEncoding:NSUTF8StringEncoding];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+        NSLog(@"%@ : %@", dict, [NSThread currentThread]);
+        NSString *token = dict[@"token"];
+        [self iskytripDaka:token];
+    }];
+    
+    [task resume];
+}
+
+// 公司上班打卡
++ (void)iskytripDaka:(NSString *)token {
+    NSURLSession *session = [NSURLSession sharedSession];
+    
+    NSDictionary *dict = @{
+        @"cur_latitude": @(31.22428772837452),
+        @"cur_longitude": @(121.3604059906495),
+        @"wifi_array": @[@"20:28:3e:18:33:b0"],
+        @"beaconArray": @[],
+    };
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict options:0 error:0];
+    NSString *bodyStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+    
+    NSString *urlStr = [NSString stringWithFormat:@"https://iskytrip.peoplus.cn/api/Attendances/clock?access_token=%@&action=", token];
+    NSURL *url = [NSURL URLWithString:urlStr];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
+    request.HTTPMethod = @"POST";
+    request.HTTPBody = [bodyStr dataUsingEncoding:NSUTF8StringEncoding];
+    NSURLSessionDataTask *task = [session dataTaskWithRequest:request completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+        NSDictionary *dict = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableLeaves error:nil];
+        NSLog(@"%@ : %@", dict, [NSThread currentThread]);
+    }];
+    
+    [task resume];
+}
+
 #pragma mark - 背景音乐
 - (void)startPlay {
     if (player) {
