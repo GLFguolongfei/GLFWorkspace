@@ -232,7 +232,7 @@
     NSDateComponents *components = [[NSDateComponents alloc] init];
     components.weekday = weekday;
     components.hour = 9;
-    components.minute = 0;
+    components.minute = 10;
     // components: 日期 repeats: 是否重复
     UNCalendarNotificationTrigger *calendarTrigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:components repeats:YES];
     
