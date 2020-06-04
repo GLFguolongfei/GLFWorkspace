@@ -235,7 +235,7 @@
     components.minute = 10;
     // components: 日期 repeats: 是否重复
     UNCalendarNotificationTrigger *calendarTrigger = [UNCalendarNotificationTrigger triggerWithDateMatchingComponents:components repeats:YES];
-    
+
     // 2.创建推送的内容(UNMutableNotificationContent)
     UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
     content.title = @"通知";
@@ -244,11 +244,11 @@
     content.badge = @1;
     content.sound = [UNNotificationSound defaultSound];
     content.userInfo = @{@"NotificationType": @"iskytrip"};
-    
+
     // 3.创建推送请求(UNNotificationRequest)
     NSString *requestIdentifier = [NSString stringWithFormat:@"iskytrip%ld", weekday];
     UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier content:content trigger:calendarTrigger];
-    
+
     // 4.推送请求添加到推送管理中心(UNUserNotificationCenter)中
     UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
     [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
@@ -256,6 +256,7 @@
             NSLog(@"本地推送添加成功: %@", requestIdentifier);
         }
     }];
+//    [center removeAllDeliveredNotifications];
 }
 
 

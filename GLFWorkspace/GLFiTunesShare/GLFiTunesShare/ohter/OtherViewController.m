@@ -47,7 +47,7 @@
         } else if (i == 5)  {
             [button setTitle:@"日常小玩意" forState:UIControlStateNormal];
         } else if (i == 6) {
-            [button setTitle:@"iskytripLogin" forState:UIControlStateNormal];
+            [button setTitle:@"iskytripLogin 打卡" forState:UIControlStateNormal];
         }
         [button setBackgroundColor:[UIColor clearColor]];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -98,6 +98,7 @@
         [self.navigationController pushViewController:vc animated:YES];
     } else if (button.tag == 106) {
         [DocumentManager iskytripLogin];
+        [self showStringHUD:@"打卡成功" second:1.5];
     }
 }
 
