@@ -37,7 +37,7 @@
         if (i == 0) {
             [button setTitle:@"UIKit动力学" forState:UIControlStateNormal];
         } else if (i == 1)  {
-            [button setTitle:@"iOS字体" forState:UIControlStateNormal];
+            [button setTitle:@"UIKit动力学" forState:UIControlStateNormal];
         } else if (i == 2)  {
             [button setTitle:@"自定义拍照" forState:UIControlStateNormal];
         } else if (i == 3)  {

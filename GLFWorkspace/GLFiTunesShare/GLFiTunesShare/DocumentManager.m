@@ -109,26 +109,6 @@ HMSingletonM(DocumentManager)
                     model.size = [GLFFileManager fileSizeForDir:model.path];
                     model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
                     [allFoldersArray addObject:model];
-                    if ([model.name isEqualToString:@"郭龙飞"] && model.size > 1000000000) {
-                        UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-                        content.title = @"通知";
-                        content.subtitle = [NSString stringWithFormat:@"存储过大"];
-                        content.body = @"存储的东西太多了";
-                        content.badge = @1;
-                        content.sound = [UNNotificationSound defaultSound];
-                        content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
-                        
-                        UNTimeIntervalNotificationTrigger *intervalTrigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats:NO];
-                        NSString *requestIdentifier = @"Dely.X.time";
-                        UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier content:content trigger:intervalTrigger];
-                        
-                        UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-                        [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
-                            if (!error) {
-                                NSLog(@"本地推送添加成功: %@", requestIdentifier);
-                            }
-                        }];
-                    }
                 }
             }
             // 显示文件夹排在前面
@@ -139,7 +119,34 @@ HMSingletonM(DocumentManager)
             NSCalendar *calendar = [NSCalendar currentCalendar];
             NSCalendarUnit type = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
             NSDateComponents *cmps = [calendar components:type fromDate:startDate toDate:endDate options:0];
-            NSLog(@"全局遍历完成,一共用时: %ld分钟%ld秒", cmps.minute, cmps.second);
+            NSLog(@"全局遍历完成,一共用时: %ld分%ld秒", cmps.minute, cmps.second);
+            // 本地推送
+            CGFloat allSize = 0;
+            for (NSInteger i = 0; i < allArray.count; i++) {
+                FileModel *model = allArray[i];
+                allSize += model.size;
+            }
+            NSString *sizeStr = [GLFFileManager returenSizeStr:allSize];
+            NSString *str = [NSString stringWithFormat:@"遍历完成 总用时: %ld分%ld秒 总大小: %@", cmps.minute, cmps.second, sizeStr];
+            
+            UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+            content.title = @"遍历完成";
+//            content.subtitle = [NSString stringWithFormat:@"存储过大"];
+            content.body = str;
+            content.badge = @1;
+            content.sound = [UNNotificationSound defaultSound];
+            content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
+            
+            UNTimeIntervalNotificationTrigger *intervalTrigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats:NO];
+            NSString *requestIdentifier = @"Dely.X.time";
+            UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier content:content trigger:intervalTrigger];
+            
+            UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+            [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+                if (!error) {
+                    NSLog(@"本地推送添加成功: %@", requestIdentifier);
+                }
+            }];
             
             NSString *archiverPath1 = [path stringByAppendingPathComponent:@"GLFConfig/allArray.plist"];
             BOOL isSuccess1 = [NSKeyedArchiver archiveRootObject:allArray toFile:archiverPath1];

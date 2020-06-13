@@ -8,10 +8,14 @@
 
 #import "TwoViewController.h"
 
-@interface TwoViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface TwoViewController ()<UICollisionBehaviorDelegate>
 {
-    UITableView *myTableView;
-    NSArray *myDataArray;
+    UIDynamicAnimator *animator;            // 动画者
+    UIGravityBehavior *gravityBeahvior;     // 仿真行为_重力
+    UICollisionBehavior *collisionBehavior; // 仿真行为_碰撞
+    UIDynamicItemBehavior *itemBehavior;    // 辅助行为
+    
+    NSMutableArray *allImagesArray;
 }
 @end
 
@@ -22,75 +26,84 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self setVCTitle:@"iOS字体"];
-
-    myDataArray = [UIFont familyNames];
-    CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
-    myTableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStyleInsetGrouped];
-    myTableView.delegate = self;
-    myTableView.dataSource = self;
-    [self.view addSubview:myTableView];
+    self.title = @"仿真行为_碰撞";
+    
+    // 1-动画者
+    animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
+    // 2-重力仿真行为
+    gravityBeahvior = [[UIGravityBehavior alloc] init];
+    // 3-碰撞仿真行为
+    // 注意
+    // 1-界面上的Views,当位置有重合时,几个元素间就会引起碰撞
+    // 2-代码没有显式地添加边界坐标,而是设置translatesReferenceBoundsIntoBoundary属性为YES
+    //   这意味着用提供给UIDynamicAnimator的视图的bounds作为边界
+    collisionBehavior = [[UICollisionBehavior alloc] init];
+    collisionBehavior.translatesReferenceBoundsIntoBoundary = YES;
+    collisionBehavior.collisionDelegate = self;
+    // 4-辅助行为
+    itemBehavior = [[UIDynamicItemBehavior alloc] initWithItems:nil];
+    itemBehavior.elasticity = 0.6; // 弹性
+    itemBehavior.friction = 0.5;   // 摩擦力
+    itemBehavior.resistance = 0.5; // 阻尼
+    // 4-添加仿真行为
+    [animator addBehavior:gravityBeahvior];
+    [animator addBehavior:collisionBehavior];
+    [animator addBehavior:itemBehavior];
+    
+    [DocumentManager getAllImagesArray:^(NSArray * array) {
+        allImagesArray = [array mutableCopy];
+    }];
+    
+    // 点击手势
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
+    [self.view addGestureRecognizer:gesture];
 }
 
-#pragma mark UITableViewDelegate(HeaderAndFooter)
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 44;
-}
-
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return [NSString stringWithFormat:@"%ld : %@", section, myDataArray[section]];
-}
-
-#pragma mark UITableViewDelegate(Cell)
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return myDataArray.count;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    NSArray *currentNames = [UIFont fontNamesForFamilyName:myDataArray[section]];
-    return currentNames.count;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellIdentifier = @"UITableViewCellIdentifierKey1";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if(!cell){
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+- (void)tapped:(UITapGestureRecognizer *)gesture {
+    NSInteger mmm = arc4random() % 3;
+    NSString *name = @"bgview1";
+    if (mmm == 0) {
+        NSInteger nnn = arc4random() % 9;
+        name = [NSString stringWithFormat:@"bgview%ld", nnn];
+    } else if (mmm == 1) {
+        NSInteger nnn = arc4random() % 13;
+        name = [NSString stringWithFormat:@"mv%ld", nnn];
     }
-    
-    NSArray *currentNames = [UIFont fontNamesForFamilyName:myDataArray[indexPath.section]];
-    NSString *currentFontStr = currentNames[indexPath.row];
-    
-    cell.textLabel.text = currentFontStr;
-//    cell.textLabel.text = @"Winter Is Coming";
-    cell.textLabel.font = [UIFont fontWithName:currentFontStr size:18];
-    cell.textLabel.textColor = [UIColor blackColor];
-    
-    if ([currentFontStr isEqualToString:@"Helvetica"]) {
-        cell.textLabel.text = [NSString stringWithFormat:@"默认字体: %@", currentFontStr];
-        cell.textLabel.textColor = [UIColor redColor];
+    UIImage *image = [UIImage imageNamed:name];
+    if (allImagesArray.count > 0) {
+        NSInteger mmm = arc4random() % allImagesArray.count;
+        FileModel *model = allImagesArray[mmm];
+        image = [UIImage imageWithContentsOfFile:model.path];
     }
-    
-    return cell;
+
+    NSInteger www = kScreenWidth / 2;
+    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+    NSInteger width = arc4random() % www;
+    if (width < 10) {
+        width = 10;
+    }
+    NSInteger height = width * image.size.height / image.size.width;
+    imageView.frame = CGRectMake(0, 0, width, height);
+    imageView.tag = mmm++;
+    imageView.center = [gesture locationInView:gesture.view];
+    [self.view addSubview:imageView];
+    // 为仿真行为添加动力学元素
+    [gravityBeahvior addItem:imageView];
+    [collisionBehavior addItem:imageView];
+    [itemBehavior addItem:imageView];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSArray *currentNames = [UIFont fontNamesForFamilyName:myDataArray[indexPath.section]];
-    NSString *currentFontStr = currentNames[indexPath.row];
-    
-    UIFont *font = [UIFont fontWithName:currentFontStr size:20];
-    
-    NSLog(@"字体的family名称: %@", font.familyName);
-    NSLog(@"字体名称: %@", font.fontName);
-    
-    NSLog(@"字体大小: %f", font.pointSize);
-    NSLog(@"ascender的值: %f", font.ascender);
-    NSLog(@"descender的值: %f", font.descender);
-    
-    NSLog(@"大文字的高度: %f", font.capHeight);
-    NSLog(@"小文字[x]的高度: %f", font.xHeight);
-    NSLog(@"行的高度: %f", font.lineHeight);
-    NSLog(@"font.leading: %f", font.leading);
+#pragma mark UICollisionBehaviorDelegate
+- (void)collisionBehavior:(UICollisionBehavior*)behavior beganContactForItem:(id )item withBoundaryIdentifier:(id )identifier atPoint:(CGPoint)p
+{
+    UIImageView *imageView = (UIImageView *)item;
+    NSLog(@"开始碰撞 %ld", imageView.tag);
+}
+
+- (void)collisionBehavior:(UICollisionBehavior*)behavior endedContactForItem:(id )item withBoundaryIdentifier:(id )identifier
+{
+    UIImageView *imageView = (UIImageView *)item;
+    NSLog(@"结束碰撞 %ld", imageView.tag);
 }
 
 

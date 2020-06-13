@@ -30,7 +30,8 @@
 #pragma mark UIApplicationDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    [self resignUserNotification:application andOptions:launchOptions];
+//    [self removeLocalNotifications];
+//    [self resignUserNotification:application andOptions:launchOptions];
     
     // 让程序从容的崩溃
     // ----- 好像没起到作用,原因未知 -----
@@ -239,7 +240,7 @@
     // 2.创建推送的内容(UNMutableNotificationContent)
     UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
     content.title = @"通知";
-    content.subtitle = [NSString stringWithFormat:@"上班打卡"];
+//    content.subtitle = [NSString stringWithFormat:@"上班打卡"];
     content.body = [NSString stringWithFormat:@"自动打卡%ld", weekday];;
     content.badge = @1;
     content.sound = [UNNotificationSound defaultSound];
@@ -256,7 +257,11 @@
             NSLog(@"本地推送添加成功: %@", requestIdentifier);
         }
     }];
-//    [center removeAllDeliveredNotifications];
+}
+
+- (void)removeLocalNotifications {
+    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+    [center removeAllDeliveredNotifications];
 }
 
 
