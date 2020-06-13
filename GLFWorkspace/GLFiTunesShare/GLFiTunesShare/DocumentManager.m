@@ -512,7 +512,6 @@ HMSingletonM(DocumentManager)
     // https://www.7027d62825fed025.com/play.x?stype=mlvideo&movieid=14706
     // https://www.7027d62825fed025.com/play.x?stype=mlvideo&movieid=14702
     // https://www.7027d62825fed025.com/play.x?stype=mlvideo&movieid=14707
-    // https://www.7027d62825fed025.com/play.x?stype=mlmovie&movieid=9626
     NSString *urlStr = @"http://www.38ppd.com/zpmp4.x?stype=zpmp4&zpmp4id=%ld";
     NSURL *url = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
