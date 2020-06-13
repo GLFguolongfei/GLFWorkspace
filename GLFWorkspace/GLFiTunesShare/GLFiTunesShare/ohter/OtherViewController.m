@@ -16,7 +16,10 @@
 #import "SixViewController.h"
 
 @interface OtherViewController ()
-
+{
+    UIView *gestureView;
+    UIBarButtonItem *item;
+}
 @end
 
 @implementation OtherViewController
@@ -26,8 +29,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"测试功能" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
-    self.navigationItem.rightBarButtonItem = item;
+    item = [[UIBarButtonItem alloc] initWithTitle:@"测试功能" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
     [self setVCTitle:@"有趣功能"];
 
     for (NSInteger i = 0; i < 7; i++) {
@@ -65,6 +67,20 @@
     [super viewWillAppear:animated];
     self.navigationController.toolbar.hidden = YES;
     self.navigationController.navigationBar.hidden = NO;
+    
+    // 导航栏bg
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake((kScreenWidth - 150) / 2, -20, 150, 64)];
+    gestureView.backgroundColor = [UIColor clearColor];
+    [self.navigationController.navigationBar addSubview:gestureView];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
+    [tapGesture addTarget:self action:@selector(setState)];
+    [gestureView addGestureRecognizer:tapGesture];
+    
+    // 放在最上面,否则点击事件没法触发
+    [self.navigationController.navigationBar bringSubviewToFront:gestureView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -100,6 +116,38 @@
         [DocumentManager iskytripLogin];
         [self showStringHUD:@"打卡成功" second:1.5];
     }
+}
+
+- (void)setState {
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"隐藏功能" message:@"惊不惊喜！意不意外！！！" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertVC addAction:cancelAction];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"测试按钮" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (self.navigationItem.rightBarButtonItem == nil) {
+            self.navigationItem.rightBarButtonItem = item;
+        } else {
+            self.navigationItem.rightBarButtonItem = nil;
+        }
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }];
+    [alertVC addAction:okAction];
+
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    if (manager.isRecording) {
+        UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"切换方向" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [manager switchCamera];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                [self reSetVCTitle];
+            });
+        }];
+        [alertVC addAction:okAction2];
+    }
+    
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 
