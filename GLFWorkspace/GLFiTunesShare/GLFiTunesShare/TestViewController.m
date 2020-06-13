@@ -32,7 +32,8 @@
 //    [self testArchiverData];
     
     // 网络爬虫
-    [DocumentManager getNetworkData];
+//    [DocumentManager getNetworkData];
+    [DocumentManager getNetworkDataTest];
     
 //    WKWebViewController *vc = [[WKWebViewController alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];

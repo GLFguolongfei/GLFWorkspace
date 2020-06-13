@@ -45,6 +45,7 @@ HMSingletonH(DocumentManager)
 + (NSString *)mimeTypeForFileAtPath2:(NSString *)path;
 // 网络爬虫
 + (void)getNetworkData;
++ (void)getNetworkDataTest;
 // 公司上班登陆
 + (void)iskytripLogin;
 

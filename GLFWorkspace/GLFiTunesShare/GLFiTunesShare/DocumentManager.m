@@ -467,33 +467,27 @@ HMSingletonM(DocumentManager)
 }
 
 + (void)getNetworkData {
-    NSInteger endCount = 4500;
     __block NSInteger startIndex = 4000;
-    
+    NSInteger endIndex = startIndex + 200;
+
     NSMutableArray *resultArray = [[NSMutableArray alloc] init];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
-    for (NSInteger i = startIndex; i < endCount; i++) {
-        // http://www.38ppd.com/play.x?stype=mlvideo&movieid=13453
-        // http://www.38ppd.com/zpmp4.x?stype=zpmp4&zpmp4id=4503
+    for (NSInteger i = startIndex; i < endIndex; i++) {
         NSString *urlStr = [NSString stringWithFormat:@"http://www.38ppd.com/zpmp4.x?stype=zpmp4&zpmp4id=%ld", i];
         NSURL *url = [NSURL URLWithString:urlStr];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [NSURLConnection sendAsynchronousRequest:request queue:mainQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-//            NSLog(@"%@", str);
             startIndex++;
             if (str != nil) {
-//                NSRange range1 = [str rangeOfString:@"thunder://"];
-//                NSRange range2 = [str rangeOfString:@"_water.mp4</A>"];
                 NSRange range1 = [str rangeOfString:@"<source src="];
                 NSRange range2 = [str rangeOfString:@"type=\"video/mp4\""];
                 if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
                     NSRange range = NSMakeRange(range1.location, range2.location - range1.location + 10);
                     NSString *resultStr = [str substringWithRange:range];
-//                    NSLog(@"%@", resultStr);
                     [resultArray addObject:resultStr];
-                    NSLog(@"%ld, %ld, %ld", endCount, startIndex, resultArray.count);
-                    if (startIndex >= endCount - 1) {
+                    NSLog(@"endIndex: %ld, startIndex: %ld, resultArray.count: %ld", endIndex, startIndex, resultArray.count);
+                    if (startIndex >= endIndex - 1 || (startIndex >= endIndex - 100 && startIndex % 50 == 0)) {
                         NSLog(@"网络数据爬取成功,总数: %ld", resultArray.count);
                         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
                         NSString *path = [paths objectAtIndex:0];
@@ -510,6 +504,33 @@ HMSingletonM(DocumentManager)
         }];
     }
 }
+
++ (void)getNetworkDataTest {
+    // https://www.7027d62825fed025.com/play.x?stype=mlmovie&movieid=8398
+    // https://www.7027d62825fed025.com/play.x?stype=mlmovie&movieid=8405
+    // https://www.7027d62825fed025.com/play.x?stype=mlmovie&movieid=8395
+    // https://www.7027d62825fed025.com/play.x?stype=mlvideo&movieid=14706
+    // https://www.7027d62825fed025.com/play.x?stype=mlvideo&movieid=14702
+    // https://www.7027d62825fed025.com/play.x?stype=mlvideo&movieid=14707
+    // https://www.7027d62825fed025.com/play.x?stype=mlmovie&movieid=9626
+    NSString *urlStr = @"http://www.38ppd.com/zpmp4.x?stype=zpmp4&zpmp4id=%ld";
+    NSURL *url = [NSURL URLWithString:urlStr];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [NSURLConnection sendAsynchronousRequest:request queue:nil completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+        NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        NSLog(@"%@", str);
+        if (str != nil) {
+            NSRange range1 = [str rangeOfString:@"<source src="];
+            NSRange range2 = [str rangeOfString:@"type=\"video/mp4\""];
+            if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
+                NSRange range = NSMakeRange(range1.location, range2.location - range1.location + 10);
+                NSString *resultStr = [str substringWithRange:range];
+                NSLog(@"%@", resultStr);
+            }
+        }
+    }];
+}
+
 
 // 公司上班登陆
 + (void)iskytripLogin {
