@@ -26,8 +26,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    self.title = @"仿真行为_碰撞";
-    
+    [self setVCTitle:@"UIKit动力学"];
+
     // 1-动画者
     animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     // 2-重力仿真行为
