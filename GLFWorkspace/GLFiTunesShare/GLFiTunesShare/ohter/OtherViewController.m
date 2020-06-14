@@ -113,7 +113,7 @@
         SixViewController *vc = [[SixViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if (button.tag == 106) {
-        [DocumentManager iskytripLogin];
+        [NetworkManager iskytripLogin];
         [self showStringHUD:@"打卡成功" second:1.5];
     }
 }

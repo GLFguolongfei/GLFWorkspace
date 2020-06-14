@@ -161,7 +161,7 @@
         
         NSString *type = userInfo[@"NotificationType"];
         if ([type isEqualToString:@"iskytrip"]) {
-            [DocumentManager iskytripLogin];
+            [NetworkManager iskytripLogin];
         }
         
         UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:title message:body preferredStyle:UIAlertControllerStyleAlert];

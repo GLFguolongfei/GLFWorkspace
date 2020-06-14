@@ -43,11 +43,6 @@ HMSingletonH(DocumentManager)
 + (UIImage *)getBackgroundImage;
 + (NSString *)mimeTypeForFileAtPath1:(NSString *)path;
 + (NSString *)mimeTypeForFileAtPath2:(NSString *)path;
-// 网络爬虫
-+ (void)getNetworkData;
-+ (void)getNetworkDataTest;
-// 公司上班登陆
-+ (void)iskytripLogin;
 
 #pragma mark 历史记录
 @property (nonatomic, assign) BOOL isUseBackFacingCamera; // 是否使用后置摄像头
