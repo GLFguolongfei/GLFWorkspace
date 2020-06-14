@@ -78,6 +78,19 @@
     }
 }
 
+- (void)showBar {
+    isHiddenBar = NO;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        progressView.hidden = NO;
+    });
+    if (!isRotate) {
+        CGRect labelRect = CGRectMake(10, 74, kScreenWidth-20, 20);
+        [UIView animateWithDuration:0.25 animations:^{
+            label.frame = labelRect;
+        }];
+    }
+}
+
 #pragma mark Setup
 - (void)setupAVPlayer {
     // 1-获取URL(远程/本地)

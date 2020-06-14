@@ -175,6 +175,7 @@
         // 显示导航栏
         [self.navigationController setNavigationBarHidden:NO animated:YES];
         [self.navigationController setToolbarHidden:NO animated:YES];
+        [currentVC showBar];
     }
 }
 

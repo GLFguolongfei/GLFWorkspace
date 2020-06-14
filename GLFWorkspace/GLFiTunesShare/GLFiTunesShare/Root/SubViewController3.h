@@ -17,5 +17,6 @@
 - (void)playOrPauseVideo:(BOOL)isPlay;
 - (void)playerForwardOrRewind:(BOOL)isForward;
 - (void)playViewLandscape;
+- (void)showBar;
 
 @end
