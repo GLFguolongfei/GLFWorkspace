@@ -31,18 +31,18 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
 //    [self removeLocalNotifications];
-//    [self resignUserNotification:application andOptions:launchOptions];
+    [self resignUserNotification:application andOptions:launchOptions];
     
     // 让程序从容的崩溃
     // ----- 好像没起到作用,原因未知 -----
     InstallUncaughtExceptionHandler();
     
     // 上班打卡
-    [self iskytrip:2];
-    [self iskytrip:3];
-    [self iskytrip:4];
-    [self iskytrip:5];
-    [self iskytrip:6];
+//    [self iskytrip:2];
+//    [self iskytrip:3];
+//    [self iskytrip:4];
+//    [self iskytrip:5];
+//    [self iskytrip:6];
 
     BOOL isTestFounction = NO;
     if (isTestFounction) {
@@ -171,7 +171,7 @@
         }];
         [alertVC addAction:destructAction];
         
-        [self.window.rootViewController presentViewController:alertVC animated:YES completion:nil];
+//        [self.window.rootViewController presentViewController:alertVC animated:YES completion:nil];
     }
     completionHandler(UNNotificationPresentationOptionBadge|UNNotificationPresentationOptionSound|UNNotificationPresentationOptionAlert); // 需要执行这个方法,选择是否提醒用户,有Badge、Sound、Alert三种类型可以设置
 }

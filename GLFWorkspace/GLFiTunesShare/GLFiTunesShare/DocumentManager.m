@@ -44,6 +44,9 @@ HMSingletonM(DocumentManager)
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *path = [paths objectAtIndex:0];
         
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSString *hidden = [userDefaults objectForKey:kContentHidden];
+        
         NSDate *startDate = [NSDate date];
         
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -64,7 +67,7 @@ HMSingletonM(DocumentManager)
                     continue;
                 }
                 NSArray *names = [array[i] componentsSeparatedByString:@"/"];
-                if ([CHiddenPaths containsObject:names.firstObject]) {
+                if ([hidden isEqualToString:@"0"] && [CHiddenPaths containsObject:names.firstObject]) {
                     continue;
                 }
                 FileModel *model = [[FileModel alloc] init];
@@ -122,8 +125,8 @@ HMSingletonM(DocumentManager)
             NSLog(@"全局遍历完成,一共用时: %ld分%ld秒", cmps.minute, cmps.second);
             // 本地推送
             CGFloat allSize = 0;
-            for (NSInteger i = 0; i < allArray.count; i++) {
-                FileModel *model = allArray[i];
+            for (NSInteger i = 0; i < allFilesArray.count; i++) {
+                FileModel *model = allFilesArray[i];
                 allSize += model.size;
             }
             NSString *sizeStr = [GLFFileManager returenSizeStr:allSize];
@@ -131,7 +134,6 @@ HMSingletonM(DocumentManager)
             
             UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
             content.title = @"遍历完成";
-//            content.subtitle = [NSString stringWithFormat:@"存储过大"];
             content.body = str;
             content.badge = @1;
             content.sound = [UNNotificationSound defaultSound];
@@ -176,6 +178,9 @@ HMSingletonM(DocumentManager)
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *documentPath = [paths objectAtIndex:0];
         
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSString *hidden = [userDefaults objectForKey:kContentHidden];
+        
         dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
         dispatch_async(queue, ^{
             NSArray *array = [GLFFileManager searchSubFile:documentPath andIsDepth:YES];
@@ -185,7 +190,7 @@ HMSingletonM(DocumentManager)
                 NSInteger fileType = [GLFFileManager fileExistsAtPath:path];
                 if (fileType == 2) { // 只显示文件夹
                     NSArray *names = [array[i] componentsSeparatedByString:@"/"];
-                    if ([CHiddenPaths containsObject:names.firstObject]) {
+                    if ([hidden isEqualToString:@"0"] && [CHiddenPaths containsObject:names.firstObject]) {
                         continue;
                     } else {
                         [documentPathArray addObject:array[i]];
@@ -472,36 +477,53 @@ HMSingletonM(DocumentManager)
 
     NSMutableArray *resultArray = [[NSMutableArray alloc] init];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
+    NSInteger requestType = 1; // 1-NSURLConnection 2-AFHTTPSessionManager
     for (NSInteger i = startIndex; i < endIndex; i++) {
         NSString *urlStr = [NSString stringWithFormat:@"http://www.38ppd.com/zpmp4.x?stype=zpmp4&zpmp4id=%ld", i];
-        NSURL *url = [NSURL URLWithString:urlStr];
-        NSURLRequest *request = [NSURLRequest requestWithURL:url];
-        [NSURLConnection sendAsynchronousRequest:request queue:mainQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
-            NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            startIndex++;
-            if (str != nil) {
-                NSRange range1 = [str rangeOfString:@"<source src="];
-                NSRange range2 = [str rangeOfString:@"type=\"video/mp4\""];
-                if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
-                    NSRange range = NSMakeRange(range1.location, range2.location - range1.location + 10);
-                    NSString *resultStr = [str substringWithRange:range];
-                    [resultArray addObject:resultStr];
-                    NSLog(@"endIndex: %ld, startIndex: %ld, resultArray.count: %ld", endIndex, startIndex, resultArray.count);
-                    if (startIndex >= endIndex - 1 || (startIndex >= endIndex - 100 && startIndex % 50 == 0)) {
-                        NSLog(@"网络数据爬取成功,总数: %ld", resultArray.count);
-                        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-                        NSString *path = [paths objectAtIndex:0];
-                        NSString *filePath = [path stringByAppendingPathComponent:@"data.txt"];
-                        BOOL isSuccess = [resultArray writeToFile:filePath atomically:YES];
-                        if (isSuccess) {
-                            NSLog(@"网络数据保存成功");
-                        } else {
-                            NSLog(@"网络数据保存失败");
+        if (requestType == 1) {
+            NSURL *url = [NSURL URLWithString:urlStr];
+            NSURLRequest *request = [NSURLRequest requestWithURL:url];
+            [NSURLConnection sendAsynchronousRequest:request queue:mainQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+                startIndex++;
+                if (str != nil) {
+                    NSRange range1 = [str rangeOfString:@"<source src="];
+                    NSRange range2 = [str rangeOfString:@"type=\"video/mp4\""];
+                    if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
+                        NSRange range = NSMakeRange(range1.location, range2.location - range1.location + 10);
+                        NSString *resultStr = [str substringWithRange:range];
+                        [resultArray addObject:resultStr];
+                        NSLog(@"endIndex: %ld, startIndex: %ld, resultArray.count: %ld", endIndex, startIndex, resultArray.count);
+                        if (startIndex >= endIndex - 1 || (startIndex >= endIndex - 100 && startIndex % 50 == 0)) {
+                            [self getNetworkDataSave:resultArray];
                         }
                     }
                 }
-            }
-        }];
+            }];
+        } else if (requestType == 2) {
+            AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+            manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+            [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+                NSLog(@"%@", str);
+            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                NSLog(@"%@", error);
+            }];
+        }
+    }
+}
+
++ (void)getNetworkDataSave: (NSArray *)array {
+    NSLog(@"网络数据爬取成功,总数: %ld", array.count);
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *filePath = [path stringByAppendingPathComponent:@"data.txt"];
+    BOOL isSuccess = [array writeToFile:filePath atomically:YES];
+    if (isSuccess) {
+        NSLog(@"网络数据保存成功");
+    } else {
+        NSLog(@"网络数据保存失败");
     }
 }
 
@@ -512,7 +534,7 @@ HMSingletonM(DocumentManager)
     // https://www.7027d62825fed025.com/play.x?stype=mlvideo&movieid=14706
     // https://www.7027d62825fed025.com/play.x?stype=mlvideo&movieid=14702
     // https://www.7027d62825fed025.com/play.x?stype=mlvideo&movieid=14707
-    NSString *urlStr = @"http://www.38ppd.com/zpmp4.x?stype=zpmp4&zpmp4id=%ld";
+    NSString *urlStr = @"https://www.7027d62825fed025.com/play.x?stype=mlvideo&movieid=15067";
     NSURL *url = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:nil completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
@@ -528,8 +550,17 @@ HMSingletonM(DocumentManager)
             }
         }
     }];
+    
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+    } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+        NSLog(@"%@", str);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        NSLog(@"%@", error);
+    }];
 }
-
 
 // 公司上班登陆
 + (void)iskytripLogin {

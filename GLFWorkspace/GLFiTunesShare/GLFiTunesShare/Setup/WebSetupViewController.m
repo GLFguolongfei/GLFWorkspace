@@ -193,6 +193,7 @@
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kContentHidden];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
+    [DocumentManager updateDocumentPaths];
 }
 
 - (IBAction)switchAction8:(id)sender {

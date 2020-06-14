@@ -27,6 +27,7 @@
 #import "GLFFileManager.h"
 #import "DocumentManager.h"
 #import "LewPopupViewController.h"
+#import "AFHTTPSessionManager.h"
 // Models
 #import "FileModel.h"
 // Categorys
