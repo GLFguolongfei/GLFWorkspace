@@ -30,7 +30,7 @@
 #pragma mark UIApplicationDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-//    [self removeLocalNotifications];
+    [self removeLocalNotifications];
     [self resignUserNotification:application andOptions:launchOptions];
     
     // 让程序从容的崩溃
