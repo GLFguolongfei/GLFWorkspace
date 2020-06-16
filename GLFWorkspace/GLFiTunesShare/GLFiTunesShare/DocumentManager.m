@@ -133,7 +133,7 @@ HMSingletonM(DocumentManager)
             NSLog(@"全局遍历完成, %@", str);
 
             UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-            content.title = @"遍历完成";
+            content.title = @"全局遍历完成";
             content.body = str;
             content.sound = [UNNotificationSound defaultSound];
             content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
