@@ -149,9 +149,9 @@
     NSNumber *badge = content.badge;                // 推送消息的角标
     NSString *body = content.body;                  // 推送消息体
     UNNotificationSound *sound = content.sound;     // 推送消息的声音
-    NSString *subtitle = content.subtitle;          // 推送消息的副标题
     NSString *title = content.title;                // 推送消息的标题
-    
+    NSString *subtitle = content.subtitle;          // 推送消息的副标题
+
     if([notification.request.trigger isKindOfClass:[UNPushNotificationTrigger class]]) { // 远程通知
         NSLog(@"---------- iOS10前台收到远程通知");
         NSLog(@"body:%@,title:%@,subtitle:%@,badge:%@,sound:%@,userInfo:%@",body,title,subtitle,badge,sound,userInfo);

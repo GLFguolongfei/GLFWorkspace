@@ -122,7 +122,6 @@ HMSingletonM(DocumentManager)
             NSCalendar *calendar = [NSCalendar currentCalendar];
             NSCalendarUnit type = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
             NSDateComponents *cmps = [calendar components:type fromDate:startDate toDate:endDate options:0];
-            NSLog(@"全局遍历完成,一共用时: %ld分%ld秒", cmps.minute, cmps.second);
             // 本地推送
             CGFloat allSize = 0;
             for (NSInteger i = 0; i < allFilesArray.count; i++) {
@@ -130,12 +129,12 @@ HMSingletonM(DocumentManager)
                 allSize += model.size;
             }
             NSString *sizeStr = [GLFFileManager returenSizeStr:allSize];
-            NSString *str = [NSString stringWithFormat:@"遍历完成 总用时: %ld分%ld秒 总大小: %@", cmps.minute, cmps.second, sizeStr];
-            
+            NSString *str = [NSString stringWithFormat:@"总用时: %ld分%ld秒 总大小: %@", cmps.minute, cmps.second, sizeStr];
+            NSLog(@"全局遍历完成, %@", str);
+
             UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
             content.title = @"遍历完成";
             content.body = str;
-            content.badge = @1;
             content.sound = [UNNotificationSound defaultSound];
             content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
             
