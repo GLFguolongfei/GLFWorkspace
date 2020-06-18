@@ -260,8 +260,11 @@
 }
 
 - (void)removeLocalNotifications {
-    UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-    [center removeAllDeliveredNotifications];
+    UIApplication *app = [UIApplication sharedApplication];
+    NSArray *localArray = [app scheduledLocalNotifications];
+    NSLog(@"所有本地推送: %@", localArray);
+    [app cancelAllLocalNotifications];
+    NSLog(@"解除所有本地推送");
 }
 
 
