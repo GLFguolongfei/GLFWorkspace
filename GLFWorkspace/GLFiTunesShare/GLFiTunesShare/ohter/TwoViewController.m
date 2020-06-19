@@ -16,6 +16,8 @@
     UIDynamicItemBehavior *itemBehavior;    // 辅助行为
     
     NSMutableArray *allImagesArray;
+    NSInteger maxWidth;
+    BOOL isMax;
 }
 @end
 
@@ -26,8 +28,13 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"大图" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
+    self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"UIKit动力学"];
 
+    maxWidth = kScreenWidth / 4;
+    isMax = NO;
+    
     // 1-动画者
     animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
     // 2-重力仿真行为
@@ -76,9 +83,8 @@
         image = [UIImage imageWithContentsOfFile:model.path];
     }
 
-    NSInteger www = kScreenWidth / 2;
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-    NSInteger width = arc4random() % www;
+    NSInteger width = arc4random() % maxWidth;
     if (width < 10) {
         width = 10;
     }
@@ -91,6 +97,19 @@
     [gravityBeahvior addItem:imageView];
     [collisionBehavior addItem:imageView];
     [itemBehavior addItem:imageView];
+}
+
+- (void)button {
+    if (isMax) {
+        maxWidth = kScreenWidth / 4;
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"大图" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
+        self.navigationItem.rightBarButtonItem = item;
+    } else {
+        maxWidth = kScreenWidth / 2;
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"小图" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
+        self.navigationItem.rightBarButtonItem = item;
+    }
+    isMax = !isMax;
 }
 
 #pragma mark UICollisionBehaviorDelegate
