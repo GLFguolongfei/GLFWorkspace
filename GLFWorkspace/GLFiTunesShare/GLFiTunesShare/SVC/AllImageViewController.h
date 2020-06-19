@@ -12,7 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AllImageViewController : BaseViewController
 
-@property (nonatomic, assign) NSInteger start;
+@property (nonatomic, assign) BOOL isPageShow;
+@property (nonatomic, assign) NSInteger startIndex;
+@property (nonatomic, assign) NSInteger pageCount;
 
 @end
 

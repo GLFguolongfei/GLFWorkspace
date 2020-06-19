@@ -43,8 +43,6 @@
     self.canHiddenNaviBar = YES;
     self.canHiddenToolBar = YES;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(imagePageSelect:) name:@"ImagePageSelect" object:nil];
-
     // 设置背景图片
     bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
@@ -222,8 +220,43 @@
 }
 
 - (void)button1 {
-    AllImageViewController *imageVC = [[AllImageViewController alloc] init];
-    [self.navigationController pushViewController:imageVC animated:YES];
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertVC addAction:cancelAction];
+    
+    NSInteger allImagesCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllImagesArrayCount"];
+    NSInteger pageCount = 120;
+    NSInteger allPages = allImagesCount / pageCount;
+    if (allImagesCount % pageCount != 0) {
+        allPages++;
+    }
+    for (NSInteger i = 0; i < allPages; i++) {
+        NSInteger startIndex = pageCount * i;
+        NSInteger endIndex = pageCount * (i + 1);
+        if (endIndex > allImagesCount) {
+            endIndex = allImagesCount;
+        }
+        NSString *str = [NSString stringWithFormat:@"%ld ~~~ %ld", startIndex + 1, endIndex + 1];
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:str style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            AllImageViewController *imageVC = [[AllImageViewController alloc] init];
+            imageVC.isPageShow = YES;
+            imageVC.startIndex = startIndex;
+            imageVC.pageCount = pageCount;
+            [self.navigationController pushViewController:imageVC animated:YES];
+        }];
+        [alertVC addAction:okAction];
+    }
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"全部图片资源" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        AllImageViewController *imageVC = [[AllImageViewController alloc] init];
+        [self.navigationController pushViewController:imageVC animated:YES];
+    }];
+    [alertVC addAction:okAction];
+
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 - (void)button2 {
@@ -244,19 +277,6 @@
 - (void)button5 {
     OtherViewController *otherVC = [[OtherViewController alloc] init];
     [self.navigationController pushViewController:otherVC animated:YES];
-}
-
-- (void)imagePageSelect:(NSNotification *)notify {
-    NSString *name = notify.name;
-    NSString *object = notify.object;
-    NSDictionary *dict = notify.userInfo;
-    NSLog(@"接受到的广播频率是: %@, 广播对象是: %@, 内容为: %@", name, object, dict);
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        AllImageViewController *imageVC = [[AllImageViewController alloc] init];
-        imageVC.start = [dict[@"start"] integerValue];
-        [self.navigationController pushViewController:imageVC animated:YES];
-    });
 }
 
 #pragma mark UIActionSheetDelegate

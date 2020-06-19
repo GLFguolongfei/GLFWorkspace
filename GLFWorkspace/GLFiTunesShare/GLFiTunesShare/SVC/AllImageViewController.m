@@ -40,9 +40,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UITableView *_tableView3;
     NSMutableArray *_dataArray1;
     NSMutableArray *_dataArray2;
-    NSMutableArray *_dataArray3;
-    
-    NSInteger pageCount;
+    NSMutableArray *_dataArray3;    
 }
 @end
 
@@ -53,13 +51,13 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"缩略图" style:UIBarButtonItemStylePlain target:self action:@selector(scaleImage)];
-    self.navigationItem.rightBarButtonItem = item;
+    if (!self.isPageShow) {
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"缩略图" style:UIBarButtonItemStylePlain target:self action:@selector(scaleImage)];
+        self.navigationItem.rightBarButtonItem = item;
+    }
     [self setVCTitle:@"所有图片"];
     self.canHiddenNaviBar = YES;
-    
-    pageCount = 600;
-    
+        
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
 
     // 1-动画者
@@ -116,31 +114,31 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 
 - (void)prepareData {
     [self showHUD:@"加载中, 不要着急!"];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
-    NSArray *allArray = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
-    if (allArray.count > 600) {
-        UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"略图" style:UIBarButtonItemStylePlain target:self action:@selector(scaleImage)];
-        UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"页码" style:UIBarButtonItemStylePlain target:self action:@selector(pageImage)];
-        self.navigationItem.rightBarButtonItems = @[item1, item2];
-    }
-    if (self.start == 0) {
+    NSInteger allImagesCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllImagesArrayCount"];
+    if (self.isPageShow) {
         [DocumentManager getAllImagesArray:^(NSArray * array) {
             [self hideAllHUD];
             [self rePrepareData:array];
-        }];
+        } startIndex:self.startIndex lengthCount:self.pageCount];
     } else {
         [DocumentManager getAllImagesArray:^(NSArray * array) {
             [self hideAllHUD];
             [self rePrepareData:array];
-        } startIndex:self.start lengthCount:pageCount];
+        }];
     }
-    NSString *title = [NSString stringWithFormat:@"所有图片(%ld)", allArray.count];
+    NSString *title = [NSString stringWithFormat:@"所有图片(%ld)", allImagesCount];
     [self setVCTitle:title];
 }
 
 - (void)rePrepareData:(NSArray *)array {
+    if (self.isPageShow) {
+        for (NSInteger i = 0; i < array.count; i++) {
+            FileModel *model = array[i];
+            CGFloat scale = [self returnScaleSize:model.size];
+            UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
+            model.scaleImage = scaleImage;
+        }
+    }
     allImagesArray = [array mutableCopy];
     _dataArray1 = [[NSMutableArray alloc] init];
     _dataArray2 = [[NSMutableArray alloc] init];
@@ -407,38 +405,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 }
 
 - (void)pageImage {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *archiverPath = [path stringByAppendingPathComponent:@"GLFConfig/allImagesArray.plist"];
-    NSArray *array = [NSKeyedUnarchiver unarchiveObjectWithFile:archiverPath];
     
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"" message:@"请选择页码" preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-    }];
-    [alertVC addAction:cancelAction];
-    
-    NSInteger count = array.count / pageCount;
-    if (array.count % pageCount != 0) {
-        count++;
-    }
-    for (NSInteger i = 0; i < count; i++) {
-        NSInteger start = pageCount * i;
-        NSInteger end = pageCount * (i + 1);
-        if (end > array.count) {
-            end = array.count;
-        }
-        NSString *str = [NSString stringWithFormat:@"%ld ~~~ %ld", start, end];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:str style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            NSDictionary *dic = [NSDictionary dictionaryWithObjectsAndKeys:@(start), @"start", nil];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"ImagePageSelect" object:self userInfo:dic];
-            [self.navigationController popViewControllerAnimated:YES];
-        }];
-        [alertVC addAction:okAction];
-    }
-
-    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 - (void)naviBarChange:(NSNotification *)notify {

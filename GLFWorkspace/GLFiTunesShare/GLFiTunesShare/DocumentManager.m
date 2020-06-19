@@ -135,7 +135,7 @@ HMSingletonM(DocumentManager)
             UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
             content.title = @"全局遍历完成";
             content.body = str;
-            content.sound = [UNNotificationSound defaultSound];
+            // content.sound = [UNNotificationSound defaultSound];
             content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
             
             UNTimeIntervalNotificationTrigger *intervalTrigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats:NO];
@@ -165,6 +165,15 @@ HMSingletonM(DocumentManager)
             BOOL isSuccess7 = [NSKeyedArchiver archiveRootObject:allNoDYVideosArray toFile:archiverPath7];
             if (isSuccess1 & isSuccess2 & isSuccess3 & isSuccess4 & isSuccess5 & isSuccess6 & isSuccess7) {
                 NSLog(@"archiver success");
+                NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+                [userDefaults setInteger:allArray.count forKey:@"AllArrayCount"];
+                [userDefaults setInteger:allFoldersArray.count forKey:@"AllFoldersArrayCount"];
+                [userDefaults setInteger:allFilesArray.count forKey:@"AllFilesArrayCount"];
+                [userDefaults setInteger:allImagesArray.count forKey:@"AllImagesArrayCount"];
+                [userDefaults setInteger:allVideosArray.count forKey:@"AllVideosArrayCount"];
+                [userDefaults setInteger:allDYVideosArray.count forKey:@"AllDYVideosArrayCount"];
+                [userDefaults setInteger:allNoDYVideosArray.count forKey:@"AllNoDYVideosArrayCount"];
+                [userDefaults synchronize];
             } else {
                 NSLog(@"archiver error");
             }
