@@ -10,7 +10,7 @@
 
 static NSString * const StartStr = @"thunderHref=";
 static NSString * const EndStr = @"</A>";
-static NSInteger const PageCount = 200;
+static NSInteger const PageCount = 500;
 
 @implementation ProjectManager
 
@@ -18,7 +18,7 @@ HMSingletonM(ProjectManager)
 
 #pragma mark - 网络爬虫
 + (void)getNetworkDataTest {
-    NSString *urlStr = @"https://www.7027d62825fed025.com/play.x?stype=mlvideo&movieid=15067";
+    NSString *urlStr = @"https://www.p4s3.com/play.x?stype=mlmovie&movieid=8867";
     NSURL *url = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:nil completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
@@ -28,7 +28,7 @@ HMSingletonM(ProjectManager)
             NSRange range1 = [str rangeOfString:StartStr];
             NSRange range2 = [str rangeOfString:EndStr];
             if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
-                NSRange range = NSMakeRange(range1.location, range2.location - range1.location + 10);
+                NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
                 NSString *resultStr = [str substringWithRange:range];
                 NSLog(@"%@", resultStr);
             }
@@ -45,7 +45,7 @@ HMSingletonM(ProjectManager)
             NSRange range1 = [str rangeOfString:StartStr];
             NSRange range2 = [str rangeOfString:EndStr];
             if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
-                NSRange range = NSMakeRange(range1.location, range2.location - range1.location);
+                NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
                 NSString *resultStr = [str substringWithRange:range];
                 NSLog(@"%@", resultStr);
             }
@@ -73,7 +73,7 @@ HMSingletonM(ProjectManager)
                 NSRange range1 = [str rangeOfString:StartStr];
                 NSRange range2 = [str rangeOfString:EndStr];
                 if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
-                    NSRange range = NSMakeRange(range1.location, range2.location - range1.location + 10);
+                    NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
                     NSString *resultStr = [str substringWithRange:range];
                     [resultArray addObject:resultStr];
                     NSLog(@"下载进度: %ld / %ld", resultArray.count, PageCount);
@@ -89,14 +89,14 @@ HMSingletonM(ProjectManager)
 
 // AFHTTPSessionManager
 + (void)getNetworkData2 {
-    NSInteger startIndex = 4000;
+    NSInteger startIndex = 9900;
     NSInteger endIndex = startIndex + PageCount;
     __block NSInteger counter = 0;
 
     NSMutableArray *resultArray = [[NSMutableArray alloc] init];
     for (NSInteger i = startIndex; i < endIndex; i++) {
         startIndex++;
-        NSString *urlStr = [NSString stringWithFormat:@"https://www.7027d62825fed025.com/play.x?stype=mlvideo&movieid=%ld", i];
+        NSString *urlStr = [NSString stringWithFormat:@"https://www.a3h7.com/play.x?stype=mlmovie&movieid=%ld", i];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -106,7 +106,7 @@ HMSingletonM(ProjectManager)
                 NSRange range1 = [str rangeOfString:StartStr];
                 NSRange range2 = [str rangeOfString:EndStr];
                 if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
-                    NSRange range = NSMakeRange(range1.location, range2.location - range1.location);
+                    NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
                     NSString *resultStr = [str substringWithRange:range];
                     [resultArray addObject:resultStr];
                     NSLog(@"下载进度: %ld / %ld", resultArray.count, PageCount);
