@@ -32,9 +32,9 @@
 //    [self testArchiverData];
     
     // 网络爬虫
-//    [NetworkManager getNetworkData1];
-    [NetworkManager getNetworkData2];
-//    [NetworkManager getNetworkDataTest];
+    [ProjectManager getNetworkDataTest];
+//    [ProjectManager getNetworkData1];
+//    [ProjectManager getNetworkData2];
     
 //    WKWebViewController *vc = [[WKWebViewController alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];

@@ -26,7 +26,7 @@
 #import "GLFTools.h"
 #import "GLFFileManager.h"
 #import "DocumentManager.h"
-#import "NetworkManager.h"
+#import "ProjectManager.h"
 #import "LewPopupViewController.h"
 #import "AFHTTPSessionManager.h"
 // Models

@@ -1,8 +1,8 @@
 //
-//  NetworkManager.h
+//  ProjectManager.h
 //  GLFiTunesShare
 //
-//  Created by guolongfei on 2020/6/14.
+//  Created by guolongfei on 2020/6/20.
 //  Copyright © 2020 GuoLongfei. All rights reserved.
 //
 
@@ -10,14 +10,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface NetworkManager : NSObject
+@interface ProjectManager : NSObject
 
-HMSingletonH(NetworkManager)
+HMSingletonH(ProjectManager)
 
 #pragma mark 网络爬虫
-+ (void)getNetworkData1;
-+ (void)getNetworkData2;
 + (void)getNetworkDataTest;
+// NSURLConnection
++ (void)getNetworkData1;
+// AFHTTPSessionManager
++ (void)getNetworkData2;
 
 #pragma mark 公司自动打卡
 + (void)iskytripLogin;

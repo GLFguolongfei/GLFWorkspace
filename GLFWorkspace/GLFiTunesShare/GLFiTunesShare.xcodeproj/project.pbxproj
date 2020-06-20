@@ -387,6 +387,8 @@
 		6F4C2C4A24004C9A0094D193 /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F4C2C2624004C9A0094D193 /* AFSecurityPolicy.m */; };
 		6F4C2C4D24004DF90094D193 /* FiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F4C2C4C24004DF90094D193 /* FiveViewController.m */; };
 		6F4C2C4E24004DF90094D193 /* FiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F4C2C4C24004DF90094D193 /* FiveViewController.m */; };
+		6F538DD9249E662900E93D4D /* ProjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F538DD8249E662900E93D4D /* ProjectManager.m */; };
+		6F538DDA249E662900E93D4D /* ProjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F538DD8249E662900E93D4D /* ProjectManager.m */; };
 		6F58F45620BDB0E1003E0911 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45520BDB0E1003E0911 /* DetailViewController2.m */; };
 		6F58F45720BDB0E1003E0911 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45520BDB0E1003E0911 /* DetailViewController2.m */; };
 		6F58F45A20BDB0FC003E0911 /* SubViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45920BDB0FC003E0911 /* SubViewController2.m */; };
@@ -404,8 +406,6 @@
 		6F6C6F1623F804FA00D7AFAC /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F393F8D1FA1B3E90049CF49 /* CloudKit.framework */; };
 		6F6C6F1723F8050E00D7AFAC /* LocalAuthentication.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F040F981FAD6EDC00EF4721 /* LocalAuthentication.framework */; };
 		6F6C6F1823F8052E00D7AFAC /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F0CB5D523485C0300B69807 /* WebKit.framework */; };
-		6F7E9AB3249620260075DAF2 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7E9AB2249620260075DAF2 /* NetworkManager.m */; };
-		6F7E9AB4249620260075DAF2 /* NetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7E9AB2249620260075DAF2 /* NetworkManager.m */; };
 		6F8072B21F7E436E007D7B26 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072B11F7E436E007D7B26 /* AppDelegate.m */; };
 		6F8072B51F7E436E007D7B26 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F8072B41F7E436E007D7B26 /* ViewController.m */; };
 		6F8072B81F7E436E007D7B26 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F8072B61F7E436E007D7B26 /* Main.storyboard */; };
@@ -873,6 +873,8 @@
 		6F4C2C2824004C9A0094D193 /* AFHTTPSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AFHTTPSessionManager.h; sourceTree = "<group>"; };
 		6F4C2C4B24004DF90094D193 /* FiveViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FiveViewController.h; sourceTree = "<group>"; };
 		6F4C2C4C24004DF90094D193 /* FiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FiveViewController.m; sourceTree = "<group>"; };
+		6F538DD7249E662900E93D4D /* ProjectManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectManager.h; sourceTree = "<group>"; };
+		6F538DD8249E662900E93D4D /* ProjectManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectManager.m; sourceTree = "<group>"; };
 		6F58F45420BDB0E1003E0911 /* DetailViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController2.h; sourceTree = "<group>"; };
 		6F58F45520BDB0E1003E0911 /* DetailViewController2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController2.m; sourceTree = "<group>"; };
 		6F58F45820BDB0FC003E0911 /* SubViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubViewController2.h; sourceTree = "<group>"; };
@@ -882,8 +884,6 @@
 		6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen2.storyboard; sourceTree = "<group>"; };
 		6F6C6F0E23F7F88A00D7AFAC /* DocumentManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DocumentManager.h; sourceTree = "<group>"; };
 		6F6C6F0F23F7F88A00D7AFAC /* DocumentManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DocumentManager.m; sourceTree = "<group>"; };
-		6F7E9AB1249620260075DAF2 /* NetworkManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NetworkManager.h; sourceTree = "<group>"; };
-		6F7E9AB2249620260075DAF2 /* NetworkManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NetworkManager.m; sourceTree = "<group>"; };
 		6F8072AD1F7E436E007D7B26 /* GLFiTunesShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GLFiTunesShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F8072B01F7E436E007D7B26 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		6F8072B11F7E436E007D7B26 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -1700,8 +1700,8 @@
 				6F96B69B23E34A46006A2D00 /* TestViewController.m */,
 				6F6C6F0E23F7F88A00D7AFAC /* DocumentManager.h */,
 				6F6C6F0F23F7F88A00D7AFAC /* DocumentManager.m */,
-				6F7E9AB1249620260075DAF2 /* NetworkManager.h */,
-				6F7E9AB2249620260075DAF2 /* NetworkManager.m */,
+				6F538DD7249E662900E93D4D /* ProjectManager.h */,
+				6F538DD8249E662900E93D4D /* ProjectManager.m */,
 				6F1EEAD71FB1A4060046389D /* Root */,
 				6F9388B4241BE9640024DBB9 /* SVC */,
 				6F1EEB141FB1A86A0046389D /* Setup */,
@@ -2108,7 +2108,6 @@
 				6F09962A241F524300B8C681 /* UIImage+Transform.m in Sources */,
 				6F4C2C4924004C9A0094D193 /* AFSecurityPolicy.m in Sources */,
 				6F06F9E323F04FF8006E5C97 /* FourViewController.m in Sources */,
-				6F7E9AB3249620260075DAF2 /* NetworkManager.m in Sources */,
 				6F1D45D82451CEEA0093599F /* LewPopupViewAnimationSlide.m in Sources */,
 				6F1EEB001FB1A4060046389D /* DetailViewController.m in Sources */,
 				6F0E96271FA4135B0029DDD6 /* WaterView2.m in Sources */,
@@ -2129,6 +2128,7 @@
 				6F1EEB211FB1A86A0046389D /* WebSetupViewController.m in Sources */,
 				6F01DFFC2401720D00F64623 /* View+MASAdditions.m in Sources */,
 				6F6C6F1023F7F88A00D7AFAC /* DocumentManager.m in Sources */,
+				6F538DD9249E662900E93D4D /* ProjectManager.m in Sources */,
 				6F90B04224123C8000D7B447 /* ImageSubViewController.m in Sources */,
 				6F099660241F524300B8C681 /* NSData+ImageContentType.m in Sources */,
 				6FE944E120BE4EF6005A46AD /* DetailViewController3.m in Sources */,
@@ -2330,7 +2330,6 @@
 				6F09962B241F524300B8C681 /* UIImage+Transform.m in Sources */,
 				6F1EEB2D1FB1ADD50046389D /* PhotoLibraryViewController.m in Sources */,
 				6F4C2C4A24004C9A0094D193 /* AFSecurityPolicy.m in Sources */,
-				6F7E9AB4249620260075DAF2 /* NetworkManager.m in Sources */,
 				6F1D45D92451CEEA0093599F /* LewPopupViewAnimationSlide.m in Sources */,
 				6F06F9E423F04FF8006E5C97 /* FourViewController.m in Sources */,
 				6F1EEB2F1FB1ADD50046389D /* WebSetupViewController.m in Sources */,
@@ -2351,6 +2350,7 @@
 				6FE944E220BE4EF6005A46AD /* DetailViewController3.m in Sources */,
 				6F01DFFD2401720D00F64623 /* View+MASAdditions.m in Sources */,
 				6F6C6F1123F7F88A00D7AFAC /* DocumentManager.m in Sources */,
+				6F538DDA249E662900E93D4D /* ProjectManager.m in Sources */,
 				6F90B04324123C8000D7B447 /* ImageSubViewController.m in Sources */,
 				6F099661241F524300B8C681 /* NSData+ImageContentType.m in Sources */,
 				6F0E960E1FA4135B0029DDD6 /* Base64.m in Sources */,
