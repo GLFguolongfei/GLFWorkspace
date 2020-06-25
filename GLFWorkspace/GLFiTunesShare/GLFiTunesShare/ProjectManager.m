@@ -8,8 +8,8 @@
 
 #import "ProjectManager.h"
 
-static NSString * const StartStr = @"thunderHref=";
-static NSString * const EndStr = @"</A>";
+static NSString * const StartStr = @"http://";
+static NSString * const EndStr = @".mp4";
 static NSInteger const PageCount = 500;
 
 @implementation ProjectManager
@@ -18,7 +18,7 @@ HMSingletonM(ProjectManager)
 
 #pragma mark - 网络爬虫
 + (void)getNetworkDataTest {
-    NSString *urlStr = @"https://www.p4s3.com/play.x?stype=mlmovie&movieid=8867";
+    NSString *urlStr = @"https://yaoshe116.com/videos/49125/eee141a6eed2cc1125235a55b03aa326/";
     NSURL *url = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:nil completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
@@ -89,14 +89,14 @@ HMSingletonM(ProjectManager)
 
 // AFHTTPSessionManager
 + (void)getNetworkData2 {
-    NSInteger startIndex = 9900;
+    NSInteger startIndex = 13500;
     NSInteger endIndex = startIndex + PageCount;
     __block NSInteger counter = 0;
 
     NSMutableArray *resultArray = [[NSMutableArray alloc] init];
     for (NSInteger i = startIndex; i < endIndex; i++) {
         startIndex++;
-        NSString *urlStr = [NSString stringWithFormat:@"https://www.a3h7.com/play.x?stype=mlmovie&movieid=%ld", i];
+        NSString *urlStr = [NSString stringWithFormat:@"https://www.p4s3.com/play.x?stype=mlvideo&movieid=%ld", i];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -173,12 +173,33 @@ HMSingletonM(ProjectManager)
     [task resume];
 }
 
+#pragma mark 其它
++ (void)calcData {
+    NSMutableArray *resultArray = [[NSMutableArray alloc] init];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *filePath = [path stringByAppendingPathComponent:@"data.txt"];
+    NSArray *array = [NSArray arrayWithContentsOfFile:filePath];
+    for (NSInteger i = 0; i < array.count; i++) {
+        NSString *str = array[i];
+        NSRange range1 = [str rangeOfString:@"http://"];
+        NSRange range2 = [str rangeOfString:@".mp4"];
+        if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
+            NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
+            NSString *resultStr = [str substringWithRange:range];
+//            NSLog(@"%@", resultStr);
+            [resultArray addObject:resultStr];
+        }
+    }
+    [self saveData:resultArray];
+}
+
 #pragma mark - 私有方法
 + (void)saveData:(NSArray *)array {
     NSLog(@"网络数据爬取成功,总数: %ld", array.count);
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths objectAtIndex:0];
-    NSString *filePath = [path stringByAppendingPathComponent:@"data.txt"];
+    NSString *filePath = [path stringByAppendingPathComponent:@"data1.txt"];
     BOOL isSuccess = [array writeToFile:filePath atomically:YES];
     if (isSuccess) {
         NSLog(@"网络数据保存成功");

@@ -24,6 +24,9 @@ HMSingletonH(ProjectManager)
 #pragma mark 公司自动打卡
 + (void)iskytripLogin;
 
+#pragma mark 其它
++ (void)calcData;
+
 @end
 
 NS_ASSUME_NONNULL_END

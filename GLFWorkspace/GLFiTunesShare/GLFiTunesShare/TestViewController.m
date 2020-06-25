@@ -32,6 +32,7 @@
 //    [self testArchiverData];
     
     // 网络爬虫
+//    [ProjectManager calcData];
 //    [ProjectManager getNetworkDataTest];
 //    [ProjectManager getNetworkData1];
     [ProjectManager getNetworkData2];
