@@ -9,8 +9,9 @@
 #import "LoginViewController.h"
 #import <LocalAuthentication/LocalAuthentication.h>
 #import "RootViewController.h"
+#import "DYViewController.h"
 
-@interface LoginViewController ()<UITextFieldDelegate>
+@interface LoginViewController ()
 {
     UITextField *textField;
     UIButton *button;
@@ -41,7 +42,6 @@
     textField.layer.cornerRadius = 5;
     textField.layer.borderWidth = 1;
     textField.layer.borderColor = [UIColor lightGrayColor].CGColor;
-//    textField.delegate = self;
     [self.view addSubview:textField];
     // 左侧加View
     CGRect frame = [textField frame];
@@ -104,16 +104,19 @@
     NSString *decodedStr = [password base64DecodedString];
     NSString *str = [textField.text lowercaseString];
     if ([str isEqualToString:decodedStr] && isSu) {
+        [ProjectManager sharedProjectManager].loginType = @"1";
         textField.text = @"";
         RootViewController *rootVC = [[RootViewController alloc] init];
         rootVC.moveModel = self.moveModel;
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:rootVC];
-        // 翻转模式
-        //     UIModalTransitionStyleCoverVertical = 0, // 底部弹出(默认)
-        //     UIModalTransitionStyleFlipHorizontal,    // 翻转
-        //     UIModalTransitionStyleCrossDissolve,     // 闪现
-        //     UIModalTransitionStylePartialCurl        // 翻页
         navi.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        [self presentViewController:navi animated:YES completion:nil];
+    } else if ([str isEqualToString:decodedStr]) {
+        [ProjectManager sharedProjectManager].loginType = @"2";
+        textField.text = @"";
+        DYViewController *dyVC = [[DYViewController alloc] init];
+        UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:dyVC];
+        navi.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
         [self presentViewController:navi animated:YES completion:nil];
     } else {
         if (str.length == 0) {
@@ -143,6 +146,7 @@
         [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:@"开启了指纹识别,将打开隐藏功能" reply:^(BOOL success, NSError * _Nullable error) {
             if (success) { // 指纹识别成功,回主线程更新UI,弹出提示框
                 dispatch_async(dispatch_get_main_queue(), ^{
+                    [ProjectManager sharedProjectManager].loginType = @"1";
                     RootViewController *rootVC = [[RootViewController alloc] init];
                     rootVC.moveModel = self.moveModel;
                     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:rootVC];
@@ -158,19 +162,10 @@
             if (error) { // 指纹识别出现错误,回主线程更新UI,弹出提示框
                 dispatch_async(dispatch_get_main_queue(), ^{
                     NSLog(@"%@", error.localizedDescription);
-//                    [self showStringHUD:error.localizedDescription second:1];
                 });
             }
         }];
     }
-}
-
-#pragma mark UITextFieldDelegate
-- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string {
-    if (textField.text.length > 5) {
-        return NO;
-    }
-    return YES;
 }
 
 

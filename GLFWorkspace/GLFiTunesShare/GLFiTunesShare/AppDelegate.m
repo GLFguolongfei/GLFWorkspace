@@ -51,10 +51,12 @@
         self.window.rootViewController = navi;
     } else {
 #if FirstTarget
+        [ProjectManager sharedProjectManager].loginType = @"1";
         RootViewController *rootVC = [[RootViewController alloc] init];
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:rootVC];
         self.window.rootViewController = navi;
 #elif SecondTarget
+        [ProjectManager sharedProjectManager].loginType = @"2";
         LoginViewController *loginVC = [[LoginViewController alloc] init];
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:loginVC];
         self.window.rootViewController = navi;

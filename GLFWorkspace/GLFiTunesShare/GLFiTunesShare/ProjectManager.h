@@ -14,6 +14,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 HMSingletonH(ProjectManager)
 
+@property (nonatomic, assign) NSString *loginType; // 1-首页 2-抖音页
+
 #pragma mark 网络爬虫
 + (void)getNetworkDataTest;
 // NSURLConnection
