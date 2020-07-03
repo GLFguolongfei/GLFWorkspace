@@ -631,6 +631,15 @@
         [self viewEditing:YES];
         return;
     }
+    NSArray *array = [model.name componentsSeparatedByString:@"."];
+    NSString *str = @"";
+    NSString *name = model.name;
+    if (array.count > 1) {
+        str = array.lastObject;
+        name = [model.name substringToIndex:model.name.length - str.length - 1];
+    }
+    NSLog(@"%@", name);
+    
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"给项目重新命名" message:@"为该项目输入新名称" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         [self viewEditing:YES];
@@ -641,6 +650,9 @@
             UITextField *textField = alertVC.textFields.firstObject;
             NSLog(@"重命名文件夹名称: %@", textField.text);
             NSString *toPath = [NSString stringWithFormat:@"%@/%@", fileManager.currentPath, textField.text];
+            if (str.length > 0) {
+                toPath = [NSString stringWithFormat:@"%@/%@.%@", fileManager.currentPath, textField.text, str];
+            }
             BOOL success = [GLFFileManager fileMove:model.path toPath:toPath];
             if (success) {
                 [self prepareData];
@@ -654,7 +666,7 @@
     [alertVC addAction:okAction];
     [alertVC addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
         textField.placeholder = @"请输入新名称";
-        textField.text = model.name;
+        textField.text = name;
     }];
     [self presentViewController:alertVC animated:YES completion:nil];
 }
