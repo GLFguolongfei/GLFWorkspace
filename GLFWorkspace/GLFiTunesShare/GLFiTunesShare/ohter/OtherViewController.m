@@ -18,7 +18,6 @@
 @interface OtherViewController ()
 {
     UIView *gestureView;
-    UIBarButtonItem *item;
 }
 @end
 
@@ -29,10 +28,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
-    item = [[UIBarButtonItem alloc] initWithTitle:@"测试功能" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
+//    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"测试功能" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
+//    self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"有趣功能"];
 
-    for (NSInteger i = 0; i < 7; i++) {
+    for (NSInteger i = 0; i < 6; i++) {
         CGFloat width = (kScreenWidth - 60) / 2;
         CGRect frame = CGRectMake(20 * (i % 2 + 1) + width * (i % 2), 100 + 80 * ceil(i / 2), width, 60);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
@@ -107,8 +107,7 @@
 }
 
 - (void)button {
-    TestViewController *testVC = [[TestViewController alloc] init];
-    [self.navigationController pushViewController:testVC animated:YES];
+
 }
 
 - (void)buttonAction:(UIButton *)button {
@@ -144,13 +143,9 @@
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"测试按钮" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        if (self.navigationItem.rightBarButtonItem == nil) {
-            self.navigationItem.rightBarButtonItem = item;
-        } else {
-            self.navigationItem.rightBarButtonItem = nil;
-        }
-        [[NSUserDefaults standardUserDefaults] synchronize];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"测试页" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        TestViewController *testVC = [[TestViewController alloc] init];
+        [self.navigationController pushViewController:testVC animated:YES];
     }];
     [alertVC addAction:okAction];
 

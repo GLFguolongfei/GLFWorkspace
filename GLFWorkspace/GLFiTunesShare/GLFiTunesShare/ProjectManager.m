@@ -76,10 +76,10 @@ HMSingletonM(ProjectManager)
                     NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
                     NSString *resultStr = [str substringWithRange:range];
                     [resultArray addObject:resultStr];
-                    NSLog(@"下载进度: %ld / %ld", resultArray.count, PageCount);
                 }
             }
             counter++;
+            NSLog(@"爬取进度: %ld / %ld", counter, PageCount);
             if (counter >= PageCount) {
                 [self saveData:resultArray];
             }
@@ -89,7 +89,7 @@ HMSingletonM(ProjectManager)
 
 // AFHTTPSessionManager
 + (void)getNetworkData2 {
-    NSInteger startIndex = 13500;
+    NSInteger startIndex = 13000;
     NSInteger endIndex = startIndex + PageCount;
     __block NSInteger counter = 0;
 
@@ -109,16 +109,16 @@ HMSingletonM(ProjectManager)
                     NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
                     NSString *resultStr = [str substringWithRange:range];
                     [resultArray addObject:resultStr];
-                    NSLog(@"下载进度: %ld / %ld", resultArray.count, PageCount);
                 }
             }
             counter++;
+            NSLog(@"爬取进度(成功): %ld / %ld", counter, PageCount);
             if (counter >= PageCount) {
                 [self saveData:resultArray];
             }
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            NSLog(@"%@", error);
             counter++;
+            NSLog(@"爬取进度(失败): %ld / %ld", counter, PageCount);
             if (counter >= PageCount) {
                 [self saveData:resultArray];
             }
@@ -199,7 +199,7 @@ HMSingletonM(ProjectManager)
     NSLog(@"网络数据爬取成功,总数: %ld", array.count);
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths objectAtIndex:0];
-    NSString *filePath = [path stringByAppendingPathComponent:@"data1.txt"];
+    NSString *filePath = [path stringByAppendingPathComponent:@"data.txt"];
     BOOL isSuccess = [array writeToFile:filePath atomically:YES];
     if (isSuccess) {
         NSLog(@"网络数据保存成功");

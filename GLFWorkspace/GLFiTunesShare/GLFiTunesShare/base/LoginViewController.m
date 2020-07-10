@@ -116,7 +116,7 @@
         textField.text = @"";
         DYViewController *dyVC = [[DYViewController alloc] init];
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:dyVC];
-        navi.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        navi.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
         [self presentViewController:navi animated:YES completion:nil];
     } else {
         if (str.length == 0) {
