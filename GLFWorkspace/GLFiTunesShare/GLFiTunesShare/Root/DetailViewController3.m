@@ -51,6 +51,10 @@
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
     
+    if (self.isPlay) {
+        [self playOrPauseVideo];
+    }
+    
     self.navigationController.toolbarHidden = NO;
     
     UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(playerRewind)];
@@ -69,6 +73,16 @@
 // 更改状态栏
 - (UIStatusBarStyle)preferredStatusBarStyle {
     return UIStatusBarStyleLightContent;
+}
+
+#pragma mark 预览
+- (NSArray<id<UIPreviewActionItem>> *)previewActionItems {
+    UIPreviewAction *action1 = [UIPreviewAction actionWithTitle:@"删除" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"详情" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
+        [alert show];
+    }];
+    NSArray *actions = @[action1];
+    return actions;
 }
 
 #pragma mark Events

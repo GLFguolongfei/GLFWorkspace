@@ -14,4 +14,6 @@
 @property (nonatomic, assign) NSInteger selectIndex;
 @property (nonatomic, strong) NSArray *fileArray;
 
+@property (nonatomic, assign) BOOL isPlay;
+
 @end

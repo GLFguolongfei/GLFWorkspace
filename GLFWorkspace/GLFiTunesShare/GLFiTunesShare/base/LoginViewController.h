@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FileModel.h"
 
 @interface LoginViewController : BaseViewController
 

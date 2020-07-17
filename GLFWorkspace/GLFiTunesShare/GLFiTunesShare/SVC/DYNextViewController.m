@@ -249,22 +249,20 @@
         if ([editArray containsObject:currentModel.name]) {
             [editArray removeObject:currentModel.name];
             [editButton setImage:[UIImage imageNamed:@"dyNofavoriteBig"] forState:UIControlStateNormal];
-            [DocumentManager removeFavoriteModel:currentModel];
         } else {
             [editArray addObject:currentModel.name];
             [editButton setImage:[UIImage imageNamed:@"dyFavoriteBig"] forState:UIControlStateNormal];
-            [DocumentManager addFavoriteModel:currentModel];
         }
+        [DocumentManager favoriteModel:currentModel];
     } else {
         if ([editArray containsObject:currentModel.name]) {
             [editArray removeObject:currentModel.name];
             [editButton setImage:[UIImage imageNamed:@"dyNodeleteBig"] forState:UIControlStateNormal];
-            [DocumentManager removeRemoveModel:currentModel];
         } else {
             [editArray addObject:currentModel.name];
             [editButton setImage:[UIImage imageNamed:@"dyDeleteBig"] forState:UIControlStateNormal];
-            [DocumentManager addRemoveModel:currentModel];
         }
+        [DocumentManager removeModel:currentModel];
     }
 }
 

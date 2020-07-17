@@ -318,13 +318,12 @@
     if ([favoriteArray containsObject:currentModel.name]) {
         [favoriteArray removeObject:currentModel.name];
         [favoriteButton setImage:[UIImage imageNamed:@"dyNofavoriteBig"] forState:UIControlStateNormal];
-        [DocumentManager removeFavoriteModel:currentModel];
     } else {
         [favoriteArray addObject:currentModel.name];
         [favoriteButton setImage:[UIImage imageNamed:@"dyFavoriteBig"] forState:UIControlStateNormal];
-        [DocumentManager addFavoriteModel:currentModel];
     }
-    
+    [DocumentManager favoriteModel:currentModel];
+
     if (favoriteArray.count > 0) {
         barItem1.enabled = YES;
     } else {
@@ -336,13 +335,11 @@
     if ([removeArray containsObject:currentModel.name]) {
         [removeArray removeObject:currentModel.name];
         [removeButton setImage:[UIImage imageNamed:@"dyNodeleteBig"] forState:UIControlStateNormal];
-        [DocumentManager removeRemoveModel:currentModel];
     } else {
         [removeArray addObject:currentModel.name];
         [removeButton setImage:[UIImage imageNamed:@"dyDeleteBig"] forState:UIControlStateNormal];
-        [DocumentManager addRemoveModel:currentModel];
     }
-    
+    [DocumentManager removeModel:currentModel];
     if (removeArray.count > 0) {
         barItem2.enabled = YES;
     } else {

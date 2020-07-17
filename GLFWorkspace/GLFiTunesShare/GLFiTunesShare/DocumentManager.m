@@ -214,7 +214,7 @@ HMSingletonM(DocumentManager)
     }
 }
 
-+ (void)addFavoriteModel:(FileModel *)model {
++ (void)favoriteModel:(FileModel *)model {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *favoriteArray = [userDefaults objectForKey:kFavorite];
     if (!favoriteArray) {
@@ -222,25 +222,16 @@ HMSingletonM(DocumentManager)
     } else {
         favoriteArray = [favoriteArray mutableCopy];
     }
-    [favoriteArray addObject:model.name];
-    [userDefaults setObject:favoriteArray forKey:kFavorite];
-    [userDefaults synchronize];
-}
-
-+ (void)removeFavoriteModel:(FileModel *)model {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *favoriteArray = [userDefaults objectForKey:kFavorite];
-    if (!favoriteArray) {
-        favoriteArray = [[NSMutableArray alloc] init];
+    if ([favoriteArray containsObject:model.name]) {
+        [favoriteArray removeObject:model.name];
     } else {
-        favoriteArray = [favoriteArray mutableCopy];
+        [favoriteArray addObject:model.name];
     }
-    [favoriteArray removeObject:model.name];
     [userDefaults setObject:favoriteArray forKey:kFavorite];
     [userDefaults synchronize];
 }
 
-+ (void)addRemoveModel:(FileModel *)model {
++ (void)removeModel:(FileModel *)model {
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSMutableArray *removeArray = [userDefaults objectForKey:kRemove];
     if (!removeArray) {
@@ -248,20 +239,11 @@ HMSingletonM(DocumentManager)
     } else {
         removeArray = [removeArray mutableCopy];
     }
-    [removeArray addObject:model.name];
-    [userDefaults setObject:removeArray forKey:kRemove];
-    [userDefaults synchronize];
-}
-
-+ (void)removeRemoveModel:(FileModel *)model {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSMutableArray *removeArray = [userDefaults objectForKey:kRemove];
-    if (!removeArray) {
-        removeArray = [[NSMutableArray alloc] init];
+    if ([removeArray containsObject:model.name]) {
+        [removeArray removeObject:model.name];
     } else {
-        removeArray = [removeArray mutableCopy];
+        [removeArray addObject:model.name];
     }
-    [removeArray removeObject:model.name];
     [userDefaults setObject:removeArray forKey:kRemove];
     [userDefaults synchronize];
 }

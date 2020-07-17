@@ -42,18 +42,5 @@
     }
 }
 
-- (NSArray<id<UIPreviewActionItem>> *)previewActionItems {
-    UIPreviewAction *action1 = [UIPreviewAction actionWithTitle:@"详情1" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"详情1" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-        [alert show];
-    }];
-    UIPreviewAction *action2 = [UIPreviewAction actionWithTitle:@"详情2" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"详情2" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-            [alert show];
-        }];
-    NSArray *actions = @[action1, action2];
-    return actions;
-}
-
 
 @end

@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FileModel.h"
 
 // --- 简介页
 @interface FileInfoViewController : BaseViewController

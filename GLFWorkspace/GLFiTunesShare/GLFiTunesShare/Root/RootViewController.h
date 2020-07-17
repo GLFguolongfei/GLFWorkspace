@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FileModel.h"
 
 // --- 首页
 @interface RootViewController : BaseViewController
@@ -15,6 +14,6 @@
 @property (nonatomic, strong) NSString *titleStr;
 @property (nonatomic, strong) NSString *pathStr;
 // 当从iCloud共享过来数据时使用
-@property (nonatomic, strong) FileModel *moveModel;  
+@property (nonatomic, strong) FileModel *moveModel;
 
 @end

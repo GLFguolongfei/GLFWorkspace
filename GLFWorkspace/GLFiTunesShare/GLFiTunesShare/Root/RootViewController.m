@@ -59,7 +59,7 @@
     }
     self.navigationController.navigationBar.hidden = NO;
     self.navigationController.toolbarHidden = YES;
-    
+        
     // 设置背景图片
     bgImageView.image = [DocumentManager getBackgroundImage];
     
@@ -201,26 +201,27 @@
     UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
     self.toolbarItems = @[item1, space, item2, space, item3];
     
+    // 设置背景图片
+    bgImageView = [[UIImageView alloc] initWithFrame:kScreen];
+    bgImageView.contentMode = UIViewContentModeScaleAspectFill;
+    bgImageView.image = [DocumentManager getBackgroundImage];
+    [self.view addSubview:bgImageView];
+    
+    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = kScreen;
+    visualEfView.alpha = 0.5;
+    [bgImageView addSubview:visualEfView];
+    
     // 数据列表
-    CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
-    myTableView = [[UITableView alloc] initWithFrame:rect style:UITableViewStylePlain];
+    CGRect tableViewFrame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    myTableView = [[UITableView alloc] initWithFrame:tableViewFrame style:UITableViewStylePlain];
+    myTableView.backgroundColor = [UIColor clearColor];
     myTableView.delegate = self;
     myTableView.dataSource = self;
     myTableView.separatorInset = UIEdgeInsetsMake(0, -20, 0, 0);
     myTableView.allowsMultipleSelectionDuringEditing = YES;
     [self.view addSubview:myTableView];
     myTableView.tableFooterView = [[UIView alloc] init];
-
-    // 设置背景图片
-    bgImageView = [[UIImageView alloc] initWithFrame:myTableView.frame];
-    bgImageView.contentMode = UIViewContentModeScaleAspectFill;
-    bgImageView.image = [DocumentManager getBackgroundImage];
-    myTableView.backgroundView = bgImageView;
-    
-    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
-    visualEfView.frame = kScreen;
-    visualEfView.alpha = 0.5;
-    [bgImageView addSubview:visualEfView];
 }
 
 #pragma mark Events
@@ -491,47 +492,27 @@
                 [self showStringHUD:@"沒有程序可以打开要分享的文件" second:1.5];
             }
         } else {
-            // 获取所有类型文件
-            NSMutableArray *imageArray = [[NSMutableArray alloc] init];
-            NSMutableArray *videoArray = [[NSMutableArray alloc] init];
-            NSMutableArray *fileArray = [[NSMutableArray alloc] init];
-            for (NSInteger i = 0; i < myDataArray.count; i++) {
-                FileModel *md = myDataArray[i];
-                NSInteger indexType = [GLFFileManager fileExistsAtPath:md.path];
-                NSArray *array = [md.name componentsSeparatedByString:@"."];
-                NSString *lowerType = [array.lastObject lowercaseString];
-                if (indexType == 1) {
-                    if ([CimgTypeArray containsObject:lowerType]) {
-                        [imageArray addObject:md];
-                    } else if ([CvideoTypeArray containsObject:lowerType]) {
-                        [videoArray addObject:md];
-                    } else {
-                        [fileArray addObject:md];
-                    }
-                }
-            }
             // 进入详情页面
             if ([CimgTypeArray containsObject:lowerType]) { // 图片
                 DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
-                detailVC.selectIndex = [self returnIndex:imageArray with:model];
-                detailVC.fileArray = imageArray;
+                detailVC.selectIndex = [self returnTypeIndex:model];
+                detailVC.fileArray = [self returnTypeArray:model];
                 [self.navigationController pushViewController:detailVC animated:YES];
             } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
-//                NSString *MIMEType = [DocumentManager mimeTypeForFileAtPath2:model.path];
-//                BOOL isCanPlay = [AVURLAsset isPlayableExtendedMIMEType:MIMEType];
-//                NSLog(@"%d", isCanPlay);
-//                if (!isCanPlay) {
-//                    [self showStringHUD:@"不支持该视频格式" second:1.5];
-//                }
-                
+                NSString *MIMEType = [DocumentManager mimeTypeForFileAtPath2:model.path];
+                BOOL isCanPlay = [AVURLAsset isPlayableExtendedMIMEType:MIMEType];
+                NSLog(@"%d", isCanPlay);
+                if (!isCanPlay) {
+                    [self showStringHUD:@"不支持该视频格式" second:1.5];
+                }
                 DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
-                detailVC.selectIndex = [self returnIndex:videoArray with:model];
-                detailVC.fileArray = videoArray;
+                detailVC.selectIndex = [self returnTypeIndex:model];
+                detailVC.fileArray = [self returnTypeArray:model];
                 [self.navigationController pushViewController:detailVC animated:YES];
             } else { // 其它文件类型
                 DetailViewController *detailVC = [[DetailViewController alloc] init];
-                detailVC.selectIndex = [self returnIndex:fileArray with:model];
-                detailVC.fileArray = fileArray;
+                detailVC.selectIndex = [self returnTypeIndex:model];
+                detailVC.fileArray = [self returnTypeArray:model];
                 [self.navigationController pushViewController:detailVC animated:YES];
             }
         }
@@ -710,13 +691,46 @@
 {
     // 获取按压的Cell所在行,[previewingContext sourceView]就是按压的那个视图
     NSIndexPath *indexPath = [myTableView indexPathForCell:(UITableViewCell* )[previewingContext sourceView]];
-    // 设定预览的界面
-    FileInfoViewController *vc = [[FileInfoViewController alloc] init];
-    vc.preferredContentSize = CGSizeMake(0.0f, 400.0f);
-    vc.model = myDataArray[indexPath.row];
+    FileModel *model = myDataArray[indexPath.row];
     // 调整不被虚化的范围，按压的那个cell不被虚化（轻轻按压时周边会被虚化，再少用力展示预览，再加力跳页至设定界面）
     CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, 60);
     previewingContext.sourceRect = rect;
+    // 设定预览的界面
+    NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
+    if (fileType == 1) { // 文件
+        NSArray *array = [model.name componentsSeparatedByString:@"."];
+        NSString *lowerType = [array.lastObject lowercaseString];
+        if ([CimgTypeArray containsObject:lowerType]) { // 图片
+            DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
+            detailVC.selectIndex = [self returnTypeIndex:model];
+            detailVC.fileArray = [self returnTypeArray:model];
+            // 返回预览界面
+            return detailVC;
+        } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
+            DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
+            detailVC.selectIndex = [self returnTypeIndex:model];
+            detailVC.fileArray = [self returnTypeArray:model];
+            detailVC.isPlay = YES;
+            // 返回预览界面
+            return detailVC;
+        } else { // 其它文件类型
+            DetailViewController *detailVC = [[DetailViewController alloc] init];
+            detailVC.selectIndex = [self returnTypeIndex:model];
+            detailVC.fileArray = [self returnTypeArray:model];
+            // 返回预览界面
+            return detailVC;
+        }
+    } else if (fileType == 2) { // 文件夹
+        RootViewController *vc = [[RootViewController alloc] init];
+        vc.titleStr = model.name;
+        vc.pathStr = model.path;
+        // 返回预览界面
+        return vc;
+    }
+    // 设定预览的界面
+    FileInfoViewController *vc = [[FileInfoViewController alloc] init];
+    vc.preferredContentSize = CGSizeMake(0.0f, 400.0f);
+    vc.model = model;
     // 返回预览界面
     return vc;
 }
@@ -729,7 +743,8 @@
 
 #pragma mark Private Method
 // 获取元素在数组中的下标
-- (NSInteger)returnIndex:(NSArray *)array with:(FileModel *)model {
+- (NSInteger)returnTypeIndex:(FileModel *)model {
+    NSArray *array = [self returnTypeArray:model];
     NSInteger index = 0;
     for (NSInteger i = 0; i < array.count; i++) {
         FileModel *md = array[i];
@@ -738,6 +753,41 @@
         }
     }
     return index;
+}
+
+// 获取同类型的数组
+- (NSArray *)returnTypeArray:(FileModel *)model {
+    NSMutableArray *foldersArray = [[NSMutableArray alloc] init];
+    NSMutableArray *imageArray = [[NSMutableArray alloc] init];
+    NSMutableArray *videoArray = [[NSMutableArray alloc] init];
+    NSMutableArray *fileArray = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < myDataArray.count; i++) {
+        FileModel *md = myDataArray[i];
+        NSInteger indexType = [GLFFileManager fileExistsAtPath:md.path];
+        NSArray *array = [md.name componentsSeparatedByString:@"."];
+        NSString *lowerType = [array.lastObject lowercaseString];
+        if (indexType == 1) {
+            if ([CimgTypeArray containsObject:lowerType]) {
+                [imageArray addObject:md];
+            } else if ([CvideoTypeArray containsObject:lowerType]) {
+                [videoArray addObject:md];
+            } else {
+                [fileArray addObject:md];
+            }
+        } else {
+            [foldersArray addObject:md];
+        }
+    }
+    // type 1-文件夹 2-图片 3-视频 4-其它文件类型
+    if (model.type == 1) {
+        return foldersArray;
+    } else if (model.type == 2) {
+        return imageArray;
+    } else if (model.type == 3) {
+        return videoArray;
+    } else {
+        return fileArray;
+    }
 }
 
 

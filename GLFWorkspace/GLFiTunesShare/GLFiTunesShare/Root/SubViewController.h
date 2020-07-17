@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "FileModel.h"
 
 typedef void (^BackBlock) (void);
 typedef void (^SetBackEnableBlock) (BOOL);
