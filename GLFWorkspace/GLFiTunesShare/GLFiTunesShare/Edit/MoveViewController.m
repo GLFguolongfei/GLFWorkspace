@@ -65,7 +65,7 @@ static NSString *cellID = @"GLFTableViewCellID";
 
 - (void)prepareInterface {
     UIImageView *bImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
-    bImageView.image = [UIImage imageNamed:@"bgview2"];
+    bImageView.image = [UIImage imageNamed:@"bgview5"];
     bImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:bImageView];
     

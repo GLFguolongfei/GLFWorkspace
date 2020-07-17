@@ -132,26 +132,23 @@ HMSingletonM(DocumentManager)
             NSString *str = [NSString stringWithFormat:@"总用时: %ld分%ld秒 总大小: %@", cmps.minute, cmps.second, sizeStr];
             NSLog(@"全局遍历完成, %@", str);
 
-            NSString *loginType = [ProjectManager sharedProjectManager].loginType;
-            if ([loginType isEqualToString:@"1"]) {
-                UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
-                content.title = @"全局遍历完成";
-                content.body = str;
-                // content.sound = [UNNotificationSound defaultSound];
-                content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
-                
-                UNTimeIntervalNotificationTrigger *intervalTrigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats:NO];
-                NSString *requestIdentifier = @"Dely.X.time";
-                UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier content:content trigger:intervalTrigger];
-                
-                UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
-                [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
-                    if (!error) {
-                        NSLog(@"本地推送添加成功: %@", requestIdentifier);
-                    }
-                }];
-            }
-            
+//            UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
+//            content.title = @"全局遍历完成";
+//            content.body = str;
+//            // content.sound = [UNNotificationSound defaultSound];
+//            content.userInfo = @{@"key1":@"value1",@"key2":@"value2"};
+//
+//            UNTimeIntervalNotificationTrigger *intervalTrigger = [UNTimeIntervalNotificationTrigger triggerWithTimeInterval:1 repeats:NO];
+//            NSString *requestIdentifier = @"Dely.X.time";
+//            UNNotificationRequest *request = [UNNotificationRequest requestWithIdentifier:requestIdentifier content:content trigger:intervalTrigger];
+//
+//            UNUserNotificationCenter *center = [UNUserNotificationCenter currentNotificationCenter];
+//            [center addNotificationRequest:request withCompletionHandler:^(NSError * _Nullable error) {
+//                if (!error) {
+//                    NSLog(@"本地推送添加成功: %@", requestIdentifier);
+//                }
+//            }];
+//
             NSString *archiverPath1 = [path stringByAppendingPathComponent:@"GLFConfig/allArray.plist"];
             BOOL isSuccess1 = [NSKeyedArchiver archiveRootObject:allArray toFile:archiverPath1];
             NSString *archiverPath2 = [path stringByAppendingPathComponent:@"GLFConfig/allFoldersArray.plist"];

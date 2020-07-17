@@ -17,6 +17,7 @@
 
 @interface OtherViewController ()
 {
+    UIImageView *bgImageView;
     UIView *gestureView;
 }
 @end
@@ -27,10 +28,20 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.view.backgroundColor = [UIColor blackColor];
+    self.view.backgroundColor = [UIColor whiteColor];
 //    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"测试功能" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
 //    self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"有趣功能"];
+    
+    // 设置背景图片
+    bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    bgImageView.contentMode = UIViewContentModeScaleAspectFill;
+    bgImageView.image = [DocumentManager getBackgroundImage];
+    [self.view addSubview:bgImageView];
+    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = kScreen;
+    visualEfView.alpha = 0.5;
+    [bgImageView addSubview:visualEfView];
 
     for (NSInteger i = 0; i < 6; i++) {
         CGFloat width = (kScreenWidth - 60) / 2;
@@ -72,6 +83,9 @@
     [super viewWillAppear:animated];
     self.navigationController.toolbar.hidden = YES;
     self.navigationController.navigationBar.hidden = NO;
+    
+    // 设置背景图片
+    bgImageView.image = [DocumentManager getBackgroundImage];
     
     // 导航栏bg
     gestureView = [[UIView alloc] initWithFrame:CGRectMake((kScreenWidth - 150) / 2, -20, 150, 64)];

@@ -27,6 +27,8 @@
     self.automaticallyAdjustsScrollViewInsets = NO;
     self.canHiddenNaviBar = NO;
     self.canHiddenToolBar = NO;
+    // 设置导航栏字体颜色
+//    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:KNavgationBarColor}];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
