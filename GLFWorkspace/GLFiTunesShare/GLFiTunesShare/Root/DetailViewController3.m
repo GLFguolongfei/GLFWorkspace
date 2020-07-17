@@ -77,11 +77,28 @@
 
 #pragma mark 预览
 - (NSArray<id<UIPreviewActionItem>> *)previewActionItems {
-    UIPreviewAction *action1 = [UIPreviewAction actionWithTitle:@"删除" style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"详情" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-        [alert show];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    FileModel *model = self.fileArray[self.selectIndex];
+    model.name = [model.path substringFromIndex:path.length + 1];
+    NSArray *favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
+    NSArray *removeArray = [[NSUserDefaults standardUserDefaults] objectForKey:kRemove];
+    NSString *favorite = @"收藏";
+    NSString *remove = @"删除";
+    if ([favoriteArray containsObject:model.name]) {
+        favorite = @"取消收藏";
+    }
+    if ([removeArray containsObject:model.name]) {
+        remove = @"取消删除";
+    }
+    
+    UIPreviewAction *action1 = [UIPreviewAction actionWithTitle:favorite style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+        [DocumentManager favoriteModel:model];
     }];
-    NSArray *actions = @[action1];
+    UIPreviewAction *action2 = [UIPreviewAction actionWithTitle:remove style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
+        [DocumentManager removeModel:model];
+    }];
+    NSArray *actions = @[action1, action2];
     return actions;
 }
 
