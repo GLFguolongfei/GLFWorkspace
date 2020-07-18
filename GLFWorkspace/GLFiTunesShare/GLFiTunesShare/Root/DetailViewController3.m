@@ -13,7 +13,8 @@
 {
     UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
     SubViewController3 *currentVC; // 当前显示的VC
-    GLFFileManager *fileManager;
+    FileModel *currentModel;
+
     BOOL isPlaying;
     
     UIBarButtonItem *barItem1;
@@ -43,8 +44,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"isHiddenNaviBar" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     
-    fileManager = [GLFFileManager sharedFileManager];
-
     pageVC = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
     pageVC.view.frame = self.view.bounds;
     pageVC.delegate = self;
@@ -55,7 +54,10 @@
     subVC.model = self.fileArray[self.selectIndex];
     NSArray *array = [subVC.model.name componentsSeparatedByString:@"/"];
     [self setVCTitle:array.lastObject];
+    
     currentVC = subVC;
+    currentModel = subVC.model;
+
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
     
@@ -77,29 +79,7 @@
     [super viewWillAppear:animated];
     self.navigationController.toolbar.hidden = NO;
     
-    FileModel *model = [self returnModel];
-    
-    favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
-    favoriteArray = [favoriteArray mutableCopy];
-    if (!favoriteArray) {
-        favoriteArray = [[NSMutableArray alloc] init];
-    }
-    if ([favoriteArray containsObject:model.name]) {
-        [barItem1 setImage:[UIImage imageNamed:@"dyFavorite"]];
-    } else {
-        [barItem1 setImage:[UIImage imageNamed:@"dyNofavorite"]];
-    }
-
-    removeArray = [[NSUserDefaults standardUserDefaults] objectForKey:kRemove];
-    removeArray = [removeArray mutableCopy];
-    if (!removeArray) {
-        removeArray = [[NSMutableArray alloc] init];
-    }
-    if ([removeArray containsObject:model.name]) {
-        [barItem2 setImage:[UIImage imageNamed:@"dyDelete"]];
-    } else {
-        [barItem2 setImage:[UIImage imageNamed:@"dyNodelete"]];
-    }
+    [self resetNaviButton];
 }
 
 // 更改状态栏
@@ -133,27 +113,17 @@
 
 #pragma mark Events
 - (void)favoriteAction {
+    NSLog(@"%@", currentModel.name);
+
     FileModel *model = [self returnModel];
-    if ([favoriteArray containsObject:model.name]) {
-        [favoriteArray removeObject:model.name];
-        [barItem1 setImage:[UIImage imageNamed:@"dyNofavorite"]];
-    } else {
-        [favoriteArray addObject:model.name];
-        [barItem1 setImage:[UIImage imageNamed:@"dyFavorite"]];
-    }
     [DocumentManager favoriteModel:model];
+    [self resetNaviButton];
 }
 
 - (void)removeAction {
     FileModel *model = [self returnModel];
-    if ([removeArray containsObject:model.name]) {
-        [removeArray removeObject:model.name];
-        [barItem2 setImage:[UIImage imageNamed:@"dyNodelete"]];
-    } else {
-        [removeArray addObject:model.name];
-        [barItem2 setImage:[UIImage imageNamed:@"dyDelete"]];
-    }
     [DocumentManager removeModel:model];
+    [self resetNaviButton];
 }
 
 - (void)playOrPauseVideo {
@@ -237,29 +207,43 @@
 #pragma mark UIPageViewControllerDelegate
 // 开始滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
-    // 获取当前控制器
+    // 获取要跳转的VC
     currentVC = (SubViewController3 *)pendingViewControllers[0];
-    // 获取当前控制器标题
-    NSInteger currentIndex = currentVC.currentIndex;
-    FileModel *currentModel = self.fileArray[currentIndex];
-    NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
-    [self setVCTitle:array.lastObject];
+    // 获取要跳转的Model
+    currentModel = self.fileArray[currentVC.currentIndex];
+    NSLog(@"%@", currentModel.name);
 }
 
 // 结束滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
-    if (previousViewControllers.count > 0 && completed) {
-        // 获取之前控制器
-        SubViewController3 *playVC = (SubViewController3 *)previousViewControllers[0];
-        // 停止播放
-        [playVC playOrPauseVideo:NO];
-        // ToolBar设为暂停状态
-        isPlaying = NO;
-        [self setButtonPlayState];
-        // 显示导航栏
-        [self.navigationController setNavigationBarHidden:NO animated:YES];
-        [self.navigationController setToolbarHidden:NO animated:YES];
-        [currentVC showBar];
+    // VC1跳转VC2
+    // 无论跳转是否成功,结果都是: pendingViewControllers为VC2 previousViewControllers为VC1
+    // 区别在于: 跳转成功,当前为VC2 跳转失败,当前为VC1
+    if (previousViewControllers.count > 0) {
+        // 获取以前的控VC
+        SubViewController3 *vc = (SubViewController3 *)previousViewControllers[0];
+        if (completed) { // 跳转成功
+            // 停止播放
+            [vc playOrPauseVideo:NO];
+            // ToolBar设为暂停状态
+            isPlaying = NO;
+            [self setButtonPlayState];
+            // 显示导航栏
+            [self.navigationController setNavigationBarHidden:NO animated:YES];
+            [self.navigationController setToolbarHidden:NO animated:YES];
+            [currentVC showBar];
+            // 设置标题
+            NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
+            [self setVCTitle:array.lastObject];
+            // 设置按钮
+            [self resetNaviButton];
+        } else { // 跳转失败
+            // 获取当前控制器
+            currentVC = vc;
+            // 获取当前Model
+            currentModel = self.fileArray[currentVC.currentIndex];
+            NSLog(@"%@", currentModel.name);
+        }
     }
 }
 
@@ -267,9 +251,35 @@
 - (FileModel *)returnModel {
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths objectAtIndex:0];
-    FileModel *model = self.fileArray[self.selectIndex];
+    FileModel *model = currentModel;
     model.name = [model.path substringFromIndex:path.length + 1];
     return model;
+}
+
+- (void)resetNaviButton {
+    FileModel *model = [self returnModel];
+    
+    favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
+    favoriteArray = [favoriteArray mutableCopy];
+    if (!favoriteArray) {
+        favoriteArray = [[NSMutableArray alloc] init];
+    }
+    if ([favoriteArray containsObject:model.name]) {
+        [barItem1 setImage:[UIImage imageNamed:@"dyFavorite"]];
+    } else {
+        [barItem1 setImage:[UIImage imageNamed:@"dyNofavorite"]];
+    }
+
+    removeArray = [[NSUserDefaults standardUserDefaults] objectForKey:kRemove];
+    removeArray = [removeArray mutableCopy];
+    if (!removeArray) {
+        removeArray = [[NSMutableArray alloc] init];
+    }
+    if ([removeArray containsObject:model.name]) {
+        [barItem2 setImage:[UIImage imageNamed:@"dyDelete"]];
+    } else {
+        [barItem2 setImage:[UIImage imageNamed:@"dyNodelete"]];
+    }
 }
 
 

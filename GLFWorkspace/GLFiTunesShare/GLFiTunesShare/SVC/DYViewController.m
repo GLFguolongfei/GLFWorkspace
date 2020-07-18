@@ -69,6 +69,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    if (pageVC) {
+        return;
+    }
     // 导航栏bg
     gestureView = [[UIView alloc] initWithFrame:CGRectMake((kScreenWidth - 150) / 2, -20, 150, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
@@ -110,6 +113,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"isHiddenNaviBar" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteAction) name:@"favoriteClick" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
@@ -118,8 +122,8 @@
     [self setButtonState];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
-    [super viewWillDisappear:animated];
+- (void)viewDidDisappear:(BOOL)animated {
+    [super viewDidDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     isPlaying = NO;
     [currentVC playOrPauseVideo:isPlaying];
@@ -439,43 +443,50 @@
 #pragma mark UIPageViewControllerDelegate
 // 开始滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
-    // 获取当前控制器
+    // 获取要跳转的VC
     currentVC = (DYSubViewController *)pendingViewControllers[0];
-    // 获取当前控制器标题
-    NSInteger currentIndex = currentVC.currentIndex;
-    currentModel = _dataArray[currentIndex];
+    // 获取要跳转的Model
+    currentModel = _dataArray[currentVC.currentIndex];
 }
 
 // 结束滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
-    if (previousViewControllers.count > 0 && completed) {
-        // 获取之前控制器
-        DYSubViewController *playVC = (DYSubViewController *)previousViewControllers[0];
-        // 停止播放
-        [playVC playOrPauseVideo:NO];
-        // ToolBar设为暂停状态
-        isPlaying = NO;
-        [self setButtonState];
-        [self playOrPauseVideo];
-        if (!isOtherVideos) {
-            NSString *indexStr = [NSString stringWithFormat:@"%ld", (long)selectIndex];
-            [[NSUserDefaults standardUserDefaults] setObject:indexStr forKey:@"selectIndex"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-        }
-        
-        if ([favoriteArray containsObject:currentModel.name]) {
-            [favoriteButton setImage:[UIImage imageNamed:@"dyFavoriteBig"] forState:UIControlStateNormal];
+    if (previousViewControllers.count > 0) {
+        // 获取以前的控VC
+        DYSubViewController *vc = (DYSubViewController *)previousViewControllers[0];
+        if (completed) {
+            // 停止播放
+            [vc playOrPauseVideo:NO];
+            // ToolBar设为暂停状态
+            isPlaying = NO;
+            [self setButtonState];
+            [self playOrPauseVideo];
+            if (!isOtherVideos) {
+                NSString *indexStr = [NSString stringWithFormat:@"%ld", (long)selectIndex];
+                [[NSUserDefaults standardUserDefaults] setObject:indexStr forKey:@"selectIndex"];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            
+            if ([favoriteArray containsObject:currentModel.name]) {
+                [favoriteButton setImage:[UIImage imageNamed:@"dyFavoriteBig"] forState:UIControlStateNormal];
+            } else {
+                [favoriteButton setImage:[UIImage imageNamed:@"dyNofavoriteBig"] forState:UIControlStateNormal];
+            }
+            
+            if ([removeArray containsObject:currentModel.name]) {
+                [removeButton setImage:[UIImage imageNamed:@"dyDeleteBig"] forState:UIControlStateNormal];
+            } else {
+                [removeButton setImage:[UIImage imageNamed:@"dyNodeleteBig"] forState:UIControlStateNormal];
+            }
+            
+            [self setLabelTitle];
         } else {
-            [favoriteButton setImage:[UIImage imageNamed:@"dyNofavoriteBig"] forState:UIControlStateNormal];
+            // 获取当前控制器
+            currentVC = vc;
+            // 获取当前Model
+            currentModel = _dataArray[vc.currentIndex];
+            NSLog(@"%@", currentModel.name);
         }
-        
-        if ([removeArray containsObject:currentModel.name]) {
-            [removeButton setImage:[UIImage imageNamed:@"dyDeleteBig"] forState:UIControlStateNormal];
-        } else {
-            [removeButton setImage:[UIImage imageNamed:@"dyNodeleteBig"] forState:UIControlStateNormal];
-        }
-        
-        [self setLabelTitle];
     }
 }
 

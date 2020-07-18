@@ -104,14 +104,16 @@
 #pragma mark UIPageViewControllerDelegate
 // 开始滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
-    NSInteger currentIndex = ((SubViewController2 *) pendingViewControllers[0]).currentIndex;
-    FileModel *currentModel = self.fileArray[currentIndex];
-    [self setVCTitle:currentModel.name];
+    
 }
 
 // 结束滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
-    
+    if (previousViewControllers.count > 0 && completed) {
+        SubViewController2 *vc = (SubViewController2 *) previousViewControllers[0];
+        FileModel *currentModel = self.fileArray[vc.currentIndex];
+        [self setVCTitle:currentModel.name];
+    }
 }
 
 
