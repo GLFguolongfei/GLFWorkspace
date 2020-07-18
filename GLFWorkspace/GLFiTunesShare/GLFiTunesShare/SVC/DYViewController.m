@@ -444,7 +444,6 @@
     // 获取当前控制器标题
     NSInteger currentIndex = currentVC.currentIndex;
     currentModel = _dataArray[currentIndex];
-    [self setLabelTitle];
 }
 
 // 结束滚动或翻页的时候触发
@@ -475,6 +474,8 @@
         } else {
             [removeButton setImage:[UIImage imageNamed:@"dyNodeleteBig"] forState:UIControlStateNormal];
         }
+        
+        [self setLabelTitle];
     }
 }
 
