@@ -711,6 +711,7 @@
             detailVC.selectIndex = [self returnTypeIndex:model];
             detailVC.fileArray = [self returnTypeArray:model];
             detailVC.isPlay = YES;
+            detailVC.preferredContentSize = CGSizeMake(kScreenWidth, kScreenHeight * 0.8);
             // 返回预览界面
             return detailVC;
         } else { // 其它文件类型

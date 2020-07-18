@@ -15,6 +15,12 @@
     SubViewController3 *currentVC; // 当前显示的VC
     GLFFileManager *fileManager;
     BOOL isPlaying;
+    
+    UIBarButtonItem *barItem1;
+    UIBarButtonItem *barItem2;
+    
+    NSMutableArray *favoriteArray;
+    NSMutableArray *removeArray;
 }
 @end
 
@@ -25,7 +31,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"scale_big"] style:UIBarButtonItemStylePlain target:self action:@selector(playViewLandscape)];
-    self.navigationItem.rightBarButtonItems = @[item];
+    barItem1 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dyFavorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteAction)];
+    barItem2 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dyDelete"] style:UIBarButtonItemStylePlain target:self action:@selector(removeAction)];
+    self.navigationItem.rightBarButtonItems = @[item, barItem1, barItem2];
     self.view.backgroundColor = [UIColor blackColor];
     self.canHiddenNaviBar = YES;
     self.canHiddenToolBar = YES;
@@ -68,6 +76,30 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     self.navigationController.toolbar.hidden = NO;
+    
+    FileModel *model = [self returnModel];
+    
+    favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
+    favoriteArray = [favoriteArray mutableCopy];
+    if (!favoriteArray) {
+        favoriteArray = [[NSMutableArray alloc] init];
+    }
+    if ([favoriteArray containsObject:model.name]) {
+        [barItem1 setImage:[UIImage imageNamed:@"dyFavorite"]];
+    } else {
+        [barItem1 setImage:[UIImage imageNamed:@"dyNofavorite"]];
+    }
+
+    removeArray = [[NSUserDefaults standardUserDefaults] objectForKey:kRemove];
+    removeArray = [removeArray mutableCopy];
+    if (!removeArray) {
+        removeArray = [[NSMutableArray alloc] init];
+    }
+    if ([removeArray containsObject:model.name]) {
+        [barItem2 setImage:[UIImage imageNamed:@"dyDelete"]];
+    } else {
+        [barItem2 setImage:[UIImage imageNamed:@"dyNodelete"]];
+    }
 }
 
 // 更改状态栏
@@ -77,10 +109,7 @@
 
 #pragma mark 预览
 - (NSArray<id<UIPreviewActionItem>> *)previewActionItems {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    FileModel *model = self.fileArray[self.selectIndex];
-    model.name = [model.path substringFromIndex:path.length + 1];
+    FileModel *model = [self returnModel];
     NSArray *favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
     NSArray *removeArray = [[NSUserDefaults standardUserDefaults] objectForKey:kRemove];
     NSString *favorite = @"收藏";
@@ -103,6 +132,30 @@
 }
 
 #pragma mark Events
+- (void)favoriteAction {
+    FileModel *model = [self returnModel];
+    if ([favoriteArray containsObject:model.name]) {
+        [favoriteArray removeObject:model.name];
+        [barItem1 setImage:[UIImage imageNamed:@"dyNofavorite"]];
+    } else {
+        [favoriteArray addObject:model.name];
+        [barItem1 setImage:[UIImage imageNamed:@"dyFavorite"]];
+    }
+    [DocumentManager favoriteModel:model];
+}
+
+- (void)removeAction {
+    FileModel *model = [self returnModel];
+    if ([removeArray containsObject:model.name]) {
+        [removeArray removeObject:model.name];
+        [barItem2 setImage:[UIImage imageNamed:@"dyNodelete"]];
+    } else {
+        [removeArray addObject:model.name];
+        [barItem2 setImage:[UIImage imageNamed:@"dyDelete"]];
+    }
+    [DocumentManager removeModel:model];
+}
+
 - (void)playOrPauseVideo {
     isPlaying = !isPlaying;
     [currentVC playOrPauseVideo:isPlaying];
@@ -208,6 +261,15 @@
         [self.navigationController setToolbarHidden:NO animated:YES];
         [currentVC showBar];
     }
+}
+
+#pragma mark Tools
+- (FileModel *)returnModel {
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    FileModel *model = self.fileArray[self.selectIndex];
+    model.name = [model.path substringFromIndex:path.length + 1];
+    return model;
 }
 
 
