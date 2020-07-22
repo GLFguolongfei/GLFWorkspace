@@ -704,7 +704,6 @@
             DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
             detailVC.selectIndex = [self returnTypeIndex:model];
             detailVC.fileArray = [self returnTypeArray:model];
-            // 返回预览界面
             return detailVC;
         } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
             DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
@@ -712,27 +711,23 @@
             detailVC.fileArray = [self returnTypeArray:model];
             detailVC.isPlay = YES;
             detailVC.preferredContentSize = CGSizeMake(kScreenWidth, kScreenHeight * 0.8);
-            // 返回预览界面
             return detailVC;
         } else { // 其它文件类型
             DetailViewController *detailVC = [[DetailViewController alloc] init];
             detailVC.selectIndex = [self returnTypeIndex:model];
             detailVC.fileArray = [self returnTypeArray:model];
-            // 返回预览界面
             return detailVC;
         }
     } else if (fileType == 2) { // 文件夹
         RootViewController *vc = [[RootViewController alloc] init];
         vc.titleStr = model.name;
         vc.pathStr = model.path;
-        // 返回预览界面
         return vc;
     }
     // 设定预览的界面
     FileInfoViewController *vc = [[FileInfoViewController alloc] init];
     vc.preferredContentSize = CGSizeMake(0.0f, 400.0f);
     vc.model = model;
-    // 返回预览界面
     return vc;
 }
 

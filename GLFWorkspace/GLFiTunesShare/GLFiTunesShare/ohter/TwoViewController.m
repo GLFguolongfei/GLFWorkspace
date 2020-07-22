@@ -10,6 +10,8 @@
 
 @interface TwoViewController ()<UICollisionBehaviorDelegate>
 {
+    UIImageView *bgImageView;
+    
     UIDynamicAnimator *animator;            // 动画者
     UIGravityBehavior *gravityBeahvior;     // 仿真行为_重力
     UICollisionBehavior *collisionBehavior; // 仿真行为_碰撞
@@ -31,6 +33,16 @@
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"大图" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
     self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"UIKit动力学"];
+    
+    // 设置背景图片
+    bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    bgImageView.contentMode = UIViewContentModeScaleAspectFill;
+    bgImageView.image = [DocumentManager getBackgroundImage];
+    [self.view addSubview:bgImageView];
+    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = kScreen;
+    visualEfView.alpha = 0.5;
+    [bgImageView addSubview:visualEfView];
 
     maxWidth = kScreenWidth / 4;
     isMax = NO;
@@ -64,6 +76,12 @@
     // 点击手势
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapped:)];
     [self.view addGestureRecognizer:gesture];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    // 设置背景图片
+    bgImageView.image = [DocumentManager getBackgroundImage];
 }
 
 - (void)tapped:(UITapGestureRecognizer *)gesture {

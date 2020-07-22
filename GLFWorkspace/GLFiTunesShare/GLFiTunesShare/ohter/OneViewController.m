@@ -10,6 +10,8 @@
 
 @interface OneViewController ()
 {
+    UIImageView *bgImageView;
+    
     UIDynamicAnimator *animator;          // 动画者
     UIGravityBehavior *gravityBeahvior;   // 仿真行为_重力
     UIImageView *imageView;
@@ -31,6 +33,16 @@
     self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"UIKit动力学"];
     self.canHiddenNaviBar = YES;
+    
+    // 设置背景图片
+    bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    bgImageView.contentMode = UIViewContentModeScaleAspectFill;
+    bgImageView.image = [DocumentManager getBackgroundImage];
+    [self.view addSubview:bgImageView];
+    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = kScreen;
+    visualEfView.alpha = 0.5;
+    [bgImageView addSubview:visualEfView];
     
     contentMode = UIViewContentModeScaleAspectFit;
     
@@ -60,6 +72,12 @@
     [DocumentManager getAllImagesArray:^(NSArray * array) {
         allImagesArray = [array mutableCopy];
     }];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    // 设置背景图片
+    bgImageView.image = [DocumentManager getBackgroundImage];
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {

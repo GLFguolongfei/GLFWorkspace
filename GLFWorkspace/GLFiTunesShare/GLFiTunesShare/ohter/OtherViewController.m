@@ -112,6 +112,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [self removeEmitter];
+    [gestureView removeFromSuperview];
     
 //    // 导航栏标题颜色
 //    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:[UIColor blackColor]}];
