@@ -69,6 +69,8 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+    [self.navigationController setToolbarHidden:YES animated:YES];
     if (pageVC) {
         return;
     }
@@ -122,13 +124,13 @@
     [self setButtonState];
 }
 
-- (void)viewDidDisappear:(BOOL)animated {
-    [super viewDidDisappear:animated];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
     [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [gestureView removeFromSuperview];
     isPlaying = NO;
     [currentVC playOrPauseVideo:isPlaying];
     [self setButtonState];
-    [gestureView removeFromSuperview];
 }
 
 - (void)prepareData {
@@ -224,9 +226,6 @@
     isPlaying = YES;
     [currentVC playOrPauseVideo:isPlaying];
     [self setButtonState];
-
-    [self.navigationController setNavigationBarHidden:YES animated:YES];
-    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 #pragma mark Events
