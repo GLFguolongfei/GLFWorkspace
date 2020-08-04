@@ -103,8 +103,8 @@
 
     UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
     NSInteger width = arc4random() % maxWidth;
-    if (width < 10) {
-        width = 10;
+    if (width < 30) {
+        width = 30;
     }
     NSInteger height = width * image.size.height / image.size.width;
     imageView.frame = CGRectMake(0, 0, width, height);

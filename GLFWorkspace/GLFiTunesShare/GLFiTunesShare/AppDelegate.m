@@ -13,6 +13,8 @@
 #import "TestViewController.h"
 #import "MoveViewController.h"
 #import "DYViewController.h"
+#import "ThreeViewController.h"
+#import "FourViewController.h"
 #import "UncaughtExceptionHandler.h"
 // 防止低版本找不到头文件出现问题
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
@@ -145,13 +147,25 @@
 #pragma mark 3DTouch
 - (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler {
     if (shortcutItem) {
+        UINavigationController *navi = (UINavigationController *)self.window.rootViewController;
+        NSString *str1 = NSStringFromClass([navi.topViewController class]);
         if([shortcutItem.type isEqualToString:@"com.glf.dy"]){
-            DYViewController *dyVC = [[DYViewController alloc] init];
-            UINavigationController *navi = (UINavigationController *)self.window.rootViewController;
-            NSString *str1 = NSStringFromClass([navi.topViewController class]);
+            DYViewController *vc = [[DYViewController alloc] init];
             NSString *str2 = NSStringFromClass([DYViewController class]);
             if (![str1 isEqualToString:str2]) {
-                [navi pushViewController:dyVC animated:YES];
+                [navi pushViewController:vc animated:YES];
+            }
+        } else if([shortcutItem.type isEqualToString:@"com.glf.photo"]){
+            ThreeViewController *vc = [[ThreeViewController alloc] init];
+            NSString *str2 = NSStringFromClass([ThreeViewController class]);
+            if (![str1 isEqualToString:str2]) {
+                [navi pushViewController:vc animated:YES];
+            }
+        } else if([shortcutItem.type isEqualToString:@"com.glf.video"]){
+            FourViewController *vc = [[FourViewController alloc] init];
+            NSString *str2 = NSStringFromClass([FourViewController class]);
+            if (![str1 isEqualToString:str2]) {
+                [navi pushViewController:vc animated:YES];
             }
         }
     }
@@ -290,9 +304,13 @@
 
 // 3DTouch
 - (void)creatShortcutItem {
-    UIApplicationShortcutIcon *icon = [UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeLove];
-    UIApplicationShortcutItem *item = [[UIApplicationShortcutItem alloc] initWithType:@"com.glf.dy" localizedTitle:@"抖音" localizedSubtitle:@"" icon:icon userInfo:nil];
-    [UIApplication sharedApplication].shortcutItems = @[item];
+    UIApplicationShortcutIcon *icon1 = [UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeCaptureVideo];
+    UIApplicationShortcutIcon *icon2 = [UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeCapturePhoto];
+    UIApplicationShortcutIcon *icon3 = [UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeLove];
+    UIApplicationShortcutItem *item1 = [[UIApplicationShortcutItem alloc] initWithType:@"com.glf.video" localizedTitle:@"录像" localizedSubtitle:@"" icon:icon1 userInfo:nil];
+    UIApplicationShortcutItem *item2 = [[UIApplicationShortcutItem alloc] initWithType:@"com.glf.photo" localizedTitle:@"拍照" localizedSubtitle:@"" icon:icon2 userInfo:nil];
+    UIApplicationShortcutItem *item3 = [[UIApplicationShortcutItem alloc] initWithType:@"com.glf.dy" localizedTitle:@"抖音" localizedSubtitle:@"" icon:icon3 userInfo:nil];
+    [UIApplication sharedApplication].shortcutItems = @[item1,item2,item3];
 }
 
 
