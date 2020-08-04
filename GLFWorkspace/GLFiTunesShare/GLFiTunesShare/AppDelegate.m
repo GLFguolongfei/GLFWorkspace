@@ -12,6 +12,7 @@
 #import "ViewController.h"
 #import "TestViewController.h"
 #import "MoveViewController.h"
+#import "DYViewController.h"
 #import "UncaughtExceptionHandler.h"
 // 防止低版本找不到头文件出现问题
 #ifdef NSFoundationVersionNumber_iOS_9_x_Max
@@ -29,13 +30,11 @@
 
 #pragma mark UIApplicationDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    // 让程序从容的崩溃
+    InstallUncaughtExceptionHandler();
     
     [self removeLocalNotifications];
     [self resignUserNotification:application andOptions:launchOptions];
-    
-    // 让程序从容的崩溃
-    // ----- 好像没起到作用,原因未知 -----
-    InstallUncaughtExceptionHandler();
     
     // 上班打卡
 //    [self iskytrip:2];
@@ -43,6 +42,10 @@
 //    [self iskytrip:4];
 //    [self iskytrip:5];
 //    [self iskytrip:6];
+    
+#if FirstTarget
+    [self creatShortcutItem];
+#endif
 
     BOOL isTestFounction = NO;
     if (isTestFounction) {
@@ -138,6 +141,24 @@
     return YES;
 }
 #endif
+
+#pragma mark 3DTouch
+- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler {
+    if (shortcutItem) {
+        if([shortcutItem.type isEqualToString:@"com.glf.dy"]){
+            DYViewController *dyVC = [[DYViewController alloc] init];
+            UINavigationController *navi = (UINavigationController *)self.window.rootViewController;
+            NSString *str1 = NSStringFromClass([navi.topViewController class]);
+            NSString *str2 = NSStringFromClass([DYViewController class]);
+            if (![str1 isEqualToString:str2]) {
+                [navi pushViewController:dyVC animated:YES];
+            }
+        }
+    }
+    if (completionHandler) {
+        completionHandler(YES);
+    }
+}
 
 #pragma mark UNUserNotificationCenterDelegate
 // iOS 10 收到通知
@@ -265,6 +286,13 @@
     NSLog(@"所有本地推送: %@", localArray);
     [app cancelAllLocalNotifications];
     NSLog(@"解除所有本地推送");
+}
+
+// 3DTouch
+- (void)creatShortcutItem {
+    UIApplicationShortcutIcon *icon = [UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeLove];
+    UIApplicationShortcutItem *item = [[UIApplicationShortcutItem alloc] initWithType:@"com.glf.dy" localizedTitle:@"抖音" localizedSubtitle:@"" icon:icon userInfo:nil];
+    [UIApplication sharedApplication].shortcutItems = @[item];
 }
 
 
