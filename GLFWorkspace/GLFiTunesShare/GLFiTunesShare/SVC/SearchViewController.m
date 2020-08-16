@@ -25,6 +25,8 @@
     UIImageView *bgImageView;
     BOOL isShowDefault;
     
+    NSIndexPath *editIndexPath;
+    
     UIView *view;
     UILabel *label1;
     UILabel *label2;
@@ -330,6 +332,58 @@
     FileInfoViewController *vc = [[FileInfoViewController alloc] init];
     vc.model = myDataArray[indexPath.row];
     [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark 编辑
+- (nullable NSArray<UITableViewRowAction *> *)tableView:(UITableView *)tableView editActionsForRowAtIndexPath:(NSIndexPath *)indexPath {
+    editIndexPath = indexPath;
+    UITableViewRowAction *delete = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleDefault title:@"删除" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        NSLog(@"删除 %@ %@", action, indexPath);
+        [self deleteAction];
+    }];
+    UITableViewRowAction *share = [UITableViewRowAction rowActionWithStyle:UITableViewRowActionStyleNormal title:@"分享" handler:^(UITableViewRowAction * _Nonnull action, NSIndexPath * _Nonnull indexPath) {
+        NSLog(@"分享 %@ %@", action, indexPath);
+        [self shareAction];
+    }];
+    NSArray *array = @[delete, share];
+    return array;
+}
+
+- (void)deleteAction {
+    FileModel *model = myDataArray[editIndexPath.row];
+    if ([CHiddenPaths containsObject:model.name]) {
+        NSString *msg = [NSString stringWithFormat:@"特殊文件夹【%@】不可以删除", model.name];
+        [self showStringHUD:msg second:1.5];
+        return;
+    }
+    NSString *str = [NSString stringWithFormat:@"[%@] 将从您的设备存储中删除。此操作不能撤销。", model.name];
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"" message:str preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [alertVC addAction:cancelAction];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"从设备删除" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        BOOL success = [GLFFileManager fileDelete:model.path];
+        if (success) {
+            [myTableView setEditing:NO animated:YES];
+            [myDataArray removeObject:model];
+            [myTableView reloadData];
+            [DocumentManager eachAllFiles];
+            [DocumentManager updateDocumentPaths];
+        } else {
+            [self showStringHUD:@"删除失败" second:1.5];
+        }
+    }];
+    [alertVC addAction:okAction];
+    [self presentViewController:alertVC animated:YES completion:nil];
+}
+
+- (void)shareAction {
+    FileModel *model = myDataArray[editIndexPath.row];
+    NSURL *url = [NSURL fileURLWithPath:model.path];
+    NSArray *objectsToShare = @[url];
+    UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:objectsToShare applicationActivities:nil];
+    [self presentViewController:activityVC animated:YES completion:nil];
+    [myTableView setEditing:NO animated:YES];
 }
 
 #pragma mark UIDocumentInteractionControllerDelegate(预览分享)

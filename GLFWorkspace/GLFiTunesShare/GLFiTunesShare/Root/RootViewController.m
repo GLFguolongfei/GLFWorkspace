@@ -313,6 +313,7 @@
                 [self prepareData];
                 [self viewEditing:YES];
             }
+            [DocumentManager eachAllFiles];
             [DocumentManager updateDocumentPaths];
         }
     }];
@@ -371,6 +372,7 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self prepareData];
                 [self viewEditing:YES];
+                [DocumentManager eachAllFiles];
                 [DocumentManager updateDocumentPaths];
             });
         });
@@ -576,7 +578,10 @@
         BOOL success = [GLFFileManager fileDelete:model.path];
         if (success) {
             [self prepareData];
+            [DocumentManager eachAllFiles];
             [DocumentManager updateDocumentPaths];
+        } else {
+            [self showStringHUD:@"删除失败" second:1.5];
         }
     }];
     [alertVC addAction:okAction];
@@ -637,6 +642,7 @@
             BOOL success = [GLFFileManager fileMove:model.path toPath:toPath];
             if (success) {
                 [self prepareData];
+                [DocumentManager eachAllFiles];
                 [DocumentManager updateDocumentPaths];
             } else {
                 [self showStringHUD:@"重命名失败" second:1.5];
