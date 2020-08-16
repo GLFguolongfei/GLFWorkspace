@@ -59,6 +59,11 @@ HMSingletonM(DocumentManager)
             NSMutableArray *allVideosArray = [[NSMutableArray alloc] init];
             NSMutableArray *allDYVideosArray = [[NSMutableArray alloc] init];
             NSMutableArray *allNoDYVideosArray = [[NSMutableArray alloc] init];
+            CGFloat allSize = 0;
+            CGFloat allImagesSize = 0;
+            CGFloat allVideosSize = 0;
+            CGFloat allDYVideosSize = 0;
+            CGFloat allNoDYVideosSize = 0;
             NSArray *array = [GLFFileManager searchSubFile:path andIsDepth:YES];
             for (int i = 0; i < array.count; i++) {
                 // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
@@ -80,10 +85,12 @@ HMSingletonM(DocumentManager)
                     NSArray *array = [model.name componentsSeparatedByString:@"."];
                     NSString *lowerType = [array.lastObject lowercaseString];
                     if ([CimgTypeArray containsObject:lowerType]) {
+                        allImagesSize += model.size;
                         model.type = 2;
                         // model.image = [UIImage imageWithContentsOfFile:model.path];
                         [allImagesArray addObject:model];
                     } else if ([CvideoTypeArray containsObject:lowerType]) {
+                        allVideosSize += model.size;
                         model.type = 3;
                         // #if FirstTarget
                         //      model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
@@ -94,15 +101,18 @@ HMSingletonM(DocumentManager)
                         CGSize size = [GLFTools videoSizeWithPath:model.path];
                         model.videoSize = size;
                         
-                        if ((size.width / size.height) < ((kScreenWidth + 200) / kScreenHeight)) {
+                        if ((size.width / size.height) < ((kScreenWidth + kScreenWidth / 3) / kScreenHeight)) {
+                            allDYVideosSize += model.size;
                             [allDYVideosArray addObject:model];
                         } else {
+                            allNoDYVideosSize += model.size;
                             [allNoDYVideosArray addObject:model];
                         }
                     } else {
                         model.type = 4;
                     }
                     [allFilesArray addObject:model];
+                    allSize += model.size;
                 } else if (fileType == 2) { // 文件夹
                     model.type = 1;
                     model.size = [GLFFileManager fileSizeForDir:model.path];
@@ -119,13 +129,8 @@ HMSingletonM(DocumentManager)
             NSCalendarUnit type = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
             NSDateComponents *cmps = [calendar components:type fromDate:startDate toDate:endDate options:0];
             // 本地推送
-            CGFloat allSize = 0;
-            for (NSInteger i = 0; i < allFilesArray.count; i++) {
-                FileModel *model = allFilesArray[i];
-                allSize += model.size;
-            }
-            NSString *sizeStr = [GLFFileManager returenSizeStr:allSize];
-            NSString *str = [NSString stringWithFormat:@"总用时: %ld分%ld秒 总大小: %@", cmps.minute, cmps.second, sizeStr];
+            NSString *allSizeStr = [GLFFileManager returenSizeStr:allSize];
+            NSString *str = [NSString stringWithFormat:@"总用时: %ld分%ld秒 总大小: %@", cmps.minute, cmps.second, allSizeStr];
             NSLog(@"全局遍历完成, %@", str);
 
 //            UNMutableNotificationContent *content = [[UNMutableNotificationContent alloc] init];
@@ -162,13 +167,20 @@ HMSingletonM(DocumentManager)
             if (isSuccess1 & isSuccess2 & isSuccess3 & isSuccess4 & isSuccess5 & isSuccess6 & isSuccess7) {
                 NSLog(@"archiver success");
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-                [userDefaults setInteger:allArray.count forKey:@"AllArrayCount"];
-                [userDefaults setInteger:allFoldersArray.count forKey:@"AllFoldersArrayCount"];
-                [userDefaults setInteger:allFilesArray.count forKey:@"AllFilesArrayCount"];
-                [userDefaults setInteger:allImagesArray.count forKey:@"AllImagesArrayCount"];
-                [userDefaults setInteger:allVideosArray.count forKey:@"AllVideosArrayCount"];
-                [userDefaults setInteger:allDYVideosArray.count forKey:@"AllDYVideosArrayCount"];
-                [userDefaults setInteger:allNoDYVideosArray.count forKey:@"AllNoDYVideosArrayCount"];
+                // 数量
+                [userDefaults setInteger:allArray.count forKey:@"AllCount"];
+                [userDefaults setInteger:allFoldersArray.count forKey:@"AllFoldersCount"];
+                [userDefaults setInteger:allFilesArray.count forKey:@"AllFilesCount"];
+                [userDefaults setInteger:allImagesArray.count forKey:@"AllImagesCount"];
+                [userDefaults setInteger:allVideosArray.count forKey:@"AllVideosCount"];
+                [userDefaults setInteger:allDYVideosArray.count forKey:@"AllDYVideosCount"];
+                [userDefaults setInteger:allNoDYVideosArray.count forKey:@"AllNoDYVideosCount"];
+                // 大小
+                [userDefaults setValue:@(allSize) forKey:@"AllSize"];
+                [userDefaults setValue:@(allImagesSize) forKey:@"AllImagesSize"];
+                [userDefaults setValue:@(allVideosSize) forKey:@"AllVideosSize"];
+                [userDefaults setValue:@(allDYVideosSize) forKey:@"AllDYVideosSize"];
+                [userDefaults setValue:@(allNoDYVideosSize) forKey:@"AllNoDYVideosSize"];
                 [userDefaults synchronize];
             } else {
                 NSLog(@"archiver error");

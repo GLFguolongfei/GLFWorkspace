@@ -114,7 +114,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 
 - (void)prepareData {
     [self showHUD:@"加载中, 不要着急!"];
-    NSInteger allImagesCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllImagesArrayCount"];
+    NSInteger allImagesCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllImagesCount"];
     if (self.isPageShow) {
         [DocumentManager getAllImagesArray:^(NSArray * array) {
             [self hideAllHUD];

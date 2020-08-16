@@ -227,7 +227,7 @@
     }];
     [alertVC addAction:cancelAction];
     
-    NSInteger allImagesCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllImagesArrayCount"];
+    NSInteger allImagesCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllImagesCount"];
     NSInteger pageCount = 120;
     NSInteger allPages = allImagesCount / pageCount;
     if (allImagesCount % pageCount != 0) {

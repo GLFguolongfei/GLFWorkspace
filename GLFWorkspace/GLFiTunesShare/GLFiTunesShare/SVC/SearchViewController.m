@@ -21,9 +21,6 @@
     UITableView *myTableView;
     NSMutableArray *myDataArray;
     NSMutableArray *allArray;
-    NSMutableArray *allFilesArray;
-    NSMutableArray *allImagesArray;
-    NSMutableArray *allVideosArray;
         
     UIImageView *bgImageView;
     BOOL isShowDefault;
@@ -55,35 +52,10 @@
     [DocumentManager getAllArray:^(NSArray * array) {
         allArray = [array mutableCopy];
         count++;
-        if (count >= 4) {
-            [self hideAllHUD];
-        }
-    }];
-    [DocumentManager getAllFilesArray:^(NSArray * array) {
-        allFilesArray = [array mutableCopy];
-        count++;
-        if (count >= 4) {
-            [self hideAllHUD];
-            [self prepareInfoView];
-        }
-    }];
-    [DocumentManager getAllImagesArray:^(NSArray * array) {
-        allImagesArray = [array mutableCopy];
-        count++;
-        if (count >= 4) {
-            [self hideAllHUD];
-            [self prepareInfoView];
-        }
-    }];
-    [DocumentManager getAllVideosArray:^(NSArray * array) {
-        allVideosArray = [array mutableCopy];
-        count++;
-        if (count >= 4) {
-            [self hideAllHUD];
-            [self prepareInfoView];
-        }
+        [self hideAllHUD];
     }];
     [self prepareView];
+    [self prepareInfoView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -152,21 +124,15 @@
 }
 
 - (void)prepareInfoView {
-    CGFloat allFilesArraySize = 0;
-    CGFloat allImagesArraySize = 0;
-    CGFloat allVideosArraySize = 0;
-    for (NSInteger i = 0; i < allFilesArray.count; i++) {
-        FileModel *model = allFilesArray[i];
-        allFilesArraySize += model.size;
-    }
-    for (NSInteger i = 0; i < allImagesArray.count; i++) {
-        FileModel *model = allImagesArray[i];
-        allImagesArraySize += model.size;
-    }
-    for (NSInteger i = 0; i < allVideosArray.count; i++) {
-        FileModel *model = allVideosArray[i];
-        allVideosArraySize += model.size;
-    }
+    NSInteger allCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllCount"];
+    NSInteger allImagesCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllImagesCount"];
+    NSInteger allVideosCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllVideosCount"];
+    NSNumber *allSize = [[NSUserDefaults standardUserDefaults] valueForKey:@"AllSize"];
+    NSNumber *allImagesSize = [[NSUserDefaults standardUserDefaults] valueForKey:@"AllImagesSize"];
+    NSNumber *allVideosSize = [[NSUserDefaults standardUserDefaults] valueForKey:@"AllVideosSize"];
+    CGFloat allFilesArraySize = [allSize floatValue];
+    CGFloat allImagesArraySize = [allImagesSize floatValue];
+    CGFloat allVideosArraySize = [allVideosSize floatValue];
     
     CGRect frame = CGRectMake(60, (kScreenHeight-64-160)/2, kScreenWidth-120, 165);
     view = [[UIView alloc] initWithFrame:frame];
@@ -182,18 +148,18 @@
         if (i == 0) {
             label1 = label;
             NSString *sizeStr = [GLFFileManager returenSizeStr:allFilesArraySize];
-            label.text = [NSString stringWithFormat:@"总共: %ld    大小: %@", allFilesArray.count, sizeStr];
+            label.text = [NSString stringWithFormat:@"总共: %ld    大小: %@", allCount, sizeStr];
         } else if (i == 1) {
             label2 = label;
             NSString *sizeStr = [GLFFileManager returenSizeStr:allImagesArraySize];
-            label.text = [NSString stringWithFormat:@"图片: %ld    大小: %@", allImagesArray.count, sizeStr];
+            label.text = [NSString stringWithFormat:@"图片: %ld    大小: %@", allImagesCount, sizeStr];
         } else if (i == 2) {
             label3 = label;
             NSString *sizeStr = [GLFFileManager returenSizeStr:allVideosArraySize];
-            label.text = [NSString stringWithFormat:@"视频: %ld    大小: %@", allVideosArray.count, sizeStr];
+            label.text = [NSString stringWithFormat:@"视频: %ld    大小: %@", allVideosCount, sizeStr];
         } else if (i == 3) {
             label4 = label;
-            NSInteger count = allFilesArray.count - allImagesArray.count - allVideosArray.count;
+            NSInteger count = allCount - allImagesCount - allVideosCount;
             CGFloat size = allFilesArraySize - allImagesArraySize - allVideosArraySize;
             NSString *sizeStr = [GLFFileManager returenSizeStr:size];
             label.text = [NSString stringWithFormat:@"其它: %ld    大小: %@", count, sizeStr];
