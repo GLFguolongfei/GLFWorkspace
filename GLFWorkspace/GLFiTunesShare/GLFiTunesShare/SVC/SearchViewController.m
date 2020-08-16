@@ -47,12 +47,8 @@
     myDataArray = [[NSMutableArray alloc] init];
     allArray = [[NSMutableArray alloc] init];
     
-    [self showHUD:@"加载中, 不要着急!"];
-    __block NSInteger count = 0;
     [DocumentManager getAllArray:^(NSArray * array) {
         allArray = [array mutableCopy];
-        count++;
-        [self hideAllHUD];
     }];
     [self prepareView];
     [self prepareInfoView];
