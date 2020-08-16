@@ -29,6 +29,27 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     @try {
+        NSArray *array = [self.model.path componentsSeparatedByString:@"."];
+        NSString *lowerType = [array.lastObject lowercaseString];
+        if ([lowerType isEqualToString:@"webarchive"]) {
+            NSData *plistData = [NSData dataWithContentsOfFile:self.model.path];
+            NSString *error;
+            NSPropertyListFormat format;
+            NSMutableDictionary *plist;
+            plist = (NSMutableDictionary *)[NSPropertyListSerialization propertyListFromData:plistData
+                                                     mutabilityOption: NSPropertyListMutableContainersAndLeaves
+                                                               format: &format
+                                                     errorDescription: &error];
+            if(plist) {
+                NSLog(@"%@", plist.allKeys);
+                NSDictionary *webMainResource = [plist objectForKey:@"WebMainResource"];
+                NSData *webResourceData = [webMainResource objectForKey:@"WebResourceData"];
+                NSString *htmlStr = [NSString stringWithUTF8String:[webResourceData bytes]];
+                NSLog(@"%@", htmlStr);
+                [self.myWebView loadHTMLString:htmlStr baseURL:nil];
+                return;
+            }
+        }
         // 加载本地资源
         NSURL *url = [NSURL fileURLWithPath:self.model.path];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
