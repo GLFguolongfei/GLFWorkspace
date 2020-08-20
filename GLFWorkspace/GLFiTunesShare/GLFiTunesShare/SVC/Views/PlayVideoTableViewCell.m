@@ -59,7 +59,7 @@
         width = kScreenWidth - 20;
     }
     playerLayer.frame = CGRectMake(10, 0, width, self.bounds.size.height);
-    playerLayer.backgroundColor = KColorCCC.CGColor;
+//    playerLayer.backgroundColor = KColorCCC.CGColor;
     [self.contentView.layer addSublayer:playerLayer];
     
     bgView = [[UIView alloc] init];

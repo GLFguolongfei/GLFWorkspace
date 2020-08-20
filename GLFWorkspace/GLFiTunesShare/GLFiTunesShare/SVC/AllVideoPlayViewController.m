@@ -38,7 +38,7 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    item1 = [[UIBarButtonItem alloc] initWithTitle:@"减小" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
+    item1 = [[UIBarButtonItem alloc] initWithTitle:@"标准" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
     item2 = [[UIBarButtonItem alloc] initWithTitle:@"增大" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     [self setVCTitle:@"所有视频"];
@@ -151,21 +151,18 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 }
 
 - (void)buttonAction1 {
-    cellHeight -= 30;
-    if (cellHeight <= 60) {
-        item1.enabled = NO;
-        item2.enabled = YES;
-    } else {
+    if (cellHeight > 90) {
+        cellHeight = 90;
         item1.enabled = YES;
         item2.enabled = YES;
+        [_tableView reloadData];
+        [_tableView scrollToRowAtIndexPath:firstIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
-    [_tableView reloadData];
-    [_tableView scrollToRowAtIndexPath:firstIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 - (void)buttonAction2 {
-    cellHeight += 30;
-    if (cellHeight >= 240) {
+    cellHeight += 45;
+    if (cellHeight >= 360) {
         item1.enabled = YES;
         item2.enabled = NO;
     } else {
