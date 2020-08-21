@@ -224,11 +224,14 @@
 }
 
 - (void)setLabelTitle {
-    NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
-    [self setVCTitle:array.lastObject];
+    NSString *title = [NSString stringWithFormat:@"%ld / %ld", currentVC.currentIndex + 1, _dataArray.count];
+    [self setVCTitle:title];
     
+    NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
+    NSString *name = array.lastObject;
+
     NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
-    CGRect calculateRect = [self.title boundingRectWithSize:CGSizeMake(kScreenWidth - 130, MAXFLOAT)
+    CGRect calculateRect = [name boundingRectWithSize:CGSizeMake(kScreenWidth - 130, MAXFLOAT)
        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
     attributes:attrbute
        context:nil];
@@ -247,7 +250,7 @@
     }
     
     CGRect labelReact = CGRectMake(15, kScreenHeight - move - calculateRect.size.height, kScreenWidth - 130, calculateRect.size.height);
-    label.text = self.title;
+    label.text = name;
     label.frame = labelReact;
 }
 
