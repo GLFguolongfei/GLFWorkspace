@@ -228,7 +228,7 @@
     [alertVC addAction:cancelAction];
     
     NSInteger allImagesCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllImagesCount"];
-    NSInteger pageCount = 120;
+    NSInteger pageCount = 100;
     NSInteger allPages = allImagesCount / pageCount;
     if (allImagesCount % pageCount != 0) {
         allPages++;
@@ -239,7 +239,7 @@
         if (endIndex > allImagesCount) {
             endIndex = allImagesCount;
         }
-        NSString *str = [NSString stringWithFormat:@"%ld ~~~ %ld", startIndex + 1, endIndex + 1];
+        NSString *str = [NSString stringWithFormat:@"%ld ~~~ %ld", startIndex + 1, endIndex];
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:str style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             AllImageViewController *imageVC = [[AllImageViewController alloc] init];
             imageVC.isPageShow = YES;
