@@ -393,6 +393,8 @@
 		6F58F45720BDB0E1003E0911 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45520BDB0E1003E0911 /* DetailViewController2.m */; };
 		6F58F45A20BDB0FC003E0911 /* SubViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45920BDB0FC003E0911 /* SubViewController2.m */; };
 		6F58F45B20BDB0FC003E0911 /* SubViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45920BDB0FC003E0911 /* SubViewController2.m */; };
+		6F5BF33124F03AF2001F6EBB /* SevenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5BF33024F03AF2001F6EBB /* SevenViewController.m */; };
+		6F5BF33224F03AF2001F6EBB /* SevenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5BF33024F03AF2001F6EBB /* SevenViewController.m */; };
 		6F5D7C6D23E47FE2005954F0 /* AllVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */; };
 		6F5D7C6E23E47FE8005954F0 /* AllVideoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */; };
 		6F62A2961F877FCD0049DE3B /* LaunchScreen2.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */; };
@@ -879,6 +881,8 @@
 		6F58F45520BDB0E1003E0911 /* DetailViewController2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController2.m; sourceTree = "<group>"; };
 		6F58F45820BDB0FC003E0911 /* SubViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubViewController2.h; sourceTree = "<group>"; };
 		6F58F45920BDB0FC003E0911 /* SubViewController2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SubViewController2.m; sourceTree = "<group>"; };
+		6F5BF32F24F03AF2001F6EBB /* SevenViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SevenViewController.h; sourceTree = "<group>"; };
+		6F5BF33024F03AF2001F6EBB /* SevenViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SevenViewController.m; sourceTree = "<group>"; };
 		6F5D7C6B23E47FE2005954F0 /* AllVideoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AllVideoViewController.h; sourceTree = "<group>"; };
 		6F5D7C6C23E47FE2005954F0 /* AllVideoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AllVideoViewController.m; sourceTree = "<group>"; };
 		6F62A2951F877FCD0049DE3B /* LaunchScreen2.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = LaunchScreen2.storyboard; sourceTree = "<group>"; };
@@ -1834,6 +1838,8 @@
 				6F4C2C4C24004DF90094D193 /* FiveViewController.m */,
 				6F01E07A2401737500F64623 /* SixViewController.h */,
 				6F01E07B2401737500F64623 /* SixViewController.m */,
+				6F5BF32F24F03AF2001F6EBB /* SevenViewController.h */,
+				6F5BF33024F03AF2001F6EBB /* SevenViewController.m */,
 			);
 			path = ohter;
 			sourceTree = "<group>";
@@ -2116,6 +2122,7 @@
 				6F4C2C3F24004C9A0094D193 /* AFURLResponseSerialization.m in Sources */,
 				6F01E04C2401722B00F64623 /* ZHDrawingHexagonLayer.m in Sources */,
 				6F01E0682401722B00F64623 /* ZHDrawingRulerLineLayer.m in Sources */,
+				6F5BF33124F03AF2001F6EBB /* SevenViewController.m in Sources */,
 				6F4C2BE424004C0D0094D193 /* QQL_CompassView.m in Sources */,
 				6F0E961B1FA4135B0029DDD6 /* MBProgressHUD+Add.m in Sources */,
 				6F099626241F524300B8C681 /* SDAnimatedImageView.m in Sources */,
@@ -2338,6 +2345,7 @@
 				6F4C2C4024004C9A0094D193 /* AFURLResponseSerialization.m in Sources */,
 				6F01E04D2401722B00F64623 /* ZHDrawingHexagonLayer.m in Sources */,
 				6F01E0692401722B00F64623 /* ZHDrawingRulerLineLayer.m in Sources */,
+				6F5BF33224F03AF2001F6EBB /* SevenViewController.m in Sources */,
 				6F4C2BE524004C0D0094D193 /* QQL_CompassView.m in Sources */,
 				6F1EEB301FB1ADD50046389D /* LoginViewController.m in Sources */,
 				6F099627241F524300B8C681 /* SDAnimatedImageView.m in Sources */,

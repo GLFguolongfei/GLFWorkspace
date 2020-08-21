@@ -14,6 +14,7 @@
 #import "FourViewController.h"
 #import "FiveViewController.h"
 #import "SixViewController.h"
+#import "SevenViewController.h"
 
 @interface OtherViewController ()
 {
@@ -29,8 +30,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-//    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"测试功能" style:UIBarButtonItemStylePlain target:self action:@selector(button)];
-//    self.navigationItem.rightBarButtonItem = item;
     [self setVCTitle:@"有趣功能"];
     
     // 设置背景图片
@@ -43,7 +42,7 @@
     visualEfView.alpha = 0.5;
     [bgImageView addSubview:visualEfView];
 
-    for (NSInteger i = 0; i < 6; i++) {
+    for (NSInteger i = 0; i < 7; i++) {
         CGFloat width = (kScreenWidth - 60) / 2;
         CGRect frame = CGRectMake(20 * (i % 2 + 1) + width * (i % 2), 100 + 80 * ceil(i / 2), width, 60);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
@@ -60,6 +59,8 @@
         } else if (i == 5)  {
             [button setTitle:@"日常小玩意" forState:UIControlStateNormal];
         } else if (i == 6) {
+            [button setTitle:@"人脸识别" forState:UIControlStateNormal];
+        } else if (i == 7) {
             [button setTitle:@"iskytrip 打卡" forState:UIControlStateNormal];
         }
         [button setBackgroundColor:[UIColor clearColor]];
@@ -121,10 +122,6 @@
 //    [self.navigationController.navigationBar setShadowImage:nil];
 }
 
-- (void)button {
-
-}
-
 - (void)buttonAction:(UIButton *)button {
     if (button.tag == 100) {
         OneViewController *vc = [[OneViewController alloc] init];
@@ -145,6 +142,9 @@
         SixViewController *vc = [[SixViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     } else if (button.tag == 106) {
+        SevenViewController *vc = [[SevenViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (button.tag == 107) {
         [ProjectManager iskytripLogin];
         [self showStringHUD:@"打卡成功" second:1.5];
     }
