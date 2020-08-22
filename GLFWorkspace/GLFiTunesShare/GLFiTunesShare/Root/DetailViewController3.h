@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SubViewController3.h"
 
 // --- 内容页(视频)
 @interface DetailViewController3 : BaseViewController
@@ -15,5 +16,10 @@
 @property (nonatomic, strong) NSArray *fileArray;
 
 @property (nonatomic, assign) BOOL isPlay;
+
+@property (nonatomic, assign) SubViewController3 *currentVC; // 当前显示的VC
+
+- (void)playTime:(NSInteger)time;
+- (void)playRate:(CGFloat)rate;
 
 @end

@@ -462,6 +462,10 @@
 		6FBA0FAA23E8113700899522 /* OtherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA0FA423E80C4400899522 /* OtherViewController.m */; };
 		6FBA0FAD23E816F900899522 /* TwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA0FAC23E816F900899522 /* TwoViewController.m */; };
 		6FBA0FAE23E816F900899522 /* TwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FBA0FAC23E816F900899522 /* TwoViewController.m */; };
+		6FDB702724F132B900516007 /* VideoToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FDB702624F132B900516007 /* VideoToolView.m */; };
+		6FDB702824F132B900516007 /* VideoToolView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FDB702624F132B900516007 /* VideoToolView.m */; };
+		6FDB702C24F1369000516007 /* GLFLewPopupViewAnimationSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FDB702A24F1369000516007 /* GLFLewPopupViewAnimationSlide.m */; };
+		6FDB702D24F1369000516007 /* GLFLewPopupViewAnimationSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FDB702A24F1369000516007 /* GLFLewPopupViewAnimationSlide.m */; };
 		6FE944E120BE4EF6005A46AD /* DetailViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E020BE4EF6005A46AD /* DetailViewController3.m */; };
 		6FE944E220BE4EF6005A46AD /* DetailViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E020BE4EF6005A46AD /* DetailViewController3.m */; };
 		6FE944E520BE4F0A005A46AD /* SubViewController3.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE944E420BE4F0A005A46AD /* SubViewController3.m */; };
@@ -936,6 +940,10 @@
 		6FBA0FA723E8113200899522 /* OneViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = OneViewController.m; sourceTree = "<group>"; };
 		6FBA0FAB23E816F900899522 /* TwoViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TwoViewController.h; sourceTree = "<group>"; };
 		6FBA0FAC23E816F900899522 /* TwoViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TwoViewController.m; sourceTree = "<group>"; };
+		6FDB702524F132B900516007 /* VideoToolView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoToolView.h; sourceTree = "<group>"; };
+		6FDB702624F132B900516007 /* VideoToolView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoToolView.m; sourceTree = "<group>"; };
+		6FDB702A24F1369000516007 /* GLFLewPopupViewAnimationSlide.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GLFLewPopupViewAnimationSlide.m; sourceTree = "<group>"; };
+		6FDB702B24F1369000516007 /* GLFLewPopupViewAnimationSlide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GLFLewPopupViewAnimationSlide.h; sourceTree = "<group>"; };
 		6FE944DF20BE4EF6005A46AD /* DetailViewController3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController3.h; sourceTree = "<group>"; };
 		6FE944E020BE4EF6005A46AD /* DetailViewController3.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController3.m; sourceTree = "<group>"; };
 		6FE944E320BE4F0A005A46AD /* SubViewController3.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubViewController3.h; sourceTree = "<group>"; };
@@ -1405,6 +1413,7 @@
 		6F1D45C22451CEEA0093599F /* popupViewController */ = {
 			isa = PBXGroup;
 			children = (
+				6FDB702924F1368200516007 /* GLF */,
 				6F1D45C32451CEEA0093599F /* LewPopupViewAnimationSpring.h */,
 				6F1D45C42451CEEA0093599F /* UIViewController+LewPopupViewController.h */,
 				6F1D45C52451CEEA0093599F /* LewPopupViewAnimationDrop.h */,
@@ -1425,6 +1434,7 @@
 		6F1EEAD71FB1A4060046389D /* Root */ = {
 			isa = PBXGroup;
 			children = (
+				6FDB702424F1328000516007 /* Views */,
 				6F1EEAE91FB1A4060046389D /* RootViewController.h */,
 				6F1EEAEA1FB1A4060046389D /* RootViewController.m */,
 				6F1EEAD81FB1A4060046389D /* DetailViewController.h */,
@@ -1844,6 +1854,24 @@
 			path = ohter;
 			sourceTree = "<group>";
 		};
+		6FDB702424F1328000516007 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				6FDB702524F132B900516007 /* VideoToolView.h */,
+				6FDB702624F132B900516007 /* VideoToolView.m */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6FDB702924F1368200516007 /* GLF */ = {
+			isa = PBXGroup;
+			children = (
+				6FDB702B24F1369000516007 /* GLFLewPopupViewAnimationSlide.h */,
+				6FDB702A24F1369000516007 /* GLFLewPopupViewAnimationSlide.m */,
+			);
+			path = GLF;
+			sourceTree = "<group>";
+		};
 		6FE944E720BE58D3005A46AD /* Edit */ = {
 			isa = PBXGroup;
 			children = (
@@ -2153,6 +2181,7 @@
 				6F4C2BF624004C0D0094D193 /* QQL_RuleViewController.m in Sources */,
 				6F1EEB201FB1A86A0046389D /* SetupViewController.m in Sources */,
 				6F01E0002401720D00F64623 /* MASViewConstraint.m in Sources */,
+				6FDB702C24F1369000516007 /* GLFLewPopupViewAnimationSlide.m in Sources */,
 				6F0E96171FA4135B0029DDD6 /* GLFFileManager.m in Sources */,
 				6F09965E241F524300B8C681 /* SDImageTransformer.m in Sources */,
 				6F4C2BF424004C0D0094D193 /* ZJ_RulesLineView.m in Sources */,
@@ -2167,6 +2196,7 @@
 				6F22EB4323FBEBDE00A30691 /* DYSubViewController.m in Sources */,
 				6F099680241F524300B8C681 /* SDImageAssetManager.m in Sources */,
 				6F01E0402401722B00F64623 /* ZHFigureDrawingToolView.m in Sources */,
+				6FDB702724F132B900516007 /* VideoToolView.m in Sources */,
 				6F4C2BE824004C0D0094D193 /* QQL_CompassManage.m in Sources */,
 				6F099662241F524300B8C681 /* UIImageView+WebCache.m in Sources */,
 				6F0E96191FA4135B0029DDD6 /* GLFTools.m in Sources */,
@@ -2376,6 +2406,7 @@
 				6F4C2BF724004C0D0094D193 /* QQL_RuleViewController.m in Sources */,
 				6FBA0FA923E8113200899522 /* OneViewController.m in Sources */,
 				6F01E0012401720D00F64623 /* MASViewConstraint.m in Sources */,
+				6FDB702D24F1369000516007 /* GLFLewPopupViewAnimationSlide.m in Sources */,
 				6F0E96281FA4135B0029DDD6 /* WaterView2.m in Sources */,
 				6F09965F241F524300B8C681 /* SDImageTransformer.m in Sources */,
 				6F4C2BF524004C0D0094D193 /* ZJ_RulesLineView.m in Sources */,
@@ -2390,6 +2421,7 @@
 				6F22EB4423FBEBDE00A30691 /* DYSubViewController.m in Sources */,
 				6F099681241F524300B8C681 /* SDImageAssetManager.m in Sources */,
 				6F01E0412401722B00F64623 /* ZHFigureDrawingToolView.m in Sources */,
+				6FDB702824F132B900516007 /* VideoToolView.m in Sources */,
 				6F4C2BE924004C0D0094D193 /* QQL_CompassManage.m in Sources */,
 				6F099663241F524300B8C681 /* UIImageView+WebCache.m in Sources */,
 				6F0E96181FA4135B0029DDD6 /* GLFFileManager.m in Sources */,

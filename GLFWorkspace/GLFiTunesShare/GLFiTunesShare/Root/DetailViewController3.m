@@ -7,12 +7,12 @@
 //
 
 #import "DetailViewController3.h"
-#import "SubViewController3.h"
+#import "VideoToolView.h"
+#import "GLFLewPopupViewAnimationSlide.h"
 
 @interface DetailViewController3 ()<UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 {
     UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
-    SubViewController3 *currentVC; // 当前显示的VC
     FileModel *currentModel;
 
     BOOL isPlaying;
@@ -22,6 +22,8 @@
     
     NSMutableArray *favoriteArray;
     NSMutableArray *removeArray;
+    
+    UIView *gestureView;
 }
 @end
 
@@ -55,7 +57,7 @@
     NSArray *array = [subVC.model.name componentsSeparatedByString:@"/"];
     [self setVCTitle:array.lastObject];
     
-    currentVC = subVC;
+    self.currentVC = subVC;
     currentModel = subVC.model;
 
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
@@ -79,7 +81,26 @@
     [super viewWillAppear:animated];
     self.navigationController.toolbar.hidden = NO;
     
+    // 导航栏bg
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake((kScreenWidth - 150) / 2, -20, 150, 64)];
+    gestureView.backgroundColor = [UIColor clearColor];
+    [self.navigationController.navigationBar addSubview:gestureView];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
+    [tapGesture addTarget:self action:@selector(naviAction)];
+    [gestureView addGestureRecognizer:tapGesture];
+    
+    // 放在最上面,否则点击事件没法触发
+    [self.navigationController.navigationBar bringSubviewToFront:gestureView];
+    
     [self resetNaviButton];
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    [gestureView removeFromSuperview];
 }
 
 // 更改状态栏
@@ -128,20 +149,20 @@
 
 - (void)playOrPauseVideo {
     isPlaying = !isPlaying;
-    [currentVC playOrPauseVideo:isPlaying];
+    [self.currentVC playOrPauseVideo:isPlaying];
     [self setButtonPlayState];
 }
 
 - (void)playerForward {
-    [currentVC playerForwardOrRewind:YES];
+    [self.currentVC playerForwardOrRewind:YES];
 }
 
 - (void)playerRewind {
-    [currentVC playerForwardOrRewind:NO];
+    [self.currentVC playerForwardOrRewind:NO];
 }
 
 - (void)playViewLandscape {
-    [currentVC playViewLandscape];
+    [self.currentVC playViewLandscape];
 }
 
 - (void)hiddenNaviBar {
@@ -171,6 +192,25 @@
         [array replaceObjectAtIndex:3 withObject:item];
         self.toolbarItems = array;
     }
+}
+
+- (void)naviAction {
+    VideoToolView *toolView = [[VideoToolView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight/3)];
+    toolView.parentVC = self;
+    toolView.backgroundColor = [UIColor colorWithRed:24/255.0f green:138/255.0f blue:225/255.0f alpha:0.7];
+    GLFLewPopupViewAnimationSlide *animation = [[GLFLewPopupViewAnimationSlide alloc]init];
+    animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
+    [self lew_presentPopupView:toolView animation:animation dismissed:^{
+        NSLog(@"动画结束");
+    }];
+}
+
+- (void)playTime:(NSInteger)time {
+    [self.currentVC playTime:time];
+}
+
+- (void)playRate:(CGFloat)rate {
+    [self.currentVC playRate:rate];
 }
 
 #pragma mark UIPageViewControllerDataSource
@@ -208,9 +248,9 @@
 // 开始滚动或翻页的时候触发
 - (void)pageViewController:(UIPageViewController *)pageViewController willTransitionToViewControllers:(NSArray<UIViewController *> *)pendingViewControllers {
     // 获取要跳转的VC
-    currentVC = (SubViewController3 *)pendingViewControllers[0];
+    self.currentVC = (SubViewController3 *)pendingViewControllers[0];
     // 获取要跳转的Model
-    currentModel = self.fileArray[currentVC.currentIndex];
+    currentModel = self.fileArray[self.currentVC.currentIndex];
     NSLog(@"%@", currentModel.name);
 }
 
@@ -231,7 +271,7 @@
             // 显示导航栏
             [self.navigationController setNavigationBarHidden:NO animated:YES];
             [self.navigationController setToolbarHidden:NO animated:YES];
-            [currentVC showBar];
+            [self.currentVC showBar];
             // 设置标题
             NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
             [self setVCTitle:array.lastObject];
@@ -239,9 +279,9 @@
             [self resetNaviButton];
         } else { // 跳转失败
             // 获取当前控制器
-            currentVC = vc;
+            self.currentVC = vc;
             // 获取当前Model
-            currentModel = self.fileArray[currentVC.currentIndex];
+            currentModel = self.fileArray[self.currentVC.currentIndex];
             NSLog(@"%@", currentModel.name);
         }
     }

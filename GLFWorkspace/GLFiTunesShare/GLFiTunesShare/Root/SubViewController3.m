@@ -12,7 +12,6 @@
 @interface SubViewController3 ()
 {
     AVPlayer *player;
-    AVPlayerItem *playerItem;
     AVPlayerLayer *playerLayer;
     BOOL isHiddenBar;
     BOOL isRotate;
@@ -98,9 +97,9 @@
     // 1-获取URL(远程/本地)
     NSURL *url = [NSURL fileURLWithPath:self.model.path];
     // 2-创建AVPlayerItem
-    playerItem = [AVPlayerItem playerItemWithURL:url];
+    self.playerItem = [AVPlayerItem playerItemWithURL:url];
     // 3-创建AVPlayer
-    player = [AVPlayer playerWithPlayerItem:playerItem];
+    player = [AVPlayer playerWithPlayerItem:self.playerItem];
     NSString *mute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
     if (mute.integerValue) {
         player.volume = 0.0; // 控制音量
@@ -151,8 +150,8 @@
 
 // 视频快进快退
 - (void)playerForwardOrRewind:(BOOL)isForward {
-    NSInteger currentTime = (NSInteger)CMTimeGetSeconds(playerItem.currentTime);
-    NSInteger duration = (NSInteger)CMTimeGetSeconds(playerItem.duration);
+    NSInteger currentTime = (NSInteger)CMTimeGetSeconds(self.playerItem.currentTime);
+    NSInteger duration = (NSInteger)CMTimeGetSeconds(self.playerItem.duration);
     NSInteger interval = 10;
     // 根据总时长,设置每次快进和后退的时间间隔
     if (duration < 60) {
@@ -210,13 +209,25 @@
 }
 
 - (void)showTimer {
-    NSInteger currentTime = (NSInteger)CMTimeGetSeconds(playerItem.currentTime);
-    NSInteger duration = (NSInteger)CMTimeGetSeconds(playerItem.duration);
+    NSInteger currentTime = (NSInteger)CMTimeGetSeconds(self.playerItem.currentTime);
+    NSInteger duration = (NSInteger)CMTimeGetSeconds(self.playerItem.duration);
     NSString *currentTimeStr = [GLFTools timeFormatted:currentTime];
     NSString *durationStr = [GLFTools timeFormatted:duration];
     label.text = [NSString stringWithFormat:@"%@ / %@", currentTimeStr, durationStr];
-    CGFloat index = CMTimeGetSeconds(playerItem.currentTime) / CMTimeGetSeconds(playerItem.duration);
+    CGFloat index = CMTimeGetSeconds(self.playerItem.currentTime) / CMTimeGetSeconds(self.playerItem.duration);
     [progressView setProgress:index animated:YES];
+}
+
+
+// 从固定时间开始播放
+- (void)playTime:(NSInteger)time {
+    CMTime dragedCMTime = CMTimeMake(time, 1);
+    [player seekToTime:dragedCMTime];
+}
+
+// 设置播放速度
+- (void)playRate:(CGFloat)rate {
+    [player setRate:rate];
 }
 
 

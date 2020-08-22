@@ -14,9 +14,14 @@
 @property (nonatomic, assign) NSInteger currentIndex;
 @property (nonatomic, strong) FileModel *model;
 
+@property (nonatomic, strong) AVPlayerItem *playerItem;
+
 - (void)playOrPauseVideo:(BOOL)isPlay;
 - (void)playerForwardOrRewind:(BOOL)isForward;
 - (void)playViewLandscape;
 - (void)showBar;
+
+- (void)playTime:(NSInteger)time;
+- (void)playRate:(CGFloat)rate;
 
 @end
