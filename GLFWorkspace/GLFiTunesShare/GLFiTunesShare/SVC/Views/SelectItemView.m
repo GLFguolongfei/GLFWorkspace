@@ -34,18 +34,18 @@
     [self addSubview:myTableView];
     myTableView.tableFooterView = [[UIView alloc] init];
     
-    CGRect viewFrame = CGRectMake(self.bounds.size.width - 90, self.bounds.size.height - 90, 80, 80);
+    CGRect viewFrame = CGRectMake(self.bounds.size.width - 80, self.bounds.size.height - 80, 65, 65);
     UIView *bgview = [[UIView alloc] initWithFrame:viewFrame];
     bgview.backgroundColor = KNavgationBarColor;
     bgview.alpha = 0.5;
-    bgview.layer.cornerRadius = 40;
+    bgview.layer.cornerRadius = 32;
     bgview.layer.masksToBounds = YES;
     [self addSubview:bgview];
-    CGRect buttonFrame = CGRectMake(self.bounds.size.width - 100, self.bounds.size.height - 100, 100, 100);
+    CGRect buttonFrame = CGRectMake(self.bounds.size.width - 95, self.bounds.size.height - 95, 95, 95);
     UIButton *button = [[UIButton alloc] initWithFrame:buttonFrame];
     [button setTitle:@"当前" forState:UIControlStateNormal];
+    [button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
     [button setBackgroundColor:[UIColor clearColor]];
-    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(buttonAction) forControlEvents:UIControlEventTouchUpInside];
     [self addSubview:button];
     
