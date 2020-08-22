@@ -564,12 +564,21 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     FileModel *model;
-    if (tableView == _tableView1) {
-        model = _dataArray1[indexPath.row];
-    } else if (tableView == _tableView2) {
-        model = _dataArray2[indexPath.row];
-    } else if (tableView == _tableView3) {
-        model = _dataArray3[indexPath.row];
+    // 就这么写,否则,进入下一页会自动返回到顶部(2列或3列总有一个)
+    if (isThree) {
+        if (tableView == _tableView1) {
+            model = _dataArray1[indexPath.row];
+        } else if (tableView == _tableView2) {
+            model = _dataArray2[indexPath.row];
+        } else if (tableView == _tableView3) {
+            model = _dataArray3[indexPath.row];
+        }
+    } else {
+        if (tableView == _tableView1) {
+            model = _dataArray1[indexPath.row];
+        } else if (tableView == _tableView2) {
+            model = _dataArray2[indexPath.row];
+        }
     }
     
     if (isShowDefault) {
