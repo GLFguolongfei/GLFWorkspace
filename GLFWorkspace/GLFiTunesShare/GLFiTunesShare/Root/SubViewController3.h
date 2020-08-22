@@ -14,6 +14,7 @@
 @property (nonatomic, assign) NSInteger currentIndex;
 @property (nonatomic, strong) FileModel *model;
 
+@property (nonatomic, strong) AVPlayer *player;
 @property (nonatomic, strong) AVPlayerItem *playerItem;
 
 - (void)playOrPauseVideo:(BOOL)isPlay;

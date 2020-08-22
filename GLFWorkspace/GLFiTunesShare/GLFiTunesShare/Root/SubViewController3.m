@@ -11,7 +11,6 @@
 
 @interface SubViewController3 ()
 {
-    AVPlayer *player;
     AVPlayerLayer *playerLayer;
     BOOL isHiddenBar;
     BOOL isRotate;
@@ -99,18 +98,18 @@
     // 2-创建AVPlayerItem
     self.playerItem = [AVPlayerItem playerItemWithURL:url];
     // 3-创建AVPlayer
-    player = [AVPlayer playerWithPlayerItem:self.playerItem];
+    self.player = [AVPlayer playerWithPlayerItem:self.playerItem];
     NSString *mute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
     if (mute.integerValue) {
-        player.volume = 0.0; // 控制音量
+        self.player.volume = 0.0; // 控制音量
     } else {
         NSString *min = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMin];
         if (min.integerValue) {
-            player.volume = 0.01; // 控制音量
+            self.player.volume = 0.01; // 控制音量
         }
     }
     // 4-添加AVPlayerLayer
-    playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
+    playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
     playerLayer.frame = kScreen;
     [self.view.layer addSublayer:playerLayer];
 }
@@ -139,12 +138,12 @@
 // 视频播放暂停
 - (void)playOrPauseVideo: (BOOL)isPlay  {
     if (isPlay) {
-        [player play];
+        [self.player play];
         // 定时器
         timer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(showTimer) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     } else {
-        [player pause];
+        [self.player pause];
     }
 }
 
@@ -178,7 +177,7 @@
         time = 0;
     }
     CMTime dragedCMTime = CMTimeMake(time, 1);
-    [player seekToTime:dragedCMTime];
+    [self.player seekToTime:dragedCMTime];
 }
 
 // 视频横竖屏
@@ -205,7 +204,7 @@
 
 - (void)playeEnd:(NSNotification *)notification {
     CMTime dragedCMTime = CMTimeMake(0, 1);
-    [player seekToTime:dragedCMTime];
+    [self.player seekToTime:dragedCMTime];
 }
 
 - (void)showTimer {
@@ -222,12 +221,12 @@
 // 从固定时间开始播放
 - (void)playTime:(NSInteger)time {
     CMTime dragedCMTime = CMTimeMake(time, 1);
-    [player seekToTime:dragedCMTime];
+    [self.player seekToTime:dragedCMTime];
 }
 
 // 设置播放速度
 - (void)playRate:(CGFloat)rate {
-    [player setRate:rate];
+    [self.player setRate:rate];
 }
 
 

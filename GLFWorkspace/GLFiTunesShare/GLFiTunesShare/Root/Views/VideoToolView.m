@@ -13,6 +13,7 @@
 @interface VideoToolView ()
 {
     UISlider *slider1;
+    UISlider *slider2;
     NSTimer *timer;
     DetailViewController3 *vc;
     SubViewController3 *subVC;
@@ -55,12 +56,19 @@
     label2.text = @"播放倍率";
     label2.textColor = [UIColor whiteColor];
     [self addSubview:label2];
+    
+    CGRect buttonFrame = CGRectMake(self.frame.size.width - 100, 120, 100, 20);
+    UIButton *button = [[UIButton alloc] initWithFrame:buttonFrame];
+    [button setTitle:@"1倍速" forState:UIControlStateNormal];
+    [button setTitleColor:KNavgationBarColor forState:UIControlStateNormal];
+    [self addSubview:button];
+    [button addTarget:self action:@selector(buttonActiion) forControlEvents:UIControlEventTouchUpInside];
 
     CGRect sliderFrame2 = CGRectMake(15, 160, self.frame.size.width - 30, 20);
-    UISlider *slider2 = [[UISlider alloc] initWithFrame:sliderFrame2];
-    slider2.value = 1;
+    slider2 = [[UISlider alloc] initWithFrame:sliderFrame2];
     slider2.minimumValue = 0.2;
     slider2.maximumValue = 2.5;
+    slider2.value = subVC.player.rate;
     [self addSubview:slider2];
     slider2.continuous = NO; // 连续滑动是否触发方法,默认值为YES
     [slider2 addTarget:self action:@selector(sliderChange2:) forControlEvents:UIControlEventValueChanged];
@@ -79,6 +87,11 @@
 
 - (void)stopSlider {
     isSlidering = NO;
+}
+
+- (void)buttonActiion {
+    [vc playRate:1];
+    [slider2 setValue:1 animated:YES];
 }
 
 - (void)sliderChange1:(id)sender {
