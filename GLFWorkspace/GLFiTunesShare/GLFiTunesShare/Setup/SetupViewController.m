@@ -228,7 +228,17 @@
     [alertVC addAction:cancelAction];
     
     NSInteger allImagesCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllImagesCount"];
-    NSInteger pageCount = 100;
+    if (allImagesCount < 600) {
+        AllImageViewController *imageVC = [[AllImageViewController alloc] init];
+        [self.navigationController pushViewController:imageVC animated:YES];
+        return;
+    }
+    NSInteger pageCount = 300;
+    if (allImagesCount < 1000) {
+        pageCount = 100;
+    } else if (allImagesCount < 2000) {
+        pageCount = 200;
+    }
     NSInteger allPages = allImagesCount / pageCount;
     if (allImagesCount % pageCount != 0) {
         allPages++;
