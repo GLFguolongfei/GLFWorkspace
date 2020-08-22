@@ -19,6 +19,7 @@ HMSingletonM(ProjectManager)
 #pragma mark - 网络爬虫
 + (void)getNetworkDataTest {
     NSString *urlStr = @"https://yaoshe116.com/videos/49125/eee141a6eed2cc1125235a55b03aa326/";
+    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // 中文必须转换
     NSURL *url = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:nil completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
