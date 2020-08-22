@@ -73,13 +73,13 @@
     slider2.continuous = NO; // 连续滑动是否触发方法,默认值为YES
     [slider2 addTarget:self action:@selector(sliderChange2:) forControlEvents:UIControlEventValueChanged];
     
-    timer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(showTimer) userInfo:nil repeats:YES];
+    timer = [NSTimer timerWithTimeInterval:0.05 target:self selector:@selector(showTimer) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 #pragma mark Events
 - (void)showTimer {
-    NSInteger currentTime = (NSInteger)CMTimeGetSeconds(subVC.playerItem.currentTime);
+    CGFloat currentTime = (CGFloat)CMTimeGetSeconds(subVC.playerItem.currentTime);
     if (!isSlidering) {
         [slider1 setValue:currentTime animated:YES];
     }

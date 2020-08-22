@@ -101,6 +101,8 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [gestureView removeFromSuperview];
+    // 停止播放
+    [self.currentVC playOrPauseVideo:NO];
 }
 
 // 更改状态栏
@@ -203,6 +205,7 @@
     animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
     [self lew_presentPopupView:toolView animation:animation dismissed:^{
         NSLog(@"动画结束");
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:nil];
     }];
 }
 
@@ -270,9 +273,9 @@
             isPlaying = NO;
             [self setButtonPlayState];
             // 显示导航栏
-            [self.navigationController setNavigationBarHidden:NO animated:YES];
-            [self.navigationController setToolbarHidden:NO animated:YES];
-            [self.currentVC showBar];
+            if (self.navigationController.navigationBar.hidden == YES) {
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:nil];
+            }
             // 设置标题
             NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
             [self setVCTitle:array.lastObject];
