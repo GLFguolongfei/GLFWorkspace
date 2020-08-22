@@ -40,7 +40,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     UITableView *_tableView3;
     NSMutableArray *_dataArray1;
     NSMutableArray *_dataArray2;
-    NSMutableArray *_dataArray3;    
+    NSMutableArray *_dataArray3;
+    
+    BOOL isThree; // YES显示三列 NO显示两列
 }
 @end
 
@@ -149,18 +151,30 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     CGFloat width = kScreenWidth/3;
     for (NSInteger i = 0; i < allImagesArray.count; i++) {
         FileModel *model = allImagesArray[i];
-        if (height1 <= height2 && height1 <= height3) {
-            [_dataArray1 addObject:model];
-            CGFloat height = width * model.image.size.height / model.image.size.width;
-            height1 += height;
-        } else if (height2 <= height1 && height2 <= height3) {
-            [_dataArray2 addObject:model];
-            CGFloat height = width * model.image.size.height / model.image.size.width;
-            height2 += height;
-        } else if (height3 <= height1 && height3 <= height2) {
-            [_dataArray3 addObject:model];
-            CGFloat height = width * model.image.size.height / model.image.size.width;
-            height3 += height;
+        if (isThree) {
+            if (height1 <= height2 && height1 <= height3) {
+                [_dataArray1 addObject:model];
+                CGFloat height = width * model.image.size.height / model.image.size.width;
+                height1 += height;
+            } else if (height2 <= height1 && height2 <= height3) {
+                [_dataArray2 addObject:model];
+                CGFloat height = width * model.image.size.height / model.image.size.width;
+                height2 += height;
+            } else if (height3 <= height1 && height3 <= height2) {
+                [_dataArray3 addObject:model];
+                CGFloat height = width * model.image.size.height / model.image.size.width;
+                height3 += height;
+            }
+        } else {
+            if (height1 <= height2) {
+                [_dataArray1 addObject:model];
+                CGFloat height = width * model.image.size.height / model.image.size.width;
+                height1 += height;
+            } else {
+                [_dataArray2 addObject:model];
+                CGFloat height = width * model.image.size.height / model.image.size.width;
+                height2 += height;
+            }
         }
     }
     [_tableView1 reloadData];
@@ -179,7 +193,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     visualEfView2.alpha = 0.5;
     [bgImageView addSubview:visualEfView2];
     
-    _tableView1 = [[UITableView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
+    CGRect frame1 = CGRectMake(0, 64, kScreenWidth/2, kScreenHeight-64);
+    if (isThree) {
+        frame1 = CGRectMake(0, 64, kScreenWidth/3, kScreenHeight-64);
+    }
+    _tableView1 = [[UITableView alloc] initWithFrame:frame1 style:UITableViewStylePlain];
     _tableView1.backgroundColor = [UIColor clearColor];
     _tableView1.delegate = self;
     _tableView1.dataSource = self;
@@ -189,7 +207,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _tableView1.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView1.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
 
-    _tableView2 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
+    CGRect frame2 = CGRectMake(kScreenWidth/2, 64, kScreenWidth/2, kScreenHeight-64);
+    if (isThree) {
+        frame2 = CGRectMake(kScreenWidth/3, 64, kScreenWidth/3, kScreenHeight-64);
+    }
+    _tableView2 = [[UITableView alloc] initWithFrame:frame2 style:UITableViewStylePlain];
     _tableView2.backgroundColor = [UIColor clearColor];
     _tableView2.delegate = self;
     _tableView2.dataSource = self;
@@ -199,14 +221,16 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _tableView2.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView2.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
 
-    _tableView3 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3*2, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
-    _tableView3.backgroundColor = [UIColor clearColor];
-    _tableView3.delegate = self;
-    _tableView3.dataSource = self;
-    [self.view addSubview:_tableView3];
-    _tableView3.tableFooterView = [UIView new];
-    _tableView3.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView3.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+    if (isThree) {
+        _tableView3 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3*2, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
+        _tableView3.backgroundColor = [UIColor clearColor];
+        _tableView3.delegate = self;
+        _tableView3.dataSource = self;
+        [self.view addSubview:_tableView3];
+        _tableView3.tableFooterView = [UIView new];
+        _tableView3.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView3.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+    }
 
     [_tableView1 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID1];
     [_tableView2 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID2];
@@ -286,26 +310,33 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     }];
     [alertVC addAction:okAction];
     
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"2列/3列显示" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        isThree = !isThree;
+        [self prepareView];
+        [self rePrepareData:allImagesArray];
+    }];
+    [alertVC addAction:okAction2];
+    
     NSString *str = @"";
     if (isPlaying) {
         str = @"停止播放";
     } else {
         str = @"自动播放";
     }
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:str style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:str style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [self autoPlay];
     }];
-    [alertVC addAction:okAction2];
+    [alertVC addAction:okAction3];
     
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if (manager.isRecording) {
-        UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"切换方向" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *okAction4 = [UIAlertAction actionWithTitle:@"切换方向" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [manager switchCamera];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self reSetVCTitle];
             });
         }];
-        [alertVC addAction:okAction3];
+        [alertVC addAction:okAction4];
     }
     
     [self presentViewController:alertVC animated:YES completion:nil];
@@ -445,7 +476,10 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat width = kScreenWidth/3;
+    CGFloat width = kScreenWidth/2;
+    if (isThree) {
+        width = kScreenWidth/3;
+    }
     if (tableView == _tableView1) {
         FileModel *model = _dataArray1[indexPath.row];
         UIImage *image = model.image;
