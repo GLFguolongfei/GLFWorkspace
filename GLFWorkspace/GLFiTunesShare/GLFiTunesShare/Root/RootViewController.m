@@ -14,7 +14,7 @@
 #import "MoveViewController.h"
 #import "FileInfoViewController.h"
 
-@interface RootViewController ()<UITableViewDelegate, UITableViewDataSource, UIDocumentInteractionControllerDelegate, UIViewControllerPreviewingDelegate>
+@interface RootViewController ()<UITableViewDelegate, UITableViewDataSource, UIDocumentInteractionControllerDelegate, UIViewControllerPreviewingDelegate, UIVideoEditorControllerDelegate>
 {
     UITableView *myTableView;
     NSMutableArray *myDataArray;
@@ -589,6 +589,7 @@
 }
 
 - (void)moreAction {
+    FileModel *model = myDataArray[editIndexPath.row];
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         [self viewEditing:YES];
@@ -606,6 +607,23 @@
         [self shareAction];
     }];
     [alertVC addAction:okAction3];
+    if (model.type == 3) { // 视频
+        UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"编辑..." style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            UIVideoEditorController *editVC;
+            // 检查这个视频资源能不能被修改
+            if ([UIVideoEditorController canEditVideoAtPath:model.path]) {
+                editVC = [[UIVideoEditorController alloc] init];
+                editVC.videoPath = model.path;
+                editVC.videoMaximumDuration = 0;
+                editVC.videoQuality = UIImagePickerControllerQualityTypeHigh;
+                editVC.delegate = self;
+            } else {
+                [self showStringHUD:@"不支持该种视频格式编辑" second:2];
+            }
+            [self presentViewController:editVC animated:YES completion:nil];
+        }];
+        [alertVC addAction:okAction3];
+    }
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
@@ -741,6 +759,38 @@
 - (void)previewingContext:(id <UIViewControllerPreviewing>)previewingContext commitViewController:(UIViewController *)viewControllerToCommit
 {
     [self showViewController:viewControllerToCommit sender:self];
+}
+
+#pragma mark UIVideoEditorControllerDelegate(视频编辑)
+// 编辑成功后的Video被保存在沙盒的临时目录中
+- (void)videoEditorController:(UIVideoEditorController *)editor didSaveEditedVideoToPath:(NSString *)editedVideoPath {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+    FileModel *model = myDataArray[editIndexPath.row];
+    NSArray *array = [model.path componentsSeparatedByString:@"."];
+    NSString *path = @"";
+    if (array.count > 1) {
+        NSString *str2 = (NSString *)array.lastObject;
+        NSString *str1 = [model.path substringToIndex:model.path.length - str2.length - 1];
+        path = [NSString stringWithFormat:@"%@的副本.%@", str1, str2];
+    }
+    BOOL success = [GLFFileManager fileCopy:editedVideoPath toPath:path];
+    if (success) {
+        [self prepareData];
+        [self showStringHUD:@"编辑成功" second:2];
+    } else {
+        [self showStringHUD:@"编辑失败" second:2];
+    }
+}
+
+// 编辑失败后调用的方法
+- (void)videoEditorController:(UIVideoEditorController *)editor didFailWithError:(NSError *)error {
+    [editor dismissViewControllerAnimated:YES completion:nil];
+    [self showStringHUD:@"编辑失败" second:2];
+}
+
+// 编辑取消后调用的方法
+- (void)videoEditorControllerDidCancel:(UIVideoEditorController *)editor {
+    [editor dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark Private Method
