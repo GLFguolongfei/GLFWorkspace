@@ -389,6 +389,8 @@
 		6F4C2C4E24004DF90094D193 /* FiveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F4C2C4C24004DF90094D193 /* FiveViewController.m */; };
 		6F538DD9249E662900E93D4D /* ProjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F538DD8249E662900E93D4D /* ProjectManager.m */; };
 		6F538DDA249E662900E93D4D /* ProjectManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F538DD8249E662900E93D4D /* ProjectManager.m */; };
+		6F57F6D824F960F6000E5ABD /* VideoEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F57F6D724F960F6000E5ABD /* VideoEditorViewController.m */; };
+		6F57F6D924F960F6000E5ABD /* VideoEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F57F6D724F960F6000E5ABD /* VideoEditorViewController.m */; };
 		6F58F45620BDB0E1003E0911 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45520BDB0E1003E0911 /* DetailViewController2.m */; };
 		6F58F45720BDB0E1003E0911 /* DetailViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45520BDB0E1003E0911 /* DetailViewController2.m */; };
 		6F58F45A20BDB0FC003E0911 /* SubViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F58F45920BDB0FC003E0911 /* SubViewController2.m */; };
@@ -881,6 +883,8 @@
 		6F4C2C4C24004DF90094D193 /* FiveViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FiveViewController.m; sourceTree = "<group>"; };
 		6F538DD7249E662900E93D4D /* ProjectManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProjectManager.h; sourceTree = "<group>"; };
 		6F538DD8249E662900E93D4D /* ProjectManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ProjectManager.m; sourceTree = "<group>"; };
+		6F57F6D624F960F6000E5ABD /* VideoEditorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoEditorViewController.h; sourceTree = "<group>"; };
+		6F57F6D724F960F6000E5ABD /* VideoEditorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoEditorViewController.m; sourceTree = "<group>"; };
 		6F58F45420BDB0E1003E0911 /* DetailViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DetailViewController2.h; sourceTree = "<group>"; };
 		6F58F45520BDB0E1003E0911 /* DetailViewController2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DetailViewController2.m; sourceTree = "<group>"; };
 		6F58F45820BDB0FC003E0911 /* SubViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SubViewController2.h; sourceTree = "<group>"; };
@@ -1798,6 +1802,8 @@
 				6F15156C241E500300621247 /* DYNextSubViewController.m */,
 				6F90B04624123CB000D7B447 /* WKWebViewController.h */,
 				6F90B04724123CB000D7B447 /* WKWebViewController.m */,
+				6F57F6D624F960F6000E5ABD /* VideoEditorViewController.h */,
+				6F57F6D724F960F6000E5ABD /* VideoEditorViewController.m */,
 			);
 			path = SVC;
 			sourceTree = "<group>";
@@ -2192,6 +2198,7 @@
 				6F4C2BE624004C0D0094D193 /* QQL_CompassViewController.m in Sources */,
 				6F099674241F524300B8C681 /* UIView+WebCache.m in Sources */,
 				6F099620241F524300B8C681 /* SDWebImageManager.m in Sources */,
+				6F57F6D824F960F6000E5ABD /* VideoEditorViewController.m in Sources */,
 				6F19EE0723F3143300C438DE /* SearchViewController.m in Sources */,
 				6F22EB4323FBEBDE00A30691 /* DYSubViewController.m in Sources */,
 				6F099680241F524300B8C681 /* SDImageAssetManager.m in Sources */,
@@ -2417,6 +2424,7 @@
 				6F4C2BE724004C0D0094D193 /* QQL_CompassViewController.m in Sources */,
 				6F099675241F524300B8C681 /* UIView+WebCache.m in Sources */,
 				6F099621241F524300B8C681 /* SDWebImageManager.m in Sources */,
+				6F57F6D924F960F6000E5ABD /* VideoEditorViewController.m in Sources */,
 				6F19EE0823F3143300C438DE /* SearchViewController.m in Sources */,
 				6F22EB4423FBEBDE00A30691 /* DYSubViewController.m in Sources */,
 				6F099681241F524300B8C681 /* SDImageAssetManager.m in Sources */,
