@@ -35,8 +35,11 @@
     // 让程序从容的崩溃
     InstallUncaughtExceptionHandler();
     
+    // 通知
     [self removeLocalNotifications];
     [self resignUserNotification:application andOptions:launchOptions];
+    // 3DTouch
+    [self creatShortcutItem];
     
     // 上班打卡
 //    [self iskytrip:2];
@@ -45,10 +48,6 @@
 //    [self iskytrip:5];
 //    [self iskytrip:6];
     
-#if FirstTarget
-    [self creatShortcutItem];
-#endif
-
     BOOL isTestFounction = NO;
     if (isTestFounction) {
         TestViewController *testVC = [[TestViewController alloc] init];
@@ -310,7 +309,11 @@
     UIApplicationShortcutItem *item1 = [[UIApplicationShortcutItem alloc] initWithType:@"com.glf.video" localizedTitle:@"录像" localizedSubtitle:@"" icon:icon1 userInfo:nil];
     UIApplicationShortcutItem *item2 = [[UIApplicationShortcutItem alloc] initWithType:@"com.glf.photo" localizedTitle:@"拍照" localizedSubtitle:@"" icon:icon2 userInfo:nil];
     UIApplicationShortcutItem *item3 = [[UIApplicationShortcutItem alloc] initWithType:@"com.glf.dy" localizedTitle:@"抖音" localizedSubtitle:@"" icon:icon3 userInfo:nil];
-    [UIApplication sharedApplication].shortcutItems = @[item1,item2,item3];
+    #if FirstTarget
+        [UIApplication sharedApplication].shortcutItems = @[item1,item2,item3];
+    #else
+        [UIApplication sharedApplication].shortcutItems = @[item1,item2];
+    #endif
 }
 
 
