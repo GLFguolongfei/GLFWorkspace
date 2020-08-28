@@ -247,15 +247,17 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 {
     // 获取按压的Cell所在行,[previewingContext sourceView]就是按压的那个视图
     NSIndexPath *indexPath = [_tableView indexPathForCell:(UITableViewCell* )[previewingContext sourceView]];
-    // 设定预览的界面
-    FileInfoViewController *vc = [[FileInfoViewController alloc] init];
-    vc.preferredContentSize = CGSizeMake(0.0f, 400.0f);
-    vc.model = _dataArray[indexPath.row];
+    FileModel *model = _dataArray[indexPath.row];
     // 调整不被虚化的范围，按压的那个cell不被虚化（轻轻按压时周边会被虚化，再少用力展示预览，再加力跳页至设定界面）
-    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, 40);
+    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, cellHeight);
     previewingContext.sourceRect = rect;
-    // 返回预览界面
-    return vc;
+    // 设定预览的界面
+    DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
+    detailVC.selectIndex = [self returnIndex:_dataArray with:model];
+    detailVC.fileArray = _dataArray;
+    detailVC.isPlay = YES;
+    detailVC.preferredContentSize = CGSizeMake(kScreenWidth, kScreenHeight * 0.8);
+    return detailVC;
 }
 
 // pop(按用点力进入）

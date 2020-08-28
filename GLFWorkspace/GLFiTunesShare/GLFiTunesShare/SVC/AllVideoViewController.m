@@ -200,31 +200,7 @@ static NSString *cellID = @"VideoTableViewCell";
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     FileModel *model = _dataArray[indexPath.row];
-    NSArray *array = [model.name componentsSeparatedByString:@"/"];
-    NSString *name = [array lastObject];
-    if (isShowImage && model.image != nil && model.image.size.width > 0) {
-        CGFloat width = 100 * model.image.size.width / model.image.size.height;
-        if (width > kScreenWidth / 2) {
-            width = kScreenWidth / 2;
-        }
-        NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:16]};
-        CGRect rect = [name boundingRectWithSize:CGSizeMake(kScreenWidth - 30 - width, MAXFLOAT)
-                                        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                     attributes:attrbute
-                                        context:nil];
-        if (rect.size.height + 20 > 100) {
-            return rect.size.height + 20;
-        } else {
-            return 100;
-        }
-    } else {
-        NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
-        CGRect rect = [name boundingRectWithSize:CGSizeMake(kScreenWidth - 30, MAXFLOAT)
-                                        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-                                     attributes:attrbute
-                                        context:nil];
-        return rect.size.height + 30;
-    }
+    return [self returnCellHeight:model];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -303,15 +279,18 @@ static NSString *cellID = @"VideoTableViewCell";
 {
     // 获取按压的Cell所在行,[previewingContext sourceView]就是按压的那个视图
     NSIndexPath *indexPath = [_tableView indexPathForCell:(UITableViewCell* )[previewingContext sourceView]];
-    // 设定预览的界面
-    FileInfoViewController *vc = [[FileInfoViewController alloc] init];
-    vc.preferredContentSize = CGSizeMake(0.0f, 400.0f);
-    vc.model = _dataArray[indexPath.row];
+    FileModel *model = _dataArray[indexPath.row];
     // 调整不被虚化的范围，按压的那个cell不被虚化（轻轻按压时周边会被虚化，再少用力展示预览，再加力跳页至设定界面）
-    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, 40);
+    CGFloat height = [self returnCellHeight:model];
+    CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, height);
     previewingContext.sourceRect = rect;
-    // 返回预览界面
-    return vc;
+    // 设定预览的界面
+    DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
+    detailVC.selectIndex = [self returnIndex:_dataArray with:model];
+    detailVC.fileArray = _dataArray;
+    detailVC.isPlay = YES;
+    detailVC.preferredContentSize = CGSizeMake(kScreenWidth, kScreenHeight * 0.8);
+    return detailVC;
 }
 
 // pop(按用点力进入）
@@ -331,6 +310,34 @@ static NSString *cellID = @"VideoTableViewCell";
         }
     }
     return index;
+}
+
+- (CGFloat)returnCellHeight:(FileModel *)model {
+    NSArray *array = [model.name componentsSeparatedByString:@"/"];
+    NSString *name = [array lastObject];
+    if (isShowImage && model.image != nil && model.image.size.width > 0) {
+        CGFloat width = 100 * model.image.size.width / model.image.size.height;
+        if (width > kScreenWidth / 2) {
+            width = kScreenWidth / 2;
+        }
+        NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:16]};
+        CGRect rect = [name boundingRectWithSize:CGSizeMake(kScreenWidth - 30 - width, MAXFLOAT)
+                                        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                     attributes:attrbute
+                                        context:nil];
+        if (rect.size.height + 20 > 100) {
+            return rect.size.height + 20;
+        } else {
+            return 100;
+        }
+    } else {
+        NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
+        CGRect rect = [name boundingRectWithSize:CGSizeMake(kScreenWidth - 30, MAXFLOAT)
+                                        options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+                                     attributes:attrbute
+                                        context:nil];
+        return rect.size.height + 30;
+    }
 }
 
 

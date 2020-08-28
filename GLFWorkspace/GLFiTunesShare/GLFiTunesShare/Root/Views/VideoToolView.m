@@ -66,8 +66,8 @@
 
     CGRect sliderFrame2 = CGRectMake(15, 160, self.frame.size.width - 30, 20);
     slider2 = [[UISlider alloc] initWithFrame:sliderFrame2];
-    slider2.minimumValue = 0.2;
-    slider2.maximumValue = 2.5;
+    slider2.minimumValue = 0.5;
+    slider2.maximumValue = 2.0;
     slider2.value = subVC.player.rate;
     [self addSubview:slider2];
     slider2.continuous = NO; // 连续滑动是否触发方法,默认值为YES
