@@ -136,8 +136,6 @@
 
 #pragma mark Events
 - (void)favoriteAction {
-    NSLog(@"%@", currentModel.name);
-
     FileModel *model = [self returnModel];
     [DocumentManager favoriteModel:model];
     [self resetNaviButton];
@@ -198,7 +196,7 @@
 
 - (void)naviAction {
     [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:nil];
-    VideoToolView *toolView = [[VideoToolView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight/3)];
+    VideoToolView *toolView = [[VideoToolView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 200)];
     toolView.parentVC = self;
     toolView.backgroundColor = [UIColor colorWithRed:24/255.0f green:138/255.0f blue:225/255.0f alpha:0.7];
     GLFLewPopupViewAnimationSlide *animation = [[GLFLewPopupViewAnimationSlide alloc]init];
@@ -215,6 +213,8 @@
 
 - (void)playRate:(CGFloat)rate {
     [self.currentVC playRate:rate];
+    isPlaying = YES;
+    [self setButtonPlayState];
 }
 
 #pragma mark UIPageViewControllerDataSource

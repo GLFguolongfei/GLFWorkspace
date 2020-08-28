@@ -37,13 +37,13 @@
     NSInteger currentTime = (NSInteger)CMTimeGetSeconds(subVC.playerItem.currentTime);
     NSInteger duration = (NSInteger)CMTimeGetSeconds(subVC.playerItem.duration);
     
-    CGRect labelFrame1 = CGRectMake(15, 30, self.frame.size.width - 30, 20);
+    CGRect labelFrame1 = CGRectMake(15, 15, self.frame.size.width - 30, 20);
     UILabel *label1 = [[UILabel alloc] initWithFrame:labelFrame1];
     label1.text = @"播放进度";
     label1.textColor = [UIColor whiteColor];
     [self addSubview:label1];
 
-    CGRect sliderFrame1 = CGRectMake(15, 70, self.frame.size.width - 30, 20);
+    CGRect sliderFrame1 = CGRectMake(15, 55, self.frame.size.width - 30, 20);
     slider1 = [[UISlider alloc] initWithFrame:sliderFrame1];
     slider1.minimumValue = 0;
     slider1.maximumValue = duration;
@@ -51,20 +51,20 @@
     [self addSubview:slider1];
     [slider1 addTarget:self action:@selector(sliderChange1:) forControlEvents:UIControlEventValueChanged];
 
-    CGRect labelFrame2 = CGRectMake(15, 120, self.frame.size.width - 30, 20);
+    CGRect labelFrame2 = CGRectMake(15, 105, self.frame.size.width - 30, 20);
     UILabel *label2 = [[UILabel alloc] initWithFrame:labelFrame2];
     label2.text = @"播放倍率";
     label2.textColor = [UIColor whiteColor];
     [self addSubview:label2];
     
-    CGRect buttonFrame = CGRectMake(self.frame.size.width - 100, 120, 100, 20);
+    CGRect buttonFrame = CGRectMake(self.frame.size.width - 100, 105, 100, 20);
     UIButton *button = [[UIButton alloc] initWithFrame:buttonFrame];
     [button setTitle:@"1倍速" forState:UIControlStateNormal];
     [button setTitleColor:KNavgationBarColor forState:UIControlStateNormal];
     [self addSubview:button];
     [button addTarget:self action:@selector(buttonActiion) forControlEvents:UIControlEventTouchUpInside];
 
-    CGRect sliderFrame2 = CGRectMake(15, 160, self.frame.size.width - 30, 20);
+    CGRect sliderFrame2 = CGRectMake(15, 145, self.frame.size.width - 30, 20);
     slider2 = [[UISlider alloc] initWithFrame:sliderFrame2];
     slider2.minimumValue = 0.5;
     slider2.maximumValue = 2.0;

@@ -39,6 +39,7 @@ HMSingletonH(DocumentManager)
 #pragma mark 其它
 // 获取背景图
 + (UIImage *)getBackgroundImage;
+// 获取文件mimeType
 + (NSString *)mimeTypeForFileAtPath1:(NSString *)path;
 + (NSString *)mimeTypeForFileAtPath2:(NSString *)path;
 
