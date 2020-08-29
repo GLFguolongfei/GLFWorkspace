@@ -198,8 +198,10 @@
     item2.enabled = NO;
     UIBarButtonItem *item3 = [[UIBarButtonItem alloc] initWithTitle:@"删除" style:UIBarButtonItemStylePlain target:self action:@selector(deleteAction:)];
     item3.enabled = NO;
+    UIBarButtonItem *item4 = [[UIBarButtonItem alloc] initWithTitle:@"视频合并" style:UIBarButtonItemStylePlain target:self action:@selector(mergeAction:)];
+    item4.enabled = NO;
     UIBarButtonItem *space = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
-    self.toolbarItems = @[item1, space, item2, space, item3];
+    self.toolbarItems = @[item1, space, item2, space, item3, space, item4];
     
     // 设置背景图片
     bgImageView = [[UIImageView alloc] initWithFrame:kScreen];
@@ -381,6 +383,35 @@
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
+- (void)mergeAction:(id)sender {
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    NSString *name = @"";
+    for (NSInteger i = 0; i < editArray.count; i++) {
+        FileModel *model = editArray[i];
+        if (model.type == 3) { // 视频
+            [array addObject:model.path];
+            NSArray *subArray = [model.name componentsSeparatedByString:@"."];
+            if (subArray.count > 1) {
+                NSString *str2 = (NSString *)subArray.lastObject;
+                NSString *str1 = [model.name substringToIndex:model.name.length - str2.length - 1];
+                if (name.length > 0) {
+                    name = [NSString stringWithFormat:@"%@-%@", name, str1];
+                } else {
+                    name = str1;
+                }
+            }
+        }
+    }
+    if (array.count > 1) {
+        name = [NSString stringWithFormat:@"%@/%@.mp4", self.pathStr, name];
+        NSLog(@"%@", name);
+        NSLog(@"%@", array);
+        [DocumentManager mergeAndExportVideos:array withOutPath:name];
+    } else {
+        [self showStringHUD:@"请至少选择两个视频文件" second:2];
+    }
+}
+
 // editing: 是否恢复如初
 - (void)viewEditing:(BOOL)editing {
     UIBarButtonItem *item = self.navigationItem.rightBarButtonItems[0];
@@ -391,8 +422,10 @@
         
         UIBarButtonItem *item1 = self.toolbarItems[2]; // 移动
         UIBarButtonItem *item2 = self.toolbarItems[4]; // 删除
+        UIBarButtonItem *item3 = self.toolbarItems[6]; // 删除
         item1.enabled = NO;
         item2.enabled = NO;
+        item3.enabled = NO;
     } else {
         item.title = @"取消";
         [self.navigationController setToolbarHidden:NO animated:YES];
@@ -470,8 +503,10 @@
         [editArray addObject:model];
         UIBarButtonItem *item1 = self.toolbarItems[2]; // 移动
         UIBarButtonItem *item2 = self.toolbarItems[4]; // 删除
+        UIBarButtonItem *item3 = self.toolbarItems[6]; // 视频合并
         item1.enabled = YES;
         item2.enabled = YES;
+        item3.enabled = YES;
         return;
     }
     

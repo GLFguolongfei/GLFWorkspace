@@ -445,6 +445,7 @@ HMSingletonM(DocumentManager)
     return backImage;
 }
 
+// 获取文件mimeType
 + (NSString *)mimeTypeForFileAtPath1:(NSString *)path {
     // 1-创建一个请求
     NSURL *url = [NSURL fileURLWithPath:path];
@@ -467,6 +468,81 @@ HMSingletonM(DocumentManager)
         return @"application/octet-stream";
     }
     return (__bridge NSString *)(MIMEType);
+}
+
+// 视频合并
++ (void)mergeAndExportVideos:(NSArray *)videosPathArray withOutPath:(NSString *)outpath {
+    AVMutableComposition *mixComposition = [[AVMutableComposition alloc] init];
+    // 音频轨道
+    AVMutableCompositionTrack *audioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
+    // 视频轨道
+    AVMutableCompositionTrack *videoTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeVideo preferredTrackID:kCMPersistentTrackID_Invalid];
+    CMTime totalDuration = kCMTimeZero;
+    for(int i = 0; i < videosPathArray.count; i++) {
+        // AVURLAsset
+        // AVAsset的子类,主要用于获取多媒体的信息,包括视频、音频的类型、时长、每秒帧数
+        // 其实还可以用来获取视频的指定位置的缩略图
+        NSURL *url = [NSURL fileURLWithPath:videosPathArray[i]];
+        AVURLAsset *asset = [AVURLAsset assetWithURL:url];
+        NSError *erroraudio = nil;
+        NSError *errorVideo = nil;
+        // 获取AVAsset中的音频
+        AVAssetTrack *assetAudioTrack = [[asset tracksWithMediaType:AVMediaTypeAudio] firstObject];
+        // 向通道内加入音频
+        BOOL ba = [audioTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration) ofTrack:assetAudioTrack atTime:totalDuration error:&erroraudio];
+        if (!ba) {
+            NSLog(@"erroraudio:%@ %d", erroraudio, ba);
+        }
+        // 获取AVAsset中的视频
+        AVAssetTrack *assetVideoTrack = [[asset tracksWithMediaType:AVMediaTypeVideo]firstObject];
+        // 向通道内加入视频
+        BOOL bl = [videoTrack insertTimeRange:CMTimeRangeMake(kCMTimeZero, asset.duration) ofTrack:assetVideoTrack atTime:totalDuration error:&errorVideo];
+        if (!bl) {
+            NSLog(@"errorVideo:%@ %d", errorVideo, bl);
+        }
+        totalDuration = CMTimeAdd(totalDuration, asset.duration);
+    }
+    // 创建合成后写入的路劲
+    NSURL *mergeFileURL = [NSURL fileURLWithPath:outpath];
+    if([[NSFileManager defaultManager] fileExistsAtPath:outpath]) {
+        NSLog(@"有文件");
+        return;
+    }
+    // 这里开始导出合成后的视频
+    AVAssetExportSession *exporter = [[AVAssetExportSession alloc] initWithAsset:mixComposition presetName:AVAssetExportPreset640x480];
+    exporter.outputURL = mergeFileURL;
+    NSLog(@"%@", exporter.supportedFileTypes);
+//    if([self.type isEqualToString:@"mp4"]) {
+        exporter.outputFileType = AVFileTypeMPEG4;
+//    } else {
+//        exporter.outputFileType = AVFileTypeQuickTimeMovie;
+//    }
+    exporter.shouldOptimizeForNetworkUse = YES;
+    [exporter exportAsynchronouslyWithCompletionHandler:^{
+        switch(exporter.status) {
+            case AVAssetExportSessionStatusUnknown:
+                NSLog(@"exporter Unknow");
+                break;
+            case AVAssetExportSessionStatusWaiting:
+                NSLog(@"exporter Waiting");
+                break;
+            case AVAssetExportSessionStatusExporting:
+                NSLog(@"exporter Exporting");
+                break;
+            case AVAssetExportSessionStatusCompleted: // 导出成功
+                NSLog(@"exporter Completed");
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    // 这里是回到你的主线程做一些事情
+                });
+                break;
+            case AVAssetExportSessionStatusFailed:
+                NSLog(@"exporter Failed");
+                break;
+            case AVAssetExportSessionStatusCancelled:
+                NSLog(@"exporter Canceled");
+                break;
+        }
+    }];
 }
 
 #pragma mark - 背景音乐
