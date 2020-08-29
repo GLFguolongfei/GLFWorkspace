@@ -471,7 +471,7 @@ HMSingletonM(DocumentManager)
 }
 
 // 视频合并
-+ (void)mergeAndExportVideos:(NSArray *)videosPathArray withOutPath:(NSString *)outpath {
++ (void)mergeVideos:(NSArray *)videosPathArray withOutPath:(NSString*)outpath andCallBack:(CallBack)callBack {
     AVMutableComposition *mixComposition = [[AVMutableComposition alloc] init];
     // 音频轨道
     AVMutableCompositionTrack *audioTrack = [mixComposition addMutableTrackWithMediaType:AVMediaTypeAudio preferredTrackID:kCMPersistentTrackID_Invalid];
@@ -520,27 +520,35 @@ HMSingletonM(DocumentManager)
     exporter.shouldOptimizeForNetworkUse = YES;
     [exporter exportAsynchronouslyWithCompletionHandler:^{
         switch(exporter.status) {
-            case AVAssetExportSessionStatusUnknown:
+            case AVAssetExportSessionStatusUnknown: {
                 NSLog(@"exporter Unknow");
                 break;
-            case AVAssetExportSessionStatusWaiting:
+            }
+            case AVAssetExportSessionStatusWaiting: {
                 NSLog(@"exporter Waiting");
                 break;
-            case AVAssetExportSessionStatusExporting:
+            }
+            case AVAssetExportSessionStatusExporting: {
                 NSLog(@"exporter Exporting");
                 break;
-            case AVAssetExportSessionStatusCompleted: // 导出成功
+            }
+            case AVAssetExportSessionStatusCompleted: { // 导出成功
                 NSLog(@"exporter Completed");
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    // 这里是回到你的主线程做一些事情
+                    if (callBack) {
+                        callBack(@[]);
+                    }
                 });
                 break;
-            case AVAssetExportSessionStatusFailed:
+            }
+            case AVAssetExportSessionStatusFailed: {
                 NSLog(@"exporter Failed");
                 break;
-            case AVAssetExportSessionStatusCancelled:
+            }
+            case AVAssetExportSessionStatusCancelled: {
                 NSLog(@"exporter Canceled");
                 break;
+            }
         }
     }];
 }

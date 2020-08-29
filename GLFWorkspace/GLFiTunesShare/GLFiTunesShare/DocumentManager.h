@@ -43,7 +43,7 @@ HMSingletonH(DocumentManager)
 + (NSString *)mimeTypeForFileAtPath1:(NSString *)path;
 + (NSString *)mimeTypeForFileAtPath2:(NSString *)path;
 // 视频合并
-+ (void)mergeAndExportVideos:(NSArray *)videosPathArray withOutPath:(NSString*)outpath;
++ (void)mergeVideos:(NSArray *)videosPathArray withOutPath:(NSString*)outpath andCallBack:(CallBack)callBack;
 
 #pragma mark 历史记录
 @property (nonatomic, assign) BOOL isUseBackFacingCamera; // 是否使用后置摄像头

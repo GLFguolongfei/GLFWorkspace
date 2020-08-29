@@ -385,7 +385,7 @@
 
 - (void)mergeAction:(id)sender {
     NSMutableArray *array = [[NSMutableArray alloc] init];
-    NSString *name = @"";
+    NSString *path = @"合并";
     for (NSInteger i = 0; i < editArray.count; i++) {
         FileModel *model = editArray[i];
         if (model.type == 3) { // 视频
@@ -394,19 +394,19 @@
             if (subArray.count > 1) {
                 NSString *str2 = (NSString *)subArray.lastObject;
                 NSString *str1 = [model.name substringToIndex:model.name.length - str2.length - 1];
-                if (name.length > 0) {
-                    name = [NSString stringWithFormat:@"%@-%@", name, str1];
-                } else {
-                    name = str1;
-                }
+                path = [NSString stringWithFormat:@"%@-%@", path, str1];
             }
         }
     }
     if (array.count > 1) {
-        name = [NSString stringWithFormat:@"%@/%@.mp4", self.pathStr, name];
-        NSLog(@"%@", name);
+        path = [NSString stringWithFormat:@"%@/%@.mp4", self.pathStr, path];
+        NSLog(@"%@", path);
         NSLog(@"%@", array);
-        [DocumentManager mergeAndExportVideos:array withOutPath:name];
+        [self showHUD:@"视频合并中..." animated:YES];
+        [DocumentManager mergeVideos:array withOutPath:path andCallBack:^(NSArray *array) {
+            [self prepareData];
+            [self showStringHUD:@"视频合并成功" second:2];
+        }];
     } else {
         [self showStringHUD:@"请至少选择两个视频文件" second:2];
     }
