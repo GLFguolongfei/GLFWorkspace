@@ -568,8 +568,10 @@
         if (editArray.count == 0) {
             UIBarButtonItem *item1 = self.toolbarItems[2]; // 移动
             UIBarButtonItem *item2 = self.toolbarItems[4]; // 删除
+            UIBarButtonItem *item3 = self.toolbarItems[6]; // 视频合并
             item1.enabled = NO;
             item2.enabled = NO;
+            item3.enabled = NO;
         }
     }
 }
