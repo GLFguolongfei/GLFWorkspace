@@ -17,9 +17,6 @@
 
     BOOL isPlaying;
     
-    UIBarButtonItem *barItem1;
-    UIBarButtonItem *barItem2;
-    
     NSMutableArray *favoriteArray;
     NSMutableArray *removeArray;
     
@@ -34,9 +31,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"scale_big"] style:UIBarButtonItemStylePlain target:self action:@selector(playViewLandscape)];
-    barItem1 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dyFavorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteAction)];
-    barItem2 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dyDelete"] style:UIBarButtonItemStylePlain target:self action:@selector(removeAction)];
-    self.navigationItem.rightBarButtonItems = @[item, barItem1, barItem2];
+    self.navigationItem.rightBarButtonItems = @[item];
     self.view.backgroundColor = [UIColor blackColor];
     self.canHiddenNaviBar = YES;
     self.canHiddenToolBar = YES;
@@ -94,8 +89,6 @@
     
     // 放在最上面,否则点击事件没法触发
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
-    
-    [self resetNaviButton];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -135,18 +128,6 @@
 }
 
 #pragma mark Events
-- (void)favoriteAction {
-    FileModel *model = [self returnModel];
-    [DocumentManager favoriteModel:model];
-    [self resetNaviButton];
-}
-
-- (void)removeAction {
-    FileModel *model = [self returnModel];
-    [DocumentManager removeModel:model];
-    [self resetNaviButton];
-}
-
 - (void)playOrPauseVideo {
     isPlaying = !isPlaying;
     [self.currentVC playOrPauseVideo:isPlaying];
@@ -279,8 +260,6 @@
             // 设置标题
             NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
             [self setVCTitle:array.lastObject];
-            // 设置按钮
-            [self resetNaviButton];
         } else { // 跳转失败
             // 获取当前控制器
             self.currentVC = vc;
@@ -298,32 +277,6 @@
     FileModel *model = currentModel;
     model.name = [model.path substringFromIndex:path.length + 1];
     return model;
-}
-
-- (void)resetNaviButton {
-    FileModel *model = [self returnModel];
-    
-    favoriteArray = [[NSUserDefaults standardUserDefaults] objectForKey:kFavorite];
-    favoriteArray = [favoriteArray mutableCopy];
-    if (!favoriteArray) {
-        favoriteArray = [[NSMutableArray alloc] init];
-    }
-    if ([favoriteArray containsObject:model.name]) {
-        [barItem1 setImage:[UIImage imageNamed:@"dyFavorite"]];
-    } else {
-        [barItem1 setImage:[UIImage imageNamed:@"dyNofavorite"]];
-    }
-
-    removeArray = [[NSUserDefaults standardUserDefaults] objectForKey:kRemove];
-    removeArray = [removeArray mutableCopy];
-    if (!removeArray) {
-        removeArray = [[NSMutableArray alloc] init];
-    }
-    if ([removeArray containsObject:model.name]) {
-        [barItem2 setImage:[UIImage imageNamed:@"dyDelete"]];
-    } else {
-        [barItem2 setImage:[UIImage imageNamed:@"dyNodelete"]];
-    }
 }
 
 
