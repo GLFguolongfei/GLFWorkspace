@@ -116,20 +116,26 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 
 - (void)prepareData {
     [self showHUD:@"加载中, 不要着急!"];
-    NSInteger allImagesCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllImagesCount"];
     if (self.isPageShow) {
+        NSInteger allImagesCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllImagesCount"];
         [DocumentManager getAllImagesArray:^(NSArray * array) {
             [self hideAllHUD];
             [self rePrepareData:array];
+            NSInteger endIndex = self.startIndex + self.pageCount;
+            if (endIndex > allImagesCount) {
+                endIndex = allImagesCount;
+            }
+            NSString *title = [NSString stringWithFormat:@"图片(%ld~%ld)", self.startIndex, endIndex];
+            [self setVCTitle:title];
         } startIndex:self.startIndex lengthCount:self.pageCount];
     } else {
         [DocumentManager getAllImagesArray:^(NSArray * array) {
             [self hideAllHUD];
             [self rePrepareData:array];
+            NSString *title = [NSString stringWithFormat:@"所有图片(%ld)", array.count];
+            [self setVCTitle:title];
         }];
     }
-    NSString *title = [NSString stringWithFormat:@"所有图片(%ld)", allImagesCount];
-    [self setVCTitle:title];
 }
 
 - (void)rePrepareData:(NSArray *)array {

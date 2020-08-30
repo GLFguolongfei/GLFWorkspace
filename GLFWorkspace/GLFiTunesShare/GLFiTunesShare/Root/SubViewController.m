@@ -79,13 +79,13 @@
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
-    [self setWebView:webView];
-//    [self hideAllHUD];
+    [self hideAllHUD];
     NSLog(@"webViewDidFinishLoad");
+    [self setWebView:webView];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
-//    [self hideAllHUD];
+    [self hideAllHUD];
     NSLog(@"didFailLoadWithError: %@", error.localizedDescription);
     [self setWebView:webView andError:error];
 }
