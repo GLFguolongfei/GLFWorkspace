@@ -1,16 +1,15 @@
 //
-//  WKWebViewController.m
+//  WKWebViewController2.m
 //  UIWebView
 //
-//  Created by guolongfei on 2020/3/9.
+//  Created by guolongfei on 2020/9/1.
 //  Copyright © 2020 GuoLongfei. All rights reserved.
 //
 
-#import "WKWebViewController.h"
+#import "WKWebViewController2.h"
 #import <WebKit/WebKit.h>
-#import "WKWebViewController+RegisterHandler.h"
 
-@interface WKWebViewController ()<WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>
+@interface WKWebViewController2 ()<WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>
 {
     WKWebView *_wkWebView;
     UIProgressView *_progressView;
@@ -19,7 +18,7 @@
 }
 @end
 
-@implementation WKWebViewController
+@implementation WKWebViewController2
 
 
 #pragma mark - Life Cycle
@@ -64,28 +63,10 @@
     _wkWebView.navigationDelegate = self;
     [self.view addSubview:_wkWebView];
     
-    // WKWebview设置其UserAgent
-    NSString *userAgent = [NSString stringWithFormat:@"iskytrip_app signalBarHeight=%d", STATUSBAR_HEIGHT_X];
-    [_wkWebView setValue:userAgent forKey:@"applicationNameForUserAgent"];
-    
-    NSString *sureStr;
-    if ([self.urlStr containsString:@"?"]) {
-        sureStr = [NSString stringWithFormat:@"%@&agent=iskytrip_app&signalBarHeight=%d&nativeLoading=1", self.urlStr, STATUSBAR_HEIGHT_X];
-    } else {
-        sureStr = [NSString stringWithFormat:@"%@?agent=iskytrip_app&signalBarHeight=%d&nativeLoading=1", self.urlStr, STATUSBAR_HEIGHT_X];
-    }
-    NSURL *url = [NSURL URLWithString:sureStr];
+    NSURL *url = [NSURL URLWithString:self.urlStr];
     // 加载请求的时候忽略缓存
     NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:3.0];
     [_wkWebView loadRequest:request];
-    
-    // Bridge
-    [WKWebViewJavascriptBridge enableLogging];
-    
-    self.bridge = [WKWebViewJavascriptBridge bridgeForWebView:_wkWebView];
-    [self.bridge setWebViewDelegate:self];
-    
-    [self registerHandlers];
 }
 
 - (void)setUIProgressView {
@@ -265,7 +246,6 @@
         [manager addURL:dict];
     });
 }
-
 
 
 @end

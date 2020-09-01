@@ -52,6 +52,7 @@
 		6F6D9E9C241789410020C268 /* SafariServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F6D9E9B241789410020C268 /* SafariServices.framework */; };
 		6FC1EB71241635DD008764D5 /* WKWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FC1EB70241635DD008764D5 /* WKWebViewController.m */; };
 		6FC1EB7424163625008764D5 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FC1EB7324163625008764D5 /* WebKit.framework */; };
+		6FE69FF324FE650000243E47 /* WKWebViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FE69FF224FE650000243E47 /* WKWebViewController2.m */; };
 		6FFC2C78241661BF00061C1F /* MMScanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFC2C73241661BF00061C1F /* MMScanViewController.m */; };
 		6FFC2C79241661BF00061C1F /* MMScanView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6FFC2C74241661BF00061C1F /* MMScanView.m */; };
 		6FFC2C7A241661BF00061C1F /* resource.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 6FFC2C77241661BF00061C1F /* resource.bundle */; };
@@ -162,6 +163,8 @@
 		6FC1EB6F241635DD008764D5 /* WKWebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebViewController.h; sourceTree = "<group>"; };
 		6FC1EB70241635DD008764D5 /* WKWebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewController.m; sourceTree = "<group>"; };
 		6FC1EB7324163625008764D5 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		6FE69FF124FE650000243E47 /* WKWebViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WKWebViewController2.h; sourceTree = "<group>"; };
+		6FE69FF224FE650000243E47 /* WKWebViewController2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WKWebViewController2.m; sourceTree = "<group>"; };
 		6FFC2C73241661BF00061C1F /* MMScanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMScanViewController.m; sourceTree = "<group>"; };
 		6FFC2C74241661BF00061C1F /* MMScanView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMScanView.m; sourceTree = "<group>"; };
 		6FFC2C75241661BF00061C1F /* MMScanView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMScanView.h; sourceTree = "<group>"; };
@@ -437,6 +440,8 @@
 				6F01D8952418C60500D7DB48 /* WebViewController+RegisterHandler.m */,
 				6FC1EB6F241635DD008764D5 /* WKWebViewController.h */,
 				6FC1EB70241635DD008764D5 /* WKWebViewController.m */,
+				6FE69FF124FE650000243E47 /* WKWebViewController2.h */,
+				6FE69FF224FE650000243E47 /* WKWebViewController2.m */,
 				6F01D8812418929F00D7DB48 /* WKWebViewController+RegisterHandler.h */,
 				6F01D8822418929F00D7DB48 /* WKWebViewController+RegisterHandler.m */,
 			);
@@ -608,6 +613,7 @@
 				6F0E96571FA413670029DDD6 /* PhotoStackView.m in Sources */,
 				6F0E96511FA413670029DDD6 /* UIView+Helper.m in Sources */,
 				6F002F0D1FDA218300A66BFB /* SelectIPView.m in Sources */,
+				6FE69FF324FE650000243E47 /* WKWebViewController2.m in Sources */,
 				6FFC2C78241661BF00061C1F /* MMScanViewController.m in Sources */,
 				6F002F231FDA28E300A66BFB /* LewPopupViewAnimationFade.m in Sources */,
 				6F0E964F1FA413670029DDD6 /* UIColor+Category.m in Sources */,

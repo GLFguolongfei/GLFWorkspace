@@ -23,7 +23,9 @@
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *tabbarHidden = [userDefaults objectForKey:@"tabbarHidden"];
+    NSString *isHaveBridge = [userDefaults objectForKey:@"isHaveBridge"];
     [self.switch1 setOn:tabbarHidden.integerValue animated:YES];
+    [self.switch2 setOn:isHaveBridge.integerValue animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
