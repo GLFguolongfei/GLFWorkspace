@@ -41,5 +41,15 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+- (IBAction)switchAction2:(id)sender {
+    UISwitch *sw = (UISwitch *)sender;
+    if (sw.on) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isHaveBridge"];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"isHaveBridge"];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 
 @end

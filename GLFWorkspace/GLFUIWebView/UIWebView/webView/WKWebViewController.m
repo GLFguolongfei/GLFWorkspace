@@ -51,7 +51,7 @@
     }
     
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
-    config.dataDetectorTypes =UIDataDetectorTypeAll; // 设定使电话号码、网址、电子邮件和符合格式的日期等文字变为链接文字
+    config.dataDetectorTypes = UIDataDetectorTypeAll; // 设定使电话号码、网址、电子邮件和符合格式的日期等文字变为链接文字
     config.allowsInlineMediaPlayback = YES; // 是否允许内联(YES)或使用本机全屏控制器(NO),默认是NO
     if (@available(iOS 10.0, *)) {
         config.mediaTypesRequiringUserActionForPlayback = NO;
@@ -82,10 +82,14 @@
     // Bridge
     [WKWebViewJavascriptBridge enableLogging];
     
-    self.bridge = [WKWebViewJavascriptBridge bridgeForWebView:_wkWebView];
-    [self.bridge setWebViewDelegate:self];
-    
-    [self registerHandlers];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *isHaveBridge = [userDefaults objectForKey:@"isHaveBridge"];
+    if (isHaveBridge.integerValue) {
+        self.bridge = [WKWebViewJavascriptBridge bridgeForWebView:_wkWebView];
+        [self.bridge setWebViewDelegate:self];
+        
+        [self registerHandlers];
+    }
 }
 
 - (void)setUIProgressView {

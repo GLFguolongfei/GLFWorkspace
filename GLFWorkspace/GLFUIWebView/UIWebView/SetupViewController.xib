@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="SetupViewController">
             <connections>
                 <outlet property="label1" destination="qu7-jA-oBy" id="lpE-y9-Nzl"/>
+                <outlet property="label2" destination="nim-UQ-4B6" id="Vq8-Gc-v7V"/>
                 <outlet property="switch1" destination="jPq-hw-yat" id="Y8z-Mp-yee"/>
+                <outlet property="switch2" destination="LS5-N4-1IK" id="o03-Mu-FK8"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -20,9 +22,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="是否隐藏导航栏" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qu7-jA-oBy">
-                    <rect key="frame" x="47" y="100" width="200" height="21"/>
+                    <rect key="frame" x="47" y="100" width="200" height="30"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="200" id="d5F-Lf-8t1"/>
+                        <constraint firstAttribute="height" constant="30" id="imN-PJ-5yI"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                     <nil key="textColor"/>
@@ -38,15 +41,39 @@
                         <action selector="switchAction1:" destination="-1" eventType="valueChanged" id="QQ6-wi-EzB"/>
                     </connections>
                 </switch>
+                <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LS5-N4-1IK">
+                    <rect key="frame" x="262" y="145" width="52" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="B8c-H9-9jc"/>
+                        <constraint firstAttribute="width" constant="50" id="ZcZ-iQ-ITC"/>
+                    </constraints>
+                    <connections>
+                        <action selector="switchAction2:" destination="-1" eventType="valueChanged" id="rGK-TV-nX7"/>
+                    </connections>
+                </switch>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="是否添加Bridge" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nim-UQ-4B6">
+                    <rect key="frame" x="47" y="145" width="200" height="30"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="30" id="VgM-j2-88d"/>
+                        <constraint firstAttribute="width" constant="200" id="mrv-o5-xOE"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="LS5-N4-1IK" firstAttribute="top" secondItem="jPq-hw-yat" secondAttribute="bottom" constant="15" id="2Cn-kB-YvR"/>
                 <constraint firstItem="jPq-hw-yat" firstAttribute="leading" secondItem="qu7-jA-oBy" secondAttribute="trailing" constant="15" id="74T-Dq-dV7"/>
+                <constraint firstItem="nim-UQ-4B6" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" constant="-60" id="CsY-4z-Oe5"/>
+                <constraint firstItem="LS5-N4-1IK" firstAttribute="leading" secondItem="nim-UQ-4B6" secondAttribute="trailing" constant="15" id="MKI-nH-ZME"/>
                 <constraint firstItem="qu7-jA-oBy" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="Nj6-AV-CQc"/>
                 <constraint firstItem="qu7-jA-oBy" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" constant="-60" id="Ydc-Js-vO5"/>
+                <constraint firstItem="nim-UQ-4B6" firstAttribute="top" secondItem="qu7-jA-oBy" secondAttribute="bottom" constant="15" id="l78-sY-ZMD"/>
                 <constraint firstItem="jPq-hw-yat" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="100" id="xgr-JP-tEL"/>
             </constraints>
-            <point key="canvasLocation" x="132" y="127"/>
+            <point key="canvasLocation" x="-38" y="130"/>
         </view>
     </objects>
 </document>
