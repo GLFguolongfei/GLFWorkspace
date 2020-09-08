@@ -64,6 +64,14 @@
     
     // 放在最上面,否则点击事件没法触发
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
+    
+    // 设置背景图片
+    self.bgImageView.image = [DocumentManager getBackgroundImage];
+    
+    UIVisualEffectView *visualEfView = [[UIVisualEffectView alloc] initWithEffect:[UIBlurEffect effectWithStyle:UIBlurEffectStyleLight]];
+    visualEfView.frame = kScreen;
+    visualEfView.alpha = 0.5;
+    [self.bgImageView addSubview:visualEfView];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

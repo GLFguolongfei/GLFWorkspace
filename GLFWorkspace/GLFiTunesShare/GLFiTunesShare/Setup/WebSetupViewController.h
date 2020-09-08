@@ -11,6 +11,8 @@
 // --- 内容设置页
 @interface WebSetupViewController : BaseViewController
 
+@property (weak, nonatomic) IBOutlet UIImageView *bgImageView;
+
 @property (weak, nonatomic) IBOutlet UISwitch *switch1;
 @property (weak, nonatomic) IBOutlet UISwitch *switch2;
 @property (weak, nonatomic) IBOutlet UISwitch *switch3;
