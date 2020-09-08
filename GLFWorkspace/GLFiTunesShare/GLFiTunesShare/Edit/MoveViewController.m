@@ -18,7 +18,6 @@ static NSString *cellID = @"GLFTableViewCellID";
     NSMutableArray *myDataArray;
     NSString *documentPath;
     UIView *sliderView;
-    UIActivityIndicatorView *actView;
 }
 @end
 
@@ -45,14 +44,11 @@ static NSString *cellID = @"GLFTableViewCellID";
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     documentPath = [paths objectAtIndex:0];
     myDataArray = [[NSMutableArray alloc] init];
-    
-    [actView startAnimating];
-    
+        
     NSArray *array = [[NSUserDefaults standardUserDefaults] objectForKey:DocumentPathArray];
     if (array.count != 0) {
         [myDataArray addObjectsFromArray:array];
         [myTableView reloadData];
-        [actView stopAnimating];
         if (myDataArray.count > 300) {
             sliderView.hidden = NO;
         } else {
@@ -144,12 +140,6 @@ static NSString *cellID = @"GLFTableViewCellID";
     // 连续滑动是否触发方法,默认值为YES
     slider.continuous = YES;
     [slider addTarget:self action:@selector(sliderChange:) forControlEvents:UIControlEventValueChanged];
-    
-    actView =  [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
-    actView.frame = scrollViewRect;     // 大小是固定的,之所以设置这么大,好处是可以隔绝响应事件
-    actView.hidesWhenStopped = YES;     // 设置指示器是否停止动画时隐藏
-    actView.color = [UIColor redColor]; // 设置指示器颜色
-    [self.view addSubview:actView];
 }
 
 #pragma mark Events
@@ -186,13 +176,14 @@ static NSString *cellID = @"GLFTableViewCellID";
             NSLog(@"%@ 移动失败", model.path);
         }
     }
+    [DocumentManager updateDocumentPaths];
     [self hideAllHUD];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark UITableViewDataSource
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 45;
+    return 50;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -205,7 +196,7 @@ static NSString *cellID = @"GLFTableViewCellID";
     CGFloat space = 15;
     if (array.count > 1) {
         for (int i = 0; i < array.count-1; i++) {
-            space += 20;
+            space += 25;
         }
     }
     if (array.count > 6) {
@@ -229,7 +220,6 @@ static NSString *cellID = @"GLFTableViewCellID";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     [self moveTo:myDataArray[indexPath.row]];
-    [DocumentManager updateDocumentPaths];
 }
 
 
