@@ -32,11 +32,19 @@
 //    [self testArchiverData];
     
     // 网络爬虫
+    [self showHUD];
 //    [ProjectManager calcData];
-    [ProjectManager getNetworkDataTest];
+//    [ProjectManager getNetworkDataTest];
 //    [ProjectManager getNetworkData1];
 //    [ProjectManager getNetworkData2];
-    
+//    [ProjectManager getNetworkData11];
+//    [ProjectManager getNetworkData22:^ {
+//        [self hideAllHUD];
+//    }];
+    [ProjectManager loadImage:^{
+        [self hideAllHUD];
+    }];
+
 //    WKWebViewController *vc = [[WKWebViewController alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];
 }

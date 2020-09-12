@@ -8,11 +8,12 @@
 
 #import "ProjectManager.h"
 
-static NSString * const UrlStr = @"https://www.bpr8.com/shipin/397.html";
-static NSString * const PatternStr = @"^http[a-zA-Z0-9]jpg$";
+static NSString * const UrlStr = @"http://s1.pbnmdcb.xyz/pw/thread.php?fid=15&page=";
+static NSString * const PatternStr = @"html_data.*?html";
+static NSString * const PatternStr2 = @"src=\"http.*?jpg";
 static NSString * const StartStr = @"http://";
 static NSString * const EndStr = @".mp4";
-static NSInteger const PageCount = 500;
+static NSInteger const PageCount = 1000;
 
 @implementation ProjectManager
 
@@ -28,7 +29,7 @@ HMSingletonM(ProjectManager)
         NSLog(@"%@", str);
         
         [self pattern:PatternStr andStr:str];
-        
+
         if (str != nil) {
             NSRange range1 = [str rangeOfString:StartStr];
             NSRange range2 = [str rangeOfString:EndStr];
@@ -46,6 +47,9 @@ HMSingletonM(ProjectManager)
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSLog(@"%@", str);
+        
+        [self pattern:PatternStr andStr:str];
+        
         if (str != nil) {
             NSRange range1 = [str rangeOfString:StartStr];
             NSRange range2 = [str rangeOfString:EndStr];
@@ -60,8 +64,8 @@ HMSingletonM(ProjectManager)
     }];
 }
 
-// NSURLConnection
-+ (void)getNetworkData1 {
+// NSURLConnection(视频)
++ (void)getNetworkData1:(LoadCallBack)callBack {
     NSInteger startIndex = 4000;
     NSInteger endIndex = startIndex + PageCount;
     __block NSInteger counter = 0;
@@ -92,8 +96,8 @@ HMSingletonM(ProjectManager)
     }
 }
 
-// AFHTTPSessionManager
-+ (void)getNetworkData2 {
+// AFHTTPSessionManager(视频)
++ (void)getNetworkData2:(LoadCallBack)callBack {
     NSInteger startIndex = 13000;
     NSInteger endIndex = startIndex + PageCount;
     __block NSInteger counter = 0;
@@ -126,6 +130,107 @@ HMSingletonM(ProjectManager)
             NSLog(@"爬取进度(失败): %ld / %ld", counter, PageCount);
             if (counter >= PageCount) {
                 [self saveData:resultArray];
+            }
+        }];
+    }
+}
+
+// NSURLConnection(图片)
++ (void)getNetworkData11:(LoadCallBack)callBack {}
+
+// AFHTTPSessionManager(图片)
++ (void)getNetworkData22:(LoadCallBack)callBack {
+    NSInteger startIndex = 1;
+    NSInteger endIndex = startIndex + PageCount;
+    __block NSInteger counter = 0;
+    
+    NSMutableArray *resultArray = [[NSMutableArray alloc] init];
+    for (NSInteger i = startIndex; i < endIndex; i++) {
+        startIndex++;
+        NSString *urlStr = [NSString stringWithFormat:@"%@%ld", UrlStr, i];
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+            if (str.length != 0) {
+                NSArray *results = [self pattern:PatternStr andStr:str];
+                if (results.count > 0) {
+                    for (NSInteger j = 0; j < results.count; j++) {
+                        NSTextCheckingResult *result = results[j];
+                        NSString *resultStr = [str substringWithRange:result.range];
+                        NSString *str = [NSString stringWithFormat:@"%@%@", @"http://s1.pbnmdcb.xyz/pw/", resultStr];
+                        [resultArray addObject:str];
+                    }
+                }
+            }
+            counter++;
+            NSLog(@"爬取进度(成功): %ld / %ld", counter, PageCount);
+            if (counter >= PageCount) {
+                [self saveData:resultArray];
+                if (callBack) {
+                    callBack();
+                }
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            counter++;
+            NSLog(@"爬取进度(失败): %ld / %ld", counter, PageCount);
+            if (counter >= PageCount) {
+                [self saveData:resultArray];
+                if (callBack) {
+                    callBack();
+                }
+            }
+        }];
+    }
+}
+
++ (void)loadImage:(LoadCallBack)callBack {
+    NSInteger startIndex = 6000; // 该600了
+    NSInteger endIndex = startIndex + PageCount;
+    __block NSInteger counter = 0;
+
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *path = [paths objectAtIndex:0];
+    NSString *filePath = [path stringByAppendingPathComponent:@"553.txt"];
+    NSArray *array = [NSArray arrayWithContentsOfFile:filePath];
+    NSLog(@"加载开始: %ld", array.count); // 24089
+    
+    NSMutableArray *resultArray = [[NSMutableArray alloc] init];
+    for (NSInteger i = startIndex; i < endIndex; i++) {
+        startIndex++;
+        NSString *urlStr = array[i];
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
+            if (str.length != 0) {
+                NSArray *results = [self pattern:PatternStr2 andStr:str];
+                if (results.count > 0) {
+                    for (NSInteger j = 0; j < results.count; j++) {
+                        NSTextCheckingResult *result = results[j];
+                        NSString *resultStr = [str substringWithRange:result.range];
+                        [resultArray addObject:resultStr];
+                    }
+                }
+            }
+            counter++;
+            NSLog(@"爬取进度(成功): %ld / %ld", counter, PageCount);
+            if (counter >= PageCount) {
+                [self saveData:resultArray];
+                if (callBack) {
+                    callBack();
+                }
+            }
+        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            counter++;
+            NSLog(@"爬取进度(失败): %ld / %ld", counter, PageCount);
+            if (counter >= PageCount) {
+                [self saveData:resultArray];
+                if (callBack) {
+                    callBack();
+                }
             }
         }];
     }
@@ -219,10 +324,10 @@ HMSingletonM(ProjectManager)
     NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:patternStr options:0 error:nil];
     // 2-利用正则表达式对象来测试相应的字符串
     NSArray *results = [regex matchesInString:str options:0 range:NSMakeRange(0, str.length)];
-    for (int i = 0; i < results.count; i++) {
-        NSTextCheckingResult *result = results[i];
-        NSLog(@"正则表达式查询结果: %@ %@", NSStringFromRange(result.range), [str substringWithRange:result.range]);
-    }
+//    for (int i = 0; i < results.count; i++) {
+//        NSTextCheckingResult *result = results[i];
+//        NSLog(@"正则表达式查询结果: %@ %@", NSStringFromRange(result.range), [str substringWithRange:result.range]);
+//    }
     return results;
 }
 

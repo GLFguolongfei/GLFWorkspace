@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef void (^LoadCallBack) (void);
+
 @interface ProjectManager : NSObject
 
 HMSingletonH(ProjectManager)
@@ -18,10 +20,11 @@ HMSingletonH(ProjectManager)
 
 #pragma mark 网络爬虫
 + (void)getNetworkDataTest;
-// NSURLConnection
-+ (void)getNetworkData1;
-// AFHTTPSessionManager
-+ (void)getNetworkData2;
++ (void)getNetworkData1:(LoadCallBack)callBack; // NSURLConnection(视频)
++ (void)getNetworkData2:(LoadCallBack)callBack; // AFHTTPSessionManager(视频)
++ (void)getNetworkData11:(LoadCallBack)callBack; // NSURLConnection(图片)
++ (void)getNetworkData22:(LoadCallBack)callBack; // AFHTTPSessionManager(图片)
++ (void)loadImage:(LoadCallBack)callBack;
 
 #pragma mark 公司自动打卡
 + (void)iskytripLogin;
