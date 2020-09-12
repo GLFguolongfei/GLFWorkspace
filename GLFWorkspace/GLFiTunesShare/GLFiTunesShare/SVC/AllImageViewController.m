@@ -42,7 +42,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     NSMutableArray *_dataArray2;
     NSMutableArray *_dataArray3;
     
-    BOOL isThree; // YES显示三列 NO显示两列
+    NSInteger colums; // 列数
 }
 @end
 
@@ -61,6 +61,8 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     self.canHiddenNaviBar = YES;
         
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
+    
+    colums = 1;
 
     // 1-动画者
     animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];
@@ -142,9 +144,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     if (self.isPageShow) {
         for (NSInteger i = 0; i < array.count; i++) {
             FileModel *model = array[i];
-            CGFloat scale = [self returnScaleSize:model.size];
-            UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
-            model.scaleImage = scaleImage;
+            if (model.size > 1000000) { // 大于1M
+                CGFloat scale = [self returnScaleSize:model.size];
+                UIImage *scaleImage = [GLFTools scaleImage:model.image toScale:scale];
+                model.scaleImage = scaleImage;
+            }
         }
     }
     allImagesArray = [array mutableCopy];
@@ -157,7 +161,19 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     CGFloat width = kScreenWidth/3;
     for (NSInteger i = 0; i < allImagesArray.count; i++) {
         FileModel *model = allImagesArray[i];
-        if (isThree) {
+        if (colums == 1) {
+            [_dataArray1 addObject:model];
+        } else if (colums == 2) {
+            if (height1 <= height2) {
+                [_dataArray1 addObject:model];
+                CGFloat height = width * model.image.size.height / model.image.size.width;
+                height1 += height;
+            } else {
+                [_dataArray2 addObject:model];
+                CGFloat height = width * model.image.size.height / model.image.size.width;
+                height2 += height;
+            }
+        } else {
             if (height1 <= height2 && height1 <= height3) {
                 [_dataArray1 addObject:model];
                 CGFloat height = width * model.image.size.height / model.image.size.width;
@@ -170,16 +186,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
                 [_dataArray3 addObject:model];
                 CGFloat height = width * model.image.size.height / model.image.size.width;
                 height3 += height;
-            }
-        } else {
-            if (height1 <= height2) {
-                [_dataArray1 addObject:model];
-                CGFloat height = width * model.image.size.height / model.image.size.width;
-                height1 += height;
-            } else {
-                [_dataArray2 addObject:model];
-                CGFloat height = width * model.image.size.height / model.image.size.width;
-                height2 += height;
             }
         }
     }
@@ -199,8 +205,10 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     visualEfView2.alpha = 0.5;
     [bgImageView addSubview:visualEfView2];
     
-    CGRect frame1 = CGRectMake(0, 64, kScreenWidth/2, kScreenHeight-64);
-    if (isThree) {
+    CGRect frame1 = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    if (colums == 2) {
+        frame1 = CGRectMake(0, 64, kScreenWidth/2, kScreenHeight-64);
+    } else if (colums == 3) {
         frame1 = CGRectMake(0, 64, kScreenWidth/3, kScreenHeight-64);
     }
     _tableView1 = [[UITableView alloc] initWithFrame:frame1 style:UITableViewStylePlain];
@@ -213,22 +221,25 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _tableView1.separatorStyle = UITableViewCellSeparatorStyleNone;
     _tableView1.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
 
-    CGRect frame2 = CGRectMake(kScreenWidth/2, 64, kScreenWidth/2, kScreenHeight-64);
-    if (isThree) {
-        frame2 = CGRectMake(kScreenWidth/3, 64, kScreenWidth/3, kScreenHeight-64);
+    if (colums == 2 || colums == 3) {
+        CGRect frame2 = CGRectMake(kScreenWidth/2, 64, kScreenWidth/2, kScreenHeight-64);
+        if (colums == 3) {
+            frame2 = CGRectMake(kScreenWidth/3, 64, kScreenWidth/3, kScreenHeight-64);
+        }
+        _tableView2 = [[UITableView alloc] initWithFrame:frame2 style:UITableViewStylePlain];
+        _tableView2.backgroundColor = [UIColor clearColor];
+        _tableView2.delegate = self;
+        _tableView2.dataSource = self;
+        [self.view addSubview:_tableView2];
+        _tableView2.showsVerticalScrollIndicator = NO;
+        _tableView2.tableFooterView = [UIView new];
+        _tableView2.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView2.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
     }
-    _tableView2 = [[UITableView alloc] initWithFrame:frame2 style:UITableViewStylePlain];
-    _tableView2.backgroundColor = [UIColor clearColor];
-    _tableView2.delegate = self;
-    _tableView2.dataSource = self;
-    [self.view addSubview:_tableView2];
-    _tableView2.showsVerticalScrollIndicator = NO;
-    _tableView2.tableFooterView = [UIView new];
-    _tableView2.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView2.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
 
-    if (isThree) {
-        _tableView3 = [[UITableView alloc] initWithFrame:CGRectMake(kScreenWidth/3*2, 64, kScreenWidth/3, kScreenHeight-64) style:UITableViewStylePlain];
+    if (colums == 3) {
+        CGRect frame3 = CGRectMake(kScreenWidth/3*2, 64, kScreenWidth/3, kScreenHeight-64);
+        _tableView3 = [[UITableView alloc] initWithFrame:frame3 style:UITableViewStylePlain];
         _tableView3.backgroundColor = [UIColor clearColor];
         _tableView3.delegate = self;
         _tableView3.dataSource = self;
@@ -316,8 +327,14 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     }];
     [alertVC addAction:okAction];
     
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"2列/3列显示" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        isThree = !isThree;
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"列数切换" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        NSInteger col = colums;
+        col++;
+        if (col > 3) {
+            colums = 1;
+        } else {
+            colums = col;
+        }
         [self prepareView];
         [self rePrepareData:allImagesArray];
     }];
@@ -447,16 +464,31 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 
 - (void)naviBarChange:(NSNotification *)notify {
     NSDictionary *dict = notify.userInfo;
+    CGRect frame1 = _tableView1.frame;
+    CGRect frame2 = _tableView2.frame;
+    CGRect frame3 = _tableView3.frame;
     if ([dict[@"isHidden"] isEqualToString: @"1"]) {
         isHiddenNavi = YES;
-        _tableView1.frame = CGRectMake(0, 0, kScreenWidth/3, kScreenHeight);
-        _tableView2.frame = CGRectMake(kScreenWidth/3, 0, kScreenWidth/3, kScreenHeight);
-        _tableView3.frame = CGRectMake(kScreenWidth/3*2, 0, kScreenWidth/3, kScreenHeight);
+        frame1.origin.y = 0;
+        frame1.size.height = kScreenHeight;
+        _tableView1.frame = frame1;
+        frame2.origin.y = 0;
+        frame2.size.height = kScreenHeight;
+        _tableView2.frame = frame2;
+        frame3.origin.y = 0;
+        frame3.size.height = kScreenHeight;
+        _tableView3.frame = frame3;
     } else {
         isHiddenNavi = NO;
-        _tableView1.frame = CGRectMake(0, 64, kScreenWidth/3, kScreenHeight-64);
-        _tableView2.frame = CGRectMake(kScreenWidth/3, 64, kScreenWidth/3, kScreenHeight-64);
-        _tableView3.frame = CGRectMake(kScreenWidth/3*2, 64, kScreenWidth/3, kScreenHeight-64);
+        frame1.origin.y = 64;
+        frame1.size.height = kScreenHeight-64;
+        _tableView1.frame = frame1;
+        frame2.origin.y = 64;
+        frame2.size.height = kScreenHeight-64;
+        _tableView2.frame = frame2;
+        frame3.origin.y = 64;
+        frame3.size.height = kScreenHeight-64;
+        _tableView3.frame = frame3;
     }
 }
 
@@ -482,8 +514,10 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CGFloat width = kScreenWidth/2;
-    if (isThree) {
+    CGFloat width = kScreenWidth;
+    if (colums == 2) {
+        width = kScreenWidth/2;
+    } else if (colums == 3) {
         width = kScreenWidth/3;
     }
     if (tableView == _tableView1) {
@@ -571,7 +605,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     FileModel *model;
     // 就这么写,否则,进入下一页会自动返回到顶部(2列或3列总有一个)
-    if (isThree) {
+    if (colums == 1) {
+        model = _dataArray1[indexPath.row];
+    } else if (colums == 2) {
         if (tableView == _tableView1) {
             model = _dataArray1[indexPath.row];
         } else if (tableView == _tableView2) {
