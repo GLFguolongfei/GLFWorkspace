@@ -8,6 +8,8 @@
 
 #import "ProjectManager.h"
 
+static NSString * const UrlStr = @"https://www.bpr8.com/shipin/397.html";
+static NSString * const PatternStr = @"^http[a-zA-Z0-9]jpg$";
 static NSString * const StartStr = @"http://";
 static NSString * const EndStr = @".mp4";
 static NSInteger const PageCount = 500;
@@ -18,13 +20,15 @@ HMSingletonM(ProjectManager)
 
 #pragma mark - 网络爬虫
 + (void)getNetworkDataTest {
-    NSString *urlStr = @"https://yaoshe116.com/videos/49125/eee141a6eed2cc1125235a55b03aa326/";
-    urlStr = [urlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // 中文必须转换
+    NSString *urlStr = [UrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // 中文必须转换
     NSURL *url = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:nil completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSLog(@"%@", str);
+        
+        [self pattern:PatternStr andStr:@"6gjkhdjkhgkjh7"];
+        
         if (str != nil) {
             NSRange range1 = [str rangeOfString:StartStr];
             NSRange range2 = [str rangeOfString:EndStr];
@@ -207,6 +211,19 @@ HMSingletonM(ProjectManager)
     } else {
         NSLog(@"网络数据保存失败");
     }
+}
+
++ (NSArray *)pattern:(NSString *)patternStr andStr:(NSString *)str {
+    // 使用正则表达式的步骤
+    // 1-创建一个正则表达式对象
+    NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:patternStr options:0 error:nil];
+    // 2-利用正则表达式对象来测试相应的字符串
+    NSArray *results = [regex matchesInString:str options:0 range:NSMakeRange(0, str.length)];
+    for (int i = 0; i < results.count; i++) {
+        NSTextCheckingResult *result = results[i];
+        NSLog(@"正则表达式查询结果: %@ %@", NSStringFromRange(result.range), [str substringWithRange:result.range]);
+    }
+    return results;
 }
 
 
