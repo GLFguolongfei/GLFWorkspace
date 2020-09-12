@@ -27,7 +27,7 @@ HMSingletonM(ProjectManager)
         NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSLog(@"%@", str);
         
-        [self pattern:PatternStr andStr:@"6gjkhdjkhgkjh7"];
+        [self pattern:PatternStr andStr:str];
         
         if (str != nil) {
             NSRange range1 = [str rangeOfString:StartStr];
