@@ -25,7 +25,7 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     
     UIBarButtonItem *item1;
     UIBarButtonItem *item2;
-    CGFloat cellHeight;
+    Boolean isBig;
     
     NSIndexPath *firstIndexPath;
 }
@@ -39,14 +39,14 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     item1 = [[UIBarButtonItem alloc] initWithTitle:@"标准" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
-    item2 = [[UIBarButtonItem alloc] initWithTitle:@"增大" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
+    item2 = [[UIBarButtonItem alloc] initWithTitle:@"全屏" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     [self setVCTitle:@"所有视频"];
     self.canHiddenNaviBar = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
     
-    cellHeight = 90;
+    isBig = false;
         
     [self showHUD:@"加载中, 不要着急!"];
     [DocumentManager getAllVideosArray:^(NSArray * array) {
@@ -151,9 +151,9 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 }
 
 - (void)buttonAction1 {
-    if (cellHeight > 90) {
-        cellHeight = 90;
-        item1.enabled = YES;
+    if (isBig == true) {
+        isBig = false;
+        item1.enabled = NO;
         item2.enabled = YES;
         [_tableView reloadData];
         [_tableView scrollToRowAtIndexPath:firstIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
@@ -161,29 +161,24 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 }
 
 - (void)buttonAction2 {
-    cellHeight += 45;
-    if (cellHeight >= 360) {
+    if (isBig == false) {
+        isBig = true;
         item1.enabled = YES;
         item2.enabled = NO;
-    } else {
-        item1.enabled = YES;
-        item2.enabled = YES;
+        [_tableView reloadData];
+        [_tableView scrollToRowAtIndexPath:firstIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
-    [_tableView reloadData];
-    [_tableView scrollToRowAtIndexPath:firstIndexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
 }
 
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    FileModel *model = _dataArray[indexPath.row];
-    CGSize size = model.videoSize;
-    CGFloat width = cellHeight * size.width / size.height;
-    if (width > kScreenWidth - 20) {
-        CGFloat height = (kScreenWidth - 20) * size.height / size.width;
-        return height;
-    } else {
+    if (isBig) {
+        FileModel *model = _dataArray[indexPath.row];
+        CGSize size = model.videoSize;
+        CGFloat cellHeight = kScreenWidth * size.height / size.width;
         return cellHeight;
     }
+    return 90;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -249,6 +244,12 @@ static NSString *cellID = @"PlayVideoTableViewCell";
     NSIndexPath *indexPath = [_tableView indexPathForCell:(UITableViewCell* )[previewingContext sourceView]];
     FileModel *model = _dataArray[indexPath.row];
     // 调整不被虚化的范围，按压的那个cell不被虚化（轻轻按压时周边会被虚化，再少用力展示预览，再加力跳页至设定界面）
+    CGFloat cellHeight = 90;
+    if (isBig) {
+        FileModel *model = _dataArray[indexPath.row];
+        CGSize size = model.videoSize;
+        cellHeight = kScreenWidth * size.height / size.width;
+    }
     CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, cellHeight);
     previewingContext.sourceRect = rect;
     // 设定预览的界面

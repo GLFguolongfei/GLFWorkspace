@@ -389,6 +389,16 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     __block NSInteger count1 = 0;
     __block NSInteger count2 = 0;
     __block NSInteger count3 = 0;
+    __block NSInteger loadPage1 = 5;
+    __block NSInteger loadPage2 = 5;
+    __block NSInteger loadPage3 = 5;
+    if (colums == 1) {
+        loadPage1 = 15;
+    }
+    if (colums == 2) {
+        loadPage1 = 8;
+        loadPage2 = 8;
+    }
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
         NSArray *array1 = [_tableView1 indexPathsForVisibleRows];
@@ -411,7 +421,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
             first3 = indexPath.row;
         }
         for (NSInteger i = first1; i < _dataArray1.count; i++) {
-            if (count1 >= 5) {
+            if (count1 >= loadPage1) {
                 break;
             }
             FileModel *model = _dataArray1[i];
@@ -424,7 +434,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
             }
         }
         for (NSInteger i = first2; i < _dataArray2.count; i++) {
-            if (count2 >= 5) {
+            if (count2 >= loadPage2) {
                 break;
             }
             FileModel *model = _dataArray2[i];
@@ -437,7 +447,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
             }
         }
         for (NSInteger i = first3; i < _dataArray3.count; i++) {
-            if (count3 >= 5) {
+            if (count3 >= loadPage3) {
                 break;
             }
             FileModel *model = _dataArray3[i];

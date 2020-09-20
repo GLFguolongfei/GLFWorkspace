@@ -85,10 +85,10 @@
     for (int i = 0; i < 2; i++) {
         UIButton *button = [[UIButton alloc] init];
         if (i == 0) {
-            button.frame = CGRectMake(20, kScreenHeight-100, space, 60);
+            button.frame = CGRectMake(20, kScreenHeight-110, space, 60);
             [button setTitle:@"设置背景图像" forState:UIControlStateNormal];
         } else if (i == 1) {
-            button.frame = CGRectMake(space + 40, kScreenHeight-100, space, 60);
+            button.frame = CGRectMake(space + 40, kScreenHeight-110, space, 60);
             [button setTitle:@"设置内容显示" forState:UIControlStateNormal];
         }
         [self.view addSubview:button];
