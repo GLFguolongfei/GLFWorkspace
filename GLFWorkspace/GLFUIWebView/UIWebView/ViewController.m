@@ -294,9 +294,7 @@
         if (self.ipTextView.text.length == 0) {
             return NO;
         }
-        WKWebViewController *vc = [[WKWebViewController alloc] init];
-        vc.urlStr = self.ipTextView.text;
-        [self.navigationController pushViewController:vc animated:YES];
+        [self goURLVC:self.ipTextView.text];
         return NO;
     }
     return YES;
