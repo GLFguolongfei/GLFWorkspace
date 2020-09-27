@@ -100,7 +100,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *tabbarHidden = [userDefaults objectForKey:@"tabbarHidden"];
+    NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
     if (tabbarHidden.integerValue) {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
     } else {
@@ -128,7 +128,7 @@
     UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"WKWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         self.ipTextView.text = urlStr;
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        NSString *isHaveBridge = [userDefaults objectForKey:@"isHaveBridge"];
+        NSString *isHaveBridge = [userDefaults objectForKey:kHaveBridge];
         if (isHaveBridge.integerValue) {
             WKWebViewController *vc = [[WKWebViewController alloc] init];
             vc.urlStr = urlStr;

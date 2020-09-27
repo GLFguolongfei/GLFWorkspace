@@ -53,6 +53,13 @@
 #define KColorNine  kSAColorWithStr(@"999999") // 字体颜色999999
 #define KColorCCC   kSAColorWithStr(@"CCCCCC") // 字体颜色CCCCCC
 
+// 通知
+#define kTabbarHidden           @"kTabbarHidden"
+#define kHaveBridge             @"kHaveBridge"
+#define kNORecord               @"kNORecord"
+#define kContentHidden          @"kContentHidden"
+
+
 
 /* ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Bridge页面用到 */
 

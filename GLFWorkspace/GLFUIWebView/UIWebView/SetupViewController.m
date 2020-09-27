@@ -22,8 +22,8 @@
     self.title = @"设置";
 
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *tabbarHidden = [userDefaults objectForKey:@"tabbarHidden"];
-    NSString *isHaveBridge = [userDefaults objectForKey:@"isHaveBridge"];
+    NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
+    NSString *isHaveBridge = [userDefaults objectForKey:kHaveBridge];
     [self.switch1 setOn:tabbarHidden.integerValue animated:YES];
     [self.switch2 setOn:isHaveBridge.integerValue animated:YES];
 }
@@ -36,9 +36,9 @@
 - (IBAction)switchAction1:(id)sender {
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"tabbarHidden"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kTabbarHidden];
     } else {
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"tabbarHidden"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kTabbarHidden];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
@@ -46,9 +46,29 @@
 - (IBAction)switchAction2:(id)sender {
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"isHaveBridge"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kHaveBridge];
     } else {
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:@"isHaveBridge"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kHaveBridge];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (IBAction)switchAction3:(id)sender {
+    UISwitch *sw = (UISwitch *)sender;
+    if (sw.on) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kNORecord];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kNORecord];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (IBAction)switchAction4:(id)sender {
+    UISwitch *sw = (UISwitch *)sender;
+    if (sw.on) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kContentHidden];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kContentHidden];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
