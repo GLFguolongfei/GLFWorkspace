@@ -21,7 +21,9 @@
 #import "LewPopupViewController.h"
 
 @interface ViewController ()<UITextViewDelegate,SFSafariViewControllerDelegate>
-
+{
+    NSString *currentUrlStr;
+}
 @end
 
 @implementation ViewController
@@ -30,6 +32,7 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     self.title = @"HTML5";
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc] initWithTitle:@"设置" style:UIBarButtonItemStylePlain target:self action:@selector(declareAction)];
     UIBarButtonItem *rightItem = [[UIBarButtonItem alloc] initWithTitle:@"扫码" style:UIBarButtonItemStylePlain target:self action:@selector(scanQrCode)];
@@ -46,27 +49,6 @@
     self.ipTextView.returnKeyType = UIReturnKeyGo;
     self.ipTextView.delegate = self;
     [self.view addSubview:self.ipTextView];
-    
-    for (NSInteger i = 0; i < 2; i++) {
-        CGFloat width = (kScreenWidth - 60) / 3;
-        CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 200 + 80 * ceil(i / 3), width, 50);
-        UIButton *button = [[UIButton alloc] initWithFrame:frame];
-        if (i == 0) {
-            [button setTitle:@"历史记录" forState:UIControlStateNormal];
-        } else if (i == 1)  {
-            [button setTitle:@"清除缓存" forState:UIControlStateNormal];
-        } else {
-            [button setTitle:@"导航栏" forState:UIControlStateNormal];
-        }
-        button.titleLabel.font = [UIFont systemFontOfSize:16.0];
-        button.backgroundColor = [UIColor lightGrayColor];
-        [button setTitleColor:KNavgationBarColor forState:UIControlStateNormal];
-        [button addTarget:self action:@selector(buttonAction1:) forControlEvents:UIControlEventTouchUpInside];
-        button.tag = i + 10;
-        button.layer.cornerRadius = 5;
-        button.layer.masksToBounds = YES;
-        [self.view addSubview:button];
-    }
     
     for (NSInteger i = 0; i < 4; i++) {
         CGFloat width = (kScreenWidth - 60) / 3;
@@ -95,6 +77,7 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
+    [self setUp];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -112,21 +95,58 @@
     [self.view endEditing:YES];
 }
 
+- (void)setUp {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *isContentHidden = [userDefaults objectForKey:kContentHidden];
+    NSInteger buttonCount = 2;
+    if (isContentHidden.integerValue == 1) {
+        buttonCount = 3;
+    }
+    for (NSInteger i = 0; i < buttonCount; i++) {
+        CGFloat width = (kScreenWidth - 60) / 3;
+        CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 200 + 80 * ceil(i / 3), width, 50);
+        UIButton *button = [[UIButton alloc] initWithFrame:frame];
+        if (i == 0) {
+            [button setTitle:@"历史记录" forState:UIControlStateNormal];
+        } else if (i == 1) {
+            [button setTitle:@"清除缓存" forState:UIControlStateNormal];
+        } else if (i == 2) {
+            [button setTitle:@"历史浏览" forState:UIControlStateNormal];
+        }
+        button.titleLabel.font = [UIFont systemFontOfSize:16.0];
+        button.backgroundColor = [UIColor lightGrayColor];
+        [button setTitleColor:KNavgationBarColor forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(buttonAction1:) forControlEvents:UIControlEventTouchUpInside];
+        button.tag = i + 10;
+        button.layer.cornerRadius = 5;
+        button.layer.masksToBounds = YES;
+        [self.view addSubview:button];
+    }
+}
+
 - (void)goURLVC:(NSString *)urlStr {
+    currentUrlStr = urlStr;
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *isNORecord = [userDefaults objectForKey:kNORecord];
+    
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"前往页面" message:urlStr preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
     }];
     [alertVC addAction:cancelAction];
     UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"UIWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        self.ipTextView.text = urlStr;
+        if (isNORecord.integerValue != 1) {
+            self.ipTextView.text = urlStr;
+        }
         WebViewController *vc = [[WebViewController alloc] init];
         vc.urlStr = urlStr;
         [self.navigationController pushViewController:vc animated:YES];
     }];
     [alertVC addAction:okAction1];
     UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"WKWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        self.ipTextView.text = urlStr;
+        if (isNORecord.integerValue != 1) {
+            self.ipTextView.text = urlStr;
+        }
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString *isHaveBridge = [userDefaults objectForKey:kHaveBridge];
         if (isHaveBridge.integerValue) {
@@ -141,7 +161,18 @@
     }];
     [alertVC addAction:okAction2];
     UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"SFSafariViewController" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        self.ipTextView.text = urlStr;
+        if (isNORecord.integerValue != 1) {
+            self.ipTextView.text = urlStr;
+        }
+        if (![urlStr hasPrefix:@"http://"] && ![urlStr hasPrefix:@"https://"]) {
+            UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"注意" message:@"SFSafariViewController Only HTTP and HTTPS URLs are supported." preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self goURLVC:urlStr];
+            }];
+            [alertVC addAction:okAction];
+            [self presentViewController:alertVC animated:YES completion:nil];
+            return;
+        }
         NSURL *url = [NSURL URLWithString:urlStr];
         SFSafariViewController *sfViewControllr = [[SFSafariViewController alloc] initWithURL:url];
         sfViewControllr.delegate = self;
@@ -180,6 +211,7 @@
     if (button.tag == 10) {
         SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
         ipView.parentVC = self;
+        ipView.isSecret = NO;
         ipView.backgroundColor = [UIColor whiteColor];
         [self lew_presentPopupView:ipView animation:[LewPopupViewAnimationSpring new] dismissed:^{
             NSLog(@"动画结束");
@@ -189,7 +221,13 @@
         [self clearCache];
         [self showStringHUD:@"缓存清理完成" second:1.5];
     } else if (button.tag == 12) {
-
+        SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
+        ipView.parentVC = self;
+        ipView.isSecret = YES;
+        ipView.backgroundColor = [UIColor whiteColor];
+        [self lew_presentPopupView:ipView animation:[LewPopupViewAnimationSpring new] dismissed:^{
+            NSLog(@"动画结束");
+        }];
     }
 }
 
@@ -275,6 +313,15 @@
 // 页面加载完成
 - (void)safariViewController:(SFSafariViewController *)controller didCompleteInitialLoad:(BOOL)didLoadSuccessfully {
     NSLog(@"页面加载完成");
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        NSDictionary *dict = @{
+            @"ipStr": currentUrlStr,
+            @"ipDescribe": @"",
+            @"isLastSelect": @"1"
+        };
+        [manager addURL:dict];
+    });
 }
 
 

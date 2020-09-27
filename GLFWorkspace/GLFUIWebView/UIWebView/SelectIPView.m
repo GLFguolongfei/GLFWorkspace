@@ -37,6 +37,9 @@
     NSArray *sandboxpath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [sandboxpath objectAtIndex:0];
     NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"IP.plist"];
+    if (self.isSecret) {
+        plistPath = [documentsDirectory stringByAppendingPathComponent:@"IPSecret.plist"];
+    }
     NSArray *array = [[NSArray alloc] initWithContentsOfFile:plistPath];
     for (NSInteger i = 0; i < array.count; i++) {
         NSDictionary *dict = array[i];

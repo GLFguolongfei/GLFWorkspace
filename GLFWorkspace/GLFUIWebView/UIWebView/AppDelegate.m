@@ -48,5 +48,27 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+#pragma mark 共享
+#if __IPHONE_OS_VERSION_MAX_ALLOWED < __IPHONE_9_0
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(nullable NSString *)sourceApplication annotation:(id)annotation {
+    return YES;
+}
+#else
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options {
+    NSLog(@"%@ , %@", url, options);
+
+//    UINavigationController *navi = (UINavigationController *)self.window.rootViewController;
+//    ViewController *vc = (ViewController *)navi.topViewController;
+//    vc.ipTextView.text = url.relativePath;
+    
+    ViewController *vc = [[ViewController alloc] init];
+    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:vc];
+    self.window.rootViewController = navi;
+    [vc goURLVC:url.relativePath];
+    
+    return YES;
+}
+#endif
+
 
 @end

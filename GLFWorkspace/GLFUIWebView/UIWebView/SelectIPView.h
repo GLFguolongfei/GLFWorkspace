@@ -12,5 +12,6 @@
 @interface SelectIPView : UIView
 
 @property (nonatomic, weak) ViewController *parentVC;
+@property (nonatomic, assign) BOOL isSecret;
 
 @end

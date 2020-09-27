@@ -90,6 +90,11 @@ HMSingletonM(DocumentManager)
     NSArray *sandboxpath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [sandboxpath objectAtIndex:0];
     NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"IP.plist"];
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *isNORecord = [userDefaults objectForKey:kNORecord];
+    if (isNORecord.integerValue == 1) {
+        plistPath = [documentsDirectory stringByAppendingPathComponent:@"IPSecret.plist"];
+    }
     return plistPath;
 }
 
