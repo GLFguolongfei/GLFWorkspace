@@ -28,8 +28,6 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor blackColor];
 
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"isHiddenNaviBar" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(hiddenNaviBar) name:@"NaviBarChange" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
             
     [self setupAVPlayer];
@@ -51,31 +49,6 @@
 
 - (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)hiddenNaviBar {
-    isHiddenBar = !isHiddenBar;
-    if (isHiddenBar) {
-        progressView.hidden = YES;
-        if (!isRotate) {
-            CGRect labelRect = CGRectMake(10, 20, kScreenWidth-20, 20);
-            [UIView animateWithDuration:0.25 animations:^{
-                label.frame = labelRect;
-            }];
-        }
-    } else {
-        if (!isRotate) {
-            CGRect labelRect = CGRectMake(10, 74, kScreenWidth-20, 20);
-            [UIView animateWithDuration:0.25 animations:^{
-                label.frame = labelRect;
-            }];
-            [UIView animateWithDuration:0.25 animations:^{
-                label.frame = labelRect;
-            } completion:^(BOOL finished) {
-                progressView.hidden = NO;
-            }];
-        }
-    }
 }
 
 #pragma mark Setup
@@ -103,7 +76,7 @@
 
 - (void)setupAVInfo {
     // 进度条
-    CGRect progressRect = CGRectMake(0, 64, kScreenWidth, 20);
+    CGRect progressRect = CGRectMake(0, 0, kScreenWidth, 20);
     progressView = [[UIProgressView alloc] initWithFrame:progressRect];
     progressView.progressViewStyle = UIProgressViewStyleDefault;
     progressView.progressTintColor = [UIColor colorWithHexString:@"2C84E8"]; // 前景色
@@ -112,10 +85,7 @@
     [self.view addSubview:progressView];
     
     // 时间
-    CGRect labelRect = CGRectMake(10, 74, kScreenWidth-20, 20);
-    if (self.navigationController.navigationBar.hidden == YES) {
-        labelRect = CGRectMake(10, 20, kScreenWidth-20, 20);
-    }
+    CGRect labelRect = CGRectMake(10, 20, kScreenWidth-20, 20);
     label = [[UILabel alloc] initWithFrame:labelRect];
     label.textAlignment = NSTextAlignmentRight;
     label.textColor = [UIColor colorWithHexString:@"2C84E8"];
