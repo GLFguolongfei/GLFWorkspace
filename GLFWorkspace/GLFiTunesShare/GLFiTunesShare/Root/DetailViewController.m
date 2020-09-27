@@ -28,7 +28,8 @@
     item1.enabled = NO;
     item2.enabled = NO;
     self.navigationItem.rightBarButtonItems = @[item1, item2];
-    
+    self.canHiddenNaviBar = YES;
+        
     fileManager = [GLFFileManager sharedFileManager];
 
     pageVC = [[UIPageViewController alloc] initWithTransitionStyle:UIPageViewControllerTransitionStyleScroll navigationOrientation:UIPageViewControllerNavigationOrientationHorizontal options:nil];
@@ -68,6 +69,7 @@
         [subVC.myWebView goBack];
     }
 }
+
 
 #pragma mark UIPageViewControllerDataSource
 // 上一页

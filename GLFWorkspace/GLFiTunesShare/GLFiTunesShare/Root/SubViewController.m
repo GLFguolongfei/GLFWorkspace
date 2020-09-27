@@ -20,10 +20,13 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
 
-    self.myWebView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight-64)];
+    CGRect frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    self.myWebView = [[UIWebView alloc] initWithFrame:frame];
     self.myWebView.scalesPageToFit = YES;
     self.myWebView.delegate = self;
     [self.view addSubview:self.myWebView];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -62,6 +65,15 @@
     }
     @finally {
         NSLog(@"finally!");
+    }
+}
+
+- (void)naviBarChange:(NSNotification *)notify {
+    NSDictionary *dict = notify.userInfo;
+    if ([dict[@"isHidden"] isEqualToString: @"1"]) {
+        self.myWebView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+    } else {
+        self.myWebView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
     }
 }
 

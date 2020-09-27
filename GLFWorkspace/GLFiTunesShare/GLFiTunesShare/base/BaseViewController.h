@@ -11,7 +11,7 @@
 // --- 父视图控制器
 @interface BaseViewController : UIViewController
 
-// 是否可以隐藏导航栏
+// 是否可以隐藏导航栏、工具栏
 @property (nonatomic, assign) BOOL canHiddenNaviBar;
 @property (nonatomic, assign) BOOL canHiddenToolBar;
 
