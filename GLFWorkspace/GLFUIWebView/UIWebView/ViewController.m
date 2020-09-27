@@ -77,7 +77,7 @@
         } else if (i == 1)  {
             [button setTitle:@"Test2" forState:UIControlStateNormal];
         } else if (i == 2)  {
-            [button setTitle:@"Ant Design Mobile" forState:UIControlStateNormal];
+            [button setTitle:@"Antd Mobile" forState:UIControlStateNormal];
         } else {
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
