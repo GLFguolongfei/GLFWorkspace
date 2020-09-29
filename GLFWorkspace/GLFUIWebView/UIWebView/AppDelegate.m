@@ -16,6 +16,7 @@
 @implementation AppDelegate
 
 
+#pragma mark - UIApplicationDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
     return YES;
@@ -56,10 +57,6 @@
 #else
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url options:(nonnull NSDictionary<NSString *,id> *)options {
     NSLog(@"%@ , %@", url, options);
-
-//    UINavigationController *navi = (UINavigationController *)self.window.rootViewController;
-//    ViewController *vc = (ViewController *)navi.topViewController;
-//    vc.ipTextView.text = url.relativePath;
     
     ViewController *vc = [[ViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:vc];

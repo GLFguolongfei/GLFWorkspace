@@ -19,6 +19,8 @@ HMSingletonH(DocumentManager)
 - (void)clearURL;
 - (void)renameURL:(NSDictionary *)urlDict;
 
++ (NSString *)getPathWithActionType:(NSInteger)actionType;
+
 @end
 
 NS_ASSUME_NONNULL_END

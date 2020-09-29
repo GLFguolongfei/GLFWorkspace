@@ -14,7 +14,7 @@ HMSingletonM(DocumentManager)
 
 - (void)addURL:(NSDictionary *)urlDict {
     BOOL isHaveSave = NO;
-    NSString *plistPath = [self getPath];
+    NSString *plistPath = [DocumentManager getPathWithActionType:1];
     NSMutableArray *array = [[NSMutableArray alloc] initWithContentsOfFile:plistPath];
     if (array == nil) {
         array = [[NSMutableArray alloc] init];
@@ -39,7 +39,7 @@ HMSingletonM(DocumentManager)
 
 - (void)deleteURL:(NSString *)urlStr {
     BOOL isHaveSave = NO;
-    NSString *plistPath = [self getPath];
+    NSString *plistPath = [DocumentManager getPathWithActionType:2];
     NSMutableArray *array = [[NSMutableArray alloc] initWithContentsOfFile:plistPath];
     if (array == nil) {
         return;
@@ -59,14 +59,14 @@ HMSingletonM(DocumentManager)
 }
 
 - (void)clearURL {
-    NSString *plistPath = [self getPath];
+    NSString *plistPath = [DocumentManager getPathWithActionType:2];
     NSMutableArray *array = array = [[NSMutableArray alloc] init];;
     [array writeToFile:plistPath atomically:YES];
 }
 
 - (void)renameURL:(NSDictionary *)urlDict {
     BOOL isHaveSave = NO;
-    NSString *plistPath = [self getPath];
+    NSString *plistPath = [DocumentManager getPathWithActionType:2];
     NSMutableArray *array = [[NSMutableArray alloc] initWithContentsOfFile:plistPath];
     if (array == nil) {
         array = [[NSMutableArray alloc] init];
@@ -86,13 +86,15 @@ HMSingletonM(DocumentManager)
 }
 
 #pragma mark Tools
-- (NSString *)getPath {
+// 1-记录 2-删除重命名
++ (NSString *)getPathWithActionType:(NSInteger)actionType {
     NSArray *sandboxpath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [sandboxpath objectAtIndex:0];
     NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"IP.plist"];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *isNORecord = [userDefaults objectForKey:kNORecord];
-    if (isNORecord.integerValue == 1) {
+    NSString *isContentHidden = [userDefaults objectForKey:kContentHidden];
+    if ((actionType == 1 && isNORecord.integerValue == 1) || (actionType == 2 && isContentHidden.integerValue == 1)) {
         plistPath = [documentsDirectory stringByAppendingPathComponent:@"IPSecret.plist"];
     }
     return plistPath;
