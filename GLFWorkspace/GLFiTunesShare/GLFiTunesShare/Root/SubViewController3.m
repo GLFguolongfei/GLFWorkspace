@@ -147,7 +147,7 @@
             playerLayer.transform = CATransform3DIdentity;
             playerLayer.frame = kScreen;
             label.transform = CGAffineTransformIdentity;
-            label.frame = CGRectMake(90, 74, kScreenWidth-100, 20);
+            label.frame = CGRectMake(90, 20, kScreenWidth-100, 20);
         }];
     } else {
         CATransform3D transform = CATransform3DRotate(playerLayer.transform, M_PI_2, 0.0f, 0.0f, 1.0f);
