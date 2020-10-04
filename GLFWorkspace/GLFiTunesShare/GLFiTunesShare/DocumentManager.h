@@ -11,8 +11,9 @@
 #import <MobileCoreServices/MobileCoreServices.h>
 #import "FileModel.h"
 
-static NSString * _Nullable DocumentPathArray = @"DocumentPathArray";
+static NSString * _Nullable DocumentFileArrayUpdate = @"DocumentFileArrayUpdate";
 static NSString * _Nullable DocumentPathArrayUpdate = @"DocumentPathArrayUpdate";
+static NSString * _Nullable DocumentPathArray = @"DocumentPathArray";
 
 typedef void (^CallBack) (NSArray *_Nullable);
 

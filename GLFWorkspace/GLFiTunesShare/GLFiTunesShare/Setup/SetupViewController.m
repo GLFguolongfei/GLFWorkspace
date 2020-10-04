@@ -23,7 +23,6 @@
 {
     UIImageView *bgImageView;
     UIView *gestureView;
-    BOOL isShowDefault;
     
     MyView *view;
     WaterView2 *waterView2;
@@ -42,6 +41,8 @@
     [self setVCTitle:@"设置"];
     self.canHiddenNaviBar = YES;
     self.canHiddenToolBar = YES;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(fileReloadData:) name:DocumentFileArrayUpdate object:nil];
     
     // 设置背景图片
     bgImageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
@@ -106,12 +107,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    NSString *type = [[NSUserDefaults standardUserDefaults] objectForKey:@"RootShowType"];
-    if ([type isEqualToString:@"1"]) {
-        isShowDefault = YES;
-    } else {
-        isShowDefault = NO;
-    }
     
     // 设置背景图片
     bgImageView.image = [DocumentManager getBackgroundImage];
@@ -175,6 +170,16 @@
     NSLog(@"%@", [NSString stringWithFormat:@"%f", touch.force]);
 }
 
+#pragma mark Events
+- (void)fileReloadData:(NSNotification *)notify {
+    NSDictionary *dict = notify.userInfo;
+    NSString *timeStr = dict[@"time"];
+    NSString *msg = [NSString stringWithFormat:@"全局遍历完成, %@", timeStr];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showStringHUD:msg second:5];
+    });
+}
+
 - (void)buttonAction:(id)sender {
     UIButton *button = (UIButton *)sender;
     if (button.tag == 100) {
@@ -193,15 +198,13 @@
         
     }];
     [alertVC addAction:cancelAction];
-    
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"切换预览方式" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        isShowDefault = !isShowDefault;
-        if (isShowDefault) {
-            [[NSUserDefaults standardUserDefaults] setValue:@"1" forKey:@"RootShowType"];
-        } else {
-            [[NSUserDefaults standardUserDefaults] setValue:@"0" forKey:@"RootShowType"];
-        }
-        [[NSUserDefaults standardUserDefaults] synchronize];
+
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"刷新数据" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self showHUD:@"遍历中, 不要着急!"];
+        });
+        [DocumentManager eachAllFiles];
+        [DocumentManager updateDocumentPaths];
     }];
     [alertVC addAction:okAction];
 

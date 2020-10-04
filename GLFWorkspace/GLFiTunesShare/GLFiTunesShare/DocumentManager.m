@@ -166,6 +166,8 @@ HMSingletonM(DocumentManager)
             BOOL isSuccess7 = [NSKeyedArchiver archiveRootObject:allNoDYVideosArray toFile:archiverPath7];
             if (isSuccess1 & isSuccess2 & isSuccess3 & isSuccess4 & isSuccess5 & isSuccess6 & isSuccess7) {
                 NSLog(@"archiver success");
+                NSDictionary *userInfo = @{@"time": str};
+                [[NSNotificationCenter defaultCenter] postNotificationName:DocumentFileArrayUpdate object:self userInfo:userInfo];
                 NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
                 // 数量
                 [userDefaults setInteger:allArray.count forKey:@"AllCount"];
