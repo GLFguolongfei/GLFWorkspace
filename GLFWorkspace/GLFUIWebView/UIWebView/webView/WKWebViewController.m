@@ -25,6 +25,7 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     item1 = [[UIBarButtonItem alloc] initWithTitle:@"W前进" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
     item2 = [[UIBarButtonItem alloc] initWithTitle:@"W回退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
@@ -47,9 +48,18 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
     if (tabbarHidden.integerValue) {
-        rect = kScreen;
+        rect = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20);
     }
     
+    NSString *isHaveBridge = [userDefaults objectForKey:kHaveBridge];
+    if (isHaveBridge.integerValue) {
+        [self setWKWebView1:rect];
+    } else {
+        [self setWKWebView2:rect];
+    }
+}
+
+- (void)setWKWebView1:(CGRect)rect {
     WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
     config.dataDetectorTypes = UIDataDetectorTypeAll; // 设定使电话号码、网址、电子邮件和符合格式的日期等文字变为链接文字
     config.allowsInlineMediaPlayback = YES; // 是否允许内联(YES)或使用本机全屏控制器(NO),默认是NO
@@ -88,12 +98,33 @@
     [self registerHandlers];
 }
 
+- (void)setWKWebView2:(CGRect)rect {
+    WKWebViewConfiguration *config = [[WKWebViewConfiguration alloc] init];
+    config.dataDetectorTypes = UIDataDetectorTypeAll; // 设定使电话号码、网址、电子邮件和符合格式的日期等文字变为链接文字
+    config.allowsInlineMediaPlayback = YES; // 是否允许内联(YES)或使用本机全屏控制器(NO),默认是NO
+    if (@available(iOS 10.0, *)) {
+        config.mediaTypesRequiringUserActionForPlayback = NO;
+    } else {
+        config.mediaPlaybackRequiresUserAction = NO; // 把手动播放设置NO ios(8.0, 9.0)
+    }
+
+    _wkWebView = [[WKWebView alloc] initWithFrame:rect configuration:config];
+    _wkWebView.UIDelegate = self;
+    _wkWebView.navigationDelegate = self;
+    [self.view addSubview:_wkWebView];
+    
+    NSURL *url = [NSURL URLWithString:self.urlStr];
+    // 加载请求的时候忽略缓存
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:3.0];
+    [_wkWebView loadRequest:request];
+}
+
 - (void)setUIProgressView {
     CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
     if (tabbarHidden.integerValue) {
-        rect = kScreen;
+        rect = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20);
     }
     _progressView = [[UIProgressView alloc] initWithFrame:rect];
     _progressView.progressViewStyle = UIProgressViewStyleDefault;

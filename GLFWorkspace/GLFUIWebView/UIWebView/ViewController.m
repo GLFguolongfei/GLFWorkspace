@@ -12,7 +12,6 @@
 // VCs
 #import "WebViewController.h"
 #import "WKWebViewController.h"
-#import "WKWebViewController2.h"
 #import "SetupViewController.h"
 #import "MMScanViewController.h"
 // Views
@@ -152,17 +151,9 @@
         if (isNORecord.integerValue != 1) {
             self.ipTextView.text = urlStr;
         }
-        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-        NSString *isHaveBridge = [userDefaults objectForKey:kHaveBridge];
-        if (isHaveBridge.integerValue) {
-            WKWebViewController *vc = [[WKWebViewController alloc] init];
-            vc.urlStr = urlStr;
-            [self.navigationController pushViewController:vc animated:YES];
-        } else {
-            WKWebViewController2 *vc = [[WKWebViewController2 alloc] init];
-            vc.urlStr = urlStr;
-            [self.navigationController pushViewController:vc animated:YES];
-        }
+        WKWebViewController *vc = [[WKWebViewController alloc] init];
+        vc.urlStr = urlStr;
+        [self.navigationController pushViewController:vc animated:YES];
     }];
     [alertVC addAction:okAction2];
     UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"SFSafariViewController" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {

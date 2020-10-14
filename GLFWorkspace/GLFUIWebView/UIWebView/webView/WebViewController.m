@@ -23,6 +23,7 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
     item1 = [[UIBarButtonItem alloc] initWithTitle:@"W前进" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
     item2 = [[UIBarButtonItem alloc] initWithTitle:@"W回退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
     self.navigationItem.rightBarButtonItems = @[item1, item2];
@@ -38,8 +39,18 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
     if (tabbarHidden.integerValue) {
-        rect = kScreen;
+        rect = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20);
     }
+
+    NSString *isHaveBridge = [userDefaults objectForKey:kHaveBridge];
+    if (isHaveBridge.integerValue) {
+        [self setWebView1:rect];
+    } else {
+        [self setWebView2:rect];
+    }
+}
+
+- (void)setWebView1:(CGRect)rect {
     _webView = [[UIWebView alloc] initWithFrame:rect];
     _webView.dataDetectorTypes = UIDataDetectorTypeAll; // 设定使电话号码、网址、电子邮件和符合格式的日期等文字变为链接文字
     _webView.scalesPageToFit = YES;
@@ -68,6 +79,29 @@
     [self.bridge setWebViewDelegate:self];
     
     [self registerHandlers];
+}
+
+- (void)setWebView2:(CGRect)rect {
+    _webView = [[UIWebView alloc] initWithFrame:rect];
+    _webView.dataDetectorTypes = UIDataDetectorTypeAll; // 设定使电话号码、网址、电子邮件和符合格式的日期等文字变为链接文字
+    _webView.scalesPageToFit = YES;
+    _webView.delegate = self;
+    [self.view addSubview:_webView];
+    
+    // Webview设置其UserAgent
+//    NSString *userAgent = [NSString stringWithFormat:@"iskytrip_app signalBarHeight=%d", STATUSBAR_HEIGHT_X];
+//    [_webView setValue:userAgent forKey:@"applicationNameForUserAgent"];
+    
+    NSString *sureStr;
+    if ([self.urlStr containsString:@"?"]) {
+        sureStr = [NSString stringWithFormat:@"%@&agent=iskytrip_app&signalBarHeight=%d&nativeLoading=1", self.urlStr, STATUSBAR_HEIGHT_X];
+    } else {
+        sureStr = [NSString stringWithFormat:@"%@?agent=iskytrip_app&signalBarHeight=%d&nativeLoading=1", self.urlStr, STATUSBAR_HEIGHT_X];
+    }
+    NSURL *url = [NSURL URLWithString:sureStr];
+    // 加载请求的时候忽略缓存
+    NSURLRequest *request = [NSURLRequest requestWithURL:url cachePolicy:NSURLRequestReloadIgnoringLocalCacheData timeoutInterval:3.0];
+    [_webView loadRequest:request];
 }
 
 - (void)buttonAction1:(id)sender {
