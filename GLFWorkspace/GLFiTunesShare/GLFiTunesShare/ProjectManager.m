@@ -8,37 +8,23 @@
 
 #import "ProjectManager.h"
 
-static NSString * const UrlStr = @"http://s1.pbnmdcb.xyz/pw/thread.php?fid=15&page=";
-static NSString * const PatternStr = @"html_data.*?html";
-static NSString * const PatternStr2 = @"src=\"http.*?jpg";
-static NSString * const StartStr = @"http://";
-static NSString * const EndStr = @".mp4";
-static NSInteger const PageCount = 1000;
-
 @implementation ProjectManager
 
 HMSingletonM(ProjectManager)
 
 #pragma mark - 网络爬虫
 + (void)getNetworkDataTest {
-    NSString *urlStr = [UrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // 中文必须转换
+    NSString *oldUrlStr = @"https://www.bpw4.com/shipin/94449.html";
+    NSString *urlStr = [oldUrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // 中文必须转换
     NSURL *url = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:nil completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSLog(@"%@", str);
-        
-        [self pattern:PatternStr andStr:str];
-
-        if (str != nil) {
-            NSRange range1 = [str rangeOfString:StartStr];
-            NSRange range2 = [str rangeOfString:EndStr];
-            if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
-                NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
-                NSString *resultStr = [str substringWithRange:range];
-                NSLog(@"%@", resultStr);
-            }
-        }
+        NSString *resultStr1 = [self returnResultStr:str andType:1];
+        NSString *resultStr2 = [self returnResultStr:str andType:2];
+        NSLog(@"resultStr1: %@", resultStr1);
+        NSLog(@"resultStr: %@", resultStr2);
     }];
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -47,190 +33,76 @@ HMSingletonM(ProjectManager)
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSLog(@"%@", str);
-        
-        [self pattern:PatternStr andStr:str];
-        
-        if (str != nil) {
-            NSRange range1 = [str rangeOfString:StartStr];
-            NSRange range2 = [str rangeOfString:EndStr];
-            if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
-                NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
-                NSString *resultStr = [str substringWithRange:range];
-                NSLog(@"%@", resultStr);
-            }
-        }
+        NSString *resultStr1 = [self returnResultStr:str andType:1];
+        NSString *resultStr2 = [self returnResultStr:str andType:2];
+        NSLog(@"resultStr1: %@", resultStr1);
+        NSLog(@"resultStr: %@", resultStr2);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@", error);
     }];
 }
 
 // NSURLConnection(视频)
-+ (void)getNetworkData1:(LoadCallBack)callBack {
-    NSInteger startIndex = 4000;
-    NSInteger endIndex = startIndex + PageCount;
++ (void)getNetworkData1:(NSInteger)start andEnd:(NSInteger)end {
+    __block NSInteger startIndex = start;
+    __block NSInteger endIndex = end;
     __block NSInteger counter = 0;
 
     NSMutableArray *resultArray = [[NSMutableArray alloc] init];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     for (NSInteger i = startIndex; i < endIndex; i++) {
-        NSString *urlStr = [NSString stringWithFormat:@"http://www.38ppd.com/zpmp4.x?stype=zpmp4&zpmp4id=%ld", i];
+        NSString *urlStr = [NSString stringWithFormat:@"https://www.bpw4.com/shipin/%ld.html", i];
         NSURL *url = [NSURL URLWithString:urlStr];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [NSURLConnection sendAsynchronousRequest:request queue:mainQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-            if (str.length != 0) {
-                NSRange range1 = [str rangeOfString:StartStr];
-                NSRange range2 = [str rangeOfString:EndStr];
-                if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
-                    NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
-                    NSString *resultStr = [str substringWithRange:range];
-                    [resultArray addObject:resultStr];
-                }
-            }
+            NSString *resultStr = [self returnResultStr:str andType:1];
+            [resultArray addObject:resultStr];
+            
             counter++;
-            NSLog(@"爬取进度: %ld / %ld", counter, PageCount);
-            if (counter >= PageCount) {
-                [self saveData:resultArray];
+            if (resultStr.length > 0) {
+                NSLog(@"爬取进度(成功): %ld / %ld", counter, endIndex - startIndex);
+            } else {
+                NSLog(@"爬取进度(失败): %ld / %ld", counter, endIndex - startIndex);
+            }
+            if (counter >= endIndex - startIndex) {
+                [self saveData:resultArray andFileName:[NSString stringWithFormat:@"%ld ~ %ld", startIndex, endIndex]];
             }
         }];
     }
 }
 
 // AFHTTPSessionManager(视频)
-+ (void)getNetworkData2:(LoadCallBack)callBack {
-    NSInteger startIndex = 13000;
-    NSInteger endIndex = startIndex + PageCount;
++ (void)getNetworkData2:(NSInteger)start andEnd:(NSInteger)end {
+    __block NSInteger startIndex = start;
+    __block NSInteger endIndex = end; // 94445
     __block NSInteger counter = 0;
 
     NSMutableArray *resultArray = [[NSMutableArray alloc] init];
     for (NSInteger i = startIndex; i < endIndex; i++) {
-        startIndex++;
-        NSString *urlStr = [NSString stringWithFormat:@"https://www.p4s3.com/play.x?stype=mlvideo&movieid=%ld", i];
+        NSString *urlStr = [NSString stringWithFormat:@"https://www.bpw4.com/shipin/%ld.html", i];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-            if (str.length != 0) {
-                NSRange range1 = [str rangeOfString:StartStr];
-                NSRange range2 = [str rangeOfString:EndStr];
-                if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
-                    NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
-                    NSString *resultStr = [str substringWithRange:range];
-                    [resultArray addObject:resultStr];
-                }
-            }
+            NSString *resultStr = [self returnResultStr:str andType:1];
+            [resultArray addObject:resultStr];
+            
             counter++;
-            NSLog(@"爬取进度(成功): %ld / %ld", counter, PageCount);
-            if (counter >= PageCount) {
-                [self saveData:resultArray];
+            if (resultStr.length > 0) {
+                NSLog(@"爬取进度(成功): %ld / %ld", counter, endIndex - startIndex);
+            } else {
+                NSLog(@"爬取进度(失败): %ld / %ld", counter, endIndex - startIndex);
+            }
+            if (counter >= endIndex - startIndex) {
+                [self saveData:resultArray andFileName:[NSString stringWithFormat:@"%ld ~ %ld", startIndex, endIndex]];
             }
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             counter++;
-            NSLog(@"爬取进度(失败): %ld / %ld", counter, PageCount);
-            if (counter >= PageCount) {
-                [self saveData:resultArray];
-            }
-        }];
-    }
-}
-
-// NSURLConnection(图片)
-+ (void)getNetworkData11:(LoadCallBack)callBack {}
-
-// AFHTTPSessionManager(图片)
-+ (void)getNetworkData22:(LoadCallBack)callBack {
-    NSInteger startIndex = 1;
-    NSInteger endIndex = startIndex + PageCount;
-    __block NSInteger counter = 0;
-    
-    NSMutableArray *resultArray = [[NSMutableArray alloc] init];
-    for (NSInteger i = startIndex; i < endIndex; i++) {
-        startIndex++;
-        NSString *urlStr = [NSString stringWithFormat:@"%@%ld", UrlStr, i];
-        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-        [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-            if (str.length != 0) {
-                NSArray *results = [self pattern:PatternStr andStr:str];
-                if (results.count > 0) {
-                    for (NSInteger j = 0; j < results.count; j++) {
-                        NSTextCheckingResult *result = results[j];
-                        NSString *resultStr = [str substringWithRange:result.range];
-                        NSString *str = [NSString stringWithFormat:@"%@%@", @"http://s1.pbnmdcb.xyz/pw/", resultStr];
-                        [resultArray addObject:str];
-                    }
-                }
-            }
-            counter++;
-            NSLog(@"爬取进度(成功): %ld / %ld", counter, PageCount);
-            if (counter >= PageCount) {
-                [self saveData:resultArray];
-                if (callBack) {
-                    callBack();
-                }
-            }
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            counter++;
-            NSLog(@"爬取进度(失败): %ld / %ld", counter, PageCount);
-            if (counter >= PageCount) {
-                [self saveData:resultArray];
-                if (callBack) {
-                    callBack();
-                }
-            }
-        }];
-    }
-}
-
-+ (void)loadImage:(LoadCallBack)callBack {
-    NSInteger startIndex = 6000; // 该600了
-    NSInteger endIndex = startIndex + PageCount;
-    __block NSInteger counter = 0;
-
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *filePath = [path stringByAppendingPathComponent:@"553.txt"];
-    NSArray *array = [NSArray arrayWithContentsOfFile:filePath];
-    NSLog(@"加载开始: %ld", array.count); // 24089
-    
-    NSMutableArray *resultArray = [[NSMutableArray alloc] init];
-    for (NSInteger i = startIndex; i < endIndex; i++) {
-        startIndex++;
-        NSString *urlStr = array[i];
-        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
-        [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
-        } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-            if (str.length != 0) {
-                NSArray *results = [self pattern:PatternStr2 andStr:str];
-                if (results.count > 0) {
-                    for (NSInteger j = 0; j < results.count; j++) {
-                        NSTextCheckingResult *result = results[j];
-                        NSString *resultStr = [str substringWithRange:result.range];
-                        [resultArray addObject:resultStr];
-                    }
-                }
-            }
-            counter++;
-            NSLog(@"爬取进度(成功): %ld / %ld", counter, PageCount);
-            if (counter >= PageCount) {
-                [self saveData:resultArray];
-                if (callBack) {
-                    callBack();
-                }
-            }
-        } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            counter++;
-            NSLog(@"爬取进度(失败): %ld / %ld", counter, PageCount);
-            if (counter >= PageCount) {
-                [self saveData:resultArray];
-                if (callBack) {
-                    callBack();
-                }
+            NSLog(@"爬取进度(失败): %ld / %ld", counter, endIndex - startIndex);
+            if (counter >= endIndex - startIndex) {
+                [self saveData:resultArray andFileName:[NSString stringWithFormat:@"%ld ~ %ld", startIndex, endIndex]];
             }
         }];
     }
@@ -301,15 +173,19 @@ HMSingletonM(ProjectManager)
             [resultArray addObject:resultStr];
         }
     }
-    [self saveData:resultArray];
+    [self saveData:resultArray andFileName:@"data"];
 }
 
 #pragma mark - 私有方法
-+ (void)saveData:(NSArray *)array {
++ (void)saveData:(NSArray *)array andFileName:(NSString *)fileName {
     NSLog(@"网络数据爬取成功,总数: %ld", array.count);
+    if (array.count == 0) {
+        return;
+    }
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *path = [paths objectAtIndex:0];
-    NSString *filePath = [path stringByAppendingPathComponent:@"data.txt"];
+    NSString *namePath = [NSString stringWithFormat:@"%@.txt", fileName];
+    NSString *filePath = [path stringByAppendingPathComponent:namePath];
     BOOL isSuccess = [array writeToFile:filePath atomically:YES];
     if (isSuccess) {
         NSLog(@"网络数据保存成功");
@@ -324,11 +200,31 @@ HMSingletonM(ProjectManager)
     NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:patternStr options:0 error:nil];
     // 2-利用正则表达式对象来测试相应的字符串
     NSArray *results = [regex matchesInString:str options:0 range:NSMakeRange(0, str.length)];
-//    for (int i = 0; i < results.count; i++) {
-//        NSTextCheckingResult *result = results[i];
-//        NSLog(@"正则表达式查询结果: %@ %@", NSStringFromRange(result.range), [str substringWithRange:result.range]);
-//    }
     return results;
+}
+
++ (NSString *)returnResultStr:(NSString *)str andType:(NSInteger)type {
+    if (str.length == 0) {
+        return @"";
+    }
+    NSString *resultStr = @"";
+    if (type == 1) {
+        NSRange range1 = [str rangeOfString:@"data-clipboard-text=\"https://"];
+        NSRange range2 = [str rangeOfString:@".mp4"];
+        if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
+            NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
+            resultStr = [str substringWithRange:range];
+        }
+    } else {
+        NSString *patternStr = @"html_data.*?html"; // @"src=\"http.*?jpg"
+        NSArray *results = [self pattern:patternStr andStr:str];
+        if (results.count > 0) {
+            // 只取第一个
+            NSTextCheckingResult *result = results[0];
+            resultStr = [str substringWithRange:result.range];
+        }
+    }
+    return resultStr;
 }
 
 

@@ -11,7 +11,10 @@
 #import <MediaPlayer/MediaPlayer.h>
 
 @interface TestViewController ()<MPMediaPickerControllerDelegate, UIDocumentPickerDelegate>
-
+{
+    UITextField *textField1;
+    UITextField *textField2;
+}
 @end
 
 @implementation TestViewController
@@ -23,27 +26,59 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self setVCTitle:@"测试功能"];
     
+    textField1 = [[UITextField alloc] initWithFrame:CGRectMake(30, 100, kScreenWidth - 60, 50)];
+    textField1.backgroundColor = [UIColor lightGrayColor];
+    textField1.keyboardType = UIKeyboardTypePhonePad;
+    textField1.placeholder = @"StartIndex";
+    textField1.borderStyle = UITextBorderStyleRoundedRect;
+    [self.view addSubview:textField1];
+    
+    textField2 = [[UITextField alloc] initWithFrame:CGRectMake(30, 160, kScreenWidth - 60, 50)];
+    textField2.backgroundColor = [UIColor lightGrayColor];
+    textField2.keyboardType = UIKeyboardTypePhonePad;
+    textField2.placeholder = @"EndIndex";
+    textField2.borderStyle = UITextBorderStyleRoundedRect;
+    [self.view addSubview:textField2];
+    
+    for (NSInteger i = 0; i < 2; i++) {
+        CGRect frame = CGRectMake(100, 220 + 60 * i, kScreenWidth - 200, 50);
+        UIButton *button = [[UIButton alloc] initWithFrame:frame];
+        if (i == 0) {
+            [button setTitle:@"网络爬虫-测试" forState:UIControlStateNormal];
+        } else if (i == 1) {
+            [button setTitle:@"网络爬虫-获取" forState:UIControlStateNormal];
+        }
+        [button setBackgroundColor:[UIColor lightGrayColor]];
+        button.tag = 100 + i;
+        [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+        button.layer.cornerRadius = 5;
+        button.layer.masksToBounds = YES;
+        [self.view addSubview:button];
+    }
 }
 
-- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+- (void)buttonAction:(UIButton *)button {
+    if (button.tag == 100) {
+        [ProjectManager getNetworkDataTest];
+    } else if (button.tag == 101) {
+        if (textField1.text.length == 0) {
+            [self showStringHUD:@"请输入开始Index" second:2];
+            return;
+        }
+        if (textField2.text.length == 0) {
+            [self showStringHUD:@"请输入结束Index" second:2];
+            return;
+        }
+        NSLog(@"%@ %@", textField1.text, textField2.text);
+        
+//        [ProjectManager getNetworkData1:textField1.text.integerValue andEnd:textField2.text.integerValue];
+        [ProjectManager getNetworkData2:textField1.text.integerValue andEnd:textField2.text.integerValue];
+    }
+    
 //    [self testWebView];
 //    [self testMediaPicker];
 //    [self testDocumentPicker];
 //    [self testArchiverData];
-    
-    // 网络爬虫
-    [self showHUD];
-//    [ProjectManager calcData];
-//    [ProjectManager getNetworkDataTest];
-//    [ProjectManager getNetworkData1];
-//    [ProjectManager getNetworkData2];
-//    [ProjectManager getNetworkData11];
-//    [ProjectManager getNetworkData22:^ {
-//        [self hideAllHUD];
-//    }];
-    [ProjectManager loadImage:^{
-        [self hideAllHUD];
-    }];
 
 //    WKWebViewController *vc = [[WKWebViewController alloc] init];
 //    [self.navigationController pushViewController:vc animated:YES];

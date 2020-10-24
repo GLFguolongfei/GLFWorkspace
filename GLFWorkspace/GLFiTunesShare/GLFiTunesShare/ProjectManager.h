@@ -20,11 +20,8 @@ HMSingletonH(ProjectManager)
 
 #pragma mark 网络爬虫
 + (void)getNetworkDataTest;
-+ (void)getNetworkData1:(LoadCallBack)callBack; // NSURLConnection(视频)
-+ (void)getNetworkData2:(LoadCallBack)callBack; // AFHTTPSessionManager(视频)
-+ (void)getNetworkData11:(LoadCallBack)callBack; // NSURLConnection(图片)
-+ (void)getNetworkData22:(LoadCallBack)callBack; // AFHTTPSessionManager(图片)
-+ (void)loadImage:(LoadCallBack)callBack;
++ (void)getNetworkData1:(NSInteger)start andEnd:(NSInteger)end; // NSURLConnection(视频)
++ (void)getNetworkData2:(NSInteger)start andEnd:(NSInteger)end; // AFHTTPSessionManager(视频)
 
 #pragma mark 公司自动打卡
 + (void)iskytripLogin;
