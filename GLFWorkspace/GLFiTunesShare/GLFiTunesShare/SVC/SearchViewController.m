@@ -289,10 +289,9 @@
     if (fileType == 1) { // 文件
         // 预览
         NSString *mute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
-        NSString *min = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMin];
         NSArray *array = [model.name componentsSeparatedByString:@"."];
         NSString *lowerType = [array.lastObject lowercaseString];
-        if (isShowDefault && (![CvideoTypeArray containsObject:lowerType] || ([CvideoTypeArray containsObject:lowerType] && !mute.integerValue && !min.integerValue))) {
+        if (isShowDefault && (![CvideoTypeArray containsObject:lowerType] || ([CvideoTypeArray containsObject:lowerType] && !mute.integerValue))) {
             NSURL *url = [NSURL fileURLWithPath:model.path];
             UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
             documentController.delegate = self;

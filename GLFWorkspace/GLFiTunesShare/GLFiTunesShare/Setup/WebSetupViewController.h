@@ -18,7 +18,6 @@
 @property (weak, nonatomic) IBOutlet UISwitch *switch3;
 @property (weak, nonatomic) IBOutlet UISwitch *switch4;
 @property (weak, nonatomic) IBOutlet UISwitch *switch5;
-@property (weak, nonatomic) IBOutlet UISwitch *switch6;
 @property (weak, nonatomic) IBOutlet UISwitch *switch7;
 @property (weak, nonatomic) IBOutlet UISwitch *switch8;
 
@@ -27,7 +26,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *label3;
 @property (weak, nonatomic) IBOutlet UILabel *label4;
 @property (weak, nonatomic) IBOutlet UILabel *label5;
-@property (weak, nonatomic) IBOutlet UILabel *label6;
 @property (weak, nonatomic) IBOutlet UILabel *label7;
 @property (weak, nonatomic) IBOutlet UILabel *label8;
 

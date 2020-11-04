@@ -30,7 +30,6 @@
     NSString *font = [userDefaults objectForKey:kWebContentFont];
     NSString *border = [userDefaults objectForKey:kWebContentBorder];
     NSString *mute = [userDefaults objectForKey:kVoiceMute];
-    NSString *min = [userDefaults objectForKey:kVoiceMin];
     NSString *hidden = [userDefaults objectForKey:kContentHidden];
     NSString *record = [userDefaults objectForKey:kRecord];
     [self.switch1 setOn:xuanfu.integerValue animated:YES];
@@ -38,7 +37,6 @@
     [self.switch3 setOn:font.integerValue animated:YES];
     [self.switch4 setOn:border.integerValue animated:YES];
     [self.switch5 setOn:mute.integerValue animated:YES];
-    [self.switch6 setOn:min.integerValue animated:YES];
     [self.switch7 setOn:hidden.integerValue animated:YES];
     [self.switch8 setOn:record.integerValue animated:YES];
     
@@ -93,11 +91,7 @@
     }
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        self.switch5.hidden = !self.switch6.hidden;
-        self.label5.hidden = !self.label6.hidden;
         if (isOC) {
-            self.switch6.hidden = !self.switch6.hidden;
-            self.label6.hidden = !self.label6.hidden;
             self.switch7.hidden = !self.switch7.hidden;
             self.label7.hidden = !self.label7.hidden;
             self.switch8.hidden = !self.switch8.hidden;
@@ -169,26 +163,8 @@
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kVoiceMute];
-        if (self.switch6.on) {
-            self.switch6.on = NO;
-            [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kVoiceMin];
-        }
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kVoiceMute];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (IBAction)switchAction6:(id)sender {
-    UISwitch *sw = (UISwitch *)sender;
-    if (sw.on) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kVoiceMin];
-        if (self.switch5.on) {
-            self.switch5.on = NO;
-            [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kVoiceMute];
-        }
-    } else {
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kVoiceMin];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

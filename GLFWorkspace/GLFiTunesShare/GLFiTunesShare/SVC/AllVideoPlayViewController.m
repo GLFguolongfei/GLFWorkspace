@@ -205,8 +205,7 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     FileModel *model = _dataArray[indexPath.row];
     NSString *mute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
-    NSString *min = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMin];
-    if (isShowDefault && !mute.integerValue && !min.integerValue) {
+    if (isShowDefault && !mute.integerValue) {
         NSURL *url = [NSURL fileURLWithPath:model.path];
         UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
         documentController.delegate = self;

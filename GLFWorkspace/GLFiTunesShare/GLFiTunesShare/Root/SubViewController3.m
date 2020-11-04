@@ -62,12 +62,7 @@
     NSString *mute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
     if (mute.integerValue) {
         self.player.volume = 0.0; // 控制音量
-    } else {
-        NSString *min = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMin];
-        if (min.integerValue) {
-            self.player.volume = 0.01; // 控制音量
-        }
-    }
+    } 
     // 4-添加AVPlayerLayer
     playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];
     playerLayer.frame = kScreen;

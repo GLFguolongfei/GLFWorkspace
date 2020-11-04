@@ -71,7 +71,6 @@
 #define kWebContentFont     @"kWebContentFont"
 #define kWebContentBorder   @"kWebContentBorder"
 #define kVoiceMute          @"kVoiceMute"
-#define kVoiceMin           @"kVoiceMin"
 #define kContentHidden      @"kContentHidden"
 #define kRecord             @"kRecord"
 #define kFavorite           @"kFavorite"
