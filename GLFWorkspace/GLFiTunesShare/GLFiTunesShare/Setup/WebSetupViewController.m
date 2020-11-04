@@ -27,14 +27,12 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *xuanfu = [userDefaults objectForKey:kWebContentXuanFu];
     NSString *img = [userDefaults objectForKey:kWebContentImg];
-    NSString *font = [userDefaults objectForKey:kWebContentFont];
     NSString *border = [userDefaults objectForKey:kWebContentBorder];
     NSString *mute = [userDefaults objectForKey:kVoiceMute];
     NSString *hidden = [userDefaults objectForKey:kContentHidden];
     NSString *record = [userDefaults objectForKey:kRecord];
     [self.switch1 setOn:xuanfu.integerValue animated:YES];
     [self.switch2 setOn:img.integerValue animated:YES];
-    [self.switch3 setOn:font.integerValue animated:YES];
     [self.switch4 setOn:border.integerValue animated:YES];
     [self.switch5 setOn:mute.integerValue animated:YES];
     [self.switch7 setOn:hidden.integerValue animated:YES];
@@ -131,28 +129,14 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (IBAction)switchAction3:(id)sender {
-    UISwitch *sw = (UISwitch *)sender;
-    if (sw.on) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kWebContentFont];
-        self.switch4.on = NO;
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentBorder];
-    } else {
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentFont];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
 - (IBAction)switchAction4:(id)sender {
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kWebContentBorder];
         self.switch1.on = NO;
         self.switch2.on = NO;
-        self.switch3.on = NO;
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentXuanFu];
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentImg];
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentFont];
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kWebContentBorder];
     }

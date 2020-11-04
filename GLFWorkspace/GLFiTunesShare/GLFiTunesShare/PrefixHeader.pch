@@ -68,7 +68,6 @@
 #define BackImageName       @"BackImageName"
 #define kWebContentXuanFu   @"kWebContentXuanFu"
 #define kWebContentImg      @"kWebContentImg"
-#define kWebContentFont     @"kWebContentFont"
 #define kWebContentBorder   @"kWebContentBorder"
 #define kVoiceMute          @"kVoiceMute"
 #define kContentHidden      @"kContentHidden"

@@ -114,7 +114,6 @@
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString *xuanfu = [userDefaults objectForKey:kWebContentXuanFu];
         NSString *img = [userDefaults objectForKey:kWebContentImg];
-        NSString *font = [userDefaults objectForKey:kWebContentFont];
         NSString *border = [userDefaults objectForKey:kWebContentBorder];
         if (border.integerValue) {
             // 显示纯文本
@@ -130,11 +129,6 @@
             [webView stringByEvaluatingJavaScriptFromString:js2];
         } else {
             NSMutableString *js = [NSMutableString string];
-            // 设置viewport
-//            [js appendString:@"var viewport = document.createElement('meta');"];
-//            [js appendString:@"viewport.name = 'viewport';"];
-//            [js appendString:@"viewport.content = 'width=device-width,initial-scale=1.0';"];
-//            [js appendString:@"document.head.appendChild(viewport);"];
             // 内容距离边界一定距离
             [js appendString:@"document.body.style.padding = '20px';"];
             if (xuanfu.integerValue) {
@@ -153,58 +147,6 @@
                 [js appendString:@"for (var i = 0; i < array2.length; i++) {"];
                 [js appendString:@"    var element = array2[i];"];
                 [js appendString:@"    element.remove();"];
-                [js appendString:@"}"];
-            }
-            if (font.integerValue) {
-                // div标签字体大小
-                [js appendString:@"var array3 = document.getElementsByTagName('div') || [];"];
-                [js appendString:@"var array4 = document.getElementsByTagName('span') || [];"];
-                [js appendString:@"var array5 = document.getElementsByTagName('p') || [];"];
-                [js appendString:@"var array6 = document.getElementsByTagName('a') || [];"];
-                [js appendString:@"console.log(array3);"];
-                [js appendString:@"for(var i=0; i<array3.length;i++) {"];
-                [js appendString:@"    var element = array3[i];"];
-                [js appendString:@"    if (element.innerText == '') {"];
-                [js appendString:@"        element.remove();"];
-                [js appendString:@"    } else {"];
-                [js appendString:@"        element.style.display = 'inline-block';"];
-                [js appendString:@"    }"];
-                [js appendString:@"    element.style.fontSize = '48px';"];
-                [js appendString:@"    element.style.lineHeight = '64px';"];
-                [js appendString:@"    element.style.width = '100%';"];
-                [js appendString:@"}"];
-                [js appendString:@"for(var i=0; i<array4.length;i++) {"];
-                [js appendString:@"    var element = array4[i];"];
-                [js appendString:@"    if (element.innerText == '') {"];
-                [js appendString:@"        element.remove();"];
-                [js appendString:@"    } else {"];
-                [js appendString:@"        element.style.display = 'inline-block';"];
-                [js appendString:@"    }"];
-                [js appendString:@"    element.style.fontSize = '48px';"];
-                [js appendString:@"    element.style.lineHeight = '64px';"];
-                [js appendString:@"    element.style.width = '100%';"];
-                [js appendString:@"}"];
-                [js appendString:@"for(var i=0; i<array5.length;i++) {"];
-                [js appendString:@"    var element = array5[i];"];
-                [js appendString:@"    if (element.innerText == '') {"];
-                [js appendString:@"        element.remove();"];
-                [js appendString:@"    } else {"];
-                [js appendString:@"        element.style.display = 'inline-block';"];
-                [js appendString:@"    }"];
-                [js appendString:@"    element.style.fontSize = '48px';"];
-                [js appendString:@"    element.style.lineHeight = '64px';"];
-                [js appendString:@"    element.style.width = '100%';"];
-                [js appendString:@"}"];
-                [js appendString:@"for(var i=0; i<array6.length;i++) {"];
-                [js appendString:@"    var element = array6[i];"];
-                [js appendString:@"    if (element.innerText == '') {"];
-                [js appendString:@"        element.remove();"];
-                [js appendString:@"    } else {"];
-                [js appendString:@"        element.style.display = 'inline-block';"];
-                [js appendString:@"    }"];
-                [js appendString:@"    element.style.fontSize = '48px';"];
-                [js appendString:@"    element.style.lineHeight = '64px';"];
-                [js appendString:@"    element.style.width = '100%';"];
                 [js appendString:@"}"];
             }
             [webView stringByEvaluatingJavaScriptFromString:js];
