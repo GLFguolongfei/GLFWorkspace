@@ -89,6 +89,8 @@
     }
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        self.switch5.hidden = NO;
+        self.label5.hidden = NO;
         if (isOC) {
             self.switch7.hidden = !self.switch7.hidden;
             self.label7.hidden = !self.label7.hidden;
