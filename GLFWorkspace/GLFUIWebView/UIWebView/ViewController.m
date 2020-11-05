@@ -50,7 +50,7 @@
     [self.view addSubview:self.ipTextView];
     
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *isContentHidden = [userDefaults objectForKey:kContentHidden];
+    NSString *isNORecord = [userDefaults objectForKey:kNORecord];
     for (NSInteger i = 0; i < 3; i++) {
         CGFloat width = (kScreenWidth - 60) / 3;
         CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 200 + 80 * ceil(i / 3), width, 50);
@@ -61,7 +61,7 @@
             [button setTitle:@"清除缓存" forState:UIControlStateNormal];
         } else if (i == 2) {
             [button setTitle:@"历史浏览" forState:UIControlStateNormal];
-            if (isContentHidden.integerValue != 1) {
+            if (isNORecord.integerValue != 1) {
                 button.hidden = YES;
             }
         }
@@ -105,8 +105,8 @@
     
     UIButton *button = [self.view viewWithTag:12];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *isContentHidden = [userDefaults objectForKey:kContentHidden];
-    if (isContentHidden.integerValue == 1) {
+    NSString *isNORecord = [userDefaults objectForKey:kNORecord];
+    if (isNORecord.integerValue == 1) {
         button.hidden = NO;
     } else {
         button.hidden = YES;

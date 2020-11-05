@@ -93,8 +93,7 @@ HMSingletonM(DocumentManager)
     NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"IP.plist"];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *isNORecord = [userDefaults objectForKey:kNORecord];
-    NSString *isContentHidden = [userDefaults objectForKey:kContentHidden];
-    if ((actionType == 1 && isNORecord.integerValue == 1) || (actionType == 2 && isContentHidden.integerValue == 1)) {
+    if (isNORecord.integerValue == 1) {
         plistPath = [documentsDirectory stringByAppendingPathComponent:@"IPSecret.plist"];
     }
     return plistPath;

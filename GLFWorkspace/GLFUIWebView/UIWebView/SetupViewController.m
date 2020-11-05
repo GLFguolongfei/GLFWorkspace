@@ -28,11 +28,9 @@
     NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
     NSString *isHaveBridge = [userDefaults objectForKey:kHaveBridge];
     NSString *isNORecord = [userDefaults objectForKey:kNORecord];
-    NSString *isContentHidden = [userDefaults objectForKey:kContentHidden];
     [self.switch1 setOn:tabbarHidden.integerValue animated:YES];
     [self.switch2 setOn:isHaveBridge.integerValue animated:YES];
     [self.switch3 setOn:isNORecord.integerValue animated:YES];
-    [self.switch4 setOn:isContentHidden.integerValue animated:YES];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
     tapGesture.numberOfTapsRequired = 3;
@@ -75,11 +73,9 @@
     }
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-//        self.switch3.hidden = !self.switch3.hidden;
-//        self.label3.hidden = !self.label3.hidden;
         if (isOC) {
-            self.switch4.hidden = !self.switch4.hidden;
-            self.label4.hidden = !self.label4.hidden;
+            self.switch3.hidden = !self.switch3.hidden;
+            self.label3.hidden = !self.label3.hidden;
         }
     }];
     [alertVC addAction:okAction];
@@ -117,16 +113,6 @@
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kNORecord];
     } else {
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kNORecord];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (IBAction)switchAction4:(id)sender {
-    UISwitch *sw = (UISwitch *)sender;
-    if (sw.on) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kContentHidden];
-    } else {
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kContentHidden];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
