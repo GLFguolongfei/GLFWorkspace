@@ -49,9 +49,7 @@
     self.ipTextView.delegate = self;
     [self.view addSubview:self.ipTextView];
     
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *isNORecord = [userDefaults objectForKey:kNORecord];
-    for (NSInteger i = 0; i < 3; i++) {
+    for (NSInteger i = 0; i < 2; i++) {
         CGFloat width = (kScreenWidth - 60) / 3;
         CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 200 + 80 * ceil(i / 3), width, 50);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
@@ -59,11 +57,6 @@
             [button setTitle:@"历史记录" forState:UIControlStateNormal];
         } else if (i == 1) {
             [button setTitle:@"清除缓存" forState:UIControlStateNormal];
-        } else if (i == 2) {
-            [button setTitle:@"历史浏览" forState:UIControlStateNormal];
-            if (isNORecord.integerValue != 1) {
-                button.hidden = YES;
-            }
         }
         button.titleLabel.font = [UIFont systemFontOfSize:16.0];
         button.backgroundColor = [UIColor lightGrayColor];
@@ -97,13 +90,37 @@
         button.layer.masksToBounds = YES;
         [self.view addSubview:button];
     }
+    
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *isNORecord = [userDefaults objectForKey:kNORecord];
+    for (NSInteger i = 0; i < 2; i++) {
+        CGFloat width = (kScreenWidth - 60) / 3;
+        CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), kScreenHeight - 80, width, 50);
+        UIButton *button = [[UIButton alloc] initWithFrame:frame];
+        if (i == 0) {
+            [button setTitle:@"百度新闻" forState:UIControlStateNormal];
+        } else if (i == 1) {
+            [button setTitle:@"历史浏览" forState:UIControlStateNormal];
+            if (isNORecord.integerValue != 1) {
+                button.hidden = YES;
+            }
+        }
+        button.titleLabel.font = [UIFont systemFontOfSize:16.0];
+        button.backgroundColor = [UIColor lightGrayColor];
+        [button setTitleColor:KNavgationBarColor forState:UIControlStateNormal];
+        [button addTarget:self action:@selector(buttonAction3:) forControlEvents:UIControlEventTouchUpInside];
+        button.tag = i + 1000;
+        button.layer.cornerRadius = 5;
+        button.layer.masksToBounds = YES;
+        [self.view addSubview:button];
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:NO animated:YES];
     
-    UIButton *button = [self.view viewWithTag:12];
+    UIButton *button = [self.view viewWithTag:1001];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *isNORecord = [userDefaults objectForKey:kNORecord];
     if (isNORecord.integerValue == 1) {
@@ -126,6 +143,112 @@
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self.view endEditing:YES];
+}
+
+#pragma mark Events
+- (void)declareAction {
+    SetupViewController *vc = [[SetupViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)scanQrCode {
+    MMScanViewController *scanVc = [[MMScanViewController alloc] initWithQrType:MMScanTypeAll onFinish:^(NSString *result, NSError *error) {
+        if (error) {
+            NSLog(@"error: %@", error);
+            [self showStringHUD:error.localizedDescription second:2];
+        } else {
+            NSLog(@"扫描结果：%@", result);
+            [self goURLVC:result];
+        }
+    }];
+    [scanVc setHistoryCallBack:^(NSArray *result) {
+        NSLog(@"%@", result);
+    }];
+    [self.navigationController pushViewController:scanVc animated:YES];
+}
+
+- (void)buttonAction1:(UIButton *)button {
+    [self.view endEditing:YES];
+    if (button.tag == 10) {
+        SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
+        ipView.parentVC = self;
+        ipView.isSecret = NO;
+        ipView.backgroundColor = [UIColor whiteColor];
+        [self lew_presentPopupView:ipView animation:[LewPopupViewAnimationSpring new] dismissed:^{
+            NSLog(@"动画结束");
+        }];
+    } else if (button.tag == 11) {
+        [self cleanCacheAndCookie];
+        [self clearCache];
+        [self showStringHUD:@"缓存清理完成" second:1.5];
+    }
+}
+
+- (void)buttonAction2:(UIButton *)button {
+    [self.view endEditing:YES];
+    NSString *urlStr = @"";
+    if (button.tag == 100) {
+        urlStr = @"http://192.168.1.123:60108/abroadDetail?productId=174";
+    } else if (button.tag == 101) {
+        urlStr = @"http://192.168.1.121:60108/abroadDetail?productId=174";
+    } else if (button.tag == 102) {
+        urlStr = @"https://mobile.ant.design/kitchen-sink/";
+    } else {
+        urlStr = @"http://www.baidu.com";
+    }
+    [self goURLVC:urlStr];
+}
+
+- (void)buttonAction3:(UIButton *)button {
+    [self.view endEditing:YES];
+    NSString *urlStr = @"";
+    if (button.tag == 1000) {
+        urlStr = @"http://www.baidu.com";
+        [self goURLVC:urlStr];
+    } else if (button.tag == 1001) {
+        SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
+        ipView.parentVC = self;
+        ipView.isSecret = YES;
+        ipView.backgroundColor = [UIColor whiteColor];
+        [self lew_presentPopupView:ipView animation:[LewPopupViewAnimationSpring new] dismissed:^{
+            NSLog(@"动画结束");
+        }];
+    }
+}
+
+#pragma mark Tools
+// 清除缓存和cookie
+- (void)cleanCacheAndCookie{
+    // 清除cookies
+    NSHTTPCookie *cookie;
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (cookie in [storage cookies]){
+        [storage deleteCookie:cookie];
+    }
+    // 清除UIWebView的缓存
+    [[NSURLCache sharedURLCache] removeAllCachedResponses];
+    NSURLCache *cache = [NSURLCache sharedURLCache];
+    [cache removeAllCachedResponses];
+    [cache setDiskCapacity:0];
+    [cache setMemoryCapacity:0];
+}
+
+// 清除缓存
+- (void)clearCache {
+    if ([[[UIDevice currentDevice]systemVersion]intValue ] >= 9.0) {
+        NSArray * types =@[WKWebsiteDataTypeMemoryCache,WKWebsiteDataTypeDiskCache]; // 9.0之后才有的
+        NSSet *websiteDataTypes = [NSSet setWithArray:types];
+        NSDate *dateFrom = [NSDate dateWithTimeIntervalSince1970:0];
+        [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:websiteDataTypes modifiedSince:dateFrom completionHandler:^{
+
+        }];
+    }else{
+        NSString *libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,NSUserDomainMask,YES) objectAtIndex:0];
+        NSString *cookiesFolderPath = [libraryPath stringByAppendingString:@"/Cookies"];
+        NSLog(@"%@", cookiesFolderPath);
+        NSError *errors;
+        [[NSFileManager defaultManager] removeItemAtPath:cookiesFolderPath error:&errors];
+    }
 }
 
 - (void)goURLVC:(NSString *)urlStr {
@@ -180,102 +303,6 @@
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
-#pragma mark Events
-- (void)declareAction {
-    SetupViewController *vc = [[SetupViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)scanQrCode {
-    MMScanViewController *scanVc = [[MMScanViewController alloc] initWithQrType:MMScanTypeAll onFinish:^(NSString *result, NSError *error) {
-        if (error) {
-            NSLog(@"error: %@", error);
-            [self showStringHUD:error.localizedDescription second:2];
-        } else {
-            NSLog(@"扫描结果：%@", result);
-            [self goURLVC:result];
-        }
-    }];
-    [scanVc setHistoryCallBack:^(NSArray *result) {
-        NSLog(@"%@", result);
-    }];
-    [self.navigationController pushViewController:scanVc animated:YES];
-}
-
-- (void)buttonAction1:(UIButton *)button {
-    [self.view endEditing:YES];
-    if (button.tag == 10) {
-        SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
-        ipView.parentVC = self;
-        ipView.isSecret = NO;
-        ipView.backgroundColor = [UIColor whiteColor];
-        [self lew_presentPopupView:ipView animation:[LewPopupViewAnimationSpring new] dismissed:^{
-            NSLog(@"动画结束");
-        }];
-    } else if (button.tag == 11) {
-        [self cleanCacheAndCookie];
-        [self clearCache];
-        [self showStringHUD:@"缓存清理完成" second:1.5];
-    } else if (button.tag == 12) {
-        SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
-        ipView.parentVC = self;
-        ipView.isSecret = YES;
-        ipView.backgroundColor = [UIColor whiteColor];
-        [self lew_presentPopupView:ipView animation:[LewPopupViewAnimationSpring new] dismissed:^{
-            NSLog(@"动画结束");
-        }];
-    }
-}
-
-- (void)buttonAction2:(UIButton *)button {
-    [self.view endEditing:YES];
-    NSString *urlStr = @"";
-    if (button.tag == 100) {
-        urlStr = @"http://192.168.1.123:60108/abroadDetail?productId=174";
-    } else if (button.tag == 101) {
-        urlStr = @"http://192.168.1.121:60108/abroadDetail?productId=174";
-    } else if (button.tag == 102) {
-        urlStr = @"https://mobile.ant.design/kitchen-sink/";
-    } else {
-        urlStr = @"http://www.baidu.com";
-    }
-    [self goURLVC:urlStr];
-}
-
-#pragma mark Tools
-// 清除缓存和cookie
-- (void)cleanCacheAndCookie{
-    // 清除cookies
-    NSHTTPCookie *cookie;
-    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
-    for (cookie in [storage cookies]){
-        [storage deleteCookie:cookie];
-    }
-    // 清除UIWebView的缓存
-    [[NSURLCache sharedURLCache] removeAllCachedResponses];
-    NSURLCache *cache = [NSURLCache sharedURLCache];
-    [cache removeAllCachedResponses];
-    [cache setDiskCapacity:0];
-    [cache setMemoryCapacity:0];
-}
-
-// 清除缓存
-- (void)clearCache {
-    if ([[[UIDevice currentDevice]systemVersion]intValue ] >= 9.0) {
-        NSArray * types =@[WKWebsiteDataTypeMemoryCache,WKWebsiteDataTypeDiskCache]; // 9.0之后才有的
-        NSSet *websiteDataTypes = [NSSet setWithArray:types];
-        NSDate *dateFrom = [NSDate dateWithTimeIntervalSince1970:0];
-        [[WKWebsiteDataStore defaultDataStore] removeDataOfTypes:websiteDataTypes modifiedSince:dateFrom completionHandler:^{
-
-        }];
-    }else{
-        NSString *libraryPath = [NSSearchPathForDirectoriesInDomains(NSLibraryDirectory,NSUserDomainMask,YES) objectAtIndex:0];
-        NSString *cookiesFolderPath = [libraryPath stringByAppendingString:@"/Cookies"];
-        NSLog(@"%@", cookiesFolderPath);
-        NSError *errors;
-        [[NSFileManager defaultManager] removeItemAtPath:cookiesFolderPath error:&errors];
-    }
-}
 
 #pragma mark UITextViewDelegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
