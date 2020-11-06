@@ -276,6 +276,10 @@
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     NSLog(@"3-页面加载完成");
     [self contentSetup];
+    if (isFilter) {
+        timer = [NSTimer timerWithTimeInterval:1.5 target:self selector:@selector(contentFilter) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    }
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation {
