@@ -37,6 +37,18 @@
     tapGesture.numberOfTouchesRequired = 3;
     [tapGesture addTarget:self action:@selector(tapGesture:)];
     [self.view addGestureRecognizer:tapGesture];
+    
+    NSString *type = [userDefaults objectForKey:kWebViewType];
+    if (type.integerValue == 1) {
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"UIWebView" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
+        self.navigationItem.rightBarButtonItem = item;
+    } else if (type.integerValue == 2) {
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"WKWebView" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
+        self.navigationItem.rightBarButtonItem = item;
+    } else if (type.integerValue == 3) {
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"SFSafariViewController" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
+        self.navigationItem.rightBarButtonItem = item;
+    }
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -85,6 +97,37 @@
 
 - (void)tapGesture:(UITapGestureRecognizer *)gesture {
     isOC = YES;
+}
+
+- (void)buttonAction {
+    [self.view endEditing:YES];
+
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"百度展现方式" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertVC addAction:cancelAction];
+    
+    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"UIWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kWebViewType];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }];
+    [alertVC addAction:okAction1];
+    
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"WKWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"2" forKey:kWebViewType];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }];
+    [alertVC addAction:okAction2];
+    
+    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"SFSafariViewController" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"3" forKey:kWebViewType];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }];
+    [alertVC addAction:okAction3];
+    
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 - (IBAction)switchAction1:(id)sender {

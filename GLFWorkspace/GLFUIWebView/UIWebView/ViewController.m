@@ -201,10 +201,11 @@
 
 - (void)buttonAction3:(UIButton *)button {
     [self.view endEditing:YES];
-    NSString *urlStr = @"";
     if (button.tag == 1000) {
-        urlStr = @"http://www.baidu.com";
-        [self goURLVC:urlStr];
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSString *type = [userDefaults objectForKey:kWebViewType];
+        NSString *urlStr = @"http://www.baidu.com";
+        [self goURLVC:urlStr andType:type.integerValue];
     } else if (button.tag == 1001) {
         SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
         ipView.parentVC = self;
@@ -303,6 +304,29 @@
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
+// 1-UIWebView 2-WKWebView 3-SFSafariViewController
+- (void)goURLVC:(NSString *)urlStr andType:(NSInteger)type {
+    if (type == 1) {
+        WebViewController *vc = [[WebViewController alloc] init];
+        vc.urlStr = urlStr;
+        vc.isHiddenXuanFu = YES;
+        vc.isHiddenImage = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else if (type == 2) {
+        WKWebViewController *vc = [[WKWebViewController alloc] init];
+        vc.urlStr = urlStr;
+        vc.isHiddenXuanFu = YES;
+        vc.isHiddenImage = YES;
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        NSURL *url = [NSURL URLWithString:urlStr];
+        SFSafariViewController *sfViewControllr = [[SFSafariViewController alloc] initWithURL:url];
+        sfViewControllr.delegate = self;
+        [self presentViewController:sfViewControllr animated:YES completion:^{
+            
+        }];
+    }
+}
 
 #pragma mark UITextViewDelegate
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {

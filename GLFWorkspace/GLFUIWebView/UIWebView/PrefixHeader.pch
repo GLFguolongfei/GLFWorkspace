@@ -57,6 +57,7 @@
 #define kTabbarHidden           @"kTabbarHidden"
 #define kHaveBridge             @"kHaveBridge"
 #define kNORecord               @"kNORecord"
+#define kWebViewType            @"kWebViewType"
 
 
 

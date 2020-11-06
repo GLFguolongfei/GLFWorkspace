@@ -14,6 +14,9 @@
     UIWebView *_webView;
     UIBarButtonItem *item1;
     UIBarButtonItem *item2;
+    
+    NSTimer *timer;
+    NSInteger count;
 }
 @end
 
@@ -142,6 +145,12 @@
     NSLog(@"webViewDidFinishLoad");
     [self hideAllHUD];
     [self setup:webView];
+    [self setWebView:webView];
+    
+    // 定时器
+    count = 0;
+    timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
@@ -149,6 +158,12 @@
     [self hideAllHUD];
     NSString *msg = [NSString stringWithFormat:@"加载失败: %@", error.localizedDescription];
     [self showStringHUD:msg second:3];
+    [self setWebView:webView];
+    
+    // 定时器
+    count = 0;
+    timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 #pragma mark WebView Events
@@ -172,6 +187,54 @@
     };
     [manager addURL:dict];
 }
+
+- (void)timerAction {
+    if (count < 6) {
+        [self setWebView:_webView];
+    }
+    count++;
+}
+
+- (void)setWebView:(UIWebView *)webView {
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        if (self.isPlainText) {
+            // 显示纯文本
+            NSString *js1 = @"document.write(document.body.innerText)";
+            [webView stringByEvaluatingJavaScriptFromString:js1];
+            // 设置文本样式
+            NSMutableString *js2 = [NSMutableString string];
+            [js2 appendString:@"document.body.style.padding = '20px';"];
+            [js2 appendString:@"document.body.style.whiteSpace = 'pre-line';"];
+            [js2 appendString:@"document.body.style.fontSize = '48px';"];
+            [js2 appendString:@"document.body.style.lineHeight = '64px';"];
+            [js2 appendString:@"document.body.style.color = '#666';"];
+            [webView stringByEvaluatingJavaScriptFromString:js2];
+        } else {
+            NSMutableString *js = [NSMutableString string];
+            if (self.isHiddenXuanFu) {
+                // 删除页面上的广告悬浮框
+                [js appendString:@"var array1 = document.getElementsByTagName('div');"];
+                [js appendString:@"for(var i=0; i<array1.length; i++) {"];
+                [js appendString:@"    var element = array1[i];"];
+                [js appendString:@"    if (element.style.zIndex>0 || element.style.position=='fixed') {"];
+                [js appendString:@"        element.remove();"];
+                [js appendString:@"    }"];
+                [js appendString:@"}"];
+            }
+            if (self.isHiddenImage) {
+                // 隐藏所有图片
+                [js appendString:@"var array2 = document.getElementsByTagName('img');"];
+                [js appendString:@"for (var i = 0; i < array2.length; i++) {"];
+                [js appendString:@"    var element = array2[i];"];
+                [js appendString:@"    element.remove();"];
+                [js appendString:@"}"];
+            }
+            [webView stringByEvaluatingJavaScriptFromString:js];
+        }
+        [self hideAllHUD];
+    });
+}
+
 
 
 @end
