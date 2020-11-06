@@ -16,6 +16,11 @@
     UIProgressView *_progressView;
     UIBarButtonItem *item1;
     UIBarButtonItem *item2;
+    UIBarButtonItem *filterItem;
+
+    BOOL isFilter;
+    NSTimer *timer;
+    NSInteger count;
 }
 @end
 
@@ -25,10 +30,9 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    filterItem = [[UIBarButtonItem alloc] initWithTitle:@"内容未过滤" style:UIBarButtonItemStylePlain target:self action:@selector(button5)];
+    self.navigationItem.rightBarButtonItem = filterItem;
     self.view.backgroundColor = [UIColor whiteColor];
-    item1 = [[UIBarButtonItem alloc] initWithTitle:@"W前进" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
-    item2 = [[UIBarButtonItem alloc] initWithTitle:@"W回退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
-    self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.canHiddenNaviBar = YES;
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
@@ -36,6 +40,14 @@
     [self setWKWebView];
     [self setUIProgressView];
     [self addObserver];
+    
+    item1 = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(button1)];
+    item2 = [[UIBarButtonItem alloc] initWithTitle:@"Forward" style:UIBarButtonItemStylePlain target:self action:@selector(button2)];
+    UIBarButtonItem *item3 = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
+    UIBarButtonItem *item4 = [[UIBarButtonItem alloc] initWithTitle:@"纯文本" style:UIBarButtonItemStylePlain target:self action:@selector(button4)];
+    UIBarButtonItem *toolBarSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
+    self.toolbarItems = @[toolBarSpace, item1, toolBarSpace, item2, toolBarSpace, item3, toolBarSpace, item4, toolBarSpace];
+    [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
 - (void)dealloc {
@@ -139,15 +151,58 @@
     [_wkWebView addObserver:self forKeyPath:@"estimatedProgress" options:NSKeyValueObservingOptionNew context:nil];
 }
 
-- (void)buttonAction1:(id)sender {
+#pragma mark Events
+// 回退
+- (void)button1 {
+    if (_wkWebView.canGoBack) {
+        [_wkWebView goBack];
+    }
+}
+
+// 前进
+- (void)button2 {
     if (_wkWebView.canGoForward) {
         [_wkWebView goForward];
     }
 }
 
-- (void)buttonAction2:(id)sender {
-    if (_wkWebView.canGoBack) {
-        [_wkWebView goBack];
+// 刷新
+- (void)button3 {
+    [_wkWebView reload];
+}
+
+// 纯文本
+- (void)button4 {
+    // 显示纯文本
+    NSString *js1 = @"document.write(document.body.innerText)";
+    [_wkWebView evaluateJavaScript:js1 completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"%@", error.localizedDescription);
+        } else {
+            self.title = result;
+        }
+    }];
+    // 设置文本样式
+    NSMutableString *js2 = [NSMutableString string];
+    [js2 appendString:@"document.body.style.padding = '1%';"];
+    [js2 appendString:@"document.body.style.whiteSpace = 'pre-line';"];
+    [_wkWebView evaluateJavaScript:js2 completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"%@", error.localizedDescription);
+        } else {
+            self.title = result;
+        }
+    }];
+}
+
+// 清空广告
+- (void)button5 {
+    isFilter = !isFilter;
+    [_wkWebView reload];
+    if (isFilter) {
+        [filterItem setTitle:@"内容已过滤"];
+    } else {
+        [filterItem setTitle:@"内容未过滤"];
     }
 }
 
@@ -220,7 +275,7 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     NSLog(@"3-页面加载完成");
-    [self setup:webView];
+    [self contentSetup];
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation {
@@ -269,10 +324,10 @@
 }
 
 #pragma mark WebView Events
-- (void)setup:(WKWebView *)webView {
+- (void)contentSetup {
     // 获取网页的title
     NSString *js = @"document.title";
-    [webView evaluateJavaScript:js completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+    [_wkWebView evaluateJavaScript:js completionHandler:^(id _Nullable result, NSError * _Nullable error) {
         if (error) {
             NSLog(@"%@", error.localizedDescription);
         } else {
@@ -280,10 +335,10 @@
         }
     }];
     // 页面能否返回
-    item1.enabled = webView.canGoForward;
-    item2.enabled = webView.canGoBack;
+    item1.enabled = _wkWebView.canGoForward;
+    item2.enabled = _wkWebView.canGoBack;
     // 保存网址
-    if (webView.canGoBack) {
+    if (_wkWebView.canGoBack) {
         return; // 能返回,就表示不是第一个页面,就不必再保存了
     }
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
@@ -297,6 +352,36 @@
     });
 }
 
+- (void)contentFilter {
+    if (count > 6) {
+        [timer invalidate];
+        timer = nil;
+    } else {
+        count++;
+    }
+    NSMutableString *js = [NSMutableString string];
+    // 删除页面上的广告悬浮框
+    [js appendString:@"var array1 = document.getElementsByTagName('div');"];
+    [js appendString:@"for(var i=0; i<array1.length; i++) {"];
+    [js appendString:@"    var element = array1[i];"];
+    [js appendString:@"    if (element.style.zIndex>0 || element.style.position=='fixed') {"];
+    [js appendString:@"        element.remove();"];
+    [js appendString:@"    }"];
+    [js appendString:@"}"];
+    // 隐藏所有图片
+    [js appendString:@"var array2 = document.getElementsByTagName('img');"];
+    [js appendString:@"for (var i = 0; i < array2.length; i++) {"];
+    [js appendString:@"    var element = array2[i];"];
+    [js appendString:@"    element.remove();"];
+    [js appendString:@"}"];
+    [_wkWebView evaluateJavaScript:js completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"%@", error.localizedDescription);
+        } else {
+            self.title = result;
+        }
+    }];
+}
 
 
 @end

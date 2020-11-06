@@ -12,6 +12,8 @@
 {
     UIView *gestureView;
     BOOL isOC; // is Other Control
+    
+    UIBarButtonItem *item;
 }
 @end
 
@@ -39,16 +41,14 @@
     [self.view addGestureRecognizer:tapGesture];
     
     NSString *type = [userDefaults objectForKey:kWebViewType];
+    NSString *title = @"UIWebView";
     if (type.integerValue == 1) {
-        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"UIWebView" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
-        self.navigationItem.rightBarButtonItem = item;
+        title = @"UIWebView";
     } else if (type.integerValue == 2) {
-        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"WKWebView" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
-        self.navigationItem.rightBarButtonItem = item;
-    } else if (type.integerValue == 3) {
-        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"SFSafariViewController" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
-        self.navigationItem.rightBarButtonItem = item;
+        title = @"WKWebView";
     }
+    item = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
+    self.navigationItem.rightBarButtonItem = item;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -112,20 +112,16 @@
     UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"UIWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kWebViewType];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        [item setTitle:@"UIWebView"];
     }];
     [alertVC addAction:okAction1];
     
     UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"WKWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         [[NSUserDefaults standardUserDefaults] setObject:@"2" forKey:kWebViewType];
         [[NSUserDefaults standardUserDefaults] synchronize];
+        [item setTitle:@"WKWebView"];
     }];
     [alertVC addAction:okAction2];
-    
-    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"SFSafariViewController" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"3" forKey:kWebViewType];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-    }];
-    [alertVC addAction:okAction3];
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }

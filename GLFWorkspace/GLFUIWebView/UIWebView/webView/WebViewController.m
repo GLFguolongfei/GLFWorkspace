@@ -14,7 +14,9 @@
     UIWebView *_webView;
     UIBarButtonItem *item1;
     UIBarButtonItem *item2;
+    UIBarButtonItem *filterItem;
     
+    BOOL isFilter;
     NSTimer *timer;
     NSInteger count;
 }
@@ -26,23 +28,31 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    filterItem = [[UIBarButtonItem alloc] initWithTitle:@"内容未过滤" style:UIBarButtonItemStylePlain target:self action:@selector(button5)];
+    self.navigationItem.rightBarButtonItem = filterItem;
     self.view.backgroundColor = [UIColor whiteColor];
-    item1 = [[UIBarButtonItem alloc] initWithTitle:@"W前进" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1:)];
-    item2 = [[UIBarButtonItem alloc] initWithTitle:@"W回退" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2:)];
-    self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.canHiddenNaviBar = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
 
     [self setWebView];
+    
+    item1 = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(button1)];
+    item2 = [[UIBarButtonItem alloc] initWithTitle:@"Forward" style:UIBarButtonItemStylePlain target:self action:@selector(button2)];
+    UIBarButtonItem *item3 = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
+    UIBarButtonItem *item4 = [[UIBarButtonItem alloc] initWithTitle:@"纯文本" style:UIBarButtonItemStylePlain target:self action:@selector(button4)];
+    UIBarButtonItem *toolBarSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
+    self.toolbarItems = @[toolBarSpace, item1, toolBarSpace, item2, toolBarSpace, item3, toolBarSpace, item4, toolBarSpace];
+    [self.navigationController setToolbarHidden:NO animated:YES];
 }
 
+#pragma mark Setup
 - (void)setWebView {
-    CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64-49);
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
     if (tabbarHidden.integerValue) {
-        rect = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20);
+        rect = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20-49);
     }
 
     NSString *isHaveBridge = [userDefaults objectForKey:kHaveBridge];
@@ -107,24 +117,55 @@
     [_webView loadRequest:request];
 }
 
-- (void)buttonAction1:(id)sender {
+#pragma mark Events
+// 回退
+- (void)button1 {
+    if (_webView.canGoBack) {
+        [_webView goBack];
+    }
+}
+
+// 前进
+- (void)button2 {
     if (_webView.canGoForward) {
         [_webView goForward];
     }
 }
 
-- (void)buttonAction2:(id)sender {
-    if (_webView.canGoBack) {
-        [_webView goBack];
+// 刷新
+- (void)button3 {
+    [_webView reload];
+}
+
+// 纯文本
+- (void)button4 {
+    // 显示纯文本
+    NSString *js1 = @"document.write(document.body.innerText)";
+    [_webView stringByEvaluatingJavaScriptFromString:js1];
+    // 设置文本样式
+    NSMutableString *js2 = [NSMutableString string];
+    [js2 appendString:@"document.body.style.padding = '1%';"];
+    [js2 appendString:@"document.body.style.whiteSpace = 'pre-line';"];
+    [_webView stringByEvaluatingJavaScriptFromString:js2];
+}
+
+// 清空广告
+- (void)button5 {
+    isFilter = !isFilter;
+    [_webView reload];
+    if (isFilter) {
+        [filterItem setTitle:@"内容已过滤"];
+    } else {
+        [filterItem setTitle:@"内容未过滤"];
     }
 }
 
 - (void)naviBarChange:(NSNotification *)notify {
     NSDictionary *dict = notify.userInfo;
     if ([dict[@"isHidden"] isEqualToString: @"1"]) {
-        _webView.frame = kScreen;
+        _webView.frame = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20-49);
     } else {
-        _webView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+        _webView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64-49);
     }
 }
 
@@ -144,13 +185,11 @@
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSLog(@"webViewDidFinishLoad");
     [self hideAllHUD];
-    [self setup:webView];
-    [self setWebView:webView];
-    
-    // 定时器
-    count = 0;
-    timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    [self contentSetup];
+    if (isFilter) {
+        timer = [NSTimer timerWithTimeInterval:1.5 target:self selector:@selector(contentFilter) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    }
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
@@ -158,25 +197,19 @@
     [self hideAllHUD];
     NSString *msg = [NSString stringWithFormat:@"加载失败: %@", error.localizedDescription];
     [self showStringHUD:msg second:3];
-    [self setWebView:webView];
-    
-    // 定时器
-    count = 0;
-    timer = [NSTimer timerWithTimeInterval:1.0 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 #pragma mark WebView Events
-- (void)setup:(UIWebView *)webView {
+- (void)contentSetup {
     // 获取网页的title
     NSString *js = @"document.title";
-    NSString *resultJS = [webView stringByEvaluatingJavaScriptFromString:js];
+    NSString *resultJS = [_webView stringByEvaluatingJavaScriptFromString:js];
     self.title = resultJS;
     // 页面能否返回
-    item1.enabled = webView.canGoForward;
-    item2.enabled = webView.canGoBack;
+    item1.enabled = _webView.canGoBack;
+    item2.enabled = _webView.canGoForward;
     // 保存网址
-    if (webView.canGoBack) {
+    if (_webView.canGoBack) {
         return; // 能返回,就表示不是第一个页面,就不必再保存了
     }
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
@@ -188,53 +221,30 @@
     [manager addURL:dict];
 }
 
-- (void)timerAction {
-    if (count < 6) {
-        [self setWebView:_webView];
+- (void)contentFilter {
+    if (count > 6) {
+        [timer invalidate];
+        timer = nil;
+    } else {
+        count++;
     }
-    count++;
+    NSMutableString *js = [NSMutableString string];
+    // 删除页面上的广告悬浮框
+    [js appendString:@"var array1 = document.getElementsByTagName('div');"];
+    [js appendString:@"for(var i=0; i<array1.length; i++) {"];
+    [js appendString:@"    var element = array1[i];"];
+    [js appendString:@"    if (element.style.zIndex>0 || element.style.position=='fixed') {"];
+    [js appendString:@"        element.remove();"];
+    [js appendString:@"    }"];
+    [js appendString:@"}"];
+    // 隐藏所有图片
+    [js appendString:@"var array2 = document.getElementsByTagName('img');"];
+    [js appendString:@"for (var i = 0; i < array2.length; i++) {"];
+    [js appendString:@"    var element = array2[i];"];
+    [js appendString:@"    element.remove();"];
+    [js appendString:@"}"];
+    [_webView stringByEvaluatingJavaScriptFromString:js];
 }
-
-- (void)setWebView:(UIWebView *)webView {
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        if (self.isPlainText) {
-            // 显示纯文本
-            NSString *js1 = @"document.write(document.body.innerText)";
-            [webView stringByEvaluatingJavaScriptFromString:js1];
-            // 设置文本样式
-            NSMutableString *js2 = [NSMutableString string];
-            [js2 appendString:@"document.body.style.padding = '20px';"];
-            [js2 appendString:@"document.body.style.whiteSpace = 'pre-line';"];
-            [js2 appendString:@"document.body.style.fontSize = '48px';"];
-            [js2 appendString:@"document.body.style.lineHeight = '64px';"];
-            [js2 appendString:@"document.body.style.color = '#666';"];
-            [webView stringByEvaluatingJavaScriptFromString:js2];
-        } else {
-            NSMutableString *js = [NSMutableString string];
-            if (self.isHiddenXuanFu) {
-                // 删除页面上的广告悬浮框
-                [js appendString:@"var array1 = document.getElementsByTagName('div');"];
-                [js appendString:@"for(var i=0; i<array1.length; i++) {"];
-                [js appendString:@"    var element = array1[i];"];
-                [js appendString:@"    if (element.style.zIndex>0 || element.style.position=='fixed') {"];
-                [js appendString:@"        element.remove();"];
-                [js appendString:@"    }"];
-                [js appendString:@"}"];
-            }
-            if (self.isHiddenImage) {
-                // 隐藏所有图片
-                [js appendString:@"var array2 = document.getElementsByTagName('img');"];
-                [js appendString:@"for (var i = 0; i < array2.length; i++) {"];
-                [js appendString:@"    var element = array2[i];"];
-                [js appendString:@"    element.remove();"];
-                [js appendString:@"}"];
-            }
-            [webView stringByEvaluatingJavaScriptFromString:js];
-        }
-        [self hideAllHUD];
-    });
-}
-
 
 
 @end

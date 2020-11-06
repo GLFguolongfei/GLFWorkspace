@@ -204,6 +204,9 @@
     if (button.tag == 1000) {
         NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
         NSString *type = [userDefaults objectForKey:kWebViewType];
+        if (type.integerValue <= 0) {
+            type = @"1";
+        }
         NSString *urlStr = @"http://www.baidu.com";
         [self goURLVC:urlStr andType:type.integerValue];
     } else if (button.tag == 1001) {
