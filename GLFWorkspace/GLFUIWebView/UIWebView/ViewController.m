@@ -128,6 +128,7 @@
     } else {
         button.hidden = YES;
     }
+    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
