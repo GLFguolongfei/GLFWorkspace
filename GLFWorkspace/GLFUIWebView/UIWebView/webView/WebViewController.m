@@ -179,7 +179,7 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     NSLog(@"webViewDidStartLoad");
-    [self showHUD];
+//    [self showHUD];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
