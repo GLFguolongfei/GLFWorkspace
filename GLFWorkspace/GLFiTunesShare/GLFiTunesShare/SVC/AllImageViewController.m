@@ -62,7 +62,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
     
-    colums = 1;
+    colums = 2;
 
     // 1-动画者
     animator = [[UIDynamicAnimator alloc] initWithReferenceView:self.view];

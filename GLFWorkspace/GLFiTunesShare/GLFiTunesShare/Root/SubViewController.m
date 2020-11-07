@@ -121,16 +121,14 @@
             [webView stringByEvaluatingJavaScriptFromString:js1];
             // 设置文本样式
             NSMutableString *js2 = [NSMutableString string];
-            [js2 appendString:@"document.body.style.padding = '20px';"];
+            [js2 appendString:@"document.body.style.padding = '1%';"];
             [js2 appendString:@"document.body.style.whiteSpace = 'pre-line';"];
-            [js2 appendString:@"document.body.style.fontSize = '48px';"];
-            [js2 appendString:@"document.body.style.lineHeight = '64px';"];
-            [js2 appendString:@"document.body.style.color = '#666';"];
+            [js2 appendString:@"document.body.style.color = '#666666';"];
             [webView stringByEvaluatingJavaScriptFromString:js2];
         } else {
             NSMutableString *js = [NSMutableString string];
             // 内容距离边界一定距离
-            [js appendString:@"document.body.style.padding = '20px';"];
+            [js appendString:@"document.body.style.padding = '1%';"];
             if (xuanfu.integerValue) {
                 // 删除页面上的广告悬浮框
                 [js appendString:@"var array1 = document.getElementsByTagName('div');"];
