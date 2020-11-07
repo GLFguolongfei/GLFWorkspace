@@ -98,7 +98,7 @@
         CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), kScreenHeight - 80, width, 50);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
         if (i == 0) {
-            [button setTitle:@"百度新闻" forState:UIControlStateNormal];
+            [button setTitle:@"百度一下" forState:UIControlStateNormal];
         } else if (i == 1) {
             [button setTitle:@"历史浏览" forState:UIControlStateNormal];
             if (isNORecord.integerValue != 1) {
@@ -171,7 +171,7 @@
 - (void)buttonAction1:(UIButton *)button {
     [self.view endEditing:YES];
     if (button.tag == 10) {
-        SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
+        SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/3*2)];
         ipView.parentVC = self;
         ipView.isSecret = NO;
         ipView.backgroundColor = [UIColor whiteColor];
@@ -211,7 +211,7 @@
         NSString *urlStr = @"http://www.baidu.com";
         [self goURLVC:urlStr andType:type.integerValue];
     } else if (button.tag == 1001) {
-        SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
+        SelectIPView *ipView = [[SelectIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/3*2)];
         ipView.parentVC = self;
         ipView.isSecret = YES;
         ipView.backgroundColor = [UIColor whiteColor];

@@ -14,9 +14,7 @@
     UIWebView *_webView;
     UIBarButtonItem *item1;
     UIBarButtonItem *item2;
-    UIBarButtonItem *filterItem;
     
-    BOOL isFilter;
     NSTimer *timer;
     NSInteger count;
 }
@@ -28,7 +26,7 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    filterItem = [[UIBarButtonItem alloc] initWithTitle:@"内容未过滤" style:UIBarButtonItemStylePlain target:self action:@selector(button5)];
+    UIBarButtonItem *filterItem = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(button5)];
     self.navigationItem.rightBarButtonItem = filterItem;
     self.view.backgroundColor = [UIColor whiteColor];
     self.canHiddenNaviBar = YES;
@@ -39,7 +37,7 @@
     
     item1 = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(button1)];
     item2 = [[UIBarButtonItem alloc] initWithTitle:@"Forward" style:UIBarButtonItemStylePlain target:self action:@selector(button2)];
-    UIBarButtonItem *item3 = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
+    UIBarButtonItem *item3 = [[UIBarButtonItem alloc] initWithTitle:@"内容过滤" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
     UIBarButtonItem *item4 = [[UIBarButtonItem alloc] initWithTitle:@"纯文本" style:UIBarButtonItemStylePlain target:self action:@selector(button4)];
     UIBarButtonItem *toolBarSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
     self.toolbarItems = @[toolBarSpace, item1, toolBarSpace, item2, toolBarSpace, item3, toolBarSpace, item4, toolBarSpace];
@@ -132,9 +130,11 @@
     }
 }
 
-// 刷新
+// 清空广告、图片
 - (void)button3 {
-    [_webView reload];
+    count = 0;
+    timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(contentFilter) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
 }
 
 // 纯文本
@@ -146,18 +146,13 @@
     NSMutableString *js2 = [NSMutableString string];
     [js2 appendString:@"document.body.style.padding = '1%';"];
     [js2 appendString:@"document.body.style.whiteSpace = 'pre-line';"];
+    [js2 appendString:@"document.body.style.color = '#666666';"];
     [_webView stringByEvaluatingJavaScriptFromString:js2];
 }
 
-// 清空广告
+// 刷新
 - (void)button5 {
-    isFilter = !isFilter;
     [_webView reload];
-    if (isFilter) {
-        [filterItem setTitle:@"内容已过滤"];
-    } else {
-        [filterItem setTitle:@"内容未过滤"];
-    }
 }
 
 - (void)naviBarChange:(NSNotification *)notify {
@@ -180,16 +175,13 @@
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     NSLog(@"webViewDidStartLoad");
 //    [self showHUD];
+    [self showHUDsecond:3];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSLog(@"webViewDidFinishLoad");
     [self hideAllHUD];
     [self contentSetup];
-    if (isFilter) {
-        timer = [NSTimer timerWithTimeInterval:1.5 target:self selector:@selector(contentFilter) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    }
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
@@ -222,7 +214,7 @@
 }
 
 - (void)contentFilter {
-    if (count > 6) {
+    if (count >= 3) {
         [timer invalidate];
         timer = nil;
     } else {
