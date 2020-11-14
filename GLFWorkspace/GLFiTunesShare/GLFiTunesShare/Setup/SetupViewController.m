@@ -176,7 +176,7 @@
     NSString *timeStr = dict[@"time"];
     NSString *msg = [NSString stringWithFormat:@"全局遍历完成, %@", timeStr];
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self showStringHUD:msg second:5];
+        [self showStringHUD:msg second:3];
     });
 }
 
