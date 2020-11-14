@@ -13,6 +13,7 @@
 
 @interface LoginViewController ()
 {
+    UIImageView *imageView;
     UITextField *textField;
     UILabel *label;
     UIButton *button;
@@ -29,11 +30,8 @@
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
 
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *noPassword = [userDefaults objectForKey:kNoPassword];
-    
     // Logo
-    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake((kScreenWidth-150)/2.0, 64, 150, 150)];
+    imageView = [[UIImageView alloc] initWithFrame:CGRectMake((kScreenWidth-150)/2.0, 64, 150, 150)];
     imageView.image = [UIImage imageNamed:@"jing"];
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:imageView];
@@ -48,11 +46,6 @@
     textField.layer.borderWidth = 1;
     textField.layer.borderColor = [UIColor lightGrayColor].CGColor;
     [self.view addSubview:textField];
-    if (noPassword.integerValue) {
-        textField.text = @"123456";
-    } else {
-        textField.text = @"";
-    }
     // 左侧加View
     CGRect frame = [textField frame];
     frame.size.width = 10;
@@ -62,11 +55,7 @@
     // 登陆
     button = [[UIButton alloc] initWithFrame:CGRectMake(kScreenWidth/4, 320, kScreenWidth/2, 50)];
     [button setTitle:@"登录" forState:UIControlStateNormal];
-    if (noPassword.integerValue) {
-        [button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
-    } else {
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    }
+    [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     button.titleLabel.font = KFontBold(20);
     button.backgroundColor = [UIColor blackColor];
     button.layer.cornerRadius = 5;
@@ -81,11 +70,7 @@
     [self.view addSubview:backImageView];
     // 名言警句
     label = [[UILabel alloc] initWithFrame:CGRectMake(0, 420, kScreenWidth, 130)];
-    if (noPassword.integerValue) {
-        label.text = @"春水初生，春林初盛，春风十里，不如你。\n\n秋池渐涨，秋叶渐黄，秋思一半，赋予卿。";
-    } else {
-        label.text = @"放下了做诗的笔，拿起了战斗的剑，\n\n民族处于危难，祖国迫切召唤！\n\n耻辱需要用鲜血来洗刷，愤怒只能让死亡去平息！\n\n龙的传人终将砸开锁链，翱翔九天！";
-    }
+    label.text = @"放下了做诗的笔，拿起了战斗的剑，\n\n民族处于危难，祖国迫切召唤！\n\n耻辱需要用鲜血来洗刷，愤怒只能让死亡去平息！\n\n龙的传人终将砸开锁链，翱翔九天！";
     label.textAlignment = NSTextAlignmentCenter;
     label.numberOfLines = 0;
     label.alpha = 0.6;
@@ -103,16 +88,23 @@
     [super viewWillAppear:animated];
     self.navigationController.navigationBar.hidden = YES;
     self.navigationController.toolbarHidden = YES;
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *noPassword = [userDefaults objectForKey:kNoPassword];
     if (noPassword.integerValue) {
-        textField.text = @"123456";
-        label.text = @"春水初生，春林初盛，春风十里，不如你。\n\n秋池渐涨，秋叶渐黄，秋思一半，赋予卿。";
-        [button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+        imageView.layer.cornerRadius = 75;
+        imageView.layer.borderWidth = 3;
+        imageView.layer.borderColor = [UIColor blueColor].CGColor;
+        
+        imageView.userInteractionEnabled = YES;
+        UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+        [tapGesture addTarget:self action:@selector(tapGesture2:)];
+        [imageView addGestureRecognizer:tapGesture];
     } else {
-        textField.text = @"";
-        label.text = @"放下了做诗的笔，拿起了战斗的剑，\n\n民族处于危难，祖国迫切召唤！\n\n耻辱需要用鲜血来洗刷，愤怒只能让死亡去平息！\n\n龙的传人终将砸开锁链，翱翔九天！";
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        imageView.layer.borderColor = [UIColor whiteColor].CGColor;
     }
 }
 
@@ -129,20 +121,6 @@
 #pragma mark Events
 - (void)loginAction {
     [self.view endEditing:YES];
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *noPassword = [userDefaults objectForKey:kNoPassword];
-    if (noPassword.integerValue) {
-        [ProjectManager sharedProjectManager].loginType = @"3";
-        textField.text = @"";
-        RootViewController *rootVC = [[RootViewController alloc] init];
-        rootVC.moveModel = self.moveModel;
-        UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:rootVC];
-        navi.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
-        [self presentViewController:navi animated:YES completion:nil];
-        return;
-    }
-    
     NSString *plistPath = [[NSBundle mainBundle] pathForResource:@"GLF" ofType:@"plist"];
     NSMutableDictionary *searchdata = [[NSMutableDictionary alloc] initWithContentsOfFile:plistPath];
     NSString *password = searchdata[@"passwordKey"];
@@ -211,6 +189,20 @@
                 });
             }
         }];
+    }
+}
+
+- (void)tapGesture2:(UITapGestureRecognizer *)gesture {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *noPassword = [userDefaults objectForKey:kNoPassword];
+    if (noPassword.integerValue) {
+        [ProjectManager sharedProjectManager].loginType = @"3";
+        textField.text = @"";
+        RootViewController *rootVC = [[RootViewController alloc] init];
+        rootVC.moveModel = self.moveModel;
+        UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:rootVC];
+        navi.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        [self presentViewController:navi animated:YES completion:nil];
     }
 }
 
