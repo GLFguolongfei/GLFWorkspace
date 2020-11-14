@@ -361,7 +361,7 @@
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"显示/隐藏 删除按钮" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"显/隐 删除按钮" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         editBgView2.hidden = !editBgView2.hidden;
     }];
     [alertVC addAction:okAction1];

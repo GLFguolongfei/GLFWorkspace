@@ -74,6 +74,7 @@
 #define kRecord             @"kRecord"
 #define kFavorite           @"kFavorite"
 #define kRemove             @"kRemove"
+#define kNoPassword         @"kNoPassword"
 #define CimgTypeArray    @[@"png", @"jpeg", @"jpg", @"gif"]
 #define CvideoTypeArray  @[@"mp4", @"rmvb", @"avi", @"mov", @"mkv", @"flv"]
 

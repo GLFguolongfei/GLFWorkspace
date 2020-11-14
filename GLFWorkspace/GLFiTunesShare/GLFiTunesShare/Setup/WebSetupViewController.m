@@ -29,15 +29,17 @@
     NSString *img = [userDefaults objectForKey:kWebContentImg];
     NSString *border = [userDefaults objectForKey:kWebContentBorder];
     NSString *mute = [userDefaults objectForKey:kVoiceMute];
-    NSString *hidden = [userDefaults objectForKey:kContentHidden];
     NSString *record = [userDefaults objectForKey:kRecord];
+    NSString *hidden = [userDefaults objectForKey:kContentHidden];
+    NSString *noPassword = [userDefaults objectForKey:kNoPassword];
     [self.switch1 setOn:xuanfu.integerValue animated:YES];
     [self.switch2 setOn:img.integerValue animated:YES];
-    [self.switch4 setOn:border.integerValue animated:YES];
-    [self.switch5 setOn:mute.integerValue animated:YES];
-    [self.switch7 setOn:hidden.integerValue animated:YES];
-    [self.switch8 setOn:record.integerValue animated:YES];
-    
+    [self.switch3 setOn:border.integerValue animated:YES];
+    [self.switch4 setOn:mute.integerValue animated:YES];
+    [self.switch5 setOn:record.integerValue animated:YES];
+    [self.switch6 setOn:hidden.integerValue animated:YES];
+    [self.switch7 setOn:noPassword.integerValue animated:YES];
+
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
     tapGesture.numberOfTapsRequired = 3;
     tapGesture.numberOfTouchesRequired = 3;
@@ -89,13 +91,15 @@
     }
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        self.switch5.hidden = NO;
-        self.label5.hidden = NO;
+        self.switch4.hidden = NO;
+        self.label4.hidden = NO;
         if (isOC) {
+            self.switch5.hidden = !self.switch5.hidden;
+            self.label5.hidden = !self.label5.hidden;
+            self.switch6.hidden = !self.switch6.hidden;
+            self.label6.hidden = !self.label6.hidden;
             self.switch7.hidden = !self.switch7.hidden;
             self.label7.hidden = !self.label7.hidden;
-            self.switch8.hidden = !self.switch8.hidden;
-            self.label8.hidden = !self.label8.hidden;
         }
     }];
     [alertVC addAction:okAction];
@@ -131,7 +135,7 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (IBAction)switchAction4:(id)sender {
+- (IBAction)switchAction3:(id)sender {
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kWebContentBorder];
@@ -145,7 +149,7 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (IBAction)switchAction5:(id)sender {
+- (IBAction)switchAction4:(id)sender {
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kVoiceMute];
@@ -155,18 +159,8 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
-- (IBAction)switchAction7:(id)sender {
-    UISwitch *sw = (UISwitch *)sender;
-    if (sw.on) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kContentHidden];
-    } else {
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kContentHidden];
-    }
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    [DocumentManager updateDocumentPaths];
-}
 
-- (IBAction)switchAction8:(id)sender {
+- (IBAction)switchAction5:(id)sender {
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
@@ -186,6 +180,27 @@
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self reSetVCTitle];
         });
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (IBAction)switchAction6:(id)sender {
+    UISwitch *sw = (UISwitch *)sender;
+    if (sw.on) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kContentHidden];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kContentHidden];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    [DocumentManager updateDocumentPaths];
+}
+
+- (IBAction)switchAction7:(id)sender {
+    UISwitch *sw = (UISwitch *)sender;
+    if (sw.on) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kNoPassword];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kNoPassword];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
 }

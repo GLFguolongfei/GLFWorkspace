@@ -16,7 +16,8 @@ typedef void (^LoadCallBack) (void);
 
 HMSingletonH(ProjectManager)
 
-@property (nonatomic, assign) NSString *loginType; // 1-首页 2-抖音页
+// 1-正规登陆（进入首页） 2-密码登陆（进入抖音页） 3-免密登陆（进入首页）
+@property (nonatomic, assign) NSString *loginType;
 
 #pragma mark 网络爬虫
 + (void)getNetworkDataTest;
