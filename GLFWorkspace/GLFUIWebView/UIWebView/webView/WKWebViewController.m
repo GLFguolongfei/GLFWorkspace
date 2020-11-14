@@ -18,7 +18,8 @@
     UIBarButtonItem *item2;
 
     NSTimer *timer;
-    NSInteger count;
+    NSInteger count; // 过滤次数
+    NSInteger errorCount; // 加载失败次数
 }
 @end
 
@@ -271,11 +272,16 @@
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
     NSLog(@"3-页面加载完成");
     [self contentSetup];
+    errorCount = 0;
 }
 
 - (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(WKNavigation *)navigation {
     NSLog(@"4-页面加载失败");
     [self showStringHUD:@"页面加载失败" second:2];
+    if (errorCount < 3) {
+        errorCount++;
+        [webView reload];
+    }
 }
 
 #pragma mark 2-页面跳转

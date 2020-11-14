@@ -16,7 +16,8 @@
     UIBarButtonItem *item2;
     
     NSTimer *timer;
-    NSInteger count;
+    NSInteger count; // 过滤次数
+    NSInteger errorCount; // 加载失败次数
 }
 @end
 
@@ -174,21 +175,26 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     NSLog(@"webViewDidStartLoad");
-//    [self showHUD];
+    [self showHUD];
     [self showHUDsecond:3];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSLog(@"webViewDidFinishLoad");
+    errorCount = 0;
     [self hideAllHUD];
     [self contentSetup];
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     NSLog(@"didFailLoadWithError: %@", error.localizedDescription);
-    [self hideAllHUD];
     NSString *msg = [NSString stringWithFormat:@"加载失败: %@", error.localizedDescription];
     [self showStringHUD:msg second:3];
+    [self hideAllHUD];
+    if (errorCount < 3) {
+        errorCount++;
+        [webView reload];
+    }
 }
 
 #pragma mark WebView Events
