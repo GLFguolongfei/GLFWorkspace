@@ -101,6 +101,8 @@
         
         imageView.userInteractionEnabled = YES;
         UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+        tapGesture.numberOfTapsRequired = 2;
+        tapGesture.numberOfTouchesRequired = 1;
         [tapGesture addTarget:self action:@selector(tapGesture2:)];
         [imageView addGestureRecognizer:tapGesture];
     } else {
