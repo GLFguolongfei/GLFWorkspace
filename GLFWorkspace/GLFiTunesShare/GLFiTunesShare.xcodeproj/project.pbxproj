@@ -244,6 +244,8 @@
 		6F0E96281FA4135B0029DDD6 /* WaterView2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F0E960C1FA4135B0029DDD6 /* WaterView2.m */; };
 		6F0E965C1FA414840029DDD6 /* GLFiTunesShare copy-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F0E965B1FA414840029DDD6 /* GLFiTunesShare copy-Info.plist */; };
 		6F0E965D1FA414840029DDD6 /* GLFiTunesShare copy-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 6F0E965B1FA414840029DDD6 /* GLFiTunesShare copy-Info.plist */; };
+		6F1146A22568152600D0EC76 /* TestViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1146A12568152600D0EC76 /* TestViewController2.m */; };
+		6F1146A32568152600D0EC76 /* TestViewController2.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F1146A12568152600D0EC76 /* TestViewController2.m */; };
 		6F124DF31F9F3E07005605E1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F124DF21F9F3E07005605E1 /* MobileCoreServices.framework */; };
 		6F124DF41F9F3E0E005605E1 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F124DF21F9F3E07005605E1 /* MobileCoreServices.framework */; };
 		6F124DF51F9F3E1A005605E1 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FF80A9A1F8F9F5800D7B19B /* AVFoundation.framework */; };
@@ -738,6 +740,8 @@
 		6F0E960B1FA4135B0029DDD6 /* WaterView2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WaterView2.h; sourceTree = "<group>"; };
 		6F0E960C1FA4135B0029DDD6 /* WaterView2.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WaterView2.m; sourceTree = "<group>"; };
 		6F0E965B1FA414840029DDD6 /* GLFiTunesShare copy-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GLFiTunesShare copy-Info.plist"; sourceTree = "<group>"; };
+		6F1146A02568152600D0EC76 /* TestViewController2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TestViewController2.h; sourceTree = "<group>"; };
+		6F1146A12568152600D0EC76 /* TestViewController2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TestViewController2.m; sourceTree = "<group>"; };
 		6F124DF21F9F3E07005605E1 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
 		6F14401223F28A5E00C7C201 /* VideoTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = VideoTableViewCell.h; sourceTree = "<group>"; };
 		6F14401323F28A5E00C7C201 /* VideoTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = VideoTableViewCell.m; sourceTree = "<group>"; };
@@ -1712,6 +1716,8 @@
 				6F8072B41F7E436E007D7B26 /* ViewController.m */,
 				6F96B69A23E34A46006A2D00 /* TestViewController.h */,
 				6F96B69B23E34A46006A2D00 /* TestViewController.m */,
+				6F1146A02568152600D0EC76 /* TestViewController2.h */,
+				6F1146A12568152600D0EC76 /* TestViewController2.m */,
 				6F6C6F0E23F7F88A00D7AFAC /* DocumentManager.h */,
 				6F6C6F0F23F7F88A00D7AFAC /* DocumentManager.m */,
 				6F538DD7249E662900E93D4D /* ProjectManager.h */,
@@ -2177,6 +2183,7 @@
 				6F099656241F524300B8C681 /* SDWebImageDownloaderOperation.m in Sources */,
 				6F22EB9223FBF66000A30691 /* MMScanView.m in Sources */,
 				6F099646241F524300B8C681 /* NSButton+WebCache.m in Sources */,
+				6F1146A22568152600D0EC76 /* TestViewController2.m in Sources */,
 				6F09961A241F524300B8C681 /* NSImage+Compatibility.m in Sources */,
 				6F4C2BF624004C0D0094D193 /* QQL_RuleViewController.m in Sources */,
 				6F1EEB201FB1A86A0046389D /* SetupViewController.m in Sources */,
@@ -2402,6 +2409,7 @@
 				6F099657241F524300B8C681 /* SDWebImageDownloaderOperation.m in Sources */,
 				6F22EB9323FBF66000A30691 /* MMScanView.m in Sources */,
 				6F099647241F524300B8C681 /* NSButton+WebCache.m in Sources */,
+				6F1146A32568152600D0EC76 /* TestViewController2.m in Sources */,
 				6F09961B241F524300B8C681 /* NSImage+Compatibility.m in Sources */,
 				6F4C2BF724004C0D0094D193 /* QQL_RuleViewController.m in Sources */,
 				6FBA0FA923E8113200899522 /* OneViewController.m in Sources */,

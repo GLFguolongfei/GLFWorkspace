@@ -8,6 +8,7 @@
 
 #import "OtherViewController.h"
 #import "TestViewController.h"
+#import "TestViewController2.h"
 #import "OneViewController.h"
 #import "TwoViewController.h"
 #import "ThreeViewController.h"
@@ -158,11 +159,17 @@
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"测试页" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"测试页1" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         TestViewController *testVC = [[TestViewController alloc] init];
         [self.navigationController pushViewController:testVC animated:YES];
     }];
     [alertVC addAction:okAction];
+    
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"测试页2" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        TestViewController2 *testVC = [[TestViewController2 alloc] init];
+        [self.navigationController pushViewController:testVC animated:YES];
+    }];
+    [alertVC addAction:okAction2];
 
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if (manager.isRecording) {

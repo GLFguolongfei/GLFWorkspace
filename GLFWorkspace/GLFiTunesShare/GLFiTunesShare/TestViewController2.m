@@ -1,24 +1,28 @@
 //
-//  FourViewController.m
+//  TestViewController2.m
 //  GLFiTunesShare
 //
-//  Created by guolongfei on 2020/2/9.
+//  Created by guolongfei on 2020/11/20.
 //  Copyright © 2020 GuoLongfei. All rights reserved.
 //
 
-#import "FourViewController.h"
+#import "TestViewController2.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 
-@interface FourViewController ()<AVCaptureFileOutputRecordingDelegate>
+@interface TestViewController2 ()<AVCaptureFileOutputRecordingDelegate>
 {
     AVCaptureSession *captureSession;
     AVCaptureDeviceInput *captureDeviceInput;
     AVCaptureDeviceInput *audioCaptureDeviceInput;
-    AVCaptureMovieFileOutput *captureMovieFileOutput; // 视频输出流
+    AVCaptureMovieFileOutput *captureMovieFileOutput;
     AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
     
-    BOOL isUseFrontFacingCamera; // 是否使用前置摄像头
+    AVCaptureSession *captureSession2;
+    AVCaptureDeviceInput *captureDeviceInput2;
+    AVCaptureDeviceInput *audioCaptureDeviceInput2;
+    AVCaptureMovieFileOutput *captureMovieFileOutput2;
+    AVCaptureVideoPreviewLayer *captureVideoPreviewLayer2;
     
     NSTimer *timer;
     NSInteger timeCount;
@@ -28,7 +32,7 @@
 }
 @end
 
-@implementation FourViewController
+@implementation TestViewController2
 
 
 #pragma mark - Life Cycle
@@ -36,26 +40,33 @@
     [super viewDidLoad];
     [self setVCTitle:@"自定义录像"];
     self.canHiddenNaviBar = YES;
+    self.view.backgroundColor = [UIColor whiteColor];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
     
     timeCount = 0;
     
+    // 注意
+    // 同时开启两个自定义相机,只有一个会起作用
+    // 不知道是不是因为只有一个摄像头的缘故
     [self configCamara];
+    [self configCamara2];
     [self configCamaraButton];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    if (captureSession) {
+    if (captureSession || captureSession2) {
         [captureSession startRunning];
+        [captureSession2 startRunning];
     }
 }
 
 - (void)viewDidDisappear:(BOOL)animated{
     [super viewDidDisappear:animated];
-    if (captureSession) {
+    if (captureSession || captureSession2) {
         [captureSession stopRunning];
+        [captureSession2 stopRunning];
     }
 }
 
@@ -89,12 +100,14 @@
 #pragma mark Setup
 - (void)configCamara {
     // 1-AVCaptureSession
-    captureSession = [[AVCaptureSession alloc]init];
+    captureSession = [[AVCaptureSession alloc] init];
     captureSession.sessionPreset = AVCaptureSessionPreset1280x720;
 
     // 2-AVCaptureDeviceInput
     // 相机输入设备(默认就是后置摄像头)
-    AVCaptureDevice *camaraCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    // AVCaptureDevice *camaraCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    // AVCaptureDevicePositionBack、AVCaptureDevicePositionFront
+    AVCaptureDevice *camaraCaptureDevice = [self cameraWithPosition:AVCaptureDevicePositionFront];
     // 音频输入设备
     AVCaptureDevice *audioCaptureDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
     
@@ -105,7 +118,7 @@
         return;
     }
     
-    audioCaptureDeviceInput = [[AVCaptureDeviceInput alloc]initWithDevice:audioCaptureDevice error:&error];
+    audioCaptureDeviceInput = [[AVCaptureDeviceInput alloc] initWithDevice:audioCaptureDevice error:&error];
     if (error) {
         NSLog(@"%@", error);
         return;
@@ -130,8 +143,55 @@
     // 4-AVCaptureVideoPreviewLayer
     captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
     [captureVideoPreviewLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
-    captureVideoPreviewLayer.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+    captureVideoPreviewLayer.frame = CGRectMake(0, 0, kScreenWidth / 2, kScreenHeight);
     [self.view.layer addSublayer:captureVideoPreviewLayer];
+}
+
+- (void)configCamara2 {
+    // 1-AVCaptureSession
+    captureSession2 = [[AVCaptureSession alloc] init];
+    captureSession2.sessionPreset = AVCaptureSessionPreset1280x720;
+
+    // 2-AVCaptureDeviceInput
+    // 相机输入设备
+    AVCaptureDevice *camaraCaptureDevice = [AVCaptureDevice defaultDeviceWithMediaType:AVMediaTypeVideo];
+    // 音频输入设备
+    AVCaptureDevice *audioCaptureDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
+    
+    NSError *error = nil;
+    captureDeviceInput2 = [[AVCaptureDeviceInput alloc] initWithDevice:camaraCaptureDevice error:&error];
+    if (error) {
+        NSLog(@"%@", error);
+        return;
+    }
+    
+    audioCaptureDeviceInput2 = [[AVCaptureDeviceInput alloc] initWithDevice:audioCaptureDevice error:&error];
+    if (error) {
+        NSLog(@"%@", error);
+        return;
+    }
+    
+    // 将设备输入添加到会话中
+    if ([captureSession2 canAddInput:captureDeviceInput2]) {
+        [captureSession2 addInput:captureDeviceInput2];
+        [captureSession2 addInput:audioCaptureDeviceInput2];
+    }
+    
+    // 3-AVCaptureMovieFileOutput
+    captureMovieFileOutput2 = [[AVCaptureMovieFileOutput alloc]init];
+    // 默认值就是10秒,解决录制超过10秒没声音的Bug
+    captureMovieFileOutput2.movieFragmentInterval = kCMTimeInvalid;
+    
+    // 将设备输出添加到会话中
+    if ([captureSession2 canAddOutput:captureMovieFileOutput2]) {
+        [captureSession2 addOutput:captureMovieFileOutput2];
+    }
+    
+    // 4-AVCaptureVideoPreviewLayer
+    captureVideoPreviewLayer2 = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession2];
+    [captureVideoPreviewLayer2 setVideoGravity:AVLayerVideoGravityResizeAspect];
+    captureVideoPreviewLayer2.frame = CGRectMake(kScreenWidth / 2, 0, kScreenWidth / 2, kScreenHeight);
+    [self.view.layer addSublayer:captureVideoPreviewLayer2];
 }
 
 - (void)configCamaraButton {
@@ -142,23 +202,14 @@
     timeLabel.font = [UIFont systemFontOfSize:24];
     [self.view addSubview:timeLabel];
     
-    for (NSInteger i = 0; i < 2; i++) {
-        CGFloat width = (kScreenWidth - 60) / 2;
-        CGRect frame = CGRectMake(20 * (i % 2 + 1) + width * (i % 2), 590 + 80 * ceil(i / 2), width, 60);
-        UIButton *button = [[UIButton alloc] initWithFrame:frame];
-        if (i == 0) {
-            recordButton = button;
-            [button setTitle:@"开始录制" forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(tackCamara) forControlEvents:UIControlEventTouchUpInside];
-        } else if (i == 1)  {
-            [button setTitle:@"切换摄像头" forState:UIControlStateNormal];
-            [button addTarget:self action:@selector(switchCamera) forControlEvents:UIControlEventTouchUpInside];
-        }
-        [button setBackgroundColor:[UIColor lightGrayColor]];
-        button.layer.cornerRadius = 5;
-        button.layer.masksToBounds = YES;
-        [self.view addSubview:button];
-    }
+    CGRect frame = CGRectMake(kScreenWidth / 4, kScreenHeight - 80, kScreenWidth / 2, 60);
+    recordButton = [[UIButton alloc] initWithFrame:frame];
+    [recordButton setTitle:@"开始录制" forState:UIControlStateNormal];
+    [recordButton setBackgroundColor:[UIColor lightGrayColor]];
+    recordButton.layer.cornerRadius = 5;
+    recordButton.layer.masksToBounds = YES;
+    [self.view addSubview:recordButton];
+    [recordButton addTarget:self action:@selector(tackCamara) forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark Events
@@ -181,34 +232,23 @@
         [captureMovieFileOutput stopRecording]; // 停止录制
         [self timerState:NO]; // 定时器
     }
-}
-
-// 切换前后摄像头
-- (void)switchCamera {
-    AVCaptureDevicePosition desiredPosition;
-    if (isUseFrontFacingCamera) {
-        desiredPosition = AVCaptureDevicePositionBack;
+    
+    AVCaptureConnection *captureConnection2 = [captureMovieFileOutput2 connectionWithMediaType:AVMediaTypeVideo];
+    if (![captureMovieFileOutput isRecording]) {
+        // 预览图层和视频方向保持一致
+        captureConnection.videoOrientation = [captureVideoPreviewLayer2 connection].videoOrientation;
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *rootPaht = [paths objectAtIndex:0];
+        NSString *name = [self returnName];
+        NSString *outputFielPath = [NSString stringWithFormat:@"%@/郭龙飞/%@.mp4", rootPaht, name];
+        NSLog(@"save path is: %@", outputFielPath);
+        NSURL *fileUrl = [NSURL fileURLWithPath:outputFielPath];
+        [captureMovieFileOutput2 startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
+        // 定时器
+        [self timerState:YES];
     } else {
-        desiredPosition = AVCaptureDevicePositionFront;
-    }
-    for (AVCaptureDevice *device in [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo]) {
-        if ([device position] == desiredPosition) {
-            [captureVideoPreviewLayer.session beginConfiguration];
-            for (AVCaptureInput *oldInput in captureVideoPreviewLayer.session.inputs) {
-                [[captureVideoPreviewLayer session] removeInput:oldInput];
-            }
-            AVCaptureDeviceInput *input = [AVCaptureDeviceInput deviceInputWithDevice:device error:nil];
-            [captureVideoPreviewLayer.session addInput:input];
-            [captureVideoPreviewLayer.session commitConfiguration];
-            break;
-        }
-    }
-    isUseFrontFacingCamera = !isUseFrontFacingCamera;
-    [self timerState:NO];
-    if ([captureMovieFileOutput isRecording]) {
-        NSString *info = @"上段视频已保存至相簿\n如需再次录制,请重新点击【开始录制】按钮";
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:info message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles: nil];
-        [alert show];
+        [captureMovieFileOutput stopRecording]; // 停止录制
+        [self timerState:NO]; // 定时器
     }
 }
 
@@ -259,6 +299,16 @@
     [dateFormat2 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
     NSString *dateStr = [dateFormat2 stringFromDate:[NSDate date]];
     return dateStr;
+}
+
+- (AVCaptureDevice *)cameraWithPosition:(AVCaptureDevicePosition)position{
+    NSArray *devices = [AVCaptureDevice devicesWithMediaType:AVMediaTypeVideo];
+    for (AVCaptureDevice *device in devices) {
+        if (device.position == position) {
+            return device;
+        }
+    }
+    return nil;
 }
 
 

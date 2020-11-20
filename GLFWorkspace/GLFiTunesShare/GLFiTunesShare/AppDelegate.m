@@ -48,6 +48,10 @@
 //    [self iskytrip:5];
 //    [self iskytrip:6];
     
+    // 只有每次重新开启应用才会全局遍历文件,防止每次进入前台老是遍历
+    [DocumentManager eachAllFiles];
+    [DocumentManager updateDocumentPaths];
+    
     BOOL isTestFounction = NO;
     if (isTestFounction) {
         TestViewController *testVC = [[TestViewController alloc] init];
@@ -97,8 +101,6 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     application.applicationIconBadgeNumber = 0;
 
-    [DocumentManager eachAllFiles];
-    [DocumentManager updateDocumentPaths];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *record = [userDefaults objectForKey:kRecord];
     if ([record isEqualToString:@"1"]) {
