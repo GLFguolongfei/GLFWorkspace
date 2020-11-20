@@ -10,6 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// --- 自定义录像
 @interface FourViewController : BaseViewController
 
 @end
