@@ -300,7 +300,7 @@
     
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if (manager.isRecording) {
-        UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"切换方向" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"切换主题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [manager switchCamera];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self reSetVCTitle];
