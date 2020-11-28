@@ -326,14 +326,10 @@
     if (type == 1) {
         WebViewController *vc = [[WebViewController alloc] init];
         vc.urlStr = urlStr;
-        vc.isHiddenXuanFu = YES;
-        vc.isHiddenImage = YES;
         [self.navigationController pushViewController:vc animated:YES];
     } else if (type == 2) {
         WKWebViewController *vc = [[WKWebViewController alloc] init];
         vc.urlStr = urlStr;
-        vc.isHiddenXuanFu = YES;
-        vc.isHiddenImage = YES;
         [self.navigationController pushViewController:vc animated:YES];
     } else {
         NSURL *url = [NSURL URLWithString:urlStr];

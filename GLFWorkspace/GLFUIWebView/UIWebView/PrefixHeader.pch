@@ -56,6 +56,7 @@
 // 通知
 #define kTabbarHidden           @"kTabbarHidden"
 #define kHaveBridge             @"kHaveBridge"
+#define kSameOriginPolicy       @"kSameOriginPolicy"
 #define kNORecord               @"kNORecord"
 #define kWebViewType            @"kWebViewType"
 

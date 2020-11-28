@@ -12,8 +12,6 @@
 {
     UIView *gestureView;
     BOOL isOC; // is Other Control
-    
-    UIBarButtonItem *item;
 }
 @end
 
@@ -29,11 +27,13 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
     NSString *isHaveBridge = [userDefaults objectForKey:kHaveBridge];
+    NSString *isSameOriginPolicy = [userDefaults objectForKey:kSameOriginPolicy];
     NSString *isNORecord = [userDefaults objectForKey:kNORecord];
     [self.switch1 setOn:tabbarHidden.integerValue animated:YES];
     [self.switch2 setOn:isHaveBridge.integerValue animated:YES];
-    [self.switch3 setOn:isNORecord.integerValue animated:YES];
-    
+    [self.switch3 setOn:isSameOriginPolicy.integerValue animated:YES];
+    [self.switch4 setOn:isNORecord.integerValue animated:YES];
+
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
     tapGesture.numberOfTapsRequired = 3;
     tapGesture.numberOfTouchesRequired = 3;
@@ -47,8 +47,7 @@
     } else if (type.integerValue == 2) {
         title = @"WKWebView";
     }
-    item = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction)];
-    self.navigationItem.rightBarButtonItem = item;
+    [self.webviewButton setTitle:title forState:UIControlStateNormal];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -86,8 +85,8 @@
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         if (isOC) {
-            self.switch3.hidden = !self.switch3.hidden;
-            self.label3.hidden = !self.label3.hidden;
+            self.switch4.hidden = !self.switch4.hidden;
+            self.label4.hidden = !self.label4.hidden;
         }
     }];
     [alertVC addAction:okAction];
@@ -99,33 +98,7 @@
     isOC = YES;
 }
 
-- (void)buttonAction {
-    [self.view endEditing:YES];
-
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"百度展现方式" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-    }];
-    [alertVC addAction:cancelAction];
-    
-    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"UIWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kWebViewType];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [item setTitle:@"UIWebView"];
-    }];
-    [alertVC addAction:okAction1];
-    
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"WKWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[NSUserDefaults standardUserDefaults] setObject:@"2" forKey:kWebViewType];
-        [[NSUserDefaults standardUserDefaults] synchronize];
-        [item setTitle:@"WKWebView"];
-    }];
-    [alertVC addAction:okAction2];
-    
-    [self presentViewController:alertVC animated:YES completion:nil];
-}
-
+// 隐藏导航栏
 - (IBAction)switchAction1:(id)sender {
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
@@ -136,6 +109,7 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+// 添加Bridge
 - (IBAction)switchAction2:(id)sender {
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
@@ -146,7 +120,19 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
+// 同源策略
 - (IBAction)switchAction3:(id)sender {
+    UISwitch *sw = (UISwitch *)sender;
+    if (sw.on) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kSameOriginPolicy];
+    } else {
+        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kSameOriginPolicy];
+    }
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+// 无痕浏览
+- (IBAction)switchAction4:(id)sender {
     UISwitch *sw = (UISwitch *)sender;
     if (sw.on) {
         [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kNORecord];
@@ -154,6 +140,31 @@
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kNORecord];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (IBAction)webviewAction:(id)sender {
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"百度展现方式" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertVC addAction:cancelAction];
+    
+    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"UIWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kWebViewType];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self.webviewButton setTitle:@"UIWebView" forState:UIControlStateNormal];
+    }];
+    [alertVC addAction:okAction1];
+    
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"WKWebView" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [[NSUserDefaults standardUserDefaults] setObject:@"2" forKey:kWebViewType];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        [self.webviewButton setTitle:@"WKWebView" forState:UIControlStateNormal];
+    }];
+    [alertVC addAction:okAction2];
+    
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 

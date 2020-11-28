@@ -14,8 +14,4 @@
 
 @property (nonatomic, strong) NSString *urlStr;
 
-@property (nonatomic, assign) BOOL isHiddenXuanFu; // 是否隐藏广告
-@property (nonatomic, assign) BOOL isHiddenImage; // 是否隐藏图片
-@property (nonatomic, assign) BOOL isPlainText; // 是否纯文本
-
 @end

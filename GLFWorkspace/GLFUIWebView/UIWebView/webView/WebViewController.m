@@ -18,6 +18,8 @@
     NSTimer *timer;
     NSInteger count; // 过滤次数
     NSInteger errorCount; // 加载失败次数
+    
+    NSString *isSameOriginPolicy;
 }
 @end
 
@@ -43,6 +45,11 @@
     UIBarButtonItem *toolBarSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
     self.toolbarItems = @[toolBarSpace, item1, toolBarSpace, item2, toolBarSpace, item3, toolBarSpace, item4, toolBarSpace];
     [self.navigationController setToolbarHidden:NO animated:YES];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    isSameOriginPolicy = [userDefaults objectForKey:kSameOriginPolicy];
 }
 
 #pragma mark Setup
@@ -170,6 +177,12 @@
 {
     NSLog(@"路径: %@", request.URL.path);
     NSLog(@"完整的URL字符串: %@", request.URL.absoluteString);
+    
+    // 注意
+    // 同源策略,暂时没有实现
+    if (isSameOriginPolicy.integerValue) {
+
+    }
     return YES;
 }
 
