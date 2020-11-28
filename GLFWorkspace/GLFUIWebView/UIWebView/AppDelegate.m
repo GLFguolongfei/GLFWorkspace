@@ -8,6 +8,9 @@
 
 #import "AppDelegate.h"
 #import "ViewController.h"
+#import "MMScanViewController.h"
+#import "WebViewController.h"
+#import "WKWebViewController.h"
 
 @interface AppDelegate ()
 
@@ -19,6 +22,10 @@
 #pragma mark - UIApplicationDelegate
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    // 3DTouch
+    [self creatShortcutItem];
+    
     return YES;
 }
 
@@ -66,6 +73,36 @@
     return YES;
 }
 #endif
+
+#pragma mark 3DTouch
+- (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler {
+    if (shortcutItem) {
+        if([shortcutItem.type isEqualToString:@"com.glf.scan"]){
+            ViewController *vc = [[ViewController alloc] init];
+            vc.action = 1;
+            UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:vc];
+            self.window.rootViewController = navi;
+        } else if([shortcutItem.type isEqualToString:@"com.glf.baidu"]){
+            ViewController *vc = [[ViewController alloc] init];
+            vc.action = 2;
+            UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:vc];
+            self.window.rootViewController = navi;
+        }
+    }
+    if (completionHandler) {
+        completionHandler(YES);
+    }
+}
+
+#pragma mark Setup
+// 3DTouch
+- (void)creatShortcutItem {
+    UIApplicationShortcutIcon *icon1 = [UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeSearch];
+    UIApplicationShortcutIcon *icon2 = [UIApplicationShortcutIcon iconWithType:UIApplicationShortcutIconTypeHome];
+    UIApplicationShortcutItem *item1 = [[UIApplicationShortcutItem alloc] initWithType:@"com.glf.scan" localizedTitle:@"扫码" localizedSubtitle:@"" icon:icon1 userInfo:nil];
+    UIApplicationShortcutItem *item2 = [[UIApplicationShortcutItem alloc] initWithType:@"com.glf.baidu" localizedTitle:@"百度" localizedSubtitle:@"" icon:icon2 userInfo:nil];
+    [UIApplication sharedApplication].shortcutItems = @[item1,item2];
+}
 
 
 @end

@@ -129,6 +129,18 @@
         button.hidden = YES;
     }
     [self.navigationController setToolbarHidden:YES animated:YES];
+    
+    if (self.action == 1) {
+        [self scanQrCode];
+    } else if (self.action == 2) {
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        NSString *type = [userDefaults objectForKey:kWebViewType];
+        if (type.integerValue <= 0) {
+            type = @"1";
+        }
+        NSString *urlStr = @"http://www.baidu.com";
+        [self goURLVC:urlStr andType:type.integerValue];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -140,6 +152,7 @@
     } else {
         [self.navigationController setNavigationBarHidden:NO animated:YES];
     }
+    self.action = 0;
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {

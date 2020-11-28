@@ -11,8 +11,10 @@
 @interface ViewController : BaseViewController
 
 @property (nonatomic, strong) UITextView *ipTextView;
+@property (nonatomic, assign) NSInteger action; // 1-扫描 2-百度
 
 - (void)goURLVC:(NSString *)urlStr;
+- (void)goURLVC:(NSString *)urlStr andType:(NSInteger)type;
 
 @end
 

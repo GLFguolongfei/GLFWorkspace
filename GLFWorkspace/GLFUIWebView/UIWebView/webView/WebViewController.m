@@ -223,6 +223,7 @@
     if (count >= 3) {
         [timer invalidate];
         timer = nil;
+        return;
     } else {
         count++;
     }
