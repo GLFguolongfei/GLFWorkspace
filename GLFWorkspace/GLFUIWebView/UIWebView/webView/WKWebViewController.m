@@ -355,6 +355,7 @@
     // 黑名单
     if ([blackIPArray containsObject:currentURL.host]) {
         decisionHandler(WKNavigationActionPolicyCancel); // 禁止跳转
+        return;
     }
     decisionHandler(WKNavigationActionPolicyAllow); // 允许跳转
 }
