@@ -15,6 +15,7 @@
 		6F002F261FDA28E300A66BFB /* LewPopupViewAnimationDrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F002F1E1FDA28E300A66BFB /* LewPopupViewAnimationDrop.m */; };
 		6F002F271FDA28E300A66BFB /* LewPopupViewAnimationSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F002F1F1FDA28E300A66BFB /* LewPopupViewAnimationSlide.m */; };
 		6F002F281FDA28E300A66BFB /* LewPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F002F221FDA28E300A66BFB /* LewPopupBackgroundView.m */; };
+		6F00AB652572D4F300E9CF93 /* BlackIPView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F00AB642572D4F300E9CF93 /* BlackIPView.m */; };
 		6F01D8832418929F00D7DB48 /* WKWebViewController+RegisterHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F01D8822418929F00D7DB48 /* WKWebViewController+RegisterHandler.m */; };
 		6F01D88D241893FB00D7DB48 /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F01D885241893FB00D7DB48 /* WebViewJavascriptBridgeBase.m */; };
 		6F01D88E241893FB00D7DB48 /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F01D886241893FB00D7DB48 /* WKWebViewJavascriptBridge.m */; };
@@ -92,6 +93,8 @@
 		6F002F201FDA28E300A66BFB /* LewPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LewPopupViewController.h; sourceTree = "<group>"; };
 		6F002F211FDA28E300A66BFB /* LewPopupViewAnimationFade.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LewPopupViewAnimationFade.h; sourceTree = "<group>"; };
 		6F002F221FDA28E300A66BFB /* LewPopupBackgroundView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LewPopupBackgroundView.m; sourceTree = "<group>"; };
+		6F00AB632572D4F300E9CF93 /* BlackIPView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BlackIPView.h; sourceTree = "<group>"; };
+		6F00AB642572D4F300E9CF93 /* BlackIPView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BlackIPView.m; sourceTree = "<group>"; };
 		6F01D8812418929F00D7DB48 /* WKWebViewController+RegisterHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "WKWebViewController+RegisterHandler.h"; sourceTree = "<group>"; };
 		6F01D8822418929F00D7DB48 /* WKWebViewController+RegisterHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "WKWebViewController+RegisterHandler.m"; sourceTree = "<group>"; };
 		6F01D885241893FB00D7DB48 /* WebViewJavascriptBridgeBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridgeBase.m; sourceTree = "<group>"; };
@@ -380,6 +383,8 @@
 				6F0A7A0E2417402400AA9FD1 /* SetupViewController.xib */,
 				6F002F0B1FDA218300A66BFB /* SelectIPView.h */,
 				6F002F0C1FDA218300A66BFB /* SelectIPView.m */,
+				6F00AB632572D4F300E9CF93 /* BlackIPView.h */,
+				6F00AB642572D4F300E9CF93 /* BlackIPView.m */,
 				6F002F101FDA232A00A66BFB /* IpModel.h */,
 				6F002F111FDA232A00A66BFB /* IpModel.m */,
 				6F5281F71FA318FF006833DA /* Main.storyboard */,
@@ -627,6 +632,7 @@
 				6F5282251FA31B32006833DA /* WebViewController.m in Sources */,
 				6F002F251FDA28E300A66BFB /* LewPopupViewAnimationSpring.m in Sources */,
 				6F0E96561FA413670029DDD6 /* MBProgressHUD.m in Sources */,
+				6F00AB652572D4F300E9CF93 /* BlackIPView.m in Sources */,
 				6F53420C1FDA3F1500805808 /* ViewController.m in Sources */,
 				6F01D8832418929F00D7DB48 /* WKWebViewController+RegisterHandler.m in Sources */,
 			);

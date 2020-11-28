@@ -16,6 +16,7 @@
 #import "MMScanViewController.h"
 // Views
 #import "SelectIPView.h"
+#import "BlackIPView.h"
 // Tools
 #import "LewPopupViewController.h"
 
@@ -49,7 +50,7 @@
     self.ipTextView.delegate = self;
     [self.view addSubview:self.ipTextView];
     
-    for (NSInteger i = 0; i < 2; i++) {
+    for (NSInteger i = 0; i < 3; i++) {
         CGFloat width = (kScreenWidth - 60) / 3;
         CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 200 + 80 * ceil(i / 3), width, 50);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
@@ -57,6 +58,8 @@
             [button setTitle:@"历史记录" forState:UIControlStateNormal];
         } else if (i == 1) {
             [button setTitle:@"清除缓存" forState:UIControlStateNormal];
+        } else if (i == 2) {
+            [button setTitle:@"黑名单" forState:UIControlStateNormal];
         }
         button.titleLabel.font = [UIFont systemFontOfSize:16.0];
         button.backgroundColor = [UIColor lightGrayColor];
@@ -195,6 +198,13 @@
         [self cleanCacheAndCookie];
         [self clearCache];
         [self showStringHUD:@"缓存清理完成" second:1.5];
+    } else if (button.tag == 12) {
+        BlackIPView *ipView = [[BlackIPView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/3*2)];
+        ipView.parentVC = self;
+        ipView.backgroundColor = [UIColor whiteColor];
+        [self lew_presentPopupView:ipView animation:[LewPopupViewAnimationSpring new] dismissed:^{
+            NSLog(@"动画结束");
+        }];
     }
 }
 

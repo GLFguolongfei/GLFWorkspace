@@ -20,6 +20,11 @@
     NSTimer *timer;
     NSInteger count; // 过滤次数
     NSInteger errorCount; // 加载失败次数
+    
+    NSString *isSameOriginPolicy;
+    NSURL *currentURL;
+    
+    NSMutableArray *blackIPArray;
 }
 @end
 
@@ -29,8 +34,9 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *filterItem = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(button5)];
-    self.navigationItem.rightBarButtonItem = filterItem;
+    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(button5)];
+    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"黑名单" style:UIBarButtonItemStylePlain target:self action:@selector(button6)];
+    self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.view.backgroundColor = [UIColor whiteColor];
     self.canHiddenNaviBar = YES;
 
@@ -47,6 +53,19 @@
     UIBarButtonItem *toolBarSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
     self.toolbarItems = @[toolBarSpace, item1, toolBarSpace, item2, toolBarSpace, item3, toolBarSpace, item4, toolBarSpace];
     [self.navigationController setToolbarHidden:NO animated:YES];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    isSameOriginPolicy = [userDefaults objectForKey:kSameOriginPolicy];
+    
+    NSArray *sandboxpath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [sandboxpath objectAtIndex:0];
+    NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"IPBlack.plist"];
+    blackIPArray = [[NSArray alloc] initWithContentsOfFile:plistPath];
+    if (blackIPArray == nil) {
+        blackIPArray = [[NSMutableArray alloc] init];
+    }
 }
 
 - (void)dealloc {
@@ -202,6 +221,40 @@
     [_wkWebView reload];
 }
 
+// 黑名单
+- (void)button6 {
+    NSString *str = [NSString stringWithFormat:@"确定将当前站点 [%@] 加入黑名单？", currentURL.host];
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:str preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+
+    }];
+    [alertVC addAction:cancelAction];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        NSArray *sandboxpath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *documentsDirectory = [sandboxpath objectAtIndex:0];
+        NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"IPBlack.plist"];
+        NSMutableArray *array = [[NSArray alloc] initWithContentsOfFile:plistPath];
+        BOOL isHaveSave = NO;
+        if (array == nil) {
+            array = [[NSMutableArray alloc] init];
+        } else {
+            for (NSInteger i = 0; i < array.count; i++) {
+                NSString *host = array[i];
+                if ([host isEqualToString:currentURL.host]) {
+                    isHaveSave = YES;
+                }
+            }
+        }
+        if (!isHaveSave) {
+            [blackIPArray addObject:currentURL.host];
+            [array addObject:currentURL.host];
+            [array writeToFile:plistPath atomically:YES];
+        }
+    }];
+    [alertVC addAction:okAction];
+    [self presentViewController:alertVC animated:YES completion:nil];
+}
+
 - (void)naviBarChange:(NSNotification *)notify {
     NSDictionary *dict = notify.userInfo;
     if ([dict[@"isHidden"] isEqualToString: @"1"]) {
@@ -291,6 +344,18 @@
 
 - (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
     NSLog(@"在发送请求之前,决定是否跳转");
+    
+    currentURL = webView.URL;
+
+    // 注意
+    // 同源策略,暂时没有实现
+    if (isSameOriginPolicy.integerValue) {
+
+    }
+    // 黑名单
+    if ([blackIPArray containsObject:currentURL.host]) {
+        decisionHandler(WKNavigationActionPolicyCancel); // 禁止跳转
+    }
     decisionHandler(WKNavigationActionPolicyAllow); // 允许跳转
 }
 
