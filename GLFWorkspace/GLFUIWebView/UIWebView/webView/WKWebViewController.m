@@ -154,7 +154,7 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
     if (tabbarHidden.integerValue) {
-        rect = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20);
+        rect = CGRectMake(0, 0, kScreenWidth, 20);
     }
     _progressView = [[UIProgressView alloc] initWithFrame:rect];
     _progressView.progressViewStyle = UIProgressViewStyleDefault;
