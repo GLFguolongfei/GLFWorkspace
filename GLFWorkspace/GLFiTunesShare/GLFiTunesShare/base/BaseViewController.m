@@ -123,7 +123,7 @@
         if (!view) {
             CGRect frame = CGRectMake(kScreenWidth - 10, 15, 3, 15);
             view = [[UIView alloc] initWithFrame:frame];
-            view.backgroundColor = kSAColorWithStr(@"CCCCCC");
+            view.backgroundColor = kSAColorWithStr(@"999999");
             [self.navigationController.navigationBar addSubview:view];
             [self.navigationController.navigationBar bringSubviewToFront:view];
         }
@@ -141,10 +141,10 @@
 - (void)timerAction {
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if ([manager isHaveFace]) {
-        view.hidden = NO;
+        view.backgroundColor = kSAColorWithStr(@"999999");
         [self.navigationController.navigationBar bringSubviewToFront:view];
     } else {
-        view.hidden = YES;
+        view.backgroundColor = kSAColorWithStr(@"CCCCCC");
     }
 }
 
