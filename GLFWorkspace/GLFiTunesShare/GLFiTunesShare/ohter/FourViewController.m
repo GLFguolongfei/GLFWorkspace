@@ -38,9 +38,9 @@
     self.canHiddenNaviBar = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
-    
+
     timeCount = 0;
-    
+
     [self configCamara];
     [self configCamaraButton];
 }

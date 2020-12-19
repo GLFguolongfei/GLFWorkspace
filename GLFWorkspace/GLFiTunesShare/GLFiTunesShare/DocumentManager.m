@@ -14,7 +14,7 @@
 
 static NSString *kQueueOperationsChanged = @"kQueueOperationsChanged";
 
-@interface DocumentManager()<AVCaptureFileOutputRecordingDelegate>
+@interface DocumentManager()<AVCaptureFileOutputRecordingDelegate, AVCaptureVideoDataOutputSampleBufferDelegate, AVCaptureMetadataOutputObjectsDelegate>
 {
     BOOL isVideoSeting;
     BOOL isScaleImageSeting;
@@ -24,11 +24,14 @@ static NSString *kQueueOperationsChanged = @"kQueueOperationsChanged";
     
     // 历史记录
     AVCaptureSession *captureSession;
-    AVCaptureDeviceInput *captureDeviceInput;
+    AVCaptureDeviceInput *videoCaptureDeviceInput;
     AVCaptureDeviceInput *audioCaptureDeviceInput;
     AVCaptureMovieFileOutput *captureMovieFileOutput;
     AVCaptureVideoPreviewLayer *captureVideoPreviewLayer;
-        
+    
+    dispatch_queue_t sample;
+    dispatch_queue_t faceQueue;
+
     UIView *videoView;
 }
 @end
@@ -595,6 +598,8 @@ HMSingletonM(DocumentManager)
         NSURL *fileUrl = [NSURL fileURLWithPath:outputFielPath];
         [captureMovieFileOutput startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
     }
+    NSDictionary *userInfo = @{@"isRecording": @"1"};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CamerIsRecording" object:self userInfo:userInfo];
 }
 
 // 结束录制
@@ -604,6 +609,8 @@ HMSingletonM(DocumentManager)
         [captureSession stopRunning]; // 关闭摄像头
         [self configCamara:NO];
     }
+    NSDictionary *userInfo = @{@"isRecording": @"0"};
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CamerIsRecording" object:self userInfo:userInfo];
 }
 
 // 切换前后摄像头
@@ -615,18 +622,18 @@ HMSingletonM(DocumentManager)
 - (void)configCamara:(BOOL)isRecord {
     if (!isRecord) {
         captureSession = nil;
-        captureDeviceInput = nil;
+        videoCaptureDeviceInput = nil;
         audioCaptureDeviceInput = nil;
         captureMovieFileOutput = nil;
         captureVideoPreviewLayer = nil;
         [captureVideoPreviewLayer removeFromSuperlayer];
         return;
     }
-    // 1-AVCaptureSession
-    captureSession = [[AVCaptureSession alloc] init];
-    captureSession.sessionPreset = AVCaptureSessionPreset1280x720;
-
-    // 2-AVCaptureDeviceInput
+    
+    sample = dispatch_queue_create("sample", NULL);
+    faceQueue = dispatch_queue_create("face", NULL);
+    
+    // 1-AVCaptureDeviceInput
     // 相机输入设备
     AVCaptureDevicePosition desiredPosition;
     if (self.isUseBackFacingCamera) {
@@ -634,12 +641,12 @@ HMSingletonM(DocumentManager)
     } else {
         desiredPosition = AVCaptureDevicePositionFront;
     }
-    AVCaptureDevice *camaraCaptureDevice = [self getCameraDeviceWithPosition:desiredPosition];
+    AVCaptureDevice *videoCaptureDevice = [self getCameraDeviceWithPosition:desiredPosition];
     // 音频输入设备
     AVCaptureDevice *audioCaptureDevice = [[AVCaptureDevice devicesWithMediaType:AVMediaTypeAudio] firstObject];
     
     NSError *error = nil;
-    captureDeviceInput = [[AVCaptureDeviceInput alloc] initWithDevice:camaraCaptureDevice error:&error];
+    videoCaptureDeviceInput = [[AVCaptureDeviceInput alloc] initWithDevice:videoCaptureDevice error:&error];
     if (error) {
         NSLog(@"%@", error);
         return;
@@ -651,21 +658,52 @@ HMSingletonM(DocumentManager)
         return;
     }
     
-    // 将设备输入添加到会话中
-    if ([captureSession canAddInput:captureDeviceInput]) {
-        [captureSession addInput:captureDeviceInput];
-        [captureSession addInput:audioCaptureDeviceInput];
-    }
-    
-    // 3-AVCaptureMovieFileOutput
+    // 2-AVCaptureMovieFileOutput
     captureMovieFileOutput = [[AVCaptureMovieFileOutput alloc] init];
     // 默认值就是10秒,解决录制超过10秒没声音的Bug
     captureMovieFileOutput.movieFragmentInterval = kCMTimeInvalid;
+    
+    AVCaptureVideoDataOutput *output = [[AVCaptureVideoDataOutput alloc] init];
+    [output setSampleBufferDelegate:self queue:sample];
+    
+    AVCaptureMetadataOutput *metaout = [[AVCaptureMetadataOutput alloc] init];
+    [metaout setMetadataObjectsDelegate:self queue:faceQueue];
+    
+    // 3-AVCaptureSession
+    captureSession = [[AVCaptureSession alloc] init];
+    captureSession.sessionPreset = AVCaptureSessionPreset1280x720;
+    
+    [captureSession beginConfiguration];
+
+    // 将设备输入添加到会话中
+    if ([captureSession canAddInput:videoCaptureDeviceInput]) {
+        [captureSession addInput:videoCaptureDeviceInput];
+        [captureSession addInput:audioCaptureDeviceInput];
+    }
     
     // 将设备输出添加到会话中
     if ([captureSession canAddOutput:captureMovieFileOutput]) {
         [captureSession addOutput:captureMovieFileOutput];
     }
+    
+    if ([captureSession canAddOutput:output]) {
+        [captureSession addOutput:output];
+    }
+    if ([captureSession canAddOutput:metaout]) {
+        [captureSession addOutput:metaout];
+    }
+    
+    [captureSession commitConfiguration];
+
+    // 其它
+    NSString *key = (NSString *)kCVPixelBufferPixelFormatTypeKey;
+    NSNumber *value = [NSNumber numberWithUnsignedInt:kCVPixelFormatType_32BGRA];
+    NSDictionary *videoSettings = [NSDictionary dictionaryWithObject:value forKey:key];
+    [output setVideoSettings:videoSettings];
+    
+    // 这里我们告诉要检测到人脸就给我一些反应,里面还有QRCode等,都可以放进去
+    // 就是如果视频流检测到了你要的,就会出发下面第二个代理方法
+    [metaout setMetadataObjectTypes:@[AVMetadataObjectTypeFace]];
     
     // 4-AVCaptureVideoPreviewLayer
     captureVideoPreviewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:captureSession];
@@ -683,6 +721,36 @@ HMSingletonM(DocumentManager)
 
 - (void)captureOutput:(AVCaptureFileOutput *)captureOutput didFinishRecordingToOutputFileAtURL:(NSURL *)outputFileURL fromConnections:(NSArray *)connections error:(NSError *)error{
     NSLog(@"视频录制完成.");
+}
+
+#pragma mark AVCaptureVideoDataOutputSampleBufferDelegate
+- (void)captureOutput:(AVCaptureOutput *)output didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection {
+    NSMutableArray *bounds = [NSMutableArray arrayWithCapacity:0];
+    // 每一帧,我们都看一下self.currentMetadata里面有没有东西
+    // 然后将里面的AVMetadataFaceObject转换成AVMetadataObject
+    // 其中AVMetadataObject的bouns就是人脸的位置,我们将bouns存到数组中
+    for (AVMetadataFaceObject *faceobject in self.currentMetadata) {
+        AVMetadataObject *face = [output transformedMetadataObjectForMetadataObject:faceobject connection:connection];
+        [bounds addObject:[NSValue valueWithCGRect:face.bounds]];
+    }
+    if (bounds.count > 0) {
+        self.isHaveFace = YES;
+//        NSLog(@"人脸位置 %@", bounds);
+    } else {
+        self.isHaveFace = NO;
+    }
+}
+
+#pragma mark AVCaptureMetadataOutputObjectsDelegate
+- (void)captureOutput:(AVCaptureOutput *)output didOutputMetadataObjects:(NSArray<__kindof AVMetadataObject *> *)metadataObjects fromConnection:(AVCaptureConnection *)connection {
+    // 当检测到了人脸会走这个回调
+    self.currentMetadata = metadataObjects;
+    if (metadataObjects.count > 0) {
+        self.isHaveFace = YES;
+//        NSLog(@"检测到了人脸 %@", self.currentMetadata);
+    } else {
+        self.isHaveFace = NO;
+    }
 }
 
 #pragma mark - 私有方法

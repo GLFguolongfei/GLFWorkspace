@@ -14,6 +14,9 @@
 {
     CAEmitterLayer *colorBallLayer;
     CAEmitterLayer *snowEmitterLayer;
+    
+    UIView *view;
+    NSTimer *timer;
 } 
 @end
 
@@ -29,11 +32,12 @@
     self.canHiddenToolBar = NO;
     // 设置导航栏字体颜色
 //    [self.navigationController.navigationBar setTitleTextAttributes:@{NSForegroundColorAttributeName:KNavgationBarColor}];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(viewShow:) name:@"CamerIsRecording" object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -100,6 +104,48 @@
 - (void)didReceiveMemoryWarning {
     [self showStringHUD:@"收到内存警告" second:1];
     NSLog(@"收到内存警告");
+}
+
+#pragma mark 通知
+- (void)fileReloadData:(NSNotification *)notify {
+    NSDictionary *dict = notify.userInfo;
+    NSString *timeStr = dict[@"time"];
+    NSString *msg = [NSString stringWithFormat:@"全局遍历完成, %@", timeStr];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self showStringHUD:msg second:3];
+    });
+}
+
+- (void)viewShow:(NSNotification *)notify {
+    NSDictionary *dict = notify.userInfo;
+    NSString *isRecording = dict[@"isRecording"];
+    if ([isRecording integerValue]) {
+        if (!view) {
+            CGRect frame = CGRectMake(kScreenWidth - 10, 15, 3, 15);
+            view = [[UIView alloc] initWithFrame:frame];
+            view.backgroundColor = kSAColorWithStr(@"CCCCCC");
+            [self.navigationController.navigationBar addSubview:view];
+            [self.navigationController.navigationBar bringSubviewToFront:view];
+        }
+        if (!timer) {
+            timer = [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
+            [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+        }
+    } else {
+        [view removeFromSuperview];
+        [timer invalidate];
+        timer = nil;
+    }
+}
+
+- (void)timerAction {
+    DocumentManager *manager = [DocumentManager sharedDocumentManager];
+    if ([manager isHaveFace]) {
+        view.hidden = NO;
+        [self.navigationController.navigationBar bringSubviewToFront:view];
+    } else {
+        view.hidden = YES;
+    }
 }
 
 #pragma mark HUD指示器

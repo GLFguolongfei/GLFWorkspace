@@ -48,6 +48,8 @@ HMSingletonH(DocumentManager)
 
 #pragma mark 历史记录
 @property (nonatomic, assign) BOOL isUseBackFacingCamera; // 是否使用后置摄像头
+@property (nonatomic, assign) BOOL isHaveFace; // 是否有人脸
+@property (nonatomic, copy) NSArray *currentMetadata; // 如果检测到了人脸系统会返回一个数组,我们将这个数组存起来
 
 - (void)startRecording;
 - (void)stopRecording;
