@@ -24,7 +24,7 @@
     [self setVCTitle:@"测试功能"];
     
     for (NSInteger i = 0; i < 3; i++) {
-        CGRect frame = CGRectMake(100, 120 + 60 * i, kScreenWidth - 200, 50);
+        CGRect frame = CGRectMake(100, 100 + 80 * i, kScreenWidth - 200, 60);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
         if (i == 0) {
             [button setTitle:@"网络爬虫-测试" forState:UIControlStateNormal];
@@ -44,10 +44,11 @@
 
 - (void)buttonAction:(UIButton *)button {
     if (button.tag == 100) {
-        [ProjectManager getNetworkDataTest];
+        ProjectManager *manager = [ProjectManager sharedProjectManager];
+        [manager getNetworkDataTest];
     } else if (button.tag == 101) {
-        [ProjectManager sharedProjectManager].endIndex = 1600;
-        [ProjectManager getNetworkData:1 andType:2];
+        ProjectManager *manager = [ProjectManager sharedProjectManager];
+        [manager getNetworkData:1 andType:2];
     } else {
         //    [self testWebView];
         //    [self testMediaPicker];

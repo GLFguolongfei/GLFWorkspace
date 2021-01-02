@@ -8,12 +8,19 @@
 
 #import "ProjectManager.h"
 
+@interface ProjectManager()
+{
+    NSMutableArray *resultArray;
+    NSInteger endIndex;
+}
+@end
+
 @implementation ProjectManager
 
 HMSingletonM(ProjectManager)
 
 #pragma mark - 网络爬虫
-+ (void)getNetworkDataTest {
+- (void)getNetworkDataTest {
     NSString *oldUrlStr = @"https://www.jrz2ch.de/aspmp4.x?stype=aspmp4&aspmp4id=1467";
     NSString *urlStr = [oldUrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // 中文必须转换
     NSURL *url = [NSURL URLWithString:urlStr];
@@ -43,8 +50,12 @@ HMSingletonM(ProjectManager)
 }
 
 // AFHTTPSessionManager(视频)
-+ (void)getNetworkData:(NSInteger)index andType:(NSInteger)type {
+- (void)getNetworkData:(NSInteger)index andType:(NSInteger)type {
     NSInteger pageCount = 350;
+    if (index < pageCount) {
+        resultArray = [[NSMutableArray alloc] init];
+        endIndex = 2600;
+    }
     if (type == 1) {
         [self getNetworkData1:index andPageCount:pageCount andFinish:^{
             NSInteger nextIndex = index + pageCount;
@@ -59,14 +70,12 @@ HMSingletonM(ProjectManager)
 }
 
 // NSURLConnection(视频)
-+ (void)getNetworkData1:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack {
+- (void)getNetworkData1:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack {
     __block NSInteger counter = 0;
     NSMutableArray *array = [[NSMutableArray alloc] init];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     for (NSInteger i = 0; i < pageCount; i++) {
-        if (start + i > [ProjectManager sharedProjectManager].endIndex) {
-            [self saveData:[ProjectManager sharedProjectManager].resultArray andFileName:@"netData"];
-            NSLog(@"~~~~~~~~~ ~~~~~~~~~ 爬取结束,共有数据 %ld 条", [ProjectManager sharedProjectManager].resultArray.count);
+        if (start + i > endIndex) {
             return;
         }
         NSString *urlStr = [NSString stringWithFormat:@"https://www.bpw4.com/shipin/%ld.html", i];
@@ -78,24 +87,25 @@ HMSingletonM(ProjectManager)
             if (resultStr.length > 0) {
                 [array addObject:resultStr];
             }
-            NSLog(@"爬取进度: %ld / %ld", start + counter, [ProjectManager sharedProjectManager].endIndex);
+            NSLog(@"爬取进度: %ld / %ld", start + counter, endIndex);
             counter++;
             if (counter >= pageCount) {
-                [[ProjectManager sharedProjectManager].resultArray addObjectsFromArray:array];
+                [resultArray addObjectsFromArray:array];
                 callBack();
+            }
+            if (start + counter >= endIndex) {
+                [self saveData:resultArray andFileName:@"netData"];
             }
         }];
     }
 }
 
 // AFHTTPSessionManager(视频)
-+ (void)getNetworkData2:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack {
+- (void)getNetworkData2:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack {
     __block NSInteger counter = 0;
     NSMutableArray *array = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < pageCount; i++) {
-        if (start + i > [ProjectManager sharedProjectManager].endIndex) {
-            [self saveData:[ProjectManager sharedProjectManager].resultArray andFileName:@"netData"];
-            NSLog(@"~~~~~~~~~ ~~~~~~~~~ 爬取结束,共有数据 %ld 条", [ProjectManager sharedProjectManager].resultArray.count);
+        if (start + i > endIndex) {
             return;
         }
         NSString *urlStr = [NSString stringWithFormat:@"https://www.jrz2ch.de/jsmp4.x?stype=jsmp4&jsmp4id=%ld", start + i];
@@ -108,18 +118,24 @@ HMSingletonM(ProjectManager)
             if (resultStr.length > 0) {
                 [array addObject:resultStr];
             }
-            NSLog(@"爬取进度: %ld / %ld", start + counter, [ProjectManager sharedProjectManager].endIndex);
+            NSLog(@"爬取进度: %ld / %ld", start + counter, endIndex);
             counter++;
             if (counter >= pageCount) {
-                [[ProjectManager sharedProjectManager].resultArray addObjectsFromArray:array];
+                [resultArray addObjectsFromArray:array];
                 callBack();
             }
+            if (start + counter >= endIndex) {
+                [self saveData:resultArray andFileName:@"netData"];
+            }
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            NSLog(@"爬取进度: %ld / %ld", start + counter, [ProjectManager sharedProjectManager].endIndex);
+            NSLog(@"爬取进度: %ld / %ld", start + counter, endIndex);
             counter++;
             if (counter >= pageCount) {
-                [[ProjectManager sharedProjectManager].resultArray addObjectsFromArray:array];
+                [resultArray addObjectsFromArray:array];
                 callBack();
+            }
+            if (start + counter >= endIndex) {
+                [self saveData:resultArray andFileName:@"netData"];
             }
         }];
     }
@@ -172,29 +188,8 @@ HMSingletonM(ProjectManager)
     [task resume];
 }
 
-#pragma mark 其它
-+ (void)calcData {
-    NSMutableArray *resultArray = [[NSMutableArray alloc] init];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    NSString *filePath = [path stringByAppendingPathComponent:@"data.txt"];
-    NSArray *array = [NSArray arrayWithContentsOfFile:filePath];
-    for (NSInteger i = 0; i < array.count; i++) {
-        NSString *str = array[i];
-        NSRange range1 = [str rangeOfString:@"http://"];
-        NSRange range2 = [str rangeOfString:@".mp4"];
-        if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
-            NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
-            NSString *resultStr = [str substringWithRange:range];
-//            NSLog(@"%@", resultStr);
-            [resultArray addObject:resultStr];
-        }
-    }
-    [self saveData:resultArray andFileName:@"data"];
-}
-
 #pragma mark - 私有方法
-+ (void)saveData:(NSArray *)array andFileName:(NSString *)fileName {
+- (void)saveData:(NSArray *)array andFileName:(NSString *)fileName {
     NSLog(@"网络数据爬取成功,总数: %ld", array.count);
     if (array.count == 0) {
         return;
@@ -211,7 +206,7 @@ HMSingletonM(ProjectManager)
     }
 }
 
-+ (NSArray *)pattern:(NSString *)patternStr andStr:(NSString *)str {
+- (NSArray *)pattern:(NSString *)patternStr andStr:(NSString *)str {
     // 使用正则表达式的步骤
     // 1-创建一个正则表达式对象
     NSRegularExpression *regex = [[NSRegularExpression alloc] initWithPattern:patternStr options:0 error:nil];
@@ -220,7 +215,7 @@ HMSingletonM(ProjectManager)
     return results;
 }
 
-+ (NSString *)returnResultStr:(NSString *)str andType:(NSInteger)type {
+- (NSString *)returnResultStr:(NSString *)str andType:(NSInteger)type {
     if (str.length == 0) {
         return @"";
     }
