@@ -222,13 +222,13 @@ HMSingletonM(ProjectManager)
     NSString *resultStr = @"";
     if (type == 1) {
         NSRange range1 = [str rangeOfString:@"http:"];
-        if (range1.location < 0) {
+        if (range1.length == 0) {
             range1 = [str rangeOfString:@"https:"];
         }
-        if (range1.location >= 0) {
+        if (range1.length > 0) {
             NSString *subStr = [str substringFromIndex:range1.location];
             NSRange range2 = [subStr rangeOfString:@".mp4"];
-            if (range2.location >= 0) {
+            if (range2.length > 0) {
                 NSInteger endIndex = range2.location + range2.length;
                 resultStr = [subStr substringToIndex:endIndex];
             }
