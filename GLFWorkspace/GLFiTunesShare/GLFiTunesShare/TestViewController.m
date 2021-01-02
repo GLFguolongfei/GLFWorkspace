@@ -30,6 +30,8 @@
             [button setTitle:@"网络爬虫-测试" forState:UIControlStateNormal];
         } else if (i == 1) {
             [button setTitle:@"网络爬虫-获取" forState:UIControlStateNormal];
+        } else if (i == 2) {
+            [button setTitle:@"网络爬虫-暂存" forState:UIControlStateNormal];
         } else {
             [button setTitle:@"其它测试" forState:UIControlStateNormal];
         }
@@ -49,6 +51,9 @@
     } else if (button.tag == 101) {
         ProjectManager *manager = [ProjectManager sharedProjectManager];
         [manager getNetworkData:1 andType:2];
+    } else if (button.tag == 102) {
+        ProjectManager *manager = [ProjectManager sharedProjectManager];
+        [manager saveCurrenData];
     } else {
         //    [self testWebView];
         //    [self testMediaPicker];
