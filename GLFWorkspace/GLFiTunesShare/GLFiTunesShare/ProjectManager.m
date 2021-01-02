@@ -14,7 +14,7 @@ HMSingletonM(ProjectManager)
 
 #pragma mark - 网络爬虫
 + (void)getNetworkDataTest {
-    NSString *oldUrlStr = @"https://www.jrz2ch.de/play.x?stype=mlvideo&movieid=20458";
+    NSString *oldUrlStr = @"https://www.jrz2ch.de/aspmp4.x?stype=aspmp4&aspmp4id=1467";
     NSString *urlStr = [oldUrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // 中文必须转换
     NSURL *url = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -44,7 +44,7 @@ HMSingletonM(ProjectManager)
 
 // AFHTTPSessionManager(视频)
 + (void)getNetworkData:(NSInteger)index andType:(NSInteger)type {
-    NSInteger pageCount = 100;
+    NSInteger pageCount = 200;
     if (type == 1) {
         [self getNetworkData1:index andPageCount:pageCount andFinish:^{
             NSInteger nextIndex = index + pageCount;
@@ -102,7 +102,7 @@ HMSingletonM(ProjectManager)
             NSLog(@"~~~~~~~~~ ~~~~~~~~~ 爬取结束,共有数据 %ld 条", [ProjectManager sharedProjectManager].resultArray.count);
             return;
         }
-        NSString *urlStr = [NSString stringWithFormat:@"https://www.jrz2ch.de/play.x?stype=mlvideo&movieid=%ld", start + i];
+        NSString *urlStr = [NSString stringWithFormat:@"https://www.jrz2ch.de/jsmp4.x?stype=jsmp4&jsmp4id=%ld", start + i];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -232,13 +232,19 @@ HMSingletonM(ProjectManager)
     NSString *resultStr = @"";
     if (type == 1) {
         NSRange range1 = [str rangeOfString:@"http:"];
-        NSRange range2 = [str rangeOfString:@".mp4"];
-        if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
-            NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);
-            resultStr = [str substringWithRange:range];
+        if (range1.location < 0) {
+            range1 = [str rangeOfString:@"https:"];
+        }
+        if (range1.location >= 0) {
+            NSString *subStr = [str substringFromIndex:range1.location];
+            NSRange range2 = [subStr rangeOfString:@".mp4"];
+            if (range2.location >= 0) {
+                NSInteger endIndex = range2.location + range2.length;
+                resultStr = [subStr substringToIndex:endIndex];
+            }
         }
     } else {
-        NSString *patternStr = @"html_data.*?html"; // @"src=\"http.*?jpg"
+        NSString *patternStr = @"^http.*.mp4$";
         NSArray *results = [self pattern:patternStr andStr:str];
         if (results.count > 0) {
             // 只取第一个
