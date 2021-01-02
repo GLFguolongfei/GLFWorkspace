@@ -44,7 +44,7 @@ HMSingletonM(ProjectManager)
 
 // AFHTTPSessionManager(视频)
 + (void)getNetworkData:(NSInteger)index andType:(NSInteger)type {
-    NSInteger pageCount = 200;
+    NSInteger pageCount = 350;
     if (type == 1) {
         [self getNetworkData1:index andPageCount:pageCount andFinish:^{
             NSInteger nextIndex = index + pageCount;
@@ -65,7 +65,6 @@ HMSingletonM(ProjectManager)
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     for (NSInteger i = 0; i < pageCount; i++) {
         if (start + i > [ProjectManager sharedProjectManager].endIndex) {
-            [[ProjectManager sharedProjectManager].resultArray addObjectsFromArray:array];
             [self saveData:[ProjectManager sharedProjectManager].resultArray andFileName:@"netData"];
             NSLog(@"~~~~~~~~~ ~~~~~~~~~ 爬取结束,共有数据 %ld 条", [ProjectManager sharedProjectManager].resultArray.count);
             return;
@@ -76,15 +75,13 @@ HMSingletonM(ProjectManager)
         [NSURLConnection sendAsynchronousRequest:request queue:mainQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             NSString *resultStr = [self returnResultStr:str andType:1];
-            [array addObject:resultStr];
-            
             if (resultStr.length > 0) {
-                NSLog(@"爬取成功: %ld", start + counter);
-            } else {
-                NSLog(@"爬取失败: %ld", start + counter);
+                [array addObject:resultStr];
             }
+            NSLog(@"爬取进度: %ld / %ld", start + counter, [ProjectManager sharedProjectManager].endIndex);
             counter++;
             if (counter >= pageCount) {
+                [[ProjectManager sharedProjectManager].resultArray addObjectsFromArray:array];
                 callBack();
             }
         }];
@@ -97,7 +94,6 @@ HMSingletonM(ProjectManager)
     NSMutableArray *array = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < pageCount; i++) {
         if (start + i > [ProjectManager sharedProjectManager].endIndex) {
-            [[ProjectManager sharedProjectManager].resultArray addObjectsFromArray:array];
             [self saveData:[ProjectManager sharedProjectManager].resultArray andFileName:@"netData"];
             NSLog(@"~~~~~~~~~ ~~~~~~~~~ 爬取结束,共有数据 %ld 条", [ProjectManager sharedProjectManager].resultArray.count);
             return;
@@ -109,21 +105,20 @@ HMSingletonM(ProjectManager)
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
             NSString *resultStr = [self returnResultStr:str andType:1];
-            [array addObject:resultStr];
-            
             if (resultStr.length > 0) {
-                NSLog(@"爬取成功: %ld", start + counter);
-            } else {
-                NSLog(@"爬取失败: %ld", start + counter);
+                [array addObject:resultStr];
             }
+            NSLog(@"爬取进度: %ld / %ld", start + counter, [ProjectManager sharedProjectManager].endIndex);
             counter++;
             if (counter >= pageCount) {
+                [[ProjectManager sharedProjectManager].resultArray addObjectsFromArray:array];
                 callBack();
             }
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            NSLog(@"爬取失败: %ld", start + counter);
+            NSLog(@"爬取进度: %ld / %ld", start + counter, [ProjectManager sharedProjectManager].endIndex);
             counter++;
             if (counter >= pageCount) {
+                [[ProjectManager sharedProjectManager].resultArray addObjectsFromArray:array];
                 callBack();
             }
         }];
