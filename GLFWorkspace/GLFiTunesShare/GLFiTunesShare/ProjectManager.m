@@ -12,6 +12,7 @@
 {
     NSMutableArray *resultArray;
     NSInteger endIndex;
+    NSMutableArray *errorArray;
 }
 @end
 
@@ -20,18 +21,32 @@
 HMSingletonM(ProjectManager)
 
 #pragma mark - 网络爬虫
-- (void)getNetworkDataTest {
-    NSString *oldUrlStr = @"https://www.jrz2ch.de/aspmp4.x?stype=aspmp4&aspmp4id=1467";
+- (void)getNetworkDataTest:(NSString *)urlString {
+    NSString *oldUrlStr = @"https://www.jrz2ch.de/play.x?stype=mlvideo&movieid=241";
+    if (urlString.length > 0) {
+        oldUrlStr = urlString;
+    }
     NSString *urlStr = [oldUrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // 中文必须转换
     NSURL *url = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:nil completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        NSLog(@"%@", str);
         NSString *resultStr1 = [self returnResultStr:str andType:1];
         NSString *resultStr2 = [self returnResultStr:str andType:2];
-        NSLog(@"resultStr~~~1: %@", resultStr1);
-        NSLog(@"resultStr~~~2: %@", resultStr2);
+        if (urlString.length > 0) {
+            if (resultStr1.length > 0) {
+                [errorArray addObject:resultStr1];
+                NSLog(@"~~~~~~ 补救成功: %ld", errorArray.count);
+            }
+            if (resultStr2.length > 0) {
+                [errorArray addObject:resultStr2];
+                NSLog(@"~~~~~~ 补救成功: %ld", errorArray.count);
+            }
+        } else {
+            NSLog(@"%@", str);
+            NSLog(@"resultStr~~~1: %@", resultStr1);
+            NSLog(@"resultStr~~~2: %@", resultStr2);
+        }
     }];
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -39,11 +54,22 @@ HMSingletonM(ProjectManager)
     [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        NSLog(@"%@", str);
         NSString *resultStr1 = [self returnResultStr:str andType:1];
         NSString *resultStr2 = [self returnResultStr:str andType:2];
-        NSLog(@"resultStr~~~~~~1: %@", resultStr1);
-        NSLog(@"resultStr~~~~~~2: %@", resultStr2);
+        if (urlString.length > 0) {
+            if (resultStr1.length > 0) {
+                [errorArray addObject:resultStr1];
+                NSLog(@"~~~~~~ 补救成功: %ld", errorArray.count);
+            }
+            if (resultStr2.length > 0) {
+                [errorArray addObject:resultStr2];
+                NSLog(@"~~~~~~ 补救成功: %ld", errorArray.count);
+            }
+        } else {
+            NSLog(@"%@", str);
+            NSLog(@"resultStr~~~~~~1: %@", resultStr1);
+            NSLog(@"resultStr~~~~~~2: %@", resultStr2);
+        }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@", error);
     }];
@@ -51,10 +77,11 @@ HMSingletonM(ProjectManager)
 
 // AFHTTPSessionManager(视频)
 - (void)getNetworkData:(NSInteger)index andType:(NSInteger)type {
-    NSInteger pageCount = 350;
+    NSInteger pageCount = 5;
     if (index < pageCount) {
         resultArray = [[NSMutableArray alloc] init];
         endIndex = 22506;
+        errorArray = [[NSMutableArray alloc] init];
     }
     if (type == 1) {
         [self getNetworkData1:index andPageCount:pageCount andFinish:^{
@@ -70,13 +97,13 @@ HMSingletonM(ProjectManager)
 }
 
 - (void)saveCurrenData {
-    [self saveData:resultArray andFileName:@"netDataCurrent"];
+    [self saveData:resultArray andFileName:@"netData1"];
+    [self saveData:errorArray andFileName:@"netData2"];
 }
 
 // NSURLConnection(视频)
 - (void)getNetworkData1:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack {
     __block NSInteger counter = 0;
-    NSMutableArray *array = [[NSMutableArray alloc] init];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
     for (NSInteger i = 0; i < pageCount; i++) {
         if (start + i > endIndex) {
@@ -89,16 +116,18 @@ HMSingletonM(ProjectManager)
             NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             NSString *resultStr = [self returnResultStr:str andType:1];
             if (resultStr.length > 0) {
-                [array addObject:resultStr];
+                [resultArray addObject:resultStr];
+                NSLog(@"爬取进度: %ld / %ld", start + counter, endIndex);
+            } else {
+                NSLog(@"~~~~~~ 爬取失败: %ld / %ld", start + counter, endIndex);
+                [self getNetworkDataTest:urlStr];
             }
-            NSLog(@"爬取进度: %ld / %ld", start + counter, endIndex);
             counter++;
             if (counter >= pageCount) {
-                [resultArray addObjectsFromArray:array];
                 callBack();
             }
             if (start + counter >= endIndex) {
-                [self saveData:resultArray andFileName:@"netData"];
+                [self saveCurrenData];
             }
         }];
     }
@@ -107,7 +136,6 @@ HMSingletonM(ProjectManager)
 // AFHTTPSessionManager(视频)
 - (void)getNetworkData2:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack {
     __block NSInteger counter = 0;
-    NSMutableArray *array = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < pageCount; i++) {
         if (start + i > endIndex) {
             return;
@@ -120,26 +148,28 @@ HMSingletonM(ProjectManager)
             NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
             NSString *resultStr = [self returnResultStr:str andType:1];
             if (resultStr.length > 0) {
-                [array addObject:resultStr];
+                [resultArray addObject:resultStr];
+                NSLog(@"爬取成功: %ld / %ld", start + counter, endIndex);
+            } else {
+                NSLog(@"~~~~~~ 爬取失败: %ld / %ld", start + counter, endIndex);
+                [self getNetworkDataTest:urlStr];
             }
-            NSLog(@"爬取进度: %ld / %ld", start + counter, endIndex);
             counter++;
             if (counter >= pageCount) {
-                [resultArray addObjectsFromArray:array];
                 callBack();
             }
             if (start + counter >= endIndex) {
-                [self saveData:resultArray andFileName:@"netData"];
+                [self saveCurrenData];
             }
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            NSLog(@"爬取进度: %ld / %ld", start + counter, endIndex);
+            NSLog(@"~~~~~~ 爬取失败: %ld / %ld", start + counter, endIndex);
+            [self getNetworkDataTest:urlStr];
             counter++;
             if (counter >= pageCount) {
-                [resultArray addObjectsFromArray:array];
                 callBack();
             }
             if (start + counter >= endIndex) {
-                [self saveData:resultArray andFileName:@"netData"];
+                [self saveCurrenData];
             }
         }];
     }
@@ -236,6 +266,8 @@ HMSingletonM(ProjectManager)
                 NSInteger endIndex = range2.location + range2.length;
                 resultStr = [subStr substringToIndex:endIndex];
             }
+        } else {
+            NSLog(@"%ld", range1.length);
         }
     } else {
         NSString *patternStr = @"^http.*.mp4$";

@@ -23,7 +23,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self setVCTitle:@"测试功能"];
     
-    for (NSInteger i = 0; i < 3; i++) {
+    for (NSInteger i = 0; i < 4; i++) {
         CGRect frame = CGRectMake(100, 100 + 80 * i, kScreenWidth - 200, 60);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
         if (i == 0) {
@@ -47,7 +47,7 @@
 - (void)buttonAction:(UIButton *)button {
     if (button.tag == 100) {
         ProjectManager *manager = [ProjectManager sharedProjectManager];
-        [manager getNetworkDataTest];
+        [manager getNetworkDataTest:@""];
     } else if (button.tag == 101) {
         ProjectManager *manager = [ProjectManager sharedProjectManager];
         [manager getNetworkData:1 andType:2];

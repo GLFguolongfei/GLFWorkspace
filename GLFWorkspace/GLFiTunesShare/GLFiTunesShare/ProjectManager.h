@@ -20,7 +20,7 @@ HMSingletonH(ProjectManager)
 @property (nonatomic, assign) NSString *loginType;
 
 #pragma mark 网络爬虫
-- (void)getNetworkDataTest;
+- (void)getNetworkDataTest:(NSString *)urlString;
 - (void)getNetworkData:(NSInteger)index andType:(NSInteger)type;
 - (void)saveCurrenData; // 暂存当前数据
 - (void)getNetworkData1:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack; // NSURLConnection(视频)
