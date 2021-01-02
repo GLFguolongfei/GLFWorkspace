@@ -14,7 +14,7 @@ HMSingletonM(ProjectManager)
 
 #pragma mark - 网络爬虫
 + (void)getNetworkDataTest {
-    NSString *oldUrlStr = @"https://www.bpw4.com/shipin/94449.html";
+    NSString *oldUrlStr = @"https://www.jrz2ch.de/play.x?stype=mlvideo&movieid=20458";
     NSString *urlStr = [oldUrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // 中文必须转换
     NSURL *url = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
@@ -23,8 +23,8 @@ HMSingletonM(ProjectManager)
         NSLog(@"%@", str);
         NSString *resultStr1 = [self returnResultStr:str andType:1];
         NSString *resultStr2 = [self returnResultStr:str andType:2];
-        NSLog(@"resultStr1: %@", resultStr1);
-        NSLog(@"resultStr: %@", resultStr2);
+        NSLog(@"resultStr~~~1: %@", resultStr1);
+        NSLog(@"resultStr~~~2: %@", resultStr2);
     }];
     
     AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
@@ -35,74 +35,96 @@ HMSingletonM(ProjectManager)
         NSLog(@"%@", str);
         NSString *resultStr1 = [self returnResultStr:str andType:1];
         NSString *resultStr2 = [self returnResultStr:str andType:2];
-        NSLog(@"resultStr1: %@", resultStr1);
-        NSLog(@"resultStr: %@", resultStr2);
+        NSLog(@"resultStr~~~~~~1: %@", resultStr1);
+        NSLog(@"resultStr~~~~~~2: %@", resultStr2);
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@", error);
     }];
 }
 
-// NSURLConnection(视频)
-+ (void)getNetworkData1:(NSInteger)start andEnd:(NSInteger)end {
-    __block NSInteger startIndex = start;
-    __block NSInteger endIndex = end;
-    __block NSInteger counter = 0;
+// AFHTTPSessionManager(视频)
++ (void)getNetworkData:(NSInteger)index andType:(NSInteger)type {
+    NSInteger pageCount = 100;
+    if (type == 1) {
+        [self getNetworkData1:index andPageCount:pageCount andFinish:^{
+            NSInteger nextIndex = index + pageCount;
+            [self getNetworkData:nextIndex andType:type];
+        }];
+    } else {
+        [self getNetworkData2:index andPageCount:pageCount andFinish:^{
+            NSInteger nextIndex = index + pageCount;
+            [self getNetworkData:nextIndex andType:type];
+        }];
+    }
+}
 
-    NSMutableArray *resultArray = [[NSMutableArray alloc] init];
+// NSURLConnection(视频)
++ (void)getNetworkData1:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack {
+    __block NSInteger counter = 0;
+    NSMutableArray *array = [[NSMutableArray alloc] init];
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
-    for (NSInteger i = startIndex; i < endIndex; i++) {
+    for (NSInteger i = 0; i < pageCount; i++) {
+        if (start + i > [ProjectManager sharedProjectManager].endIndex) {
+            [[ProjectManager sharedProjectManager].resultArray addObjectsFromArray:array];
+            [self saveData:[ProjectManager sharedProjectManager].resultArray andFileName:@"netData"];
+            NSLog(@"~~~~~~~~~ ~~~~~~~~~ 爬取结束,共有数据 %ld 条", [ProjectManager sharedProjectManager].resultArray.count);
+            return;
+        }
         NSString *urlStr = [NSString stringWithFormat:@"https://www.bpw4.com/shipin/%ld.html", i];
         NSURL *url = [NSURL URLWithString:urlStr];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [NSURLConnection sendAsynchronousRequest:request queue:mainQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
             NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             NSString *resultStr = [self returnResultStr:str andType:1];
-            [resultArray addObject:resultStr];
+            [array addObject:resultStr];
             
-            counter++;
             if (resultStr.length > 0) {
-                NSLog(@"爬取进度(成功): %ld / %ld", counter, endIndex - startIndex);
+                NSLog(@"爬取成功: %ld", start + counter);
             } else {
-                NSLog(@"爬取进度(失败): %ld / %ld", counter, endIndex - startIndex);
+                NSLog(@"爬取失败: %ld", start + counter);
             }
-            if (counter >= endIndex - startIndex) {
-                [self saveData:resultArray andFileName:[NSString stringWithFormat:@"%ld ~ %ld", startIndex, endIndex]];
+            counter++;
+            if (counter >= pageCount) {
+                callBack();
             }
         }];
     }
 }
 
 // AFHTTPSessionManager(视频)
-+ (void)getNetworkData2:(NSInteger)start andEnd:(NSInteger)end {
-    __block NSInteger startIndex = start;
-    __block NSInteger endIndex = end; // 94445
++ (void)getNetworkData2:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack {
     __block NSInteger counter = 0;
-
-    NSMutableArray *resultArray = [[NSMutableArray alloc] init];
-    for (NSInteger i = startIndex; i < endIndex; i++) {
-        NSString *urlStr = [NSString stringWithFormat:@"https://www.bpw4.com/shipin/%ld.html", i];
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    for (NSInteger i = 0; i < pageCount; i++) {
+        if (start + i > [ProjectManager sharedProjectManager].endIndex) {
+            [[ProjectManager sharedProjectManager].resultArray addObjectsFromArray:array];
+            [self saveData:[ProjectManager sharedProjectManager].resultArray andFileName:@"netData"];
+            NSLog(@"~~~~~~~~~ ~~~~~~~~~ 爬取结束,共有数据 %ld 条", [ProjectManager sharedProjectManager].resultArray.count);
+            return;
+        }
+        NSString *urlStr = [NSString stringWithFormat:@"https://www.jrz2ch.de/play.x?stype=mlvideo&movieid=%ld", start + i];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
             NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
             NSString *resultStr = [self returnResultStr:str andType:1];
-            [resultArray addObject:resultStr];
+            [array addObject:resultStr];
             
-            counter++;
             if (resultStr.length > 0) {
-                NSLog(@"爬取进度(成功): %ld / %ld", counter, endIndex - startIndex);
+                NSLog(@"爬取成功: %ld", start + counter);
             } else {
-                NSLog(@"爬取进度(失败): %ld / %ld", counter, endIndex - startIndex);
+                NSLog(@"爬取失败: %ld", start + counter);
             }
-            if (counter >= endIndex - startIndex) {
-                [self saveData:resultArray andFileName:[NSString stringWithFormat:@"%ld ~ %ld", startIndex, endIndex]];
+            counter++;
+            if (counter >= pageCount) {
+                callBack();
             }
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+            NSLog(@"爬取失败: %ld", start + counter);
             counter++;
-            NSLog(@"爬取进度(失败): %ld / %ld", counter, endIndex - startIndex);
-            if (counter >= endIndex - startIndex) {
-                [self saveData:resultArray andFileName:[NSString stringWithFormat:@"%ld ~ %ld", startIndex, endIndex]];
+            if (counter >= pageCount) {
+                callBack();
             }
         }];
     }
@@ -209,7 +231,7 @@ HMSingletonM(ProjectManager)
     }
     NSString *resultStr = @"";
     if (type == 1) {
-        NSRange range1 = [str rangeOfString:@"data-clipboard-text=\"https://"];
+        NSRange range1 = [str rangeOfString:@"http:"];
         NSRange range2 = [str rangeOfString:@".mp4"];
         if (range1.length > 0 && range2.length > 0 && range2.location - range1.location > 0) {
             NSRange range = NSMakeRange(range1.location, range2.location + range2.length - range1.location);

@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef void (^LoadCallBack) (void);
+typedef void (^LoadFinishCallBack) (void);
 
 @interface ProjectManager : NSObject
 
@@ -18,11 +18,15 @@ HMSingletonH(ProjectManager)
 
 // 1-正规登陆（进入首页） 2-密码登陆（进入抖音页） 3-免密登陆（进入首页）
 @property (nonatomic, assign) NSString *loginType;
+// 网络爬虫
+@property (nonatomic, copy) NSMutableArray *resultArray;
+@property (nonatomic, assign) NSInteger endIndex;
 
 #pragma mark 网络爬虫
 + (void)getNetworkDataTest;
-+ (void)getNetworkData1:(NSInteger)start andEnd:(NSInteger)end; // NSURLConnection(视频)
-+ (void)getNetworkData2:(NSInteger)start andEnd:(NSInteger)end; // AFHTTPSessionManager(视频)
++ (void)getNetworkData:(NSInteger)index andType:(NSInteger)type;
++ (void)getNetworkData1:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack; // NSURLConnection(视频)
++ (void)getNetworkData2:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack; // AFHTTPSessionManager(视频)
 
 #pragma mark 公司自动打卡
 + (void)iskytripLogin;
