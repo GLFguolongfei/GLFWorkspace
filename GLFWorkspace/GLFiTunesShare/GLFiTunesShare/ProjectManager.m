@@ -10,9 +10,10 @@
 
 @interface ProjectManager()
 {
-    NSMutableArray *resultArray;
+    NSMutableArray *resultArray; // 爬取结果
+    NSMutableArray *errorResultArray; // 补救成功-爬取结果
+    NSMutableArray *errorUrlArray; // 补救失败-url数组
     NSInteger endIndex;
-    NSMutableArray *errorArray;
 }
 @end
 
@@ -35,12 +36,13 @@ HMSingletonM(ProjectManager)
         NSString *resultStr2 = [self returnResultStr:str andType:2];
         if (urlString.length > 0) {
             if (resultStr1.length > 0) {
-                [errorArray addObject:resultStr1];
-                NSLog(@"~~~~~~ 补救成功: %ld", errorArray.count);
-            }
-            if (resultStr2.length > 0) {
-                [errorArray addObject:resultStr2];
-                NSLog(@"~~~~~~ 补救成功: %ld", errorArray.count);
+                [errorResultArray addObject:resultStr1];
+                NSLog(@"~~~~~~ 补救成功: %ld", errorResultArray.count);
+            } else if (resultStr2.length > 0) {
+                [errorResultArray addObject:resultStr2];
+                NSLog(@"~~~~~~ 补救成功: %ld", errorResultArray.count);
+            } else {
+                [errorUrlArray addObject:urlString];
             }
         } else {
             NSLog(@"%@", str);
@@ -58,12 +60,13 @@ HMSingletonM(ProjectManager)
         NSString *resultStr2 = [self returnResultStr:str andType:2];
         if (urlString.length > 0) {
             if (resultStr1.length > 0) {
-                [errorArray addObject:resultStr1];
-                NSLog(@"~~~~~~ 补救成功: %ld", errorArray.count);
-            }
-            if (resultStr2.length > 0) {
-                [errorArray addObject:resultStr2];
-                NSLog(@"~~~~~~ 补救成功: %ld", errorArray.count);
+                [errorResultArray addObject:resultStr1];
+                NSLog(@"~~~~~~ 补救成功: %ld", errorResultArray.count);
+            } else if (resultStr2.length > 0) {
+                [errorResultArray addObject:resultStr2];
+                NSLog(@"~~~~~~ 补救成功: %ld", errorResultArray.count);
+            } else {
+                [errorUrlArray addObject:urlString];
             }
         } else {
             NSLog(@"%@", str);
@@ -80,8 +83,9 @@ HMSingletonM(ProjectManager)
     NSInteger pageCount = 5;
     if (index < pageCount) {
         resultArray = [[NSMutableArray alloc] init];
+        errorResultArray = [[NSMutableArray alloc] init];
+        errorUrlArray = [[NSMutableArray alloc] init];
         endIndex = 22506;
-        errorArray = [[NSMutableArray alloc] init];
     }
     if (type == 1) {
         [self getNetworkData1:index andPageCount:pageCount andFinish:^{
@@ -98,7 +102,25 @@ HMSingletonM(ProjectManager)
 
 - (void)saveCurrenData {
     [self saveData:resultArray andFileName:@"netData1"];
-    [self saveData:errorArray andFileName:@"netData2"];
+    [self saveData:errorUrlArray andFileName:@"netData2"];
+}
+
+- (void)remedialNetwork {
+    NSMutableArray *array = [errorUrlArray mutableCopy];
+    NSLog(@"需要补救的URL: %ld", array.count);
+    NSInteger counter = 0;
+    NSMutableArray *removeArray = [[NSMutableArray alloc] init];
+    for (NSString *urlString in array) {
+        [self getNetworkDataTest:urlString];
+        [removeArray addObject:urlString];
+        counter++;
+        if (counter > 10) {
+            break;
+        }
+    }
+    for (NSString *urlString in removeArray) {
+        [errorUrlArray removeObject:urlString];
+    }
 }
 
 // NSURLConnection(视频)
@@ -117,9 +139,9 @@ HMSingletonM(ProjectManager)
             NSString *resultStr = [self returnResultStr:str andType:1];
             if (resultStr.length > 0) {
                 [resultArray addObject:resultStr];
-                NSLog(@"爬取进度: %ld / %ld", start + counter, endIndex);
+                NSLog(@"爬取成功: %ld / %ld / %ld", resultArray.count, start + counter, endIndex);
             } else {
-                NSLog(@"~~~~~~ 爬取失败: %ld / %ld", start + counter, endIndex);
+                NSLog(@"~~~~~~ 爬取失败: %ld / %ld / %ld", resultArray.count, start + counter, endIndex);
                 [self getNetworkDataTest:urlStr];
             }
             counter++;
@@ -149,9 +171,9 @@ HMSingletonM(ProjectManager)
             NSString *resultStr = [self returnResultStr:str andType:1];
             if (resultStr.length > 0) {
                 [resultArray addObject:resultStr];
-                NSLog(@"爬取成功: %ld / %ld", start + counter, endIndex);
+                NSLog(@"爬取成功: %ld / %ld / %ld", resultArray.count, start + counter, endIndex);
             } else {
-                NSLog(@"~~~~~~ 爬取失败: %ld / %ld", start + counter, endIndex);
+                NSLog(@"~~~~~~ 爬取失败:  %ld / %ld / %ld", resultArray.count, start + counter, endIndex);
                 [self getNetworkDataTest:urlStr];
             }
             counter++;
@@ -162,7 +184,7 @@ HMSingletonM(ProjectManager)
                 [self saveCurrenData];
             }
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            NSLog(@"~~~~~~ 爬取失败: %ld / %ld", start + counter, endIndex);
+            NSLog(@"~~~~~~ 爬取失败:  %ld / %ld / %ld", resultArray.count, start + counter, endIndex);
             [self getNetworkDataTest:urlStr];
             counter++;
             if (counter >= pageCount) {

@@ -23,6 +23,7 @@ HMSingletonH(ProjectManager)
 - (void)getNetworkDataTest:(NSString *)urlString;
 - (void)getNetworkData:(NSInteger)index andType:(NSInteger)type;
 - (void)saveCurrenData; // 暂存当前数据
+- (void)remedialNetwork; // 补救请求失败
 - (void)getNetworkData1:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack; // NSURLConnection(视频)
 - (void)getNetworkData2:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack; // AFHTTPSessionManager(视频)
 

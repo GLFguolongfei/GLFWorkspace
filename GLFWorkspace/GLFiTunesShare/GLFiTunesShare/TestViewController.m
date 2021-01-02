@@ -23,7 +23,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self setVCTitle:@"测试功能"];
     
-    for (NSInteger i = 0; i < 4; i++) {
+    for (NSInteger i = 0; i < 5; i++) {
         CGRect frame = CGRectMake(100, 100 + 80 * i, kScreenWidth - 200, 60);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
         if (i == 0) {
@@ -31,6 +31,8 @@
         } else if (i == 1) {
             [button setTitle:@"网络爬虫-获取" forState:UIControlStateNormal];
         } else if (i == 2) {
+            [button setTitle:@"网络爬虫-补救" forState:UIControlStateNormal];
+        } else if (i == 3) {
             [button setTitle:@"网络爬虫-暂存" forState:UIControlStateNormal];
         } else {
             [button setTitle:@"其它测试" forState:UIControlStateNormal];
@@ -51,6 +53,9 @@
     } else if (button.tag == 101) {
         ProjectManager *manager = [ProjectManager sharedProjectManager];
         [manager getNetworkData:1 andType:2];
+    } else if (button.tag == 102) {
+        ProjectManager *manager = [ProjectManager sharedProjectManager];
+        [manager remedialNetwork];
     } else if (button.tag == 102) {
         ProjectManager *manager = [ProjectManager sharedProjectManager];
         [manager saveCurrenData];
