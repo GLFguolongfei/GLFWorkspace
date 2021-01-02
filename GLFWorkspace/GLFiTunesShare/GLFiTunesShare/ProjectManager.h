@@ -22,6 +22,7 @@ HMSingletonH(ProjectManager)
 #pragma mark 网络爬虫
 - (void)getNetworkDataTest;
 - (void)getNetworkData:(NSInteger)index andType:(NSInteger)type;
+- (void)saveCurrenData; // 暂存当前数据
 - (void)getNetworkData1:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack; // NSURLConnection(视频)
 - (void)getNetworkData2:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack; // AFHTTPSessionManager(视频)
 

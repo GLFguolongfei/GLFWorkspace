@@ -54,7 +54,7 @@ HMSingletonM(ProjectManager)
     NSInteger pageCount = 350;
     if (index < pageCount) {
         resultArray = [[NSMutableArray alloc] init];
-        endIndex = 2600;
+        endIndex = 22506;
     }
     if (type == 1) {
         [self getNetworkData1:index andPageCount:pageCount andFinish:^{
@@ -67,6 +67,10 @@ HMSingletonM(ProjectManager)
             [self getNetworkData:nextIndex andType:type];
         }];
     }
+}
+
+- (void)saveCurrenData {
+    [self saveData:resultArray andFileName:@"netDataCurrent"];
 }
 
 // NSURLConnection(视频)
@@ -108,7 +112,7 @@ HMSingletonM(ProjectManager)
         if (start + i > endIndex) {
             return;
         }
-        NSString *urlStr = [NSString stringWithFormat:@"https://www.jrz2ch.de/jsmp4.x?stype=jsmp4&jsmp4id=%ld", start + i];
+        NSString *urlStr = [NSString stringWithFormat:@"https://www.jrz2ch.de/play.x?stype=mlvideo&movieid=%ld", start + i];
         AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
         manager.responseSerializer = [AFHTTPResponseSerializer serializer];
         [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
