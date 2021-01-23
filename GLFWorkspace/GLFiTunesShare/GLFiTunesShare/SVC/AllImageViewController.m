@@ -286,9 +286,9 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     imageView.contentMode = UIViewContentModeScaleAspectFit;
     imageView.frame = CGRectMake(0, 0, 0, 0);
     imageView.center = self.view.center;
-    imageView.transform = CGAffineTransformMakeRotation(-135.0);
+//    imageView.transform = CGAffineTransformMakeRotation(-135.0); // 转的人头晕,还是不要了
     [UIView animateWithDuration:1 animations:^{
-        imageView.transform = CGAffineTransformIdentity;
+//        imageView.transform = CGAffineTransformIdentity;
         if (isHiddenNavi) {
             imageView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
         } else {
