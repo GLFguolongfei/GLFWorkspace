@@ -12,8 +12,8 @@
 @interface WebViewController ()<UIWebViewDelegate, UIScrollViewDelegate>
 {
     UIWebView *_webView;
-    UIBarButtonItem *item1;
-    UIBarButtonItem *item2;
+    UIBarButtonItem *toolItem1;
+    UIBarButtonItem *toolItem2;
     
     NSTimer *timer;
     NSInteger count; // 过滤次数
@@ -39,18 +39,19 @@
     self.navigationItem.rightBarButtonItems = @[item1, item2];
     self.view.backgroundColor = [UIColor whiteColor];
     self.canHiddenNaviBar = YES;
+    self.canHiddenToolBar = YES;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
 
     [self setWebView];
     
-    item1 = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(button1)];
-    item2 = [[UIBarButtonItem alloc] initWithTitle:@"Forward" style:UIBarButtonItemStylePlain target:self action:@selector(button2)];
-    UIBarButtonItem *item3 = [[UIBarButtonItem alloc] initWithTitle:@"内容过滤" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
-    UIBarButtonItem *item4 = [[UIBarButtonItem alloc] initWithTitle:@"纯文本" style:UIBarButtonItemStylePlain target:self action:@selector(button4)];
+    toolItem1 = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(button1)];
+    toolItem2 = [[UIBarButtonItem alloc] initWithTitle:@"Forward" style:UIBarButtonItemStylePlain target:self action:@selector(button2)];
+    UIBarButtonItem *toolItem3 = [[UIBarButtonItem alloc] initWithTitle:@"内容过滤" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
+    UIBarButtonItem *toolItem4 = [[UIBarButtonItem alloc] initWithTitle:@"纯文本" style:UIBarButtonItemStylePlain target:self action:@selector(button4)];
     UIBarButtonItem *toolBarSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
-    self.toolbarItems = @[toolBarSpace, item1, toolBarSpace, item2, toolBarSpace, item3, toolBarSpace, item4, toolBarSpace];
-    [self.navigationController setToolbarHidden:NO animated:YES];
+    self.toolbarItems = @[toolBarSpace, toolItem1, toolBarSpace, toolItem2, toolBarSpace, toolItem3, toolBarSpace, toolItem4, toolBarSpace];
+    [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -260,6 +261,7 @@
     NSString *msg = [NSString stringWithFormat:@"加载失败: %@", error.localizedDescription];
     [self showStringHUD:msg second:3];
     [self hideAllHUD];
+    [self contentSetup];
     if (errorCount < 3) {
         errorCount++;
         [webView reload];
@@ -288,8 +290,8 @@
     NSString *resultJS = [_webView stringByEvaluatingJavaScriptFromString:js];
     self.title = resultJS;
     // 页面能否返回
-    item1.enabled = _webView.canGoBack;
-    item2.enabled = _webView.canGoForward;
+    toolItem1.enabled = _webView.canGoBack;
+    toolItem2.enabled = _webView.canGoForward;
     // 保存网址
     if (_webView.canGoBack) {
         return; // 能返回,就表示不是第一个页面,就不必再保存了
