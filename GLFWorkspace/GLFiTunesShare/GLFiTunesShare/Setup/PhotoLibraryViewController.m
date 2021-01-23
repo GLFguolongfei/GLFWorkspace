@@ -46,7 +46,10 @@ static NSString *cellID = @"cellID";
     UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"选择" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction:)];
     self.navigationItem.rightBarButtonItem = item;
     self.navigationItem.rightBarButtonItem.enabled = NO;
-    
+    self.canHiddenNaviBar = YES;
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
+
     collectionViewArray = [[NSMutableArray alloc] init];
     stackViewArray = [[NSMutableArray alloc] init];
     nameArray = [[NSMutableArray alloc] init];
@@ -76,6 +79,15 @@ static NSString *cellID = @"cellID";
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [gestureView removeFromSuperview];
+}
+
+- (void)naviBarChange:(NSNotification *)notify {
+    NSDictionary *dict = notify.userInfo;
+    if ([dict[@"isHidden"] isEqualToString: @"1"]) {
+        collectionView.frame = CGRectMake(0, 0, kScreenWidth, kScreenHeight);
+    } else {
+        collectionView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    }
 }
 
 - (void)resetData {
