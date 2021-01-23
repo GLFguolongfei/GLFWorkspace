@@ -9,7 +9,7 @@
 #import "WebViewController.h"
 #import "WebViewController+RegisterHandler.h"
 
-@interface WebViewController ()<UIWebViewDelegate>
+@interface WebViewController ()<UIWebViewDelegate, UIScrollViewDelegate>
 {
     UIWebView *_webView;
     UIBarButtonItem *item1;
@@ -23,6 +23,8 @@
     NSURL *currentURL;
     
     NSMutableArray *blackIPArray;
+    
+    CGPoint startContentOffset;
 }
 @end
 
@@ -66,11 +68,11 @@
 
 #pragma mark Setup
 - (void)setWebView {
-    CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64-49);
+    CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
     if (tabbarHidden.integerValue) {
-        rect = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20-49);
+        rect = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20);
     }
 
     NSString *isHaveBridge = [userDefaults objectForKey:kHaveBridge];
@@ -86,6 +88,7 @@
     _webView.dataDetectorTypes = UIDataDetectorTypeAll; // 设定使电话号码、网址、电子邮件和符合格式的日期等文字变为链接文字
     _webView.scalesPageToFit = YES;
     _webView.delegate = self;
+    _webView.scrollView.delegate = self;
     [self.view addSubview:_webView];
     
     // Webview设置其UserAgent
@@ -117,6 +120,7 @@
     _webView.dataDetectorTypes = UIDataDetectorTypeAll; // 设定使电话号码、网址、电子邮件和符合格式的日期等文字变为链接文字
     _webView.scalesPageToFit = YES;
     _webView.delegate = self;
+    _webView.scrollView.delegate = self;
     [self.view addSubview:_webView];
     
     // Webview设置其UserAgent
@@ -212,9 +216,9 @@
 - (void)naviBarChange:(NSNotification *)notify {
     NSDictionary *dict = notify.userInfo;
     if ([dict[@"isHidden"] isEqualToString: @"1"]) {
-        _webView.frame = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20-49);
+        _webView.frame = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20);
     } else {
-        _webView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64-49);
+        _webView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
     }
 }
 
@@ -259,6 +263,21 @@
     if (errorCount < 3) {
         errorCount++;
         [webView reload];
+    }
+}
+
+#pragma mark UIScrollViewDelegate
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    startContentOffset = scrollView.contentOffset;
+}
+
+// 在滚动的时候调用
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    NSLog(@"%@", NSStringFromCGPoint(scrollView.contentOffset));
+    if (startContentOffset.y > scrollView.contentOffset.y) { // 向下滑动
+        [self.navigationController setToolbarHidden:NO animated:YES];
+    } else { // 向上滑动或不动
+        [self.navigationController setToolbarHidden:YES animated:YES];
     }
 }
 

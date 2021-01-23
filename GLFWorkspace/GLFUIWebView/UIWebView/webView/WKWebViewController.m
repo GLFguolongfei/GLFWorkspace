@@ -10,7 +10,7 @@
 #import <WebKit/WebKit.h>
 #import "WKWebViewController+RegisterHandler.h"
 
-@interface WKWebViewController ()<WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler>
+@interface WKWebViewController ()<WKUIDelegate, WKNavigationDelegate, WKScriptMessageHandler, UIScrollViewDelegate>
 {
     WKWebView *_wkWebView;
     UIProgressView *_progressView;
@@ -25,6 +25,8 @@
     NSURL *currentURL;
     
     NSMutableArray *blackIPArray;
+    
+    CGPoint startContentOffset;
 }
 @end
 
@@ -102,6 +104,7 @@
     _wkWebView = [[WKWebView alloc] initWithFrame:rect configuration:config];
     _wkWebView.UIDelegate = self;
     _wkWebView.navigationDelegate = self;
+    _wkWebView.scrollView.delegate = self;
     [self.view addSubview:_wkWebView];
     
     // WKWebview设置其UserAgent
@@ -141,6 +144,7 @@
     _wkWebView = [[WKWebView alloc] initWithFrame:rect configuration:config];
     _wkWebView.UIDelegate = self;
     _wkWebView.navigationDelegate = self;
+    _wkWebView.scrollView.delegate = self;
     [self.view addSubview:_wkWebView];
     
     NSURL *url = [NSURL URLWithString:self.urlStr];
@@ -388,6 +392,21 @@
 // 该代理提供一个必须实现的方法,这个方法是提高App与web端交互的关键,它可以直接将接收到的JS脚本转为OC或Swift对象
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
     NSLog(@"从web界面中接收到一个脚本时调用: %@", message);
+}
+
+#pragma mark UIScrollViewDelegate
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    startContentOffset = scrollView.contentOffset;
+}
+
+// 在滚动的时候调用
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+//    NSLog(@"%@", NSStringFromCGPoint(scrollView.contentOffset));
+    if (startContentOffset.y > scrollView.contentOffset.y) { // 向下滑动
+        [self.navigationController setToolbarHidden:NO animated:YES];
+    } else { // 向上滑动或不动
+        [self.navigationController setToolbarHidden:YES animated:YES];
+    }
 }
 
 #pragma mark WebView Events
