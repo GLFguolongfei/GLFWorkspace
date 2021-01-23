@@ -219,7 +219,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     _tableView1.showsVerticalScrollIndicator = NO;
     _tableView1.tableFooterView = [UIView new];
     _tableView1.separatorStyle = UITableViewCellSeparatorStyleNone;
-    _tableView1.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+    _tableView1.contentInset = UIEdgeInsetsMake(0, 0, 300, 0);
 
     if (colums == 2 || colums == 3) {
         CGRect frame2 = CGRectMake(kScreenWidth/2, 64, kScreenWidth/2, kScreenHeight-64);
@@ -234,7 +234,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         _tableView2.showsVerticalScrollIndicator = NO;
         _tableView2.tableFooterView = [UIView new];
         _tableView2.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView2.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+        _tableView2.contentInset = UIEdgeInsetsMake(0, 0, 300, 0);
     }
 
     if (colums == 3) {
@@ -246,7 +246,7 @@ static NSString *cellID3 = @"ShowTableViewCell3";
         [self.view addSubview:_tableView3];
         _tableView3.tableFooterView = [UIView new];
         _tableView3.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView3.contentInset = UIEdgeInsetsMake(0, 0, 100, 0);
+        _tableView3.contentInset = UIEdgeInsetsMake(0, 0, 300, 0);
     }
 
     [_tableView1 registerNib:[UINib nibWithNibName:@"ShowTableViewCell" bundle:nil] forCellReuseIdentifier:cellID1];
