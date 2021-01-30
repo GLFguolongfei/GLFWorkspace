@@ -598,8 +598,7 @@ HMSingletonM(DocumentManager)
         NSURL *fileUrl = [NSURL fileURLWithPath:outputFielPath];
         [captureMovieFileOutput startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
     }
-    NSDictionary *userInfo = @{@"isRecording": @"1"};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CamerIsRecording" object:self userInfo:userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CamerIsRecording" object:self userInfo:nil];
 }
 
 // 结束录制
@@ -609,8 +608,7 @@ HMSingletonM(DocumentManager)
         [captureSession stopRunning]; // 关闭摄像头
         [self configCamara:NO];
     }
-    NSDictionary *userInfo = @{@"isRecording": @"0"};
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"CamerIsRecording" object:self userInfo:userInfo];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"CamerIsRecording" object:self userInfo:nil];
 }
 
 // 切换前后摄像头

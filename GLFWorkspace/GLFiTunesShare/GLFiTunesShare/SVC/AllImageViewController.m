@@ -468,10 +468,6 @@ static NSString *cellID3 = @"ShowTableViewCell3";
     });
 }
 
-- (void)pageImage {
-    
-}
-
 - (void)naviBarChange:(NSNotification *)notify {
     NSDictionary *dict = notify.userInfo;
     CGRect frame1 = _tableView1.frame;

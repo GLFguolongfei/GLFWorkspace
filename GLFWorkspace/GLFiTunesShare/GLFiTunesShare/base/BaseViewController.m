@@ -47,9 +47,8 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *record = [userDefaults objectForKey:kRecord];
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
-//    [manager setVideosImage:5];
-//    [manager setScaleImage:3];
     if ([record isEqualToString:@"1"]) {
+        [self viewShow:nil];
         if (![manager isRecording]) {
             [manager startRecording];
         }
@@ -88,6 +87,12 @@
                 [[NSNotificationCenter defaultCenter] postNotificationName:@"ToolBarChange" object:self userInfo:dict];
             }
         }
+        if (colorBallLayer || snowEmitterLayer) {
+            [self removeEmitter];
+        } else {
+            // [self setupEmitter1];
+            [self setupEmitter2];
+        }
     }
 }
 
@@ -107,19 +112,10 @@
 }
 
 #pragma mark 通知
-- (void)fileReloadData:(NSNotification *)notify {
-    NSDictionary *dict = notify.userInfo;
-    NSString *timeStr = dict[@"time"];
-    NSString *msg = [NSString stringWithFormat:@"全局遍历完成, %@", timeStr];
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self showStringHUD:msg second:3];
-    });
-}
-
 - (void)viewShow:(NSNotification *)notify {
-    NSDictionary *dict = notify.userInfo;
-    NSString *isRecording = dict[@"isRecording"];
-    if ([isRecording integerValue]) {
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSString *record = [userDefaults objectForKey:kRecord];
+    if ([record isEqualToString:@"1"]) {
         if (!view) {
             CGRect frame = CGRectMake(kScreenWidth - 10, 15, 3, 15);
             view = [[UIView alloc] initWithFrame:frame];
@@ -128,7 +124,7 @@
             [self.navigationController.navigationBar bringSubviewToFront:view];
         }
         if (!timer) {
-            timer = [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
+            timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
             [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
         }
     } else {
@@ -141,10 +137,20 @@
 - (void)timerAction {
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if ([manager isHaveFace]) {
-        view.backgroundColor = kSAColorWithStr(@"999999");
+        if (view.alpha > 0.9) {
+            return;
+        }
+        [UIView animateWithDuration:0.5 animations:^{
+            view.alpha = 1;
+        }];
         [self.navigationController.navigationBar bringSubviewToFront:view];
     } else {
-        view.backgroundColor = kSAColorWithStr(@"CCCCCC");
+        if (view.alpha < 0.7) {
+            return;
+        }
+        [UIView animateWithDuration:0.5 animations:^{
+            view.alpha = 0.6;
+        }];
     }
 }
 
@@ -297,6 +303,8 @@
 - (void)removeEmitter {
     [colorBallLayer removeFromSuperlayer];
     [snowEmitterLayer removeFromSuperlayer];
+    colorBallLayer = nil;
+    snowEmitterLayer = nil;
 }
 
 #pragma mark 设置标题
