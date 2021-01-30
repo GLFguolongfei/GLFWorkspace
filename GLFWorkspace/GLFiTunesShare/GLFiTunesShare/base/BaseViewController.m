@@ -113,25 +113,26 @@
 
 #pragma mark 通知
 - (void)viewShow:(NSNotification *)notify {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *record = [userDefaults objectForKey:kRecord];
-    if ([record isEqualToString:@"1"]) {
-        if (!view) {
-            CGRect frame = CGRectMake(kScreenWidth - 10, 15, 3, 15);
-            view = [[UIView alloc] initWithFrame:frame];
-            view.backgroundColor = kSAColorWithStr(@"999999");
-            [self.navigationController.navigationBar addSubview:view];
-            [self.navigationController.navigationBar bringSubviewToFront:view];
-        }
-        if (!timer) {
-            timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
-            [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-        }
-    } else {
-        [view removeFromSuperview];
-        [timer invalidate];
-        timer = nil;
-    }
+    // 暂时先不要了
+//    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+//    NSString *record = [userDefaults objectForKey:kRecord];
+//    if ([record isEqualToString:@"1"]) {
+//        if (!view) {
+//            CGRect frame = CGRectMake(kScreenWidth - 10, 15, 3, 15);
+//            view = [[UIView alloc] initWithFrame:frame];
+//            view.backgroundColor = kSAColorWithStr(@"999999");
+//            [self.navigationController.navigationBar addSubview:view];
+//            [self.navigationController.navigationBar bringSubviewToFront:view];
+//        }
+//        if (!timer) {
+//            timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(timerAction) userInfo:nil repeats:YES];
+//            [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+//        }
+//    } else {
+//        [view removeFromSuperview];
+//        [timer invalidate];
+//        timer = nil;
+//    }
 }
 
 - (void)timerAction {
