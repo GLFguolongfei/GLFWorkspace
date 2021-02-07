@@ -71,9 +71,7 @@
         button.layer.cornerRadius = 5;
         button.layer.masksToBounds = YES;
         [self.view addSubview:button];
-    }
-    
-    [self setupEmitter2];
+    }    
 }
 
 // 更改状态栏
