@@ -148,8 +148,8 @@
     NSLog(@"%ld", imageView.tag);
     if (showImageView.hidden == NO) {
         [UIView animateWithDuration:0.6 animations:^{
-            showImageView.frame = currentRect;
             showImageView.transform = currentTransform;
+            showImageView.frame = currentRect;
         } completion:^(BOOL finished) {
             showImageView.hidden = YES;
         }];
@@ -162,8 +162,8 @@
         currentRect = imageView.frame;
         currentTransform = imageView.transform;
         [UIView animateWithDuration:0.6 animations:^{
-            showImageView.frame = kScreen;
             showImageView.transform = CGAffineTransformIdentity;
+            showImageView.frame = kScreen;
         }];
     }
 }
