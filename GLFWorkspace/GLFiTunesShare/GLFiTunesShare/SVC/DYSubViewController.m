@@ -88,6 +88,13 @@
     playerLayer = [AVPlayerLayer playerLayerWithPlayer:player];
     playerLayer.frame = kScreen;
     [self.view.layer addSublayer:playerLayer];
+    
+    NSString *MIMEType = [DocumentManager mimeTypeForFileAtPath2:self.model.path];
+    BOOL isCanPlay = [AVURLAsset isPlayableExtendedMIMEType:MIMEType];
+    NSLog(@"%d", isCanPlay);
+    if (!isCanPlay) {
+        [self showStringHUD:@"不支持该视频格式" second:1.5];
+    }
 }
 
 - (void)setupAVInfo {
@@ -130,7 +137,7 @@
     NSInteger interval = 10;
     // 根据总时长,设置每次快进和后退的时间间隔
     if (duration < 60) {
-        interval = duration / 20;
+        interval = duration / 15;
     } else if (duration < 300) {
         interval = duration / 30;
     } else {
@@ -138,8 +145,8 @@
     }
     if (interval < 5) {
         interval = 5;
-    } else if (interval > 300) {
-        interval = 300;
+    } else if (interval > 180) {
+        interval = 180;
     }
     NSInteger time = 0;
     if (isForward) {

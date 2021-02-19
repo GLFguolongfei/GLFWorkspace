@@ -73,8 +73,6 @@
             currentModel = _dataArray[selectIndex];
             [self prepareView];
         }
-        NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
-        [self showStringHUD:str second:2];
     }];
 }
 

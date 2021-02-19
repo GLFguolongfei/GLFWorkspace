@@ -71,9 +71,7 @@
     [super viewWillAppear:animated];
     [self.navigationController setNavigationBarHidden:YES animated:YES];
     [self.navigationController setToolbarHidden:YES animated:YES];
-    if (pageVC) {
-        return;
-    }
+    
     // 导航栏bg
     gestureView = [[UIView alloc] initWithFrame:CGRectMake((kScreenWidth - 150) / 2, -20, 150, 64)];
     gestureView.backgroundColor = [UIColor clearColor];
@@ -87,6 +85,10 @@
     
     // 放在最上面,否则点击事件没法触发
     [self.navigationController.navigationBar bringSubviewToFront:gestureView];
+    
+    if (pageVC) {
+        return;
+    }
     
     // 数据
     NSString *indexStr = [[NSUserDefaults standardUserDefaults] objectForKey:@"selectIndex"];
@@ -145,8 +147,6 @@
            }
            currentModel = _dataArray[selectIndex];
            [self prepareView];
-           NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
-           [self showStringHUD:str second:2];
         }];
     } else {
         [DocumentManager getAllDYVideosArray:^(NSArray * array) {
@@ -156,8 +156,6 @@
             }
             currentModel = _dataArray[selectIndex];
             [self prepareView];
-            NSString *str = [NSString stringWithFormat:@"所有视频(%lu)", (unsigned long)_dataArray.count];
-            [self showStringHUD:str second:2];
         }];
     }
 }
@@ -361,7 +359,7 @@
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"显/隐 删除按钮" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"显/隐 删除" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         editBgView2.hidden = !editBgView2.hidden;
     }];
     [alertVC addAction:okAction1];
