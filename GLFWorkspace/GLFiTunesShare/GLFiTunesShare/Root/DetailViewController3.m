@@ -179,7 +179,7 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"isHiddenNaviBar" object:self userInfo:nil];
     VideoToolView *toolView = [[VideoToolView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 200)];
     toolView.parentVC = self;
-    toolView.backgroundColor = [UIColor colorWithRed:24/255.0f green:138/255.0f blue:225/255.0f alpha:0.7];
+    toolView.backgroundColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.5];
     GLFLewPopupViewAnimationSlide *animation = [[GLFLewPopupViewAnimationSlide alloc]init];
     animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
     [self lew_presentPopupView:toolView animation:animation dismissed:^{
