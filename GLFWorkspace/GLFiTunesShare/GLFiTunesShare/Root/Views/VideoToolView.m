@@ -18,6 +18,8 @@
     DetailViewController3 *vc;
     SubViewController3 *subVC;
     BOOL isSlidering;
+    
+    UIButton *button;
 }
 @end
 
@@ -58,7 +60,7 @@
     [self addSubview:label2];
     
     CGRect buttonFrame = CGRectMake(self.frame.size.width - 100, 105, 100, 20);
-    UIButton *button = [[UIButton alloc] initWithFrame:buttonFrame];
+    button = [[UIButton alloc] initWithFrame:buttonFrame];
     [button setTitle:@"1倍速" forState:UIControlStateNormal];
     [button setTitleColor:KNavgationBarColor forState:UIControlStateNormal];
     [self addSubview:button];
@@ -106,6 +108,8 @@
     UISlider *slider = (UISlider *)sender;
     NSLog(@"%f", slider.value);
     [vc playRate:slider.value];
+    NSString *str = [NSString stringWithFormat:@"%0.1f倍速", slider.value];
+    [button setTitle:str forState:UIControlStateNormal];
 }
 
 
