@@ -51,11 +51,15 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    // 禁用右滑返回
+    // 禁用右滑返回(不能禁止)
     if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
         self.navigationController.interactivePopGestureRecognizer.enabled = NO;
         self.navigationController.interactivePopGestureRecognizer.delegate = self;
     }
+    // 禁用右滑返回(虽然能禁止,但也导致其它问题)
+//    id traget = self.navigationController.interactivePopGestureRecognizer.delegate;
+//    UIPanGestureRecognizer * pan = [[UIPanGestureRecognizer alloc]initWithTarget:traget action:nil];
+//    [self.view addGestureRecognizer:pan];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
