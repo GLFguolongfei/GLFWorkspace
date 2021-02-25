@@ -40,7 +40,7 @@
         [self setVCTitle:@"抖音短视频"];
     } else {
         [self setVCTitle:@"垃圾篓视频"];
-        UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithTitle:@"清空" style:UIBarButtonItemStylePlain target:self action:@selector(clearArray)];
+        UIBarButtonItem *barItem = [[UIBarButtonItem alloc] initWithTitle:@"清空垃圾篓" style:UIBarButtonItemStylePlain target:self action:@selector(clearArray)];
         self.navigationItem.rightBarButtonItem = barItem;
     }
     
@@ -322,26 +322,35 @@
 }
 
 - (void)clearArray {
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *path = [paths objectAtIndex:0];
-    for (NSInteger i = 0; i < editArray.count; i++) {
-        NSString *filePath = [NSString stringWithFormat:@"%@/%@", path, editArray[i]];
-        [GLFFileManager fileDelete:filePath];
-    }
-    [DocumentManager eachAllFiles];
-    
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    [userDefaults setObject:[[NSMutableArray alloc] init] forKey:kRemove];
-    [userDefaults synchronize];
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"再次确定" message:@"是否确认清空垃圾篓?" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 
-    [self showHUD:@"清理中, 不要着急!"];
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self showStringHUD:@"清空完成" second:2];
-    });
-    
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        [self.navigationController popViewControllerAnimated:YES];
-    });
+    }];
+    [alertVC addAction:cancelAction];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *path = [paths objectAtIndex:0];
+        for (NSInteger i = 0; i < editArray.count; i++) {
+            NSString *filePath = [NSString stringWithFormat:@"%@/%@", path, editArray[i]];
+            [GLFFileManager fileDelete:filePath];
+        }
+        [DocumentManager eachAllFiles];
+        
+        NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+        [userDefaults setObject:[[NSMutableArray alloc] init] forKey:kRemove];
+        [userDefaults synchronize];
+
+        [self showHUD:@"清理中, 不要着急!"];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self showStringHUD:@"清空完成" second:2];
+        });
+        
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.navigationController popViewControllerAnimated:YES];
+        });
+    }];
+    [alertVC addAction:okAction];
+    [self presentViewController:alertVC animated:YES completion:nil];
 }
 
 #pragma mark UIPageViewControllerDataSource
