@@ -123,7 +123,12 @@
     if (isPlay) {
         [player play];
         // 定时器
-        timer = [NSTimer timerWithTimeInterval:0.1 target:self selector:@selector(showTimer) userInfo:nil repeats:YES];
+        NSInteger duration = (NSInteger)CMTimeGetSeconds(playerItem.duration);
+        NSTimeInterval interval = 0.1;
+        if (duration > 120) {
+            interval = 1;
+        }
+        timer = [NSTimer timerWithTimeInterval:interval target:self selector:@selector(showTimer) userInfo:nil repeats:YES];
         [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     } else {
         [player pause];
