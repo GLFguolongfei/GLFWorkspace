@@ -54,8 +54,8 @@
         jia = NO;
         
         // ------- 水的颜色可以设置
-        upWaterColor = [UIColor colorWithRed:24/255.0f green:138/255.0f blue:225/255.0f alpha:1];
-        downWaterColor = [UIColor colorWithRed:43/255.0f green:111/255.0f blue:219/255.0f alpha:1];
+        upWaterColor = [UIColor colorWithRed:24/255.0f green:138/255.0f blue:225/255.0f alpha:0.3];
+        downWaterColor = [UIColor colorWithRed:43/255.0f green:111/255.0f blue:219/255.0f alpha:0.5];
         // 水的高度可以设置
         _currentLinePointY = kScreenHeight-150;
         
