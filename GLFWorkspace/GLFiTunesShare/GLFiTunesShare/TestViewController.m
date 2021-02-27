@@ -10,7 +10,7 @@
 #import "WKWebViewController.h"
 #import <MediaPlayer/MediaPlayer.h>
 
-@interface TestViewController ()<MPMediaPickerControllerDelegate, UIDocumentPickerDelegate>
+@interface TestViewController ()<MPMediaPickerControllerDelegate>
 
 @end
 
@@ -61,8 +61,7 @@
         [manager saveCurrenData];
     } else {
         //    [self testWebView];
-        //    [self testMediaPicker];
-        //    [self testDocumentPicker];
+            [self testMediaPicker];
         //    [self testArchiverData];
 
         //    WKWebViewController *vc = [[WKWebViewController alloc] init];
@@ -82,13 +81,6 @@
     mediaPicker.prompt = @"请选择要播放的音乐";       // 提示文字
     mediaPicker.delegate = self;                   // 设置选择器代理
     [self presentViewController:mediaPicker animated:YES completion:nil];
-}
-
-- (void)testDocumentPicker {
-    NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code ", @"public.image", @"public.audiovisual-content", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
-    UIDocumentPickerViewController *documentPickerViewController = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeOpen];
-    documentPickerViewController.delegate = self;
-    [self presentViewController:documentPickerViewController animated:YES completion:nil];
 }
 
 - (void)testArchiverData {
@@ -126,19 +118,6 @@
 // 取消选择
 - (void)mediaPickerDidCancel:(MPMediaPickerController *)mediaPicker {
     [mediaPicker dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark UIDocumentPickerDelegate
-- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls {
-    NSLog(@"%@", urls);
-}
-
-- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
-    NSLog(@"111%@", controller);
-}
-
-- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
-    NSLog(@"222%@", url);
 }
 
 

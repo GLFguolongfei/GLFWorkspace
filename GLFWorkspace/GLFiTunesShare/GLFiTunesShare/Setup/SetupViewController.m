@@ -19,7 +19,7 @@
 #import "SearchViewController.h"
 #import "DYViewController.h"
 
-@interface SetupViewController ()<UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
+@interface SetupViewController ()<UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIDocumentPickerDelegate>
 {
     UIImageView *bgImageView;
     UIView *gestureView;
@@ -85,6 +85,7 @@
     CGFloat space = (kScreenWidth - 60) / 2 ;
     for (int i = 0; i < 2; i++) {
         UIButton *button = [[UIButton alloc] init];
+//        button.backgroundColor = [UIColor redColor];
         if (i == 0) {
             button.frame = CGRectMake(20, kScreenHeight-110, space, 60);
             [button setTitle:@"设置背景图像" forState:UIControlStateNormal];
@@ -96,6 +97,21 @@
         button.tag = 100 + i;
         [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
+    
+//    for (int i = 0; i < 2; i++) {
+//        UIButton *button = [[UIButton alloc] init];
+//        button.backgroundColor = [UIColor redColor];
+//        if (i == 0) {
+//            button.frame = CGRectMake(20, kScreenHeight-210, space, 60);
+//            [button setTitle:@"iCloud导入" forState:UIControlStateNormal];
+//        } else if (i == 1) {
+//            button.frame = CGRectMake(space + 40, kScreenHeight-210, space, 60);
+//            [button setTitle:@"导出iCloud" forState:UIControlStateNormal];
+//        }
+//        [self.view addSubview:button];
+//        button.tag = 200 + i;
+//        [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+//    }
     
     UIBarButtonItem *pictureItem = [[UIBarButtonItem alloc] initWithTitle:@"所有图片" style:UIBarButtonItemStylePlain target:self action:@selector(button1)];
     UIBarButtonItem *videoItem = [[UIBarButtonItem alloc] initWithTitle:@"所有视频" style:UIBarButtonItemStylePlain target:self action:@selector(button2)];
@@ -188,6 +204,19 @@
     } else if (button.tag == 101) {
         WebSetupViewController *webSetupVC = [[WebSetupViewController alloc] init];
         [self.navigationController pushViewController:webSetupVC animated:YES];
+    }
+    if (button.tag == 200) {
+        NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code ", @"public.image", @"public.audiovisual-content", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
+        UIDocumentPickerViewController *controller = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeImport];
+        controller.delegate = self;
+    //    controller.allowsMultipleSelection = YES; // 只支持iOS11.0以上
+        [self presentViewController:controller animated:YES completion:nil];
+    } else if (button.tag == 201) {
+        NSURL *url = [[NSBundle mainBundle] URLForResource:@"test" withExtension:@"html"];
+        UIDocumentPickerViewController *controller = [[UIDocumentPickerViewController alloc] initWithURL:url inMode:UIDocumentPickerModeExportToService];
+        controller.delegate = self;
+        controller.modalPresentationStyle = UIModalPresentationFormSheet;
+        [self presentViewController:controller animated:YES completion:nil];
     }
 }
 
@@ -359,6 +388,21 @@
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+#pragma mark UIDocumentPickerDelegate
+// iOS11.0以上
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls {
+    NSLog(@"111: %@", urls);
+}
+
+// iOS11.0以下
+- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
+    NSLog(@"333: %@", url);
+}
+
+- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
+    NSLog(@"222: %@", controller);
 }
 
 
