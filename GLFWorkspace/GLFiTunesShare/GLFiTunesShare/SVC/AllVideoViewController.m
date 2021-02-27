@@ -23,7 +23,6 @@ static NSString *cellID = @"VideoTableViewCell";
     
     UIView *gestureView;
     BOOL isShowDefault;
-    BOOL isShowImage;
 }
 @end
 
@@ -34,9 +33,8 @@ static NSString *cellID = @"VideoTableViewCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"图文" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
-    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"文字" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction2)];
-    self.navigationItem.rightBarButtonItems = @[item1, item2];
+    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"动态图文" style:UIBarButtonItemStylePlain target:self action:@selector(buttonAction1)];
+    self.navigationItem.rightBarButtonItems = @[item1];
     [self setVCTitle:@"所有视频"];
     self.canHiddenNaviBar = YES;
     
@@ -138,12 +136,6 @@ static NSString *cellID = @"VideoTableViewCell";
     }];
     [alertVC addAction:okAction];
     
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"实时视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        AllVideoPlayViewController *vc = [[AllVideoPlayViewController alloc] init];
-        [self.navigationController pushViewController:vc animated:YES];
-    }];
-    [alertVC addAction:okAction2];
-    
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if (manager.isRecording) {
         UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"切换主题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -159,42 +151,8 @@ static NSString *cellID = @"VideoTableViewCell";
 }
 
 - (void)buttonAction1 {
-    [self showHUD:@"加载中, 不要着急!"];
-    isShowImage = YES;
-    __block NSInteger count = 0;
-    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-    dispatch_async(queue, ^{
-        NSArray *array = [_tableView indexPathsForVisibleRows];
-        NSInteger first = 0;
-        if (array.count > 0) {
-            NSIndexPath *indexPath = array.firstObject;
-            first = indexPath.row;
-        }
-        for (NSInteger i = first; i < _dataArray.count; i++) {
-            if (count >= 15) {
-                break;
-            }
-            FileModel *model = _dataArray[i];
-            if (model.image == nil) {
-                count++;
-                #if FirstTarget
-                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
-                #else
-                    model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
-                #endif
-                [_dataArray replaceObjectAtIndex:i withObject:model];
-            }
-        }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self hideAllHUD];
-            [_tableView reloadData];
-        });
-    });
-}
-
-- (void)buttonAction2 {
-    isShowImage = NO;
-    [_tableView reloadData];
+    AllVideoPlayViewController *vc = [[AllVideoPlayViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark UITableViewDelegate
@@ -218,7 +176,7 @@ static NSString *cellID = @"VideoTableViewCell";
     cell.vTextLabel.text = array.lastObject;
     cell.vTextLabel.numberOfLines = 0;
     
-    if (isShowImage && model.image != nil && model.image.size.width > 0) {
+    if (model.image != nil && model.image.size.width > 0) {
         cell.vImageView.image = model.image;
         CGFloat width = 100 * model.image.size.width / model.image.size.height;
         if (width > kScreenWidth / 2) {
@@ -314,7 +272,7 @@ static NSString *cellID = @"VideoTableViewCell";
 - (CGFloat)returnCellHeight:(FileModel *)model {
     NSArray *array = [model.name componentsSeparatedByString:@"/"];
     NSString *name = [array lastObject];
-    if (isShowImage && model.image != nil && model.image.size.width > 0) {
+    if (model.image != nil && model.image.size.width > 0) {
         CGFloat width = 100 * model.image.size.width / model.image.size.height;
         if (width > kScreenWidth / 2) {
             width = kScreenWidth / 2;
