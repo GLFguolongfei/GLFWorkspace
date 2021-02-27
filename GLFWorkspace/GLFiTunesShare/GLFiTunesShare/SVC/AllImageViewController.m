@@ -368,6 +368,11 @@ static NSString *cellID3 = @"ShowTableViewCell3";
 - (void)autoPlay {
     isPlaying = !isPlaying;
     if (isPlaying) {
+        // 隐藏导航栏
+        [self.navigationController setNavigationBarHidden:YES animated:YES];
+        NSDictionary *dict = @{@"isHidden": @"1"};
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"NaviBarChange" object:self userInfo:dict];
+        // 开始播放
         [UIView animateWithDuration:1 animations:^{
             visualEfView.alpha = 0.7;
         } completion:^(BOOL finished) {
