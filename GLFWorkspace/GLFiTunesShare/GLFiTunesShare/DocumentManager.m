@@ -592,11 +592,38 @@ HMSingletonM(DocumentManager)
         captureConnection.videoOrientation = [captureVideoPreviewLayer connection].videoOrientation;
         NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
         NSString *rootPaht = [paths objectAtIndex:0];
-        NSString *name = [self returnName];
-        NSString *outputFielPath = [NSString stringWithFormat:@"%@/郭龙飞/%@.mp4", rootPaht, name];
-        // NSLog(@"save path is: %@", outputFielPath);
-        NSURL *fileUrl = [NSURL fileURLWithPath:outputFielPath];
-        [captureMovieFileOutput startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
+        
+        // 获取路径
+        NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
+        [dateFormat setDateFormat:@"yyyy-MM-dd"];
+        NSString *dateStr = [dateFormat stringFromDate:[NSDate date]];
+        [dateFormat setDateFormat:@"HH:mm:ss"];
+        NSString *timeStr = [dateFormat stringFromDate:[NSDate date]];
+        NSString *outputFielPath = [NSString stringWithFormat:@"%@/郭龙飞/%@/%@.mp4", rootPaht, dateStr, timeStr];
+        NSLog(@"save path is: %@", outputFielPath);
+        
+        // 如果不是文件夹,那就创建,创建失败就用以前的
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        NSString *path = [NSString stringWithFormat:@"%@/郭龙飞/%@", rootPaht, dateStr];
+        BOOL isDerectary;
+        BOOL exist = [fileManager fileExistsAtPath:path isDirectory:&isDerectary];
+        if (exist && isDerectary) {
+            NSURL *fileUrl = [NSURL fileURLWithPath:outputFielPath];
+            [captureMovieFileOutput startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
+        } else {
+            BOOL success = [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
+            if (success) {
+                NSURL *fileUrl = [NSURL fileURLWithPath:outputFielPath];
+                [captureMovieFileOutput startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
+            } else {
+                [dateFormat setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+                NSString *str = [dateFormat stringFromDate:[NSDate date]];
+                outputFielPath = [NSString stringWithFormat:@"%@/郭龙飞/%@.mp4", rootPaht, str];
+                
+                NSURL *fileUrl = [NSURL fileURLWithPath:outputFielPath];
+                [captureMovieFileOutput startRecordingToOutputFileURL:fileUrl recordingDelegate:self];
+            }
+        }
     }
     [[NSNotificationCenter defaultCenter] postNotificationName:@"CamerIsRecording" object:self userInfo:nil];
 }
@@ -761,14 +788,6 @@ HMSingletonM(DocumentManager)
         }
     }
     return nil;
-}
-
-// 生成唯一不重复名称
-- (NSString *)returnName {
-    NSDateFormatter *dateFormat2 = [[NSDateFormatter alloc] init];
-    [dateFormat2 setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
-    NSString *dateStr = [dateFormat2 stringFromDate:[NSDate date]];
-    return dateStr;
 }
 
 // 返回压缩比例
