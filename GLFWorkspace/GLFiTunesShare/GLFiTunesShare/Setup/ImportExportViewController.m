@@ -58,8 +58,10 @@
         controller.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:controller animated:YES completion:nil];
     } else if (button.tag == 102) {
+        [self showStringHUD:@"暂未实现！！！" second:1.5];
         // UIImagePickerController
     } else if (button.tag == 103) {
+        [self showStringHUD:@"暂未实现！！！" second:1.5];
         // UIImageWriteToSavedPhotosAlbum
         // UIVideoAtPathIsCompatibleWithSavedPhotosAlbum
         // UISaveVideoAtPathToSavedPhotosAlbum
