@@ -58,9 +58,11 @@
         controller.modalPresentationStyle = UIModalPresentationFormSheet;
         [self presentViewController:controller animated:YES completion:nil];
     } else if (button.tag == 102) {
-        
+        // UIImagePickerController
     } else if (button.tag == 103) {
-        
+        // UIImageWriteToSavedPhotosAlbum
+        // UIVideoAtPathIsCompatibleWithSavedPhotosAlbum
+        // UISaveVideoAtPathToSavedPhotosAlbum
     }
 }
 
