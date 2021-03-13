@@ -71,7 +71,7 @@
         button.layer.cornerRadius = 5;
         button.layer.masksToBounds = YES;
         [self.view addSubview:button];
-    }    
+    }
 }
 
 // 更改状态栏

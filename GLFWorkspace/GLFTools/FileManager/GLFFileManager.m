@@ -77,7 +77,11 @@ HMSingletonM(FileManager)
     //   参数4: 创建失败的原因,是一个二级指针
     NSError *error;
     BOOL success = [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&error];
-    NSLog(@"文件夹创建: %@", success ? @"成功" : @"失败");
+    if (success) {
+        NSLog(@"文件夹创建: 成功");
+    } else {
+        NSLog(@"文件夹创建: %@ %@", @"失败", error);
+    }
     return success;
 }
 
@@ -91,7 +95,11 @@ HMSingletonM(FileManager)
     // 列toPath @"/Users/qianfeng/Desktop/guo.html"
     NSError *error;
     BOOL success = [fileManager copyItemAtPath:fromePath toPath:toPath error:&error];
-    NSLog(@"拷贝文件或文件夹: %@", success ? @"成功" : @"失败");
+    if (success) {
+        NSLog(@"拷贝文件或文件夹: 成功");
+    } else {
+        NSLog(@"拷贝文件或文件夹: %@ %@", @"失败", error);
+    }
     return success;
 }
 

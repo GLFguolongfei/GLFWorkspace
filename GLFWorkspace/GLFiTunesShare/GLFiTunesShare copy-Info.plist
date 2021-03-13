@@ -65,7 +65,7 @@
 	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>本App需要您的同意才能使用语音识别</string>
 	<key>UIFileSharingEnabled</key>
-	<true/>
+	<false/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen2</string>
 	<key>UIMainStoryboardFile</key>

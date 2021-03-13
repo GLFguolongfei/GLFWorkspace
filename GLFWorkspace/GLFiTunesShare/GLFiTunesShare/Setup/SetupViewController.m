@@ -18,8 +18,9 @@
 #import "AllVideoViewController.h"
 #import "SearchViewController.h"
 #import "DYViewController.h"
+#import "ImportExportViewController.h"
 
-@interface SetupViewController ()<UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate, UIDocumentPickerDelegate>
+@interface SetupViewController ()<UIActionSheetDelegate, UINavigationControllerDelegate, UIImagePickerControllerDelegate>
 {
     UIImageView *bgImageView;
     UIView *gestureView;
@@ -97,21 +98,6 @@
         button.tag = 100 + i;
         [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
     }
-    
-//    for (int i = 0; i < 2; i++) {
-//        UIButton *button = [[UIButton alloc] init];
-//        button.backgroundColor = [UIColor redColor];
-//        if (i == 0) {
-//            button.frame = CGRectMake(20, kScreenHeight-210, space, 60);
-//            [button setTitle:@"iCloud导入" forState:UIControlStateNormal];
-//        } else if (i == 1) {
-//            button.frame = CGRectMake(space + 40, kScreenHeight-210, space, 60);
-//            [button setTitle:@"导出iCloud" forState:UIControlStateNormal];
-//        }
-//        [self.view addSubview:button];
-//        button.tag = 200 + i;
-//        [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
-//    }
     
     UIBarButtonItem *pictureItem = [[UIBarButtonItem alloc] initWithTitle:@"所有图片" style:UIBarButtonItemStylePlain target:self action:@selector(button1)];
     UIBarButtonItem *videoItem = [[UIBarButtonItem alloc] initWithTitle:@"所有视频" style:UIBarButtonItemStylePlain target:self action:@selector(button2)];
@@ -205,19 +191,6 @@
         WebSetupViewController *webSetupVC = [[WebSetupViewController alloc] init];
         [self.navigationController pushViewController:webSetupVC animated:YES];
     }
-    if (button.tag == 200) {
-        NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code ", @"public.image", @"public.audiovisual-content", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
-        UIDocumentPickerViewController *controller = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeImport];
-        controller.delegate = self;
-    //    controller.allowsMultipleSelection = YES; // 只支持iOS11.0以上
-        [self presentViewController:controller animated:YES completion:nil];
-    } else if (button.tag == 201) {
-        NSURL *url = [[NSBundle mainBundle] URLForResource:@"test" withExtension:@"html"];
-        UIDocumentPickerViewController *controller = [[UIDocumentPickerViewController alloc] initWithURL:url inMode:UIDocumentPickerModeExportToService];
-        controller.delegate = self;
-        controller.modalPresentationStyle = UIModalPresentationFormSheet;
-        [self presentViewController:controller animated:YES completion:nil];
-    }
 }
 
 - (void)setState {
@@ -228,24 +201,30 @@
     }];
     [alertVC addAction:cancelAction];
 
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"刷新数据" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"刷新数据" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self showHUD:@"遍历中, 不要着急!"];
         });
         [DocumentManager eachAllFiles];
         [DocumentManager updateDocumentPaths];
     }];
-    [alertVC addAction:okAction];
+    [alertVC addAction:okAction1];
+    
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"导入数据" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        ImportExportViewController *vc = [[ImportExportViewController alloc] init];
+        [self.navigationController pushViewController:vc animated:YES];
+    }];
+    [alertVC addAction:okAction2];
 
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if (manager.isRecording) {
-        UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"切换主题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"切换主题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [manager switchCamera];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self reSetVCTitle];
             });
         }];
-        [alertVC addAction:okAction2];
+        [alertVC addAction:okAction3];
     }
     
     [self presentViewController:alertVC animated:YES completion:nil];
@@ -388,21 +367,6 @@
 
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
     [picker dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark UIDocumentPickerDelegate
-// iOS11.0以上
-- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentsAtURLs:(NSArray <NSURL *>*)urls {
-    NSLog(@"111: %@", urls);
-}
-
-// iOS11.0以下
-- (void)documentPicker:(UIDocumentPickerViewController *)controller didPickDocumentAtURL:(NSURL *)url {
-    NSLog(@"333: %@", url);
-}
-
-- (void)documentPickerWasCancelled:(UIDocumentPickerViewController *)controller {
-    NSLog(@"222: %@", controller);
 }
 
 

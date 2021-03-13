@@ -14,7 +14,7 @@
 #import "MoveViewController.h"
 #import "FileInfoViewController.h"
 
-@interface RootViewController ()<UITableViewDelegate, UITableViewDataSource, UIDocumentInteractionControllerDelegate, UIViewControllerPreviewingDelegate, UIVideoEditorControllerDelegate>
+@interface RootViewController ()<UITableViewDelegate, UITableViewDataSource, UIDocumentInteractionControllerDelegate, UIViewControllerPreviewingDelegate, UINavigationControllerDelegate, UIVideoEditorControllerDelegate>
 {
     UITableView *myTableView;
     NSMutableArray *myDataArray;
