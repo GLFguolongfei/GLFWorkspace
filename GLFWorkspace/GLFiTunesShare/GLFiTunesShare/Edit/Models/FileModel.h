@@ -15,7 +15,7 @@
 @property (nonatomic, strong) NSString *path;           // 全路径(含最后的名字以及扩展名)
 @property (nonatomic, strong) NSDictionary *attributes; // 属性字典
 @property (nonatomic, assign) NSInteger type;           // 1-文件夹 2-图片 3-视频 4-其它文件类型
-@property (nonatomic, assign) CGFloat size;             // 大小
+@property (nonatomic, assign) CGFloat size;             // 文件文件夹大小(单位字节)
 @property (nonatomic, assign) CGSize videoSize;         // 视频尺寸(只有视频有)
 @property (nonatomic, assign) NSInteger count;          // 子文件数目(只有文件夹有)
 

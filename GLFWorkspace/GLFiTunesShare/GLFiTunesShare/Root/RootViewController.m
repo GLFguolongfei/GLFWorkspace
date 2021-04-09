@@ -131,6 +131,12 @@
             model.name = array[i];
             model.path = [NSString stringWithFormat:@"%@/%@", self.pathStr,model.name];
             model.attributes = [GLFFileManager attributesOfItemAtPath:model.path];
+            // 是否为隐藏目录(注意：Inbox目录不是隐藏目录)
+            NSNumber *isHidden = (NSNumber *)model.attributes[@"NSFileExtensionHidden"];
+            if (isHidden.integerValue == 1) {
+                continue;
+            }
+            // 文件类型
             NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
             if (fileType == 1) { // 文件
                 model.size = [GLFFileManager fileSize:model.path];

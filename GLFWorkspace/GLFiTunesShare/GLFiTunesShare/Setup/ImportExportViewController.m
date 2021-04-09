@@ -49,7 +49,7 @@
         NSArray *documentTypes = @[@"public.content", @"public.text", @"public.source-code ", @"public.image", @"public.audiovisual-content", @"com.adobe.pdf", @"com.apple.keynote.key", @"com.microsoft.word.doc", @"com.microsoft.excel.xls", @"com.microsoft.powerpoint.ppt"];
         UIDocumentPickerViewController *controller = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:documentTypes inMode:UIDocumentPickerModeImport];
         controller.delegate = self;
-        // controller.allowsMultipleSelection = YES; // 只支持iOS11.0以上
+        controller.allowsMultipleSelection = YES; // 只支持iOS11.0以上
         [self presentViewController:controller animated:YES completion:nil];
     } else if (button.tag == 101) {
         NSURL *url = [[NSBundle mainBundle] URLForResource:@"test" withExtension:@"html"];

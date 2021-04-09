@@ -34,6 +34,8 @@
     UILabel *label4;
     
     BOOL isVisable;
+    
+    UIView *btnView;
 }
 @end
 
@@ -54,6 +56,7 @@
     }];
     [self prepareView];
     [self prepareInfoView];
+    [self prepareBtnView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -69,8 +72,8 @@
     bgImageView.image = [DocumentManager getBackgroundImage];
     
     NSNotificationCenter *center = [NSNotificationCenter defaultCenter];
-    [center addObserver:self selector:@selector(keyboardDidShow) name:UIKeyboardDidShowNotification object:nil];
-    [center addObserver:self selector:@selector(keyboardDidHide) name:UIKeyboardWillHideNotification object:nil];
+    [center addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardDidShowNotification object:nil];
+    [center addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -82,14 +85,6 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     [self resignFirstResponder];
     [searchBar resignFirstResponder];
-}
-
-- (void)keyboardDidShow {
-    isVisable = YES;
-}
-
-- (void)keyboardDidHide {
-    isVisable = NO;
 }
 
 - (void)prepareView {
@@ -125,12 +120,11 @@
     NSInteger allCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllCount"];
     NSInteger allImagesCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllImagesCount"];
     NSInteger allVideosCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllVideosCount"];
+    NSInteger AllOthersCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllOthersCount"];
     NSNumber *allSize = [[NSUserDefaults standardUserDefaults] valueForKey:@"AllSize"];
     NSNumber *allImagesSize = [[NSUserDefaults standardUserDefaults] valueForKey:@"AllImagesSize"];
     NSNumber *allVideosSize = [[NSUserDefaults standardUserDefaults] valueForKey:@"AllVideosSize"];
-    CGFloat allFilesArraySize = [allSize floatValue];
-    CGFloat allImagesArraySize = [allImagesSize floatValue];
-    CGFloat allVideosArraySize = [allVideosSize floatValue];
+    NSNumber *AllOthersSize = [[NSUserDefaults standardUserDefaults] valueForKey:@"AllOthersSize"];
     
     CGRect frame = CGRectMake(60, (kScreenHeight-64-160)/2, kScreenWidth-120, 165);
     view = [[UIView alloc] initWithFrame:frame];
@@ -145,37 +139,78 @@
         label.textColor = KColorThree;
         if (i == 0) {
             label1 = label;
-            NSString *sizeStr = [GLFFileManager returenSizeStr:allFilesArraySize];
+            NSString *sizeStr = [GLFFileManager returenSizeStr:[allSize floatValue]];
             label.text = [NSString stringWithFormat:@"总共: %ld    大小: %@", allCount, sizeStr];
         } else if (i == 1) {
             label2 = label;
-            NSString *sizeStr = [GLFFileManager returenSizeStr:allImagesArraySize];
+            NSString *sizeStr = [GLFFileManager returenSizeStr:[allImagesSize floatValue]];
             label.text = [NSString stringWithFormat:@"图片: %ld    大小: %@", allImagesCount, sizeStr];
         } else if (i == 2) {
             label3 = label;
-            NSString *sizeStr = [GLFFileManager returenSizeStr:allVideosArraySize];
+            NSString *sizeStr = [GLFFileManager returenSizeStr:[allVideosSize floatValue]];
             label.text = [NSString stringWithFormat:@"视频: %ld    大小: %@", allVideosCount, sizeStr];
         } else if (i == 3) {
             label4 = label;
-            NSInteger count = allCount - allImagesCount - allVideosCount;
-            CGFloat size = allFilesArraySize - allImagesArraySize - allVideosArraySize;
-            NSString *sizeStr = [GLFFileManager returenSizeStr:size];
-            label.text = [NSString stringWithFormat:@"其它: %ld    大小: %@", count, sizeStr];
+            NSString *sizeStr = [GLFFileManager returenSizeStr:[AllOthersSize floatValue]];
+            label.text = [NSString stringWithFormat:@"其它: %ld    大小: %@", AllOthersCount, sizeStr];
         }
         [self.view addSubview:label];
     }
 }
 
+- (void)prepareBtnView {
+    btnView = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight, kScreenWidth, 80)];
+//    btnView.backgroundColor = [UIColor redColor];
+    btnView.hidden = YES;
+    [self.view addSubview:btnView];
+    
+    CGFloat space = (kScreenWidth - 60) / 2 ;
+    for (int i = 0; i < 2; i++) {
+        UIButton *button = [[UIButton alloc] init];
+//        button.backgroundColor = [UIColor blueColor];
+        if (i == 0) {
+            button.frame = CGRectMake(20, 0, space, 80);
+            [button setTitle:@"大文件（> 500M）" forState:UIControlStateNormal];
+        } else if (i == 1) {
+            button.frame = CGRectMake(space + 40, 0, space, 80);
+            [button setTitle:@"小文件（< 50M）" forState:UIControlStateNormal];
+        }
+        [btnView addSubview:button];
+        button.tag = 100 + i;
+        [button addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+    }
+}
+
+#pragma mark Events
+// 键盘事件
+- (void)keyboardWillShow:(NSNotification*)notification {
+    isVisable = YES;
+    CGRect keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    btnView.hidden = NO;
+    btnView.frame = CGRectMake(0, kScreenHeight - keyboardRect.size.height - 60, kScreenWidth, 80);
+}
+
+- (void)keyboardWillHide:(NSNotification*)notification {
+    isVisable = NO;
+    btnView.hidden = YES;
+}
+
+- (void)buttonAction:(id)sender {
+    UIButton *button = (UIButton *)sender;
+    if (button.tag == 100) {
+        [self searchIsBig:YES];
+    } else if (button.tag == 101) {
+        [self searchIsBig:NO];
+    }
+}
+
 - (void)search {
+    [self showHUD:@"搜索中, 不要着急!"];
     [searchBar resignFirstResponder];
     [myDataArray removeAllObjects];
     if (searchBar.text.length == 0) {
         [myTableView reloadData];
-        view.hidden = NO;
-        label1.hidden = NO;
-        label2.hidden = NO;
-        label3.hidden = NO;
-        label4.hidden = NO;
+        [self isShowData:NO];
         return;
     }
     for (NSInteger i = 0; i < allArray.count; i++) {
@@ -187,11 +222,113 @@
             [myDataArray addObject:model];
         }
     }
-    [myTableView reloadData];
-    if (myDataArray.count > 200) {
-        [self showStringHUD:@"搜到的内容过多, 只展示前200条" second:1.5];
-    }
+    
+    // 加载图片实在太耗费性能了
+    __block NSInteger computeCount = 0;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        for (int i = 0; i < myDataArray.count; i++) {
+            FileModel *model = myDataArray[i];
+            if (model.type == 2) {
+                model.image = [UIImage imageWithContentsOfFile:model.path];
+            } else if (model.type == 3) {
+                computeCount++;
+                // 暂时定30个吧
+                if (computeCount > 30) {
+                    continue;;
+                }
+                #if FirstTarget
+                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
+                #else
+                    model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+                #endif
+            }
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+//            NSLog(@"%ld", computeCount);
+            [myTableView reloadData];
+            if (myDataArray.count > 200) {
+                [self showStringHUD:@"搜到的内容过多, 只展示前200条" second:2];
+            } else {
+                [self hideAllHUD];
+            }
+        });
+    });
+    
     if (myDataArray.count > 0) {
+        [self isShowData:YES];
+    } else {
+        [self isShowData:NO];
+    }
+}
+
+- (void)searchIsBig:(BOOL)isBig {
+    [self showHUD:@"搜索中, 不要着急!"];
+    [searchBar resignFirstResponder];
+    [myDataArray removeAllObjects];
+    NSInteger big = 1024 * 1024 * 500;
+    NSInteger smal = 1024 * 1024 * 50;
+    for (NSInteger i = 0; i < allArray.count; i++) {
+        if (myDataArray.count > 200) {
+            break;
+        }
+        FileModel *model = allArray[i];
+        if (model.type != 1) {
+            if (isBig) {
+                if (model.size > big) {
+                    [myDataArray addObject:model];
+                }
+            } else {
+                if (model.size < smal) {
+                    [myDataArray addObject:model];
+                }
+            }
+        }
+    }
+    
+    // 加载图片实在太耗费性能了
+    __block NSInteger computeCount = 0;
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        for (int i = 0; i < myDataArray.count; i++) {
+            FileModel *model = myDataArray[i];
+            if (model.type == 2) {
+                model.image = [UIImage imageWithContentsOfFile:model.path];
+            } else if (model.type == 3) {
+                computeCount++;
+                // 暂时定30个吧
+                if (computeCount > 30) {
+                    continue;;
+                }
+                #if FirstTarget
+                    model.image = [GLFTools thumbnailImageRequest:9 andVideoPath:model.path];
+                #else
+                    model.image = [GLFTools thumbnailImageRequest:90 andVideoPath:model.path];
+                #endif
+            }
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+//            NSLog(@"%ld", computeCount);
+            [myTableView reloadData];
+            if (myDataArray.count > 200) {
+                [self showStringHUD:@"搜到的内容过多, 只展示前200条" second:2];
+            } else {
+                [self hideAllHUD];
+            }
+        });
+    });
+    
+    if (myDataArray.count > 0) {
+        [self isShowData:YES];
+    } else {
+        [self isShowData:NO];
+    }
+}
+
+
+#pragma mark Tools
+- (void)isShowData:(BOOL)isShow {
+    if (isShow) {
         view.hidden = YES;
         label1.hidden = YES;
         label2.hidden = YES;
@@ -246,15 +383,13 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         cell.detailTextLabel.text = [NSString stringWithFormat:@"%ld 项  %@", model.count, sizeStr];
     } else { // 文件
-        NSArray *array = [model.name componentsSeparatedByString:@"."];
-        NSString *lowerType = [array.lastObject lowercaseString];
-        if ([CimgTypeArray containsObject:lowerType] && model.image.size.width > 0) { // 图片
+        if (model.type == 2) { // 图片
             if (model.image.size.width > 0) { // 有时image会解析出错
                 cell.imageView.image = model.image;
             } else {
                 cell.imageView.image = [UIImage imageNamed:@"图片"];
             }
-        } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
+        } else if (model.type == 3) { // 视频
             if (model.image.size.width > 0) { // 有时image会解析出错
                 cell.imageView.image = model.image;
             } else {

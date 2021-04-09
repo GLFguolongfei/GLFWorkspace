@@ -38,7 +38,7 @@
     }
     
     for (NSString *key in self.model.attributes) {
-        NSLog(@"%@ : %@", key, [self.model.attributes objectForKey:key]);
+        NSLog(@"文件属性: %@ = %@", key, [self.model.attributes objectForKey:key]);
     }
 }
 
