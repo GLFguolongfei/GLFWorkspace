@@ -160,7 +160,7 @@
 
 - (void)prepareBtnView {
     btnView = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight, kScreenWidth, 80)];
-//    btnView.backgroundColor = [UIColor redColor];
+    btnView.backgroundColor = [UIColor lightGrayColor];
     btnView.hidden = YES;
     [self.view addSubview:btnView];
     
@@ -187,7 +187,7 @@
     isVisable = YES;
     CGRect keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
     btnView.hidden = NO;
-    btnView.frame = CGRectMake(0, kScreenHeight - keyboardRect.size.height - 60, kScreenWidth, 80);
+    btnView.frame = CGRectMake(0, kScreenHeight - keyboardRect.size.height - 80, kScreenWidth, 80);
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {
