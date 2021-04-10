@@ -124,8 +124,8 @@ HMSingletonM(DocumentManager)
                         allOthersSize += model.size;
                         [allOthersArray addObject:model];
                     }
-                    [allFilesArray addObject:model];
                     allSize += model.size;
+                    [allFilesArray addObject:model];
                 } else if (fileType == 2) { // 文件夹
                     model.type = 1;
                     model.size = [GLFFileManager fileSizeForDir:model.path];

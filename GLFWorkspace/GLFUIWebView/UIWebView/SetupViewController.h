@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SetupViewController : UIViewController
+@interface SetupViewController : BaseViewController
 
 @property (weak, nonatomic) IBOutlet UISwitch *switch1;
 @property (weak, nonatomic) IBOutlet UILabel *label1;

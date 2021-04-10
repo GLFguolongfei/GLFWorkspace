@@ -54,7 +54,7 @@
 #define KColorCCC   kSAColorWithStr(@"CCCCCC") // 字体颜色CCCCCC
 
 // 通知
-#define kTabbarHidden           @"kTabbarHidden"
+#define kNavigationBarHidden    @"kNavigationBarHidden"
 #define kHaveBridge             @"kHaveBridge"
 #define kSameOriginPolicy       @"kSameOriginPolicy"
 #define kNORecord               @"kNORecord"

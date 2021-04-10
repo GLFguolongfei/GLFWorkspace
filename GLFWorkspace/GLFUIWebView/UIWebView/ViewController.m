@@ -22,6 +22,7 @@
 
 @interface ViewController ()<UITextViewDelegate,SFSafariViewControllerDelegate>
 {
+    UIImageView *bgImageView;
     NSString *currentUrlStr;
 }
 @end
@@ -39,9 +40,16 @@
     self.navigationItem.leftBarButtonItem = leftItem;
     self.navigationItem.rightBarButtonItem = rightItem;
     
+    // 设置背景图片
+    bgImageView = [[UIImageView alloc] initWithFrame:kScreen];
+    bgImageView.contentMode = UIViewContentModeScaleAspectFill;
+    bgImageView.image = [UIImage imageNamed:@"bg"];
+    [self.view addSubview:bgImageView];
+    
+    // 输入框
     CGRect textViewRect = CGRectMake(15, 80, kScreenWidth-30, 100);
     self.ipTextView = [[UITextView alloc] initWithFrame:textViewRect];
-    self.ipTextView.backgroundColor = [UIColor lightGrayColor];
+    self.ipTextView.backgroundColor = [UIColor whiteColor];
     self.ipTextView.layer.cornerRadius = 5;
     self.ipTextView.layer.masksToBounds = YES;
     self.ipTextView.font = [UIFont systemFontOfSize:16];
@@ -52,7 +60,7 @@
     
     for (NSInteger i = 0; i < 3; i++) {
         CGFloat width = (kScreenWidth - 60) / 3;
-        CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 200 + 80 * ceil(i / 3), width, 50);
+        CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 200 + 70 * ceil(i / 3), width, 50);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
         if (i == 0) {
             [button setTitle:@"历史记录" forState:UIControlStateNormal];
@@ -62,7 +70,7 @@
             [button setTitle:@"黑名单" forState:UIControlStateNormal];
         }
         button.titleLabel.font = [UIFont systemFontOfSize:16.0];
-        button.backgroundColor = [UIColor lightGrayColor];
+        button.backgroundColor = [UIColor whiteColor];
         [button setTitleColor:KNavgationBarColor forState:UIControlStateNormal];
         [button addTarget:self action:@selector(buttonAction1:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i + 10;
@@ -73,7 +81,7 @@
     
     for (NSInteger i = 0; i < 4; i++) {
         CGFloat width = (kScreenWidth - 60) / 3;
-        CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 270 + 80 * ceil(i / 3), width, 50);
+        CGRect frame = CGRectMake(15 * (i % 3 + 1) + width * (i % 3), 270 + 70 * ceil(i / 3), width, 50);
         UIButton *button = [[UIButton alloc] initWithFrame:frame];
         if (i == 0) {
             [button setTitle:@"Test1" forState:UIControlStateNormal];
@@ -85,8 +93,8 @@
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
         button.titleLabel.font = [UIFont systemFontOfSize:16.0];
-        button.backgroundColor = [UIColor lightGrayColor];
-        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        button.backgroundColor = [UIColor whiteColor];
+        [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(buttonAction2:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i + 100;
         button.layer.cornerRadius = 5;
@@ -109,7 +117,7 @@
             }
         }
         button.titleLabel.font = [UIFont systemFontOfSize:16.0];
-        button.backgroundColor = [UIColor lightGrayColor];
+        button.backgroundColor = [UIColor whiteColor];
         [button setTitleColor:KNavgationBarColor forState:UIControlStateNormal];
         [button addTarget:self action:@selector(buttonAction3:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i + 1000;
@@ -149,7 +157,7 @@
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
+    NSString *tabbarHidden = [userDefaults objectForKey:kNavigationBarHidden];
     if (tabbarHidden.integerValue) {
         [self.navigationController setNavigationBarHidden:YES animated:YES];
     } else {

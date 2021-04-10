@@ -116,8 +116,6 @@
         NSMutableArray *cArray = [[NSMutableArray alloc] init];
         NSMutableArray *bArray = [[NSMutableArray alloc] init];
         NSArray *array = [GLFFileManager searchSubFile:self.pathStr andIsDepth:NO];
-        CGFloat allSize = 0;
-        CGFloat currentSize = 0;
         for (int i = 0; i < array.count; i++) {
             // 当其他程序让本程序打开文件时,会自动生成一个Inbox文件夹
             // 这个文件夹是系统权限,不能删除,只可以删除里面的文件,因此这里隐藏好了
@@ -156,17 +154,12 @@
                     model.type = 4;
                 }
                 [bArray addObject:model];
-                allSize += model.size;
             } else if (fileType == 2) { // 文件夹
                 model.type = 1;
                 model.size = [GLFFileManager fileSizeForDir:model.path];
                 model.count = [model.attributes[@"NSFileReferenceCount"] integerValue];
                 [cArray addObject:model];
-                allSize += model.size;
             }
-        }
-        for (FileModel *model in myDataArray) {
-            currentSize += model.size;
         }
         dispatch_async(dispatch_get_main_queue(), ^{
             [self hideAllHUD];
@@ -518,51 +511,45 @@
     
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
-    if (fileType == 1) { // 文件
-        // 预览
-        NSString *mute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
-        NSArray *array = [model.name componentsSeparatedByString:@"."];
-        NSString *lowerType = [array.lastObject lowercaseString];
-        if (isShowDefault && (![CvideoTypeArray containsObject:lowerType] || ([CvideoTypeArray containsObject:lowerType] && !mute.integerValue))) {
-            NSURL *url = [NSURL fileURLWithPath:model.path];
-            UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
-            documentController.delegate = self;
-            // 显示预览
-            BOOL canOpen = [documentController presentPreviewAnimated:YES];
-            if (!canOpen) {
-                [self showStringHUD:@"沒有程序可以打开要分享的文件" second:1.5];
-            }
-        } else {
-            // 进入详情页面
-            if ([CimgTypeArray containsObject:lowerType]) { // 图片
-                DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
-                detailVC.selectIndex = [self returnTypeIndex:model];
-                detailVC.fileArray = [self returnTypeArray:model];
-                [self.navigationController pushViewController:detailVC animated:YES];
-            } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
-                NSString *MIMEType = [DocumentManager mimeTypeForFileAtPath2:model.path];
-                BOOL isCanPlay = [AVURLAsset isPlayableExtendedMIMEType:MIMEType];
-                NSLog(@"%d", isCanPlay);
-                if (!isCanPlay) {
-                    [self showStringHUD:@"不支持该视频格式" second:1.5];
-                }
-                DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
-                detailVC.selectIndex = [self returnTypeIndex:model];
-                detailVC.fileArray = [self returnTypeArray:model];
-                [self.navigationController pushViewController:detailVC animated:YES];
-            } else { // 其它文件类型
-                DetailViewController *detailVC = [[DetailViewController alloc] init];
-                detailVC.selectIndex = [self returnTypeIndex:model];
-                detailVC.fileArray = [self returnTypeArray:model];
-                [self.navigationController pushViewController:detailVC animated:YES];
-            }
+    // 预览
+    NSString *mute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
+    if (isShowDefault && (model.type != 3 || (model.type == 3 && !mute.integerValue))) {
+        NSURL *url = [NSURL fileURLWithPath:model.path];
+        UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
+        documentController.delegate = self;
+        // 显示预览
+        BOOL canOpen = [documentController presentPreviewAnimated:YES];
+        if (!canOpen) {
+            [self showStringHUD:@"沒有程序可以打开要分享的文件" second:1.5];
         }
-    } else if (fileType == 2) { // 文件夹
-        RootViewController *vc = [[RootViewController alloc] init];
-        vc.titleStr = model.name;
-        vc.pathStr = model.path;
-        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        if (model.type == 1) { // 文件夹
+            RootViewController *vc = [[RootViewController alloc] init];
+            vc.titleStr = model.name;
+            vc.pathStr = model.path;
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if (model.type == 2) { // 图片
+            DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
+            detailVC.selectIndex = [self returnTypeIndex:model];
+            detailVC.fileArray = [self returnTypeArray:model];
+            [self.navigationController pushViewController:detailVC animated:YES];
+        } else if (model.type == 3) { // 视频
+            NSString *MIMEType = [DocumentManager mimeTypeForFileAtPath2:model.path];
+            BOOL isCanPlay = [AVURLAsset isPlayableExtendedMIMEType:MIMEType];
+            NSLog(@"%d", isCanPlay);
+            if (!isCanPlay) {
+                [self showStringHUD:@"不支持该视频格式" second:1.5];
+            }
+            DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
+            detailVC.selectIndex = [self returnTypeIndex:model];
+            detailVC.fileArray = [self returnTypeArray:model];
+            [self.navigationController pushViewController:detailVC animated:YES];
+        } else { // 其它文件类型
+            DetailViewController *detailVC = [[DetailViewController alloc] init];
+            detailVC.selectIndex = [self returnTypeIndex:model];
+            detailVC.fileArray = [self returnTypeArray:model];
+            [self.navigationController pushViewController:detailVC animated:YES];
+        }
     }
 }
 
@@ -762,39 +749,29 @@
     CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, 60);
     previewingContext.sourceRect = rect;
     // 设定预览的界面
-    NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
-    if (fileType == 1) { // 文件
-        NSArray *array = [model.name componentsSeparatedByString:@"."];
-        NSString *lowerType = [array.lastObject lowercaseString];
-        if ([CimgTypeArray containsObject:lowerType]) { // 图片
-            DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
-            detailVC.selectIndex = [self returnTypeIndex:model];
-            detailVC.fileArray = [self returnTypeArray:model];
-            return detailVC;
-        } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
-            DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
-            detailVC.selectIndex = [self returnTypeIndex:model];
-            detailVC.fileArray = [self returnTypeArray:model];
-            detailVC.isPlay = YES;
-            detailVC.preferredContentSize = CGSizeMake(kScreenWidth, kScreenHeight * 0.8);
-            return detailVC;
-        } else { // 其它文件类型
-            DetailViewController *detailVC = [[DetailViewController alloc] init];
-            detailVC.selectIndex = [self returnTypeIndex:model];
-            detailVC.fileArray = [self returnTypeArray:model];
-            return detailVC;
-        }
-    } else if (fileType == 2) { // 文件夹
+    if (model.type == 1) { // 文件夹
         RootViewController *vc = [[RootViewController alloc] init];
         vc.titleStr = model.name;
         vc.pathStr = model.path;
         return vc;
+    } else if (model.type == 2) { // 图片
+        DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
+        detailVC.selectIndex = [self returnTypeIndex:model];
+        detailVC.fileArray = [self returnTypeArray:model];
+        return detailVC;
+    } else if (model.type == 3) { // 视频
+        DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
+        detailVC.selectIndex = [self returnTypeIndex:model];
+        detailVC.fileArray = [self returnTypeArray:model];
+        detailVC.isPlay = YES;
+        detailVC.preferredContentSize = CGSizeMake(kScreenWidth, kScreenHeight * 0.8);
+        return detailVC;
+    } else { // 其它文件类型
+        DetailViewController *detailVC = [[DetailViewController alloc] init];
+        detailVC.selectIndex = [self returnTypeIndex:model];
+        detailVC.fileArray = [self returnTypeArray:model];
+        return detailVC;
     }
-    // 设定预览的界面
-    FileInfoViewController *vc = [[FileInfoViewController alloc] init];
-    vc.preferredContentSize = CGSizeMake(0.0f, 400.0f);
-    vc.model = model;
-    return vc;
 }
 
 // pop(按用点力进入）

@@ -71,7 +71,7 @@
 - (void)setWebView {
     CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
+    NSString *tabbarHidden = [userDefaults objectForKey:kNavigationBarHidden];
     if (tabbarHidden.integerValue) {
         rect = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20);
     }

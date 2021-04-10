@@ -161,13 +161,11 @@
 - (void)prepareBtnView {
     btnView = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight, kScreenWidth, 80)];
     btnView.backgroundColor = [UIColor lightGrayColor];
-    btnView.hidden = YES;
     [self.view addSubview:btnView];
     
     CGFloat space = (kScreenWidth - 60) / 2 ;
     for (int i = 0; i < 2; i++) {
         UIButton *button = [[UIButton alloc] init];
-//        button.backgroundColor = [UIColor blueColor];
         if (i == 0) {
             button.frame = CGRectMake(20, 0, space, 80);
             [button setTitle:@"大文件（> 500M）" forState:UIControlStateNormal];
@@ -186,13 +184,16 @@
 - (void)keyboardWillShow:(NSNotification*)notification {
     isVisable = YES;
     CGRect keyboardRect = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    btnView.hidden = NO;
-    btnView.frame = CGRectMake(0, kScreenHeight - keyboardRect.size.height - 80, kScreenWidth, 80);
+    [UIView animateWithDuration:0.2 animations:^{
+        btnView.frame = CGRectMake(0, kScreenHeight - keyboardRect.size.height - 80, kScreenWidth, 80);
+    }];
 }
 
 - (void)keyboardWillHide:(NSNotification*)notification {
     isVisable = NO;
-    btnView.hidden = YES;
+    [UIView animateWithDuration:0.2 animations:^{
+        btnView.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 80);
+    }];
 }
 
 - (void)buttonAction:(id)sender {
@@ -245,7 +246,6 @@
             }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-//            NSLog(@"%ld", computeCount);
             [myTableView reloadData];
             if (myDataArray.count > 200) {
                 [self showStringHUD:@"搜到的内容过多, 只展示前200条" second:2];
@@ -308,7 +308,6 @@
             }
         }
         dispatch_async(dispatch_get_main_queue(), ^{
-//            NSLog(@"%ld", computeCount);
             [myTableView reloadData];
             if (myDataArray.count > 200) {
                 [self showStringHUD:@"搜到的内容过多, 只展示前200条" second:2];
@@ -420,45 +419,38 @@
     }
     
     FileModel *model = myDataArray[indexPath.row];
-    NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
-    if (fileType == 1) { // 文件
-        // 预览
-        NSString *mute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
-        NSArray *array = [model.name componentsSeparatedByString:@"."];
-        NSString *lowerType = [array.lastObject lowercaseString];
-        if (isShowDefault && (![CvideoTypeArray containsObject:lowerType] || ([CvideoTypeArray containsObject:lowerType] && !mute.integerValue))) {
-            NSURL *url = [NSURL fileURLWithPath:model.path];
-            UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
-            documentController.delegate = self;
-            // 显示预览
-            BOOL canOpen = [documentController presentPreviewAnimated:YES];
-            if (!canOpen) {
-                [self showStringHUD:@"沒有程序可以打开要分享的文件" second:1.5];
-            }
-        } else {
-            // 进入详情页面
-            if ([CimgTypeArray containsObject:lowerType]) { // 图片
-                DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
-                detailVC.selectIndex = [self returnTypeIndex:model];
-                detailVC.fileArray = [self returnTypeArray:model];
-                [self.navigationController pushViewController:detailVC animated:YES];
-            } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
-                DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
-                detailVC.selectIndex = [self returnTypeIndex:model];
-                detailVC.fileArray = [self returnTypeArray:model];
-                [self.navigationController pushViewController:detailVC animated:YES];
-            } else { // 其它文件类型
-                DetailViewController *detailVC = [[DetailViewController alloc] init];
-                detailVC.selectIndex = [self returnTypeIndex:model];
-                detailVC.fileArray = [self returnTypeArray:model];
-                [self.navigationController pushViewController:detailVC animated:YES];
-            }
+    NSString *mute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
+    if (isShowDefault && (model.type != 3 || (model.type == 3 && !mute.integerValue))) {
+        NSURL *url = [NSURL fileURLWithPath:model.path];
+        UIDocumentInteractionController *documentController = [UIDocumentInteractionController interactionControllerWithURL:url];
+        documentController.delegate = self;
+        // 显示预览
+        BOOL canOpen = [documentController presentPreviewAnimated:YES];
+        if (!canOpen) {
+            [self showStringHUD:@"沒有程序可以打开要分享的文件" second:1.5];
         }
-    } else if (fileType == 2) { // 文件夹
-        RootViewController *vc = [[RootViewController alloc] init];
-        vc.titleStr = model.name;
-        vc.pathStr = model.path;
-        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        if (model.type == 1) { // 文件夹
+            RootViewController *vc = [[RootViewController alloc] init];
+            vc.titleStr = model.name;
+            vc.pathStr = model.path;
+            [self.navigationController pushViewController:vc animated:YES];
+        } else if (model.type == 2) { // 图片
+            DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
+            detailVC.selectIndex = [self returnTypeIndex:model];
+            detailVC.fileArray = [self returnTypeArray:model];
+            [self.navigationController pushViewController:detailVC animated:YES];
+        } else if (model.type == 3) { // 视频
+            DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
+            detailVC.selectIndex = [self returnTypeIndex:model];
+            detailVC.fileArray = [self returnTypeArray:model];
+            [self.navigationController pushViewController:detailVC animated:YES];
+        } else { // 其它文件类型
+            DetailViewController *detailVC = [[DetailViewController alloc] init];
+            detailVC.selectIndex = [self returnTypeIndex:model];
+            detailVC.fileArray = [self returnTypeArray:model];
+            [self.navigationController pushViewController:detailVC animated:YES];
+        }
     }
 }
 
@@ -544,39 +536,29 @@
     CGRect rect = CGRectMake(0, 0, self.view.frame.size.width, 60);
     previewingContext.sourceRect = rect;
     // 设定预览的界面
-    NSInteger fileType = [GLFFileManager fileExistsAtPath:model.path];
-    if (fileType == 1) { // 文件
-        NSArray *array = [model.name componentsSeparatedByString:@"."];
-        NSString *lowerType = [array.lastObject lowercaseString];
-        if ([CimgTypeArray containsObject:lowerType]) { // 图片
-            DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
-            detailVC.selectIndex = [self returnTypeIndex:model];
-            detailVC.fileArray = [self returnTypeArray:model];
-            return detailVC;
-        } else if ([CvideoTypeArray containsObject:lowerType]) { // 视频
-            DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
-            detailVC.selectIndex = [self returnTypeIndex:model];
-            detailVC.fileArray = [self returnTypeArray:model];
-            detailVC.isPlay = YES;
-            detailVC.preferredContentSize = CGSizeMake(kScreenWidth, kScreenHeight * 0.8);
-            return detailVC;
-        } else { // 其它文件类型
-            DetailViewController *detailVC = [[DetailViewController alloc] init];
-            detailVC.selectIndex = [self returnTypeIndex:model];
-            detailVC.fileArray = [self returnTypeArray:model];
-            return detailVC;
-        }
-    } else if (fileType == 2) { // 文件夹
+    if (model.type == 1) { // 文件夹
         RootViewController *vc = [[RootViewController alloc] init];
         vc.titleStr = model.name;
         vc.pathStr = model.path;
         return vc;
+    } else if (model.type == 2) { // 图片
+        DetailViewController2 *detailVC = [[DetailViewController2 alloc] init];
+        detailVC.selectIndex = [self returnTypeIndex:model];
+        detailVC.fileArray = [self returnTypeArray:model];
+        return detailVC;
+    } else if (model.type == 3) { // 视频
+        DetailViewController3 *detailVC = [[DetailViewController3 alloc] init];
+        detailVC.selectIndex = [self returnTypeIndex:model];
+        detailVC.fileArray = [self returnTypeArray:model];
+        detailVC.isPlay = YES;
+        detailVC.preferredContentSize = CGSizeMake(kScreenWidth, kScreenHeight * 0.8);
+        return detailVC;
+    } else { // 其它文件类型
+        DetailViewController *detailVC = [[DetailViewController alloc] init];
+        detailVC.selectIndex = [self returnTypeIndex:model];
+        detailVC.fileArray = [self returnTypeArray:model];
+        return detailVC;
     }
-    // 设定预览的界面
-    FileInfoViewController *vc = [[FileInfoViewController alloc] init];
-    vc.preferredContentSize = CGSizeMake(0.0f, 400.0f);
-    vc.model = model;
-    return vc;
 }
 
 // pop(按用点力进入）

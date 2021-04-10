@@ -79,7 +79,7 @@
 - (void)setWKWebView {
     CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
+    NSString *tabbarHidden = [userDefaults objectForKey:kNavigationBarHidden];
     if (tabbarHidden.integerValue) {
         rect = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20);
     }
@@ -157,7 +157,7 @@
 - (void)setUIProgressView {
     CGRect rect = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    NSString *tabbarHidden = [userDefaults objectForKey:kTabbarHidden];
+    NSString *tabbarHidden = [userDefaults objectForKey:kNavigationBarHidden];
     if (tabbarHidden.integerValue) {
         rect = CGRectMake(0, 0, kScreenWidth, 20);
     }
@@ -403,7 +403,7 @@
 
 // 在滚动的时候调用
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSLog(@"%@", NSStringFromCGPoint(scrollView.contentOffset));
+//    NSLog(@"%@", NSStringFromCGPoint(scrollView.contentOffset));
     if (startContentOffset.y > scrollView.contentOffset.y) { // 向下滑动
         [self.navigationController setToolbarHidden:NO animated:YES];
     } else { // 向上滑动或不动

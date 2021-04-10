@@ -145,18 +145,19 @@ HMSingletonM(FileManager)
 
 #pragma mark Method
 + (NSString *)returenSizeStr:(CGFloat)size {
-    if (size / 1000.0 > 1000) {
-        if (size / 1000000.0 > 1000) {
-            if (size / 1000000000.0 > 1000) {
-                return @"> 1T";
+    if (size / 1024 > 1024) {
+        if (size / (1024 * 1024) > 1024) {
+            if (size / (1024 * 1024 * 1024) > 1024) {
+                CGFloat g = size / (1024 * 1024 * 1024);
+                return [NSString stringWithFormat:@"%.1f TB", g / 1024];
             } else {
-                return [NSString stringWithFormat:@"%.1f GB", size/1000000000.0];
+                return [NSString stringWithFormat:@"%.1f GB", size / (1024 * 1024 * 1024)];
             }
         } else {
-            return [NSString stringWithFormat:@"%.1f MB", size/1000000.0];
+            return [NSString stringWithFormat:@"%ld MB", (NSInteger)(size / (1024 * 1024))];
         }
     } else {
-        return [NSString stringWithFormat:@"%.1f KB", size/1000.0];
+        return [NSString stringWithFormat:@"%ld KB", (NSInteger)(size / 1024)];
     }
 }
 
