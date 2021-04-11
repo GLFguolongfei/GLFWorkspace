@@ -49,7 +49,7 @@
 - (void)buttonAction:(UIButton *)button {
     if (button.tag == 100) {
         ProjectManager *manager = [ProjectManager sharedProjectManager];
-        [manager getNetworkDataTest:@""];
+        [manager getNetworkDataTest:@"https://www.sangna.net/video.php?_t=0.6731128044766255"];
     } else if (button.tag == 101) {
         ProjectManager *manager = [ProjectManager sharedProjectManager];
         [manager getNetworkData:1 andType:2];

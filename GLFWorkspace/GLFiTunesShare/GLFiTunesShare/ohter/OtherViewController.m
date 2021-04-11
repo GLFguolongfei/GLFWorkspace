@@ -9,6 +9,7 @@
 #import "OtherViewController.h"
 #import "TestViewController.h"
 #import "TestViewController2.h"
+#import "TestViewController3.h"
 #import "OneViewController.h"
 #import "TwoViewController.h"
 #import "ThreeViewController.h"
@@ -168,16 +169,22 @@
         [self.navigationController pushViewController:testVC animated:YES];
     }];
     [alertVC addAction:okAction2];
+    
+    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"测试页3" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        TestViewController3 *testVC = [[TestViewController3 alloc] init];
+        [self.navigationController pushViewController:testVC animated:YES];
+    }];
+    [alertVC addAction:okAction3];
 
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if (manager.isRecording) {
-        UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"切换主题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"切换主题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [manager switchCamera];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self reSetVCTitle];
             });
         }];
-        [alertVC addAction:okAction2];
+        [alertVC addAction:okAction];
     }
     
     [self presentViewController:alertVC animated:YES completion:nil];
