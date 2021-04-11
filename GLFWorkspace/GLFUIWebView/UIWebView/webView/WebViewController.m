@@ -88,6 +88,7 @@
     _webView = [[UIWebView alloc] initWithFrame:rect];
     _webView.dataDetectorTypes = UIDataDetectorTypeAll; // 设定使电话号码、网址、电子邮件和符合格式的日期等文字变为链接文字
     _webView.scalesPageToFit = YES;
+    _webView.allowsInlineMediaPlayback = YES; // 允许不全屏播放视频
     _webView.delegate = self;
     _webView.scrollView.delegate = self;
     [self.view addSubview:_webView];
@@ -120,6 +121,7 @@
     _webView = [[UIWebView alloc] initWithFrame:rect];
     _webView.dataDetectorTypes = UIDataDetectorTypeAll; // 设定使电话号码、网址、电子邮件和符合格式的日期等文字变为链接文字
     _webView.scalesPageToFit = YES;
+    _webView.allowsInlineMediaPlayback = YES; // 允许不全屏播放视频
     _webView.delegate = self;
     _webView.scrollView.delegate = self;
     [self.view addSubview:_webView];
