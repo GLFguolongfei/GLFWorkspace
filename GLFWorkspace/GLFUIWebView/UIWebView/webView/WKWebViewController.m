@@ -90,6 +90,13 @@
     } else {
         [self setWKWebView2:rect];
     }
+    
+    // 轻扫手势
+    UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] init];
+    [swipeGesture addTarget:self action:@selector(swipeAction:)];
+    swipeGesture.direction = UISwipeGestureRecognizerDirectionLeft | UISwipeGestureRecognizerDirectionRight;
+    _wkWebView.userInteractionEnabled = YES;
+    [_wkWebView addGestureRecognizer:swipeGesture];
 }
 
 - (void)setWKWebView1:(CGRect)rect {
@@ -266,6 +273,16 @@
         _wkWebView.frame = CGRectMake(0, 20, kScreenWidth, kScreenHeight-20);
     } else {
         _wkWebView.frame = CGRectMake(0, 64, kScreenWidth, kScreenHeight-64);
+    }
+}
+
+- (void)swipeAction:(UISwipeGestureRecognizer *)gesture {
+    if(gesture.direction==UISwipeGestureRecognizerDirectionLeft){
+        NSLog(@"轻扫手势: 向左");
+        [self button1];
+    } else if (gesture.direction==UISwipeGestureRecognizerDirectionRight) {
+        NSLog(@"轻扫手势: 向右");
+        [self button2];
     }
 }
 
