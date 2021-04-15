@@ -40,16 +40,16 @@
     self.navigationItem.leftBarButtonItem = leftItem;
     self.navigationItem.rightBarButtonItem = rightItem;
     
-    // 设置背景图片
+    // 设置背景图片(加上图片不好看思密达)
     bgImageView = [[UIImageView alloc] initWithFrame:kScreen];
     bgImageView.contentMode = UIViewContentModeScaleAspectFill;
     bgImageView.image = [UIImage imageNamed:@"bg"];
-    [self.view addSubview:bgImageView];
+//    [self.view addSubview:bgImageView];
     
     // 输入框
     CGRect textViewRect = CGRectMake(15, 80, kScreenWidth-30, 100);
     self.ipTextView = [[UITextView alloc] initWithFrame:textViewRect];
-    self.ipTextView.backgroundColor = [UIColor whiteColor];
+    self.ipTextView.backgroundColor = [UIColor lightGrayColor];
     self.ipTextView.layer.cornerRadius = 5;
     self.ipTextView.layer.masksToBounds = YES;
     self.ipTextView.font = [UIFont systemFontOfSize:16];
@@ -70,7 +70,7 @@
             [button setTitle:@"黑名单" forState:UIControlStateNormal];
         }
         button.titleLabel.font = [UIFont systemFontOfSize:16.0];
-        button.backgroundColor = [UIColor whiteColor];
+        button.backgroundColor = [UIColor lightGrayColor];
         [button setTitleColor:KNavgationBarColor forState:UIControlStateNormal];
         [button addTarget:self action:@selector(buttonAction1:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i + 10;
@@ -93,8 +93,8 @@
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
         button.titleLabel.font = [UIFont systemFontOfSize:16.0];
-        button.backgroundColor = [UIColor whiteColor];
-        [button setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+        button.backgroundColor = [UIColor lightGrayColor];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(buttonAction2:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i + 100;
         button.layer.cornerRadius = 5;
@@ -117,7 +117,7 @@
             }
         }
         button.titleLabel.font = [UIFont systemFontOfSize:16.0];
-        button.backgroundColor = [UIColor whiteColor];
+        button.backgroundColor = [UIColor lightGrayColor];
         [button setTitleColor:KNavgationBarColor forState:UIControlStateNormal];
         [button addTarget:self action:@selector(buttonAction3:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i + 1000;
