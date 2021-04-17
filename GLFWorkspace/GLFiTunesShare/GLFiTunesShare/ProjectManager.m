@@ -10,10 +10,11 @@
 
 @interface ProjectManager()
 {
-    NSMutableArray *resultArray; // 爬取结果
-    NSMutableArray *errorResultArray; // 补救成功-爬取结果
-    NSMutableArray *errorUrlArray; // 补救失败-url数组
+    NSMutableArray *resultArray;        // 爬取结果
+    NSMutableArray *errorUrlArray;      // 爬取失败-URL数组
+    NSInteger startIndex;
     NSInteger endIndex;
+    BOOL isReSend;
 }
 @end
 
@@ -23,31 +24,32 @@ HMSingletonM(ProjectManager)
 
 #pragma mark - 网络爬虫
 - (void)getNetworkDataTest:(NSString *)urlString {
-    NSString *oldUrlStr = @"https://www.jrz2ch.de/play.x?stype=mlvideo&movieid=241";
-    if (urlString.length > 0) {
-        oldUrlStr = urlString;
+    if (urlString.length == 0) {
+        NSLog(@"||| 请输入URL |||");
+        return;
     }
-    NSString *urlStr = [oldUrlStr stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // 中文必须转换
+    NSLog(@"||| getNetworkDataTest |||");
+    NSString *urlStr = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]; // 中文必须转换
     NSURL *url = [NSURL URLWithString:urlStr];
     NSURLRequest *request = [NSURLRequest requestWithURL:url];
     [NSURLConnection sendAsynchronousRequest:request queue:nil completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
         NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         NSString *resultStr1 = [self returnResultStr:str andType:1];
         NSString *resultStr2 = [self returnResultStr:str andType:2];
-        if (urlString.length > 0) {
+        if (isReSend) {
             if (resultStr1.length > 0) {
-                [errorResultArray addObject:resultStr1];
-                NSLog(@"~~~~~~ 补救成功: %ld", errorResultArray.count);
+                [resultArray addObject:resultStr1];
+                [errorUrlArray removeObject:urlString];
+                NSLog(@"~~~~~~ 补救成功,还余留: %ld", errorUrlArray.count);
             } else if (resultStr2.length > 0) {
-                [errorResultArray addObject:resultStr2];
-                NSLog(@"~~~~~~ 补救成功: %ld", errorResultArray.count);
-            } else {
-                [errorUrlArray addObject:urlString];
+                [resultArray addObject:resultStr2];
+                [errorUrlArray removeObject:urlString];
+                NSLog(@"~~~~~~ 补救成功,还余留: %ld", errorUrlArray.count);
             }
         } else {
-            NSLog(@"%@", str);
-            NSLog(@"resultStr~~~1: %@", resultStr1);
-            NSLog(@"resultStr~~~2: %@", resultStr2);
+            NSLog(@"resultStr~~~10: %@", str);
+            NSLog(@"resultStr~~~11: %@", resultStr1);
+            NSLog(@"resultStr~~~12: %@", resultStr2);
         }
     }];
     
@@ -58,140 +60,119 @@ HMSingletonM(ProjectManager)
         NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
         NSString *resultStr1 = [self returnResultStr:str andType:1];
         NSString *resultStr2 = [self returnResultStr:str andType:2];
-        if (urlString.length > 0) {
+        if (isReSend) {
             if (resultStr1.length > 0) {
-                [errorResultArray addObject:resultStr1];
-                NSLog(@"~~~~~~ 补救成功: %ld", errorResultArray.count);
+                [resultArray addObject:resultStr1];
+                [errorUrlArray removeObject:urlString];
+                NSLog(@"~~~~~~ 补救成功,还余留: %ld", errorUrlArray.count);
             } else if (resultStr2.length > 0) {
-                [errorResultArray addObject:resultStr2];
-                NSLog(@"~~~~~~ 补救成功: %ld", errorResultArray.count);
-            } else {
-                [errorUrlArray addObject:urlString];
+                [resultArray addObject:resultStr2];
+                [errorUrlArray removeObject:urlString];
+                NSLog(@"~~~~~~ 补救成功,还余留: %ld", errorUrlArray.count);
             }
         } else {
-            NSLog(@"%@", str);
-            NSLog(@"resultStr~~~~~~1: %@", resultStr1);
-            NSLog(@"resultStr~~~~~~2: %@", resultStr2);
+            NSLog(@"resultStr~~~20: %@", str);
+            NSLog(@"resultStr~~~21: %@", resultStr1);
+            NSLog(@"resultStr~~~22: %@", resultStr2);
         }
     } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
         NSLog(@"%@", error);
     }];
 }
 
-// AFHTTPSessionManager(视频)
-- (void)getNetworkData:(NSInteger)index andType:(NSInteger)type {
-    NSInteger pageCount = 5;
-    if (index < pageCount) {
+- (void)getNetworkData:(NSInteger)type {
+    if (!resultArray) {
         resultArray = [[NSMutableArray alloc] init];
-        errorResultArray = [[NSMutableArray alloc] init];
         errorUrlArray = [[NSMutableArray alloc] init];
-        endIndex = 22506;
+        startIndex = 1;
+        endIndex = 206;
+        isReSend = NO;
     }
     if (type == 1) {
-        [self getNetworkData1:index andPageCount:pageCount andFinish:^{
-            NSInteger nextIndex = index + pageCount;
-            [self getNetworkData:nextIndex andType:type];
+        [self getNetworkData1:^{
+            [self getNetworkData:type];
         }];
     } else {
-        [self getNetworkData2:index andPageCount:pageCount andFinish:^{
-            NSInteger nextIndex = index + pageCount;
-            [self getNetworkData:nextIndex andType:type];
+        [self getNetworkData2:^{
+            [self getNetworkData:type];
         }];
     }
 }
 
-- (void)saveCurrenData {
-    [self saveData:resultArray andFileName:@"netData1"];
-    [self saveData:errorUrlArray andFileName:@"netData2"];
-}
-
-- (void)remedialNetwork {
-    NSMutableArray *array = [errorUrlArray mutableCopy];
-    NSLog(@"需要补救的URL: %ld", array.count);
+- (void)getNetworkDataRepeat {
+    NSLog(@"需要补救的URL数目: %ld", errorUrlArray.count);
+    isReSend = YES;
     NSInteger counter = 0;
-    NSMutableArray *removeArray = [[NSMutableArray alloc] init];
-    for (NSString *urlString in array) {
+    for (NSString *urlString in errorUrlArray) {
         [self getNetworkDataTest:urlString];
-        [removeArray addObject:urlString];
         counter++;
-        if (counter > 10) {
-            break;
+        if (counter > 5) {
+            sleep(2);
         }
-    }
-    for (NSString *urlString in removeArray) {
-        [errorUrlArray removeObject:urlString];
     }
 }
 
 // NSURLConnection(视频)
-- (void)getNetworkData1:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack {
+- (void)getNetworkData1:(LoadFinishCallBack)callBack {
     __block NSInteger counter = 0;
     NSOperationQueue *mainQueue = [NSOperationQueue mainQueue];
-    for (NSInteger i = 0; i < pageCount; i++) {
-        if (start + i > endIndex) {
+    for (NSInteger i = startIndex; i < startIndex + 5; i++) {
+        if (i >= endIndex) {
+            [self saveData:resultArray andFileName:@"netData"];
             return;
         }
         NSString *urlStr = [NSString stringWithFormat:@"https://www.bpw4.com/shipin/%ld.html", i];
         NSURL *url = [NSURL URLWithString:urlStr];
         NSURLRequest *request = [NSURLRequest requestWithURL:url];
         [NSURLConnection sendAsynchronousRequest:request queue:mainQueue completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+            counter++;
             NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
             NSString *resultStr = [self returnResultStr:str andType:1];
             if (resultStr.length > 0) {
                 [resultArray addObject:resultStr];
-                NSLog(@"爬取成功: %ld / %ld / %ld", resultArray.count, start + counter, endIndex);
+                NSLog(@"爬取成功: %ld / %ld / %ld", resultArray.count, startIndex, endIndex);
             } else {
-                NSLog(@"~~~~~~ 爬取失败: %ld / %ld / %ld", resultArray.count, start + counter, endIndex);
-                [self getNetworkDataTest:urlStr];
+                [errorUrlArray addObject:urlStr];
+                NSLog(@"~~~~~~ 爬取失败: %ld / %ld / %ld", resultArray.count, startIndex, endIndex);
             }
-            counter++;
-            if (counter >= pageCount) {
+            if (counter >= 4) {
                 callBack();
-            }
-            if (start + counter >= endIndex) {
-                [self saveCurrenData];
             }
         }];
     }
 }
 
 // AFHTTPSessionManager(视频)
-- (void)getNetworkData2:(NSInteger)start andPageCount:(NSInteger)pageCount andFinish:(LoadFinishCallBack)callBack {
+- (void)getNetworkData2:(LoadFinishCallBack)callBack {
     __block NSInteger counter = 0;
-    for (NSInteger i = 0; i < pageCount; i++) {
-        if (start + i > endIndex) {
+    AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+    manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+    for (NSInteger i = startIndex; i < startIndex + 5; i++) {
+        if (i >= endIndex) {
+            [self saveData:resultArray andFileName:@"netData"];
             return;
         }
-        NSString *urlStr = [NSString stringWithFormat:@"https://www.jrz2ch.de/play.x?stype=mlvideo&movieid=%ld", start + i];
-        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
-        manager.responseSerializer = [AFHTTPResponseSerializer serializer];
+        NSString *urlStr = [NSString stringWithFormat:@"https://www.jrz2ch.de/play.x?stype=mlvideo&movieid=%ld", i];
         [manager GET:urlStr parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
         } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            counter++;
             NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
             NSString *resultStr = [self returnResultStr:str andType:1];
             if (resultStr.length > 0) {
                 [resultArray addObject:resultStr];
-                NSLog(@"爬取成功: %ld / %ld / %ld", resultArray.count, start + counter, endIndex);
+                NSLog(@"爬取成功: %ld / %ld / %ld", resultArray.count, startIndex, endIndex);
             } else {
-                NSLog(@"~~~~~~ 爬取失败:  %ld / %ld / %ld", resultArray.count, start + counter, endIndex);
-                [self getNetworkDataTest:urlStr];
+                [errorUrlArray addObject:urlStr];
+                NSLog(@"~~~~~~ 爬取失败:  %ld / %ld / %ld", resultArray.count, startIndex, endIndex);
             }
-            counter++;
-            if (counter >= pageCount) {
+            if (counter >= 4) {
                 callBack();
-            }
-            if (start + counter >= endIndex) {
-                [self saveCurrenData];
             }
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-            NSLog(@"~~~~~~ 爬取失败:  %ld / %ld / %ld", resultArray.count, start + counter, endIndex);
-            [self getNetworkDataTest:urlStr];
             counter++;
-            if (counter >= pageCount) {
+            NSLog(@"~~~~~~ 爬取失败:  %ld / %ld / %ld", resultArray.count, startIndex, endIndex);
+            if (counter >= 4) {
                 callBack();
-            }
-            if (start + counter >= endIndex) {
-                [self saveCurrenData];
             }
         }];
     }
