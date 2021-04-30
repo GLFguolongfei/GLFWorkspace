@@ -264,8 +264,7 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     NSLog(@"webViewDidStartLoad");
-    [self showHUD];
-    [self showHUDsecond:3];
+    [self showHUDsecond:5];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
@@ -278,9 +277,7 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     NSLog(@"didFailLoadWithError: %@", error.localizedDescription);
     NSString *msg = [NSString stringWithFormat:@"加载失败: %@", error.localizedDescription];
-    [self showStringHUD:msg second:3];
-    [self hideAllHUD];
-    [self contentSetup];
+    [self showStringHUD:msg second:2];
     if (errorCount < 3) {
         errorCount++;
         [webView reload];
