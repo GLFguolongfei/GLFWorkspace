@@ -110,6 +110,7 @@
     }
 
     _wkWebView = [[WKWebView alloc] initWithFrame:rect configuration:config];
+//    _wkWebView.keyboardDisplayRequiresUserAction = false;
     _wkWebView.UIDelegate = self;
     _wkWebView.navigationDelegate = self;
     _wkWebView.scrollView.delegate = self;

@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DYNextViewController : BaseViewController
 
-@property (nonatomic, assign) NSInteger pageType; // 1-喜欢 2-垃圾篓
+@property (nonatomic, assign) NSInteger pageType; // 1-收藏夹(喜欢) 2-垃圾篓(待删除)
 
 - (void)playRandom:(NSInteger)index;
 

@@ -32,9 +32,6 @@
     
     UILabel *label;
     
-    UIBarButtonItem *barItem1;
-    UIBarButtonItem *barItem2;
-    
     UIView *editBgView1;
     UIView *editBgView2;
 }
@@ -46,8 +43,10 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    barItem1 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dyFavorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
-    barItem2 = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dyDelete"] style:UIBarButtonItemStylePlain target:self action:@selector(removeVideo)];
+    UIBarButtonItem *barItem1 = [[UIBarButtonItem alloc] initWithTitle:@"选择" style:UIBarButtonItemStylePlain target:self action:@selector(selectVideo)];
+//    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dyFavorite"] style:UIBarButtonItemStylePlain target:self action:@selector(favoriteVideo)];
+    UIBarButtonItem *barItem2 = [[UIBarButtonItem alloc] initWithTitle:@"更多" style:UIBarButtonItemStylePlain target:self action:@selector(moreVideo)];
+//    [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"dyDelete"] style:UIBarButtonItemStylePlain target:self action:@selector(removeVideo)];
     self.navigationItem.rightBarButtonItems = @[barItem1, barItem2];
     self.view.backgroundColor = [UIColor blackColor];
     [self setVCTitle:@"抖音短视频"];
@@ -99,17 +98,11 @@
     if (!favoriteArray) {
         favoriteArray = [[NSMutableArray alloc] init];
     }
-    if (favoriteArray.count == 0) {
-        barItem1.enabled = NO;
-    }
 
     removeArray = [[NSUserDefaults standardUserDefaults] objectForKey:kRemove];
     removeArray = [removeArray mutableCopy];
     if (!removeArray) {
         removeArray = [[NSMutableArray alloc] init];
-    }
-    if (removeArray.count == 0) {
-        barItem2.enabled = NO;
     }
     
     [self prepareData];
@@ -306,16 +299,22 @@
     label.frame = labelReact;
 }
 
-- (void)favoriteVideo {
-    DYNextViewController *vc = [[DYNextViewController alloc] init];
-    vc.pageType = 1;
-    [self.navigationController pushViewController:vc animated:YES];
+- (void)selectVideo {
+    SelectItemView *selectView = [[SelectItemView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
+    selectView.parentVC = self;
+    selectView.pageType = 1;
+    selectView.dataArray = _dataArray;
+    selectView.currentModel = currentModel;
+    selectView.backgroundColor = [UIColor whiteColor];
+    [self lew_presentPopupView:selectView animation:[LewPopupViewAnimationSpring new] dismissed:^{
+        NSLog(@"动画结束");
+    }];
+    [self hiddenNaviBar];
 }
 
-- (void)removeVideo {
-    DYNextViewController *vc = [[DYNextViewController alloc] init];
-    vc.pageType = 2;
-    [self.navigationController pushViewController:vc animated:YES];
+- (void)moreVideo {
+    isOtherVideos = !isOtherVideos;
+    [self prepareData];
 }
 
 - (void)favoriteAction {
@@ -327,12 +326,6 @@
         [favoriteButton setImage:[UIImage imageNamed:@"dyFavoriteBig"] forState:UIControlStateNormal];
     }
     [DocumentManager favoriteModel:currentModel];
-
-    if (favoriteArray.count > 0) {
-        barItem1.enabled = YES;
-    } else {
-        barItem1.enabled = NO;
-    }
 }
 
 - (void)removeAction {
@@ -344,11 +337,6 @@
         [removeButton setImage:[UIImage imageNamed:@"dyDeleteBig"] forState:UIControlStateNormal];
     }
     [DocumentManager removeModel:currentModel];
-    if (removeArray.count > 0) {
-        barItem2.enabled = YES;
-    } else {
-        barItem2.enabled = NO;
-    }
 }
 
 - (void)resetData {
@@ -364,23 +352,25 @@
     }];
     [alertVC addAction:okAction1];
     
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"选择播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        SelectItemView *selectView = [[SelectItemView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
-        selectView.parentVC = self;
-        selectView.pageType = 1;
-        selectView.dataArray = _dataArray;
-        selectView.currentModel = currentModel;
-        selectView.backgroundColor = [UIColor whiteColor];
-        [self lew_presentPopupView:selectView animation:[LewPopupViewAnimationSpring new] dismissed:^{
-            NSLog(@"动画结束");
-        }];
-        [self hiddenNaviBar];
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"垃圾篓" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (removeArray.count == 0) {
+            [self showStringHUD:@"垃圾篓暂无视频" second:2];
+            return;
+        }
+        DYNextViewController *vc = [[DYNextViewController alloc] init];
+        vc.pageType = 2;
+        [self.navigationController pushViewController:vc animated:YES];
     }];
     [alertVC addAction:okAction2];
     
-    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"更多视频" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        isOtherVideos = !isOtherVideos;
-        [self prepareData];
+    UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"收藏夹" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (favoriteArray.count == 0) {
+            [self showStringHUD:@"收藏夹暂无视频" second:2];
+            return;
+        }
+        DYNextViewController *vc = [[DYNextViewController alloc] init];
+        vc.pageType = 1;
+        [self.navigationController pushViewController:vc animated:YES];
     }];
     [alertVC addAction:okAction3];
     
