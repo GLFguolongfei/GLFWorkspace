@@ -24,10 +24,12 @@
 + (NSString *)dictionaryToJson:(NSDictionary *)dic;
 // json格式字符串转字典
 + (NSDictionary *)dictionaryWithJsonString:(NSString *)jsonString;
-#pragma mark 缩放
-+ (UIImage *)scaleImage:(UIImage *)image toScale:(float)scaleSize; // 等比率缩放
-+ (UIImage *)reSizeImage:(UIImage *)image toSize:(CGSize)reSize; // 自定长宽
-+ (UIImage *)reSizeImage:(UIImage *)image toWidth:(float)width; // 自定最大宽(按比例缩放)
+#pragma mark 压缩图片质量
++ (UIImage *)scaleImage:(UIImage *)image toCompression:(float)pression;
+#pragma mark 压缩图片尺寸
++ (UIImage *)scaleImage:(UIImage *)image toScale:(float)scaleSize; // 等比缩放
++ (UIImage *)scaleImage:(UIImage *)image toSize:(CGSize)reSize; // 自定长宽
++ (UIImage *)scaleImage:(UIImage *)image toWidth:(float)width; // 自定宽度(高度自定义)
 
 #pragma mark 获取IP地址
 + (NSString *)getIPAddress:(BOOL)preferIPv4;

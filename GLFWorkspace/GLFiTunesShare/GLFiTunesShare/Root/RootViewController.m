@@ -653,6 +653,25 @@
         }];
         [alertVC addAction:okAction3];
     }
+    UIAlertAction *okAction4 = [UIAlertAction actionWithTitle:@"图片压缩..." style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        if (model.type == 1) { // 文件夹
+            UIAlertController *modalVC = [UIAlertController alertControllerWithTitle:@"再次确定" message:@"是否压缩图片文件夹?" preferredStyle:UIAlertControllerStyleActionSheet];
+            UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+
+            }];
+            [modalVC addAction:cancel];
+            UIAlertAction *ok = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * _Nonnull action) {
+                [self showHUD:@"压缩中..."];
+                [myTableView setEditing:NO animated:YES];
+                [self compress:model];
+            }];
+            [modalVC addAction:ok];
+            [self presentViewController:modalVC animated:YES completion:nil];
+        } else {
+            [self showStringHUD:@"目前只压缩图片文件夹" second:2];
+        }
+    }];
+    [alertVC addAction:okAction4];
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
@@ -859,6 +878,73 @@
     } else {
         return fileArray;
     }
+}
+
+- (void)compress:(FileModel *)model {
+    NSInteger oneM = 1024 * 1024;
+    
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_async(queue, ^{
+        NSArray *array = [GLFFileManager searchSubFile:model.path andIsDepth:YES];
+        for (int i = 0; i < array.count; i++) {
+            NSString *subPath = array[i];
+            NSString *path = [NSString stringWithFormat:@"%@/%@", model.path, subPath];
+            NSInteger fileType = [GLFFileManager fileExistsAtPath:path];
+            if (fileType == 1) { // 文件
+                NSArray *array = [subPath componentsSeparatedByString:@"."];
+                NSString *lowerType = [array.lastObject lowercaseString];
+                if ([CimgTypeArray containsObject:lowerType]) {
+                    CGFloat size = [GLFFileManager fileSize:path];
+                    // 小于2M的就不用压缩了
+                    if (size < 2 * oneM) {
+                        continue;
+                    }
+                    
+                    UIImage *image = [UIImage imageWithContentsOfFile:path];
+                    NSData *data = nil;
+                    if (size < 10 * oneM) {
+                        data = UIImageJPEGRepresentation(image, 0.5);
+                    } else if (size < 20 * oneM) {
+                        data = UIImageJPEGRepresentation(image, 0.4);
+                    } else if (size < 30 * oneM) {
+                        data = UIImageJPEGRepresentation(image, 0.3);
+                    } else if (size < 40 * oneM) {
+                        data = UIImageJPEGRepresentation(image, 0.2);
+                    } else {
+                        data = UIImageJPEGRepresentation(image, 0.1);
+                    }
+                    // 很神奇: 1.0 并不是原图大小,不知道为什么
+                    // 压缩后的大小比原来还大,就不用了
+                    if (data.length >= size) {
+                        if (size < 10 * oneM) {
+                            data = UIImageJPEGRepresentation(image, 0.45);
+                        } else if (size < 20 * oneM) {
+                            data = UIImageJPEGRepresentation(image, 0.35);
+                        } else if (size < 30 * oneM) {
+                            data = UIImageJPEGRepresentation(image, 0.25);
+                        } else if (size < 40 * oneM) {
+                            data = UIImageJPEGRepresentation(image, 0.15);
+                        } else {
+                            data = UIImageJPEGRepresentation(image, 0.05);
+                        }
+                    }
+                    if (data.length >= size) {
+                        continue;
+                    }
+                    
+                    // 回到主线程
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [data writeToFile:path atomically:YES];
+                    });
+                }
+            }
+        }
+        // 回到主线程
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self hideAllHUD];
+            [self prepareData];
+        });
+    });
 }
 
 

@@ -202,35 +202,42 @@
     return dic;
 }
 
-#pragma mark 缩放
-// 等比率缩放
+#pragma mark 压缩图片质量
++ (UIImage *)scaleImage:(UIImage *)image toCompression:(float)pression {
+    NSData *data = UIImageJPEGRepresentation(image, pression);
+    UIImage *resultImage = [UIImage imageWithData:data];
+    return resultImage;
+}
+
+#pragma mark 压缩图片尺寸
+// 等比缩放
 + (UIImage *)scaleImage:(UIImage *)image toScale:(float)scaleSize {
     CGFloat imageW = image.size.width * scaleSize;
     CGFloat imageH = image.size.height * scaleSize;
     UIGraphicsBeginImageContext(CGSizeMake(imageW, imageH));
     [image drawInRect:CGRectMake(0, 0, imageW, imageH)];
-    UIImage *scaledImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *resultImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return scaledImage;
+    return resultImage;
 }
 
 // 自定长宽
-+ (UIImage *)reSizeImage:(UIImage *)image toSize:(CGSize)reSize {
++ (UIImage *)scaleImage:(UIImage *)image toSize:(CGSize)reSize {
     UIGraphicsBeginImageContext(CGSizeMake(reSize.width, reSize.height));
     [image drawInRect:CGRectMake(0, 0, reSize.width, reSize.height)];
-    UIImage *reSizeImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *resultImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return reSizeImage;
+    return resultImage;
 }
 
-// 自定最大宽(按比例缩放)
-+ (UIImage *)reSizeImage:(UIImage *)image toWidth:(float)width {
+// 自定宽度(高度自定义)
++ (UIImage *)scaleImage:(UIImage *)image toWidth:(float)width {
     CGFloat height = image.size.height * width / image.size.width;
     UIGraphicsBeginImageContext(CGSizeMake(width, height));
     [image drawInRect:CGRectMake(0, 0, width, height)];
-    UIImage *reSizeImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIImage *resultImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    return reSizeImage;
+    return resultImage;
 }
 
 #pragma mark 获取IP地址
