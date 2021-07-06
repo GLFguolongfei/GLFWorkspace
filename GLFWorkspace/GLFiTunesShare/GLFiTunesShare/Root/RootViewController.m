@@ -891,8 +891,8 @@
             NSString *path = [NSString stringWithFormat:@"%@/%@", model.path, subPath];
             NSInteger fileType = [GLFFileManager fileExistsAtPath:path];
             if (fileType == 1) { // 文件
-                NSArray *array = [subPath componentsSeparatedByString:@"."];
-                NSString *lowerType = [array.lastObject lowercaseString];
+                NSArray *nameArray = [subPath componentsSeparatedByString:@"."];
+                NSString *lowerType = [nameArray.lastObject lowercaseString];
                 if ([CimgTypeArray containsObject:lowerType]) {
                     CGFloat size = [GLFFileManager fileSize:path];
                     // 小于2M的就不用压缩了
@@ -931,6 +931,9 @@
                     // 回到主线程
                     dispatch_async(dispatch_get_main_queue(), ^{
                         [data writeToFile:path atomically:YES];
+                        
+                        NSString *str = [NSString stringWithFormat:@"%d / %ld", i + 1, array.count];
+                        [self showHUD:str];
                     });
                 }
             }
