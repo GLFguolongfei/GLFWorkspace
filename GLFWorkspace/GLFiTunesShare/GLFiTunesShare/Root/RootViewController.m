@@ -921,7 +921,7 @@
                     // 很神奇: 1.0 并不是原图大小,不知道为什么
                     // 压缩后的大小比原来还大,就不用了
                     if (data.length >= size / 2) {
-                        press = press / 3 * 2;
+                        press = press * 0.8;
                         data = UIImageJPEGRepresentation(image, press);
                     }
                     if (data.length >= size) {
