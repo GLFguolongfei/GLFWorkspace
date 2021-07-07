@@ -109,8 +109,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteAction) name:@"favoriteClick" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     isPlaying = YES;
-    [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonState];
+    [self playOrPause];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -118,8 +117,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [gestureView removeFromSuperview];
     isPlaying = NO;
-    [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonState];
+    [self playOrPause];
 }
 
 - (void)prepareData {
@@ -224,15 +222,13 @@
     
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Other
     isPlaying = YES;
-    [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonState];
+    [self playOrPause];
 }
 
 #pragma mark Events
 - (void)playOrPauseVideo {
     isPlaying = !isPlaying;
-    [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonState];
+    [self playOrPause];
 }
 
 - (void)playerForward {
@@ -262,22 +258,7 @@
         [self playRandom:++currentIndex];
     } else {
         isPlaying = YES;
-        [currentVC playOrPauseVideo:YES];
-        [self setButtonState];
-    }
-}
-
-- (void)setButtonState {
-    if (isPlaying) {
-        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(playOrPauseVideo)];
-        NSMutableArray *array = [self.toolbarItems mutableCopy];
-        [array replaceObjectAtIndex:3 withObject:item];
-        self.toolbarItems = array;
-    } else {
-        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(playOrPauseVideo)];
-        NSMutableArray *array = [self.toolbarItems mutableCopy];
-        [array replaceObjectAtIndex:3 withObject:item];
-        self.toolbarItems = array;
+        [self playOrPause];
     }
 }
 
@@ -295,6 +276,9 @@
 }
 
 - (void)moreVideo {
+    isPlaying = NO;
+    [self playOrPause];
+    
     isNODYVideos = !isNODYVideos;
     [self prepareData];
 }
@@ -447,11 +431,8 @@
         DYSubViewController *vc = (DYSubViewController *)previousViewControllers[0];
         if (completed) {
             // 停止播放
-            [vc playOrPauseVideo:NO];
-            // ToolBar设为暂停状态
-            isPlaying = NO;
-            [self setButtonState];
-            [self playOrPauseVideo];
+            isPlaying = YES;
+            [self playOrPause];
 
             [self setUIBtn];
             [self setLabelTitle];
@@ -520,6 +501,21 @@
     label.frame = labelReact;
 }
 
+// 播放与暂停
+- (void)playOrPause {
+    if (isPlaying) {
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(playOrPauseVideo)];
+        NSMutableArray *array = [self.toolbarItems mutableCopy];
+        [array replaceObjectAtIndex:3 withObject:item];
+        self.toolbarItems = array;
+    } else {
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(playOrPauseVideo)];
+        NSMutableArray *array = [self.toolbarItems mutableCopy];
+        [array replaceObjectAtIndex:3 withObject:item];
+        self.toolbarItems = array;
+    }
+    [currentVC playOrPauseVideo:isPlaying];
+}
 
 
 @end
