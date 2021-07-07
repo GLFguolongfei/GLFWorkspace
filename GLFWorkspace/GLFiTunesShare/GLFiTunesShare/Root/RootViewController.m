@@ -896,7 +896,7 @@
                 if ([CimgTypeArray containsObject:lowerType]) {
                     CGFloat size = [GLFFileManager fileSize:path];
                     // 小于2M的就不用压缩了
-                    if (size < 2 * oneM) {
+                    if (size < 5 * oneM) {
                         continue;
                     }
                     
