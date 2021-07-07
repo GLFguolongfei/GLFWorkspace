@@ -895,7 +895,7 @@
                 NSString *lowerType = [nameArray.lastObject lowercaseString];
                 if ([CimgTypeArray containsObject:lowerType]) {
                     CGFloat size = [GLFFileManager fileSize:path];
-                    // 小于2M的就不用压缩了
+                    // 小于5M的就不用压缩了
                     if (size < 5 * oneM) {
                         continue;
                     }
@@ -907,15 +907,15 @@
                     
                     UIImage *image = [UIImage imageWithContentsOfFile:path];
                     NSData *data = nil;
-                    CGFloat press = 0.1;
+                    CGFloat press = 0.2;
                     if (size < 10 * oneM) {
-                        press = 0.5;
+                        press = 0.6;
                     } else if (size < 20 * oneM) {
-                        press = 0.4;
+                        press = 0.5;
                     } else if (size < 30 * oneM) {
-                        press = 0.3;
+                        press = 0.4;
                     } else if (size < 40 * oneM) {
-                        press = 0.2;
+                        press = 0.3;
                     }
                     data = UIImageJPEGRepresentation(image, press);
                     // 很神奇: 1.0 并不是原图大小,不知道为什么
