@@ -429,17 +429,14 @@
     if (previousViewControllers.count > 0) {
         // 获取以前的控VC
         DYSubViewController *vc = (DYSubViewController *)previousViewControllers[0];
-        if (completed) {
-            // 停止播放
+        if (completed) { // 翻页完成
             isPlaying = YES;
             [self playOrPause];
 
             [self setUIBtn];
             [self setLabelTitle];
         } else {
-            // 获取当前控制器
             currentVC = vc;
-            // 获取当前Model
             currentModel = dataArray[vc.currentIndex];
             NSLog(@"%@", currentModel.name);
         }

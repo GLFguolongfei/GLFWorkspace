@@ -14,18 +14,19 @@
 {
     UIPageViewController *pageVC; // 专门用来作电子书效果的,它用来管理其它的视图控制器
     DYNextSubViewController *currentVC; // 当前显示的VC
-    BOOL isPlaying;
-    
-    NSInteger selectIndex;
-    NSMutableArray *_dataArray;
+
+    NSMutableArray *dataArray;
     FileModel *currentModel;
+    NSInteger currentIndex;
     
-    NSMutableArray *editArray;
+    BOOL isPlaying;
+    BOOL isAutoPlay;
+
+    UIView *gestureView; // 导航栏手势
+    UILabel *label; // 视频名称
+    
+    NSMutableArray *editArray; // 收藏或删除
     UIButton *editButton;
-    
-    UIView *gestureView;
-    
-    UILabel *label;
 }
 @end
 
@@ -35,6 +36,8 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    UIBarButtonItem *barItem1 = [[UIBarButtonItem alloc] initWithTitle:@"选择" style:UIBarButtonItemStylePlain target:self action:@selector(selectVideo)];
+    self.navigationItem.rightBarButtonItems = @[barItem1];
     self.view.backgroundColor = [UIColor blackColor];
     if (self.pageType == 1) {
         [self setVCTitle:@"抖音短视频"];
@@ -45,6 +48,7 @@
     }
     
     isPlaying = NO;
+    isAutoPlay = NO;
     
     UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRewind target:self action:@selector(playerRewind)];
     UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(playOrPauseVideo)];
@@ -61,16 +65,16 @@
     editArray = [editArray mutableCopy];
     
     [DocumentManager getAllVideosArray:^(NSArray * array) {
-        _dataArray = [[NSMutableArray alloc] init];
+        dataArray = [[NSMutableArray alloc] init];
         for (NSInteger i = 0; i < array.count; i++) {
             FileModel *model = array[i];
             if ([editArray containsObject: model.name]) {
-                [_dataArray addObject:model];
+                [dataArray addObject:model];
             }
         }
-        if (_dataArray.count > 0) {
-            selectIndex = arc4random() % _dataArray.count;
-            currentModel = _dataArray[selectIndex];
+        if (dataArray.count > 0) {
+            currentIndex = arc4random() % dataArray.count;
+            currentModel = dataArray[currentIndex];
             [self prepareView];
         }
     }];
@@ -100,8 +104,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(favoriteAction) name:@"favoriteClick" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(playeEnd:) name:AVPlayerItemDidPlayToEndTimeNotification object:nil];
     isPlaying = YES;
-    [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonState];
+    [self playOrPause];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -109,8 +112,7 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [gestureView removeFromSuperview];
     isPlaying = NO;
-    [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonState];
+    [self playOrPause];
 }
 
 // 更改状态栏
@@ -126,8 +128,8 @@
     pageVC.dataSource = self;
         
     DYNextSubViewController *subVC = [[DYNextSubViewController alloc] init];
-    subVC.currentIndex = selectIndex;
-    subVC.model = _dataArray[selectIndex];
+    subVC.currentIndex = currentIndex;
+    subVC.model = dataArray[currentIndex];
     [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
     [self.view addSubview:pageVC.view];
     
@@ -166,17 +168,18 @@
     label.textColor = [UIColor whiteColor];
     [self.view addSubview:label];
     
+    [self setUIBtn];
     [self setLabelTitle];
     
     // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ Other
-    [self playOrPauseVideo];
+    isPlaying = YES;
+    [self playOrPause];
 }
 
 #pragma mark Events
 - (void)playOrPauseVideo {
     isPlaying = !isPlaying;
-    [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonState];
+    [self playOrPause];
 }
 
 - (void)playerForward {
@@ -202,54 +205,25 @@
 }
 
 - (void)playeEnd:(NSNotification *)notification {
-    isPlaying = YES;
-    [currentVC playOrPauseVideo:YES];
-    [self setButtonState];
-}
-
-- (void)setButtonState {
-    if (isPlaying) {
-        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(playOrPauseVideo)];
-        NSMutableArray *array = [self.toolbarItems mutableCopy];
-        [array replaceObjectAtIndex:3 withObject:item];
-        self.toolbarItems = array;
+    if (isAutoPlay) {
+        [self playRandom:++currentIndex];
     } else {
-        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(playOrPauseVideo)];
-        NSMutableArray *array = [self.toolbarItems mutableCopy];
-        [array replaceObjectAtIndex:3 withObject:item];
-        self.toolbarItems = array;
+        isPlaying = YES;
+        [self playOrPause];
     }
 }
 
-- (void)setLabelTitle {
-    NSString *title = [NSString stringWithFormat:@"%ld / %ld", currentVC.currentIndex + 1, _dataArray.count];
-    [self setVCTitle:title];
-    
-    NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
-    NSString *name = array.lastObject;
-
-    NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
-    CGRect calculateRect = [name boundingRectWithSize:CGSizeMake(kScreenWidth - 130, MAXFLOAT)
-       options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
-    attributes:attrbute
-       context:nil];
-    
-    CGFloat move = 10;
-    if (calculateRect.size.height < 25) {
-        move = 55;
-    } else if (calculateRect.size.height < 50) {
-        move = 40;
-    } else if (calculateRect.size.height < 70) {
-        move = 30;
-    } else if (calculateRect.size.height < 70) {
-        move = 20;
-    } else {
-        move = 15;
-    }
-    
-    CGRect labelReact = CGRectMake(15, kScreenHeight - move - calculateRect.size.height, kScreenWidth - 130, calculateRect.size.height);
-    label.text = name;
-    label.frame = labelReact;
+- (void)selectVideo {
+    SelectItemView *selectView = [[SelectItemView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
+    selectView.parentVC = self;
+    selectView.pageType = 2;
+    selectView.dataArray = dataArray;
+    selectView.currentModel = currentModel;
+    selectView.backgroundColor = [UIColor whiteColor];
+    [self lew_presentPopupView:selectView animation:[LewPopupViewAnimationSpring new] dismissed:^{
+        NSLog(@"动画结束");
+    }];
+    [self hiddenNaviBar];
 }
 
 - (void)favoriteAction {
@@ -282,43 +256,44 @@
     }];
     [alertVC addAction:cancelAction];
     
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"选择播放" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        SelectItemView *selectView = [[SelectItemView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth/4*3, kScreenHeight/4*3)];
-        selectView.parentVC = self;
-        selectView.pageType = 2;
-        selectView.dataArray = _dataArray;
-        selectView.currentModel = currentModel;
-        selectView.backgroundColor = [UIColor whiteColor];
-        [self lew_presentPopupView:selectView animation:[LewPopupViewAnimationSpring new] dismissed:^{
-            NSLog(@"动画结束");
-        }];
-        [self hiddenNaviBar];
+    NSString *str = @"自动播放";
+    if (isAutoPlay) {
+        str = @"停止自动播放";
+    }
+    UIAlertAction *okAction4 = [UIAlertAction actionWithTitle:str style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        isAutoPlay = !isAutoPlay;
     }];
-    [alertVC addAction:okAction];
+    [alertVC addAction:okAction4];
     
     DocumentManager *manager = [DocumentManager sharedDocumentManager];
     if (manager.isRecording) {
-        UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"切换主题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIAlertAction *okAction3 = [UIAlertAction actionWithTitle:@"切换主题" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             [manager switchCamera];
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                 [self reSetVCTitle];
             });
         }];
-        [alertVC addAction:okAction2];
+        [alertVC addAction:okAction3];
     }
     
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
+// 用于选择视图回调
 - (void)playRandom:(NSInteger)index {
-    // 暂停当前播放
-    isPlaying = NO;
-    [currentVC playOrPauseVideo:isPlaying];
-    [self setButtonState];
-    // 切换视频
-    selectIndex = index;
-    [self prepareView];
-    [self showStringHUD:@"切换成功" second:1.5];
+    DYNextSubViewController *subVC = [[DYNextSubViewController alloc] init];
+    subVC.currentIndex = index;
+    subVC.model = dataArray[index];
+    [pageVC setViewControllers:@[subVC] direction:UIPageViewControllerNavigationDirectionForward animated:YES completion:nil];
+
+    currentVC = subVC;
+    currentIndex = index;
+    currentModel = dataArray[currentIndex];
+    
+    [subVC playOrPauseVideo:YES];
+    
+    [self setUIBtn];
+    [self setLabelTitle];
 }
 
 - (void)clearArray {
@@ -356,31 +331,31 @@
 #pragma mark UIPageViewControllerDataSource
 // 上一页
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
-    selectIndex = ((DYNextSubViewController *) viewController).currentIndex;
-    if (selectIndex==0 || selectIndex==NSNotFound) {
-        selectIndex = _dataArray.count;
+    currentIndex = ((DYNextSubViewController *) viewController).currentIndex;
+    if (currentIndex==0 || currentIndex==NSNotFound) {
+        currentIndex = dataArray.count;
     }
     
-    selectIndex--; // 注意: 直接使用VC的顺序index,不要再单独标记了,否则出大问题
+    currentIndex--; // 注意: 直接使用VC的顺序index,不要再单独标记了,否则出大问题
     
     DYNextSubViewController *subVC = [[DYNextSubViewController alloc] init];
-    subVC.currentIndex = selectIndex;
-    subVC.model = _dataArray[selectIndex];
+    subVC.currentIndex = currentIndex;
+    subVC.model = dataArray[currentIndex];
     return subVC;
 }
 
 // 下一页
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
-    selectIndex = ((DYNextSubViewController *) viewController).currentIndex;
-    if (selectIndex==_dataArray.count-1 || selectIndex==NSNotFound) {
-        selectIndex = -1;
+    currentIndex = ((DYNextSubViewController *) viewController).currentIndex;
+    if (currentIndex==dataArray.count-1 || currentIndex==NSNotFound) {
+        currentIndex = -1;
     }
     
-    selectIndex++;
+    currentIndex++;
     
     DYNextSubViewController *subVC = [[DYNextSubViewController alloc] init];
-    subVC.currentIndex = selectIndex;
-    subVC.model = _dataArray[selectIndex];
+    subVC.currentIndex = currentIndex;
+    subVC.model = dataArray[currentIndex];
     return subVC;
 }
 
@@ -390,7 +365,7 @@
     // 获取要跳转的VC
     currentVC = (DYNextSubViewController *)pendingViewControllers[0];
     // 获取要跳转的Model
-    currentModel = _dataArray[currentVC.currentIndex];
+    currentModel = dataArray[currentVC.currentIndex];
 }
 
 // 结束滚动或翻页的时候触发
@@ -403,32 +378,85 @@
             [vc playOrPauseVideo:NO];
             // ToolBar设为暂停状态
             isPlaying = NO;
-            [self setButtonState];
+            [self playOrPause];
             [self playOrPauseVideo];
             
-            if (self.pageType == 1) {
-                if ([editArray containsObject:currentModel.name]) {
-                    [editButton setImage:[UIImage imageNamed:@"dyFavoriteBig"] forState:UIControlStateNormal];
-                } else {
-                    [editButton setImage:[UIImage imageNamed:@"dyNofavoriteBig"] forState:UIControlStateNormal];
-                }
-            } else {
-                if ([editArray containsObject:currentModel.name]) {
-                    [editButton setImage:[UIImage imageNamed:@"dyDeleteBig"] forState:UIControlStateNormal];
-                } else {
-                    [editButton setImage:[UIImage imageNamed:@"dyNodeleteBig"] forState:UIControlStateNormal];
-                }
-            }
-            
+            [self setUIBtn];
             [self setLabelTitle];
         } else {
-            // 获取当前控制器
             currentVC = vc;
-            // 获取当前Model
-            currentModel = _dataArray[vc.currentIndex];
+            currentModel = dataArray[vc.currentIndex];
             NSLog(@"%@", currentModel.name);
         }
     }
+}
+
+#pragma mark Tools
+// 存储当前播放位置,设置收藏删除按钮
+- (void)setUIBtn {
+    if (self.pageType == 1) {
+        if ([editArray containsObject:currentModel.name]) {
+            [editButton setImage:[UIImage imageNamed:@"dyFavoriteBig"] forState:UIControlStateNormal];
+        } else {
+            [editButton setImage:[UIImage imageNamed:@"dyNofavoriteBig"] forState:UIControlStateNormal];
+        }
+    } else {
+        if ([editArray containsObject:currentModel.name]) {
+            [editButton setImage:[UIImage imageNamed:@"dyDeleteBig"] forState:UIControlStateNormal];
+        } else {
+            [editButton setImage:[UIImage imageNamed:@"dyNodeleteBig"] forState:UIControlStateNormal];
+        }
+    }
+}
+
+// 设置标题和视频名称
+- (void)setLabelTitle {
+    // 设置标题
+    NSString *title = [NSString stringWithFormat:@"%ld / %ld", currentVC.currentIndex + 1, dataArray.count];
+    [self setVCTitle:title];
+    
+    // 设置视频名称
+    NSArray *array = [currentModel.name componentsSeparatedByString:@"/"];
+    NSString *name = array.lastObject;
+
+    NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
+    CGRect calculateRect = [name boundingRectWithSize:CGSizeMake(kScreenWidth - 130, MAXFLOAT)
+       options:NSStringDrawingUsesLineFragmentOrigin | NSStringDrawingUsesFontLeading
+    attributes:attrbute
+       context:nil];
+    
+    CGFloat move = 10;
+    if (calculateRect.size.height < 25) {
+        move = 55;
+    } else if (calculateRect.size.height < 50) {
+        move = 40;
+    } else if (calculateRect.size.height < 70) {
+        move = 30;
+    } else if (calculateRect.size.height < 70) {
+        move = 20;
+    } else {
+        move = 15;
+    }
+    
+    CGRect labelReact = CGRectMake(15, kScreenHeight - move - calculateRect.size.height, kScreenWidth - 130, calculateRect.size.height);
+    label.text = name;
+    label.frame = labelReact;
+}
+
+// 播放与暂停
+- (void)playOrPause {
+    if (isPlaying) {
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPause target:self action:@selector(playOrPauseVideo)];
+        NSMutableArray *array = [self.toolbarItems mutableCopy];
+        [array replaceObjectAtIndex:3 withObject:item];
+        self.toolbarItems = array;
+    } else {
+        UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemPlay target:self action:@selector(playOrPauseVideo)];
+        NSMutableArray *array = [self.toolbarItems mutableCopy];
+        [array replaceObjectAtIndex:3 withObject:item];
+        self.toolbarItems = array;
+    }
+    [currentVC playOrPauseVideo:isPlaying];
 }
 
 
