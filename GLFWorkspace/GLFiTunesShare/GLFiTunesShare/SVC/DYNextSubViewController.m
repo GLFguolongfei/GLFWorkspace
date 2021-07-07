@@ -166,6 +166,12 @@
     }
     CMTime dragedCMTime = CMTimeMake(time, 1);
     [player seekToTime:dragedCMTime];
+    
+    NSString *str = [NSString stringWithFormat:@"-->> %ld 秒", interval];
+    if (!isForward) {
+        str = [NSString stringWithFormat:@"%ld 秒 <<--", interval];
+    }
+    [self showStringHUD:str second:1];
 }
 
 // 视频横竖屏
