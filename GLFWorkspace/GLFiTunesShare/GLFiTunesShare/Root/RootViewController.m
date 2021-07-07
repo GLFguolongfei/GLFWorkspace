@@ -924,11 +924,6 @@
                         press = press / 2;
                         data = UIImageJPEGRepresentation(image, press);
                     }
-                    if (data.length >= size / 2) {
-                        press = press / 2;
-                        data = UIImageJPEGRepresentation(image, press);
-                        continue;
-                    }
                     if (data.length >= size) {
                         continue;
                     }
