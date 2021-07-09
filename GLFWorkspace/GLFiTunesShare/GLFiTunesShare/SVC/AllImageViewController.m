@@ -462,16 +462,16 @@ static NSString *cellID = @"ShowTableViewCell";
         allPages++;
     }
     NSInteger pageInter = 1;
-    if (allImagesArray.count > 500) {
+    if (allImagesArray.count < 500) {
+        pageInter = 1;
+    } else if (allImagesArray.count < 1000) {
         pageInter = 2;
-    } else if (allImagesArray.count > 1000) {
+    } else if (allImagesArray.count < 2000) {
         pageInter = 3;
-    } else if (allImagesArray.count > 2000) {
+    } else if (allImagesArray.count < 3000) {
         pageInter = 4;
-    } else if (allImagesArray.count > 3000) {
-        pageInter = 5;
     } else {
-        pageInter = 6;
+        pageInter = 5;
     }
     for (NSInteger i = 0; i < allPages; i++) {
         if (i % pageInter != 0) {
@@ -484,7 +484,7 @@ static NSString *cellID = @"ShowTableViewCell";
         }
         NSString *str = [NSString stringWithFormat:@"第 %ld 页（%ld ~ %ld）", i + 1, startIndex, endIndex];
         if (i == pageIndex) {
-            str = [NSString stringWithFormat:@"第 %ld 页（%ld ~ %ld）【当前页】", i + 1, startIndex, endIndex];
+            str = [NSString stringWithFormat:@"-> 第 %ld 页（%ld ~ %ld）", i + 1, startIndex, endIndex];
         }
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:str style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
             _dataArray1 = [[NSMutableArray alloc] init];
