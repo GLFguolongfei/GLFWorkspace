@@ -167,11 +167,7 @@
     CMTime dragedCMTime = CMTimeMake(time, 1);
     [player seekToTime:dragedCMTime];
     
-    NSString *str = [NSString stringWithFormat:@"-->> %ld 秒", interval];
-    if (!isForward) {
-        str = [NSString stringWithFormat:@"%ld 秒 <<--", interval];
-    }
-    [self showStringHUD:str second:1];
+    [self showStringHUD:[self showTimer] second:1];
 }
 
 // 视频横竖屏
@@ -196,7 +192,7 @@
     [player seekToTime:dragedCMTime];
 }
 
-- (void)showTimer {
+- (NSString *)showTimer {
     NSInteger currentTime = (NSInteger)CMTimeGetSeconds(playerItem.currentTime);
     NSInteger duration = (NSInteger)CMTimeGetSeconds(playerItem.duration);
     NSString *currentTimeStr = [GLFTools timeFormatted:currentTime];
@@ -204,6 +200,7 @@
     label.text = [NSString stringWithFormat:@"%@ / %@", currentTimeStr, durationStr];
     CGFloat index = CMTimeGetSeconds(playerItem.currentTime) / CMTimeGetSeconds(playerItem.duration);
     [progressView setProgress:index animated:YES];
+    return label.text;
 }
 
 

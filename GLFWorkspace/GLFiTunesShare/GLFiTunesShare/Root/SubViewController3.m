@@ -138,6 +138,8 @@
     }
     CMTime dragedCMTime = CMTimeMake(time, 1);
     [self.player seekToTime:dragedCMTime];
+    
+    [self showStringHUD:[self showTimer] second:1];
 }
 
 // 视频横竖屏
@@ -167,7 +169,7 @@
     [self.player seekToTime:dragedCMTime];
 }
 
-- (void)showTimer {
+- (NSString *)showTimer {
     NSInteger currentTime = (NSInteger)CMTimeGetSeconds(self.playerItem.currentTime);
     NSInteger duration = (NSInteger)CMTimeGetSeconds(self.playerItem.duration);
     NSString *currentTimeStr = [GLFTools timeFormatted:currentTime];
@@ -175,8 +177,8 @@
     label.text = [NSString stringWithFormat:@"%@ / %@", currentTimeStr, durationStr];
     CGFloat index = CMTimeGetSeconds(self.playerItem.currentTime) / CMTimeGetSeconds(self.playerItem.duration);
     [progressView setProgress:index animated:YES];
+    return label.text;
 }
-
 
 // 从固定时间开始播放
 - (void)playTime:(NSInteger)time {
