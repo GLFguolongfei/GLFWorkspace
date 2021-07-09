@@ -231,53 +231,8 @@
 }
 
 - (void)button1 {
-    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-    }];
-    [alertVC addAction:cancelAction];
-    
-    NSInteger allImagesCount = [[NSUserDefaults standardUserDefaults] integerForKey:@"AllImagesCount"];
-    if (allImagesCount < 600) {
-        AllImageViewController *imageVC = [[AllImageViewController alloc] init];
-        [self.navigationController pushViewController:imageVC animated:YES];
-        return;
-    }
-    NSInteger pageCount = 300;
-    if (allImagesCount < 1000) {
-        pageCount = 100;
-    } else if (allImagesCount < 2000) {
-        pageCount = 200;
-    }
-    NSInteger allPages = allImagesCount / pageCount;
-    if (allImagesCount % pageCount != 0) {
-        allPages++;
-    }
-    for (NSInteger i = 0; i < allPages; i++) {
-        NSInteger startIndex = pageCount * i;
-        NSInteger endIndex = pageCount * (i + 1);
-        if (endIndex > allImagesCount) {
-            endIndex = allImagesCount;
-        }
-        NSString *str = [NSString stringWithFormat:@"%ld ~~~ %ld", startIndex + 1, endIndex];
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:str style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-            AllImageViewController *imageVC = [[AllImageViewController alloc] init];
-            imageVC.isPageShow = YES;
-            imageVC.startIndex = startIndex;
-            imageVC.pageCount = pageCount;
-            [self.navigationController pushViewController:imageVC animated:YES];
-        }];
-        [alertVC addAction:okAction];
-    }
-    
-    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"全部图片资源" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        AllImageViewController *imageVC = [[AllImageViewController alloc] init];
-        [self.navigationController pushViewController:imageVC animated:YES];
-    }];
-    [alertVC addAction:okAction];
-
-    [self presentViewController:alertVC animated:YES completion:nil];
+    AllImageViewController *imageVC = [[AllImageViewController alloc] init];
+    [self.navigationController pushViewController:imageVC animated:YES];
 }
 
 - (void)button2 {
