@@ -183,7 +183,7 @@
 // 从固定时间开始播放
 - (void)playTime:(NSInteger)time {
     CMTime dragedCMTime = CMTimeMake(time, 1);
-    [self.player seekToTime:dragedCMTime];
+    [self.player seekToTime:dragedCMTime];    
 }
 
 // 设置播放速度
