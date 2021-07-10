@@ -27,6 +27,7 @@
     UIView *gestureView; // 导航栏手势
     UILabel *label; // 视频名称
     
+    // 收藏或删除
     NSMutableArray *favoriteArray; // 收藏
     NSMutableArray *removeArray; // 删除
     UIButton *favoriteButton;
@@ -255,7 +256,8 @@
 
 - (void)playeEnd:(NSNotification *)notification {
     if (isAutoPlay) {
-        [self playRandom:++currentIndex];
+        currentIndex++;
+        [self playRandom:currentIndex];
     } else {
         isPlaying = YES;
         [self playOrPause];

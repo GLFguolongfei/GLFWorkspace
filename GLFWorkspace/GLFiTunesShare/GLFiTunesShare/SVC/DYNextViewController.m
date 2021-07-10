@@ -25,7 +25,8 @@
     UIView *gestureView; // 导航栏手势
     UILabel *label; // 视频名称
     
-    NSMutableArray *editArray; // 收藏或删除
+    // 收藏或删除
+    NSMutableArray *editArray;
     UIButton *editButton;
 }
 @end
@@ -206,7 +207,8 @@
 
 - (void)playeEnd:(NSNotification *)notification {
     if (isAutoPlay) {
-        [self playRandom:++currentIndex];
+        currentIndex++;
+        [self playRandom:currentIndex];
     } else {
         isPlaying = YES;
         [self playOrPause];
@@ -374,13 +376,9 @@
         // 获取以前的控VC
         DYNextSubViewController *vc = (DYNextSubViewController *)previousViewControllers[0];
         if (completed) {
-            // 停止播放
-            [vc playOrPauseVideo:NO];
-            // ToolBar设为暂停状态
-            isPlaying = NO;
+            isPlaying = YES;
             [self playOrPause];
-            [self playOrPauseVideo];
-            
+
             [self setUIBtn];
             [self setLabelTitle];
         } else {
