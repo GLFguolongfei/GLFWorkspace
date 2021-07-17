@@ -8,6 +8,258 @@
       location = "group:GLFTools"
       name = "GLFTools">
       <Group
+         location = "group:MJRefresh"
+         name = "MJRefresh">
+         <FileRef
+            location = "group:UIScrollView+MJRefresh.m">
+         </FileRef>
+         <FileRef
+            location = "group:MJRefreshConst.m">
+         </FileRef>
+         <FileRef
+            location = "group:MJRefreshConfig.m">
+         </FileRef>
+         <FileRef
+            location = "group:UIScrollView+MJExtension.h">
+         </FileRef>
+         <FileRef
+            location = "group:MJRefresh.h">
+         </FileRef>
+         <FileRef
+            location = "group:NSBundle+MJRefresh.h">
+         </FileRef>
+         <FileRef
+            location = "group:MJRefresh.bundle">
+         </FileRef>
+         <FileRef
+            location = "group:UIView+MJExtension.h">
+         </FileRef>
+         <Group
+            location = "group:include"
+            name = "include">
+            <FileRef
+               location = "group:MJRefreshComponent.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIScrollView+MJExtension.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshAutoStateFooter.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshAutoFooter.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshNormalTrailer.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefresh.h">
+            </FileRef>
+            <FileRef
+               location = "group:NSBundle+MJRefresh.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshBackGifFooter.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshBackStateFooter.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIView+MJExtension.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshBackNormalFooter.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshAutoNormalFooter.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshTrailer.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshStateHeader.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshGifHeader.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshAutoGifFooter.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshHeader.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshFooter.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshConfig.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshConst.h">
+            </FileRef>
+            <FileRef
+               location = "group:UIScrollView+MJRefresh.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshNormalHeader.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshStateTrailer.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshBackFooter.h">
+            </FileRef>
+         </Group>
+         <FileRef
+            location = "group:UIScrollView+MJExtension.m">
+         </FileRef>
+         <FileRef
+            location = "group:MJRefreshConfig.h">
+         </FileRef>
+         <FileRef
+            location = "group:MJRefreshConst.h">
+         </FileRef>
+         <FileRef
+            location = "group:UIScrollView+MJRefresh.h">
+         </FileRef>
+         <FileRef
+            location = "group:NSBundle+MJRefresh.m">
+         </FileRef>
+         <FileRef
+            location = "group:UIView+MJExtension.m">
+         </FileRef>
+         <Group
+            location = "group:Custom"
+            name = "Custom">
+            <Group
+               location = "group:Footer"
+               name = "Footer">
+               <Group
+                  location = "group:Back"
+                  name = "Back">
+                  <FileRef
+                     location = "group:MJRefreshBackGifFooter.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MJRefreshBackStateFooter.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MJRefreshBackNormalFooter.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MJRefreshBackGifFooter.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MJRefreshBackStateFooter.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MJRefreshBackNormalFooter.m">
+                  </FileRef>
+               </Group>
+               <Group
+                  location = "group:Auto"
+                  name = "Auto">
+                  <FileRef
+                     location = "group:MJRefreshAutoStateFooter.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MJRefreshAutoNormalFooter.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MJRefreshAutoGifFooter.h">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MJRefreshAutoStateFooter.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MJRefreshAutoGifFooter.m">
+                  </FileRef>
+                  <FileRef
+                     location = "group:MJRefreshAutoNormalFooter.m">
+                  </FileRef>
+               </Group>
+            </Group>
+            <Group
+               location = "group:Trailer"
+               name = "Trailer">
+               <FileRef
+                  location = "group:MJRefreshNormalTrailer.h">
+               </FileRef>
+               <FileRef
+                  location = "group:MJRefreshStateTrailer.m">
+               </FileRef>
+               <FileRef
+                  location = "group:MJRefreshNormalTrailer.m">
+               </FileRef>
+               <FileRef
+                  location = "group:MJRefreshStateTrailer.h">
+               </FileRef>
+            </Group>
+            <Group
+               location = "group:Header"
+               name = "Header">
+               <FileRef
+                  location = "group:MJRefreshNormalHeader.m">
+               </FileRef>
+               <FileRef
+                  location = "group:MJRefreshStateHeader.h">
+               </FileRef>
+               <FileRef
+                  location = "group:MJRefreshGifHeader.h">
+               </FileRef>
+               <FileRef
+                  location = "group:MJRefreshNormalHeader.h">
+               </FileRef>
+               <FileRef
+                  location = "group:MJRefreshStateHeader.m">
+               </FileRef>
+               <FileRef
+                  location = "group:MJRefreshGifHeader.m">
+               </FileRef>
+            </Group>
+         </Group>
+         <Group
+            location = "group:Base"
+            name = "Base">
+            <FileRef
+               location = "group:MJRefreshFooter.m">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshComponent.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshHeader.m">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshAutoFooter.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshTrailer.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshBackFooter.m">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshAutoFooter.m">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshHeader.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshComponent.m">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshFooter.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshBackFooter.h">
+            </FileRef>
+            <FileRef
+               location = "group:MJRefreshTrailer.m">
+            </FileRef>
+         </Group>
+      </Group>
+      <Group
          location = "group:SDWebImage"
          name = "SDWebImage">
          <Group

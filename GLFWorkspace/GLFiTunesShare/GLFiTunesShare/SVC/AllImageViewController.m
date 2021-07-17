@@ -48,6 +48,8 @@ static NSString *cellID = @"ShowTableViewCell";
     BOOL isLoading;
     NSInteger pageCount;
     NSInteger pageIndex;
+    
+    NSTimer *timer;
 }
 @end
 
@@ -163,9 +165,9 @@ static NSString *cellID = @"ShowTableViewCell";
 
     dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
     dispatch_async(queue, ^{
-         NSMutableArray *array1 = [[NSMutableArray alloc] init];
-         NSMutableArray *array2 = [[NSMutableArray alloc] init];
-         NSMutableArray *array3 = [[NSMutableArray alloc] init];
+        NSMutableArray *array1 = [[NSMutableArray alloc] init];
+        NSMutableArray *array2 = [[NSMutableArray alloc] init];
+        NSMutableArray *array3 = [[NSMutableArray alloc] init];
         NSInteger start = pageCount * pageIndex;
         for (NSInteger i = start; i < allImagesArray.count; i++) {
             // 分页
@@ -228,19 +230,29 @@ static NSString *cellID = @"ShowTableViewCell";
         }
     
         dispatch_async(dispatch_get_main_queue(), ^{
-            NSLog(@"-=-= %ld", [_tableView1 numberOfRowsInSection:0]);
-            if (isInit) {
-                [_tableView1 reloadData];
-                [_tableView2 reloadData];
-                [_tableView3 reloadData];
-            } else {
-                [_tableView1 insertRowsAtIndexPaths:array1 withRowAnimation:UITableViewRowAnimationFade];
-                [_tableView2 insertRowsAtIndexPaths:array2 withRowAnimation:UITableViewRowAnimationFade];
-                [_tableView3 insertRowsAtIndexPaths:array3 withRowAnimation:UITableViewRowAnimationFade];
-            }
-            isLoading = NO;
+//            NSLog(@"=== array1 %@", array1);
+//            NSLog(@"=== array2 %@", array2);
+//            NSLog(@"=== array3 %@", array3);
+            [_tableView1 beginUpdates];
+            [_tableView2 beginUpdates];
+            [_tableView3 beginUpdates];
+            [_tableView1 insertRowsAtIndexPaths:array1 withRowAnimation:UITableViewRowAnimationFade];
+            [_tableView2 insertRowsAtIndexPaths:array2 withRowAnimation:UITableViewRowAnimationFade];
+            [_tableView3 insertRowsAtIndexPaths:array3 withRowAnimation:UITableViewRowAnimationFade];
+            [_tableView1 endUpdates];
+            [_tableView2 endUpdates];
+            [_tableView3 endUpdates];
+
+            timer = [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(show) userInfo:nil repeats:NO];
+            [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
         });
     });
+}
+
+- (void)show {
+    isLoading = NO;
+    [timer invalidate];
+    timer = nil;
 }
 
 - (void)prepareView {
@@ -535,12 +547,15 @@ static NSString *cellID = @"ShowTableViewCell";
             _dataArray1 = [[NSMutableArray alloc] init];
             _dataArray2 = [[NSMutableArray alloc] init];
             _dataArray3 = [[NSMutableArray alloc] init];
+            [_tableView1 reloadData];
+            [_tableView2 reloadData];
+            [_tableView3 reloadData];
             height1 = 0;
             height2 = 0;
             height3 = 0;
             pageIndex = i;
             [self prepareData];
-            [_tableView1 scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
+//            [_tableView1 scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:YES];
         }];
         [alertVC addAction:okAction];
     }
@@ -693,9 +708,9 @@ static NSString *cellID = @"ShowTableViewCell";
 //    NSLog(@"%@ %@", NSStringFromCGSize(size), NSStringFromCGPoint(point));
     if (point.y > size.height - insetHeight - 300 && !isLoading) {
         if (pageIndex * pageCount < allImagesArray.count) {
-            NSLog(@"分页加载 %ld", pageIndex + 2);
             pageIndex++;
             [self prepareData];
+            NSLog(@"分页加载 %ld", pageIndex + 1);
         }
     }
 }
@@ -704,6 +719,7 @@ static NSString *cellID = @"ShowTableViewCell";
 - (UIViewController *)documentInteractionControllerViewControllerForPreview:(UIDocumentInteractionController *)controller {
     return self;
 }
+
 - (UIView *)documentInteractionControllerViewForPreview:(UIDocumentInteractionController *)controller {
     return self.view;
 }
