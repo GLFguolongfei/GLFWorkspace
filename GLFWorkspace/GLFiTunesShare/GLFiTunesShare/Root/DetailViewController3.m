@@ -119,9 +119,19 @@
     
     UIPreviewAction *action1 = [UIPreviewAction actionWithTitle:favorite style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
         [DocumentManager favoriteModel:model];
+        if ([favoriteArray containsObject:model.name]) {
+            [self showStringHUD:@"取消收藏" second:1.5];
+        } else {
+            [self showStringHUD:@"已收藏" second:1.5];
+        }
     }];
     UIPreviewAction *action2 = [UIPreviewAction actionWithTitle:remove style:UIPreviewActionStyleDefault handler:^(UIPreviewAction * _Nonnull action, UIViewController * _Nonnull previewViewController) {
         [DocumentManager removeModel:model];
+        if ([removeArray containsObject:model.name]) {
+            [self showStringHUD:@"取消删除" second:1.5];
+        } else {
+            [self showStringHUD:@"已删除" second:1.5];
+        }
     }];
     NSArray *actions = @[action1, action2];
     return actions;

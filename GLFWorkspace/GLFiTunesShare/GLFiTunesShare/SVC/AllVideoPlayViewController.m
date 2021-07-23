@@ -192,6 +192,7 @@ static NSString *cellID = @"PlayVideoTableViewCell";
 
     FileModel *model = _dataArray[indexPath.row];
     cell.model = model;
+//    cell.indexPath = indexPath;
 
     // 3D Touch 可用!
     if (self.traitCollection.forceTouchCapability == UIForceTouchCapabilityAvailable) {

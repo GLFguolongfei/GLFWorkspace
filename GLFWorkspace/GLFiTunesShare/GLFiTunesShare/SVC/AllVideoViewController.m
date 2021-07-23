@@ -157,6 +157,7 @@ static NSString *cellID = @"VideoTableViewCell";
 
 #pragma mark UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    // 计算的不太准
     FileModel *model = _dataArray[indexPath.row];
     return [self returnCellHeight:model];
 }
@@ -173,7 +174,7 @@ static NSString *cellID = @"VideoTableViewCell";
     FileModel *model = _dataArray[indexPath.row];
     NSArray *array = [model.name componentsSeparatedByString:@"/"];
     cell.vTextLabel.textColor = [UIColor whiteColor];
-    cell.vTextLabel.text = array.lastObject;
+    cell.vTextLabel.text = [NSString stringWithFormat:@"【%ld】%@", indexPath.row + 1, array.lastObject];
     cell.vTextLabel.numberOfLines = 0;
     
     if (model.image != nil && model.image.size.width > 0) {

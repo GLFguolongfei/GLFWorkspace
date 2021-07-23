@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PlayVideoTableViewCell : UITableViewCell
 
 @property (nonatomic, assign) FileModel *model;
+@property (nonatomic, assign) NSIndexPath *indexPath;
 
 - (void)playOrPauseVideo: (BOOL)isPlay;
 

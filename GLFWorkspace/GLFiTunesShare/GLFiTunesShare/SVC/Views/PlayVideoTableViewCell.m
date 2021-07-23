@@ -76,6 +76,7 @@
     
     NSArray *array = [self.model.name componentsSeparatedByString:@"/"];
     label.text = array.lastObject;
+//    label.text = [NSString stringWithFormat:@"【%ld】%@", self.indexPath.row + 1, array.lastObject];
     
     NSDictionary *attrbute = @{NSFontAttributeName:[UIFont systemFontOfSize:17]};
     CGRect calculateRect = [label.text boundingRectWithSize:CGSizeMake(kScreenWidth - 30 - width, MAXFLOAT)

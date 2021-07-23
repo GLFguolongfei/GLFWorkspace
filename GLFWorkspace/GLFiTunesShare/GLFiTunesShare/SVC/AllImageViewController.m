@@ -44,12 +44,10 @@ static NSString *cellID = @"ShowTableViewCell";
     CGFloat height3;
     
     NSInteger colums; // 列数
+    BOOL isloading;
     NSInteger insetHeight;
-    BOOL isLoading;
     NSInteger pageCount;
     NSInteger pageIndex;
-    
-    NSTimer *timer;
 }
 @end
 
@@ -68,8 +66,8 @@ static NSString *cellID = @"ShowTableViewCell";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
     
     colums = 2;
+    isloading = NO;
     insetHeight = 300;
-    isLoading = NO;
     pageCount = 30;
     pageIndex = 0;
 
@@ -152,10 +150,10 @@ static NSString *cellID = @"ShowTableViewCell";
 }
 
 - (void)prepareData {
-    if (isLoading) {
+    if (isloading) {
         return;
     }
-    isLoading = YES;
+    isloading = YES;
     CGFloat width = kScreenWidth/3;
     NSInteger oneM = 1024 * 1024;
     BOOL isInit = NO;
@@ -233,26 +231,26 @@ static NSString *cellID = @"ShowTableViewCell";
 //            NSLog(@"=== array1 %@", array1);
 //            NSLog(@"=== array2 %@", array2);
 //            NSLog(@"=== array3 %@", array3);
-            [_tableView1 beginUpdates];
-            [_tableView2 beginUpdates];
-            [_tableView3 beginUpdates];
-            [_tableView1 insertRowsAtIndexPaths:array1 withRowAnimation:UITableViewRowAnimationFade];
-            [_tableView2 insertRowsAtIndexPaths:array2 withRowAnimation:UITableViewRowAnimationFade];
-            [_tableView3 insertRowsAtIndexPaths:array3 withRowAnimation:UITableViewRowAnimationFade];
-            [_tableView1 endUpdates];
-            [_tableView2 endUpdates];
-            [_tableView3 endUpdates];
-
-            timer = [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(show) userInfo:nil repeats:NO];
-            [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+            
+            isloading = NO;
+            [_tableView1 reloadData];
+            [_tableView2 reloadData];
+            [_tableView3 reloadData];
+            
+//            [_tableView1 beginUpdates];
+//            [_tableView2 beginUpdates];
+//            [_tableView3 beginUpdates];
+//            [_tableView1 insertRowsAtIndexPaths:array1 withRowAnimation:UITableViewRowAnimationFade];
+//            [_tableView2 insertRowsAtIndexPaths:array2 withRowAnimation:UITableViewRowAnimationFade];
+//            [_tableView3 insertRowsAtIndexPaths:array3 withRowAnimation:UITableViewRowAnimationFade];
+//            [_tableView1 endUpdates];
+//            [_tableView2 endUpdates];
+//            [_tableView3 endUpdates];
+//
+//            timer = [NSTimer timerWithTimeInterval:0.5 target:self selector:@selector(show) userInfo:nil repeats:NO];
+//            [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
         });
     });
-}
-
-- (void)show {
-    isLoading = NO;
-    [timer invalidate];
-    timer = nil;
 }
 
 - (void)prepareView {
@@ -706,8 +704,8 @@ static NSString *cellID = @"ShowTableViewCell";
     CGPoint point = scrollView.contentOffset;
     CGSize size = scrollView.contentSize;
 //    NSLog(@"%@ %@", NSStringFromCGSize(size), NSStringFromCGPoint(point));
-    if (point.y > size.height - insetHeight - 300 && !isLoading) {
-        if (pageIndex * pageCount < allImagesArray.count) {
+    if (point.y > size.height - insetHeight - 300) {
+        if (pageIndex * pageCount < allImagesArray.count && !isloading) {
             pageIndex++;
             [self prepareData];
             NSLog(@"分页加载 %ld", pageIndex + 1);

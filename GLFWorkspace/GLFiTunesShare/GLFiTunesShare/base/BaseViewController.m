@@ -91,7 +91,7 @@
             [self removeEmitter];
         } else {
             // [self setupEmitter1];
-            [self setupEmitter2];
+//            [self setupEmitter2];
         }
     }
 }
