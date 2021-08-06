@@ -49,7 +49,7 @@
     // 输入框
     CGRect textViewRect = CGRectMake(15, 80, kScreenWidth-30, 100);
     self.ipTextView = [[UITextView alloc] initWithFrame:textViewRect];
-    self.ipTextView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.3];
+    self.ipTextView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.6];
     self.ipTextView.layer.cornerRadius = 5;
     self.ipTextView.layer.masksToBounds = YES;
     self.ipTextView.font = [UIFont systemFontOfSize:18];
@@ -71,8 +71,8 @@
             [button setTitle:@"黑名单" forState:UIControlStateNormal];
         }
         button.titleLabel.font = [UIFont systemFontOfSize:16.0];
-        button.backgroundColor = [UIColor colorWithWhite:1 alpha:0.6];
-        [button setTitleColor:KNavgationBarColor forState:UIControlStateNormal];
+        button.backgroundColor = [UIColor colorWithWhite:1 alpha:0.3];
+        [button setTitleColor:[UIColor cyanColor] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(buttonAction1:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i + 10;
         button.layer.cornerRadius = 5;
@@ -94,7 +94,7 @@
             [button setTitle:@"测试" forState:UIControlStateNormal];
         }
         button.titleLabel.font = [UIFont systemFontOfSize:16.0];
-        button.backgroundColor = [UIColor colorWithWhite:1 alpha:0.6];
+        button.backgroundColor = [UIColor colorWithWhite:1 alpha:0.3];
         [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(buttonAction2:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i + 100;
@@ -118,8 +118,8 @@
             }
         }
         button.titleLabel.font = [UIFont systemFontOfSize:16.0];
-        button.backgroundColor = [UIColor colorWithWhite:1 alpha:0.6];
-        [button setTitleColor:KNavgationBarColor forState:UIControlStateNormal];
+        button.backgroundColor = [UIColor colorWithWhite:1 alpha:0.3];
+        [button setTitleColor:[UIColor cyanColor] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(buttonAction3:) forControlEvents:UIControlEventTouchUpInside];
         button.tag = i + 1000;
         button.layer.cornerRadius = 5;
