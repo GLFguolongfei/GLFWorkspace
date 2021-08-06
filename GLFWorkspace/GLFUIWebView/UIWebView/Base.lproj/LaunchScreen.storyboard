@@ -4,7 +4,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
-        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -20,16 +19,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lunch1" translatesAutoresizingMaskIntoConstraints="NO" id="uTd-Ab-9pT">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="lunch1.jpeg" translatesAutoresizingMaskIntoConstraints="NO" id="Tp9-jI-2tv">
+                                <rect key="frame" x="0.0" y="-20" width="375" height="687"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemRedColor"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="uTd-Ab-9pT" secondAttribute="trailing" id="Jg7-2g-HS2"/>
-                            <constraint firstItem="uTd-Ab-9pT" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="KiE-W9-bvA"/>
-                            <constraint firstItem="uTd-Ab-9pT" firstAttribute="top" secondItem="ICx-t1-Vcz" secondAttribute="bottom" id="bPa-bh-bzA"/>
-                            <constraint firstItem="2Gv-jM-Hcz" firstAttribute="top" secondItem="uTd-Ab-9pT" secondAttribute="bottom" id="vOU-7E-sQ2"/>
+                            <constraint firstAttribute="trailing" secondItem="Tp9-jI-2tv" secondAttribute="trailing" id="6u2-vL-uk5"/>
+                            <constraint firstItem="Tp9-jI-2tv" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="SX7-SZ-29D"/>
+                            <constraint firstItem="2Gv-jM-Hcz" firstAttribute="top" secondItem="Tp9-jI-2tv" secondAttribute="bottom" id="otg-eQ-q5u"/>
+                            <constraint firstItem="Tp9-jI-2tv" firstAttribute="top" secondItem="ICx-t1-Vcz" secondAttribute="bottom" constant="-20" id="xGk-qg-KAh"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -39,9 +39,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="lunch1" width="320" height="569"/>
-        <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-        </systemColor>
+        <image name="lunch1.jpeg" width="640" height="1138"/>
     </resources>
 </document>

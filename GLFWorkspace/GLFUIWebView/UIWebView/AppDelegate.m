@@ -38,7 +38,7 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    UIImage *image = [UIImage imageNamed:@"bg6"];
+    UIImage *image = [UIImage imageNamed:@"lunch1"];
     imageView = [[UIImageView alloc] initWithFrame:self.window.bounds];
     imageView.image = image;
     imageView.contentMode = UIViewContentModeScaleAspectFill;

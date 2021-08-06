@@ -2,16 +2,18 @@
   "images" : [
     {
       "idiom" : "universal",
+      "locale" : "工作总结",
       "scale" : "1x"
     },
     {
-      "filename" : "jt.png",
+      "filename" : "iOS.png",
       "idiom" : "universal",
+      "locale" : "工作总结",
       "scale" : "2x"
     },
     {
-      "filename" : "jt-1.png",
       "idiom" : "universal",
+      "locale" : "工作总结",
       "scale" : "3x"
     }
   ],
