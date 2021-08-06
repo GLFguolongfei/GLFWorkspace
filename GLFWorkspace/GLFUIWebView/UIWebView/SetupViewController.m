@@ -27,11 +27,9 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSString *tabbarHidden = [userDefaults objectForKey:kNavigationBarHidden];
     NSString *isHaveBridge = [userDefaults objectForKey:kHaveBridge];
-    NSString *isSameOriginPolicy = [userDefaults objectForKey:kSameOriginPolicy];
     NSString *isNORecord = [userDefaults objectForKey:kNORecord];
     [self.switch1 setOn:tabbarHidden.integerValue animated:YES];
     [self.switch2 setOn:isHaveBridge.integerValue animated:YES];
-    [self.switch3 setOn:isSameOriginPolicy.integerValue animated:YES];
     [self.switch4 setOn:isNORecord.integerValue animated:YES];
 
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
@@ -84,11 +82,9 @@
     }
     
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        self.switch3.hidden = NO;
-        self.label3.hidden = NO;
         if (isOC) {
-            self.switch4.hidden = !self.switch4.hidden;
-            self.label4.hidden = !self.label4.hidden;
+            self.switch4.hidden = NO;
+            self.label4.hidden = NO;
         }
     }];
     [alertVC addAction:okAction];
@@ -120,18 +116,6 @@
         [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kHaveBridge];
     }
     [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-// 同源策略
-- (IBAction)switchAction3:(id)sender {
-    UISwitch *sw = (UISwitch *)sender;
-    if (sw.on) {
-        [self showStringHUD:@"同源策略, 暂时没有实现 ! ! !" second:1.5];
-//        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:kSameOriginPolicy];
-    } else {
-        [[NSUserDefaults standardUserDefaults] setObject:@"0" forKey:kSameOriginPolicy];
-    }
-//    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 // 无痕浏览

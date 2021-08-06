@@ -14,17 +14,16 @@
     UIWebView *_webView;
     UIBarButtonItem *toolItem1;
     UIBarButtonItem *toolItem2;
+    UIBarButtonItem *toolItem3;
+    UIBarButtonItem *toolItem4;
     
-    NSTimer *timer;
-    NSInteger count; // 过滤次数
-    NSInteger errorCount; // 加载失败次数
-    
-    NSString *isSameOriginPolicy;
     NSURL *currentURL;
-    
     NSMutableArray *blackIPArray;
-    
     CGPoint startContentOffset;
+    UIView *gestureView;
+    
+    BOOL isFilter;
+    BOOL isSameOriginPolicy;
 }
 @end
 
@@ -34,12 +33,14 @@
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    UIBarButtonItem *item1 = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(button5)];
-    UIBarButtonItem *item2 = [[UIBarButtonItem alloc] initWithTitle:@"黑名单" style:UIBarButtonItemStylePlain target:self action:@selector(button6)];
-    self.navigationItem.rightBarButtonItems = @[item1, item2];
+    UIBarButtonItem *item = [[UIBarButtonItem alloc] initWithTitle:@"Refresh" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
+    self.navigationItem.rightBarButtonItems = @[item];
     self.view.backgroundColor = [UIColor whiteColor];
     self.canHiddenNaviBar = YES;
     self.canHiddenToolBar = YES;
+    
+    isFilter = NO;
+    isSameOriginPolicy = NO;
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(naviBarChange:) name:@"NaviBarChange" object:nil];
 
@@ -47,21 +48,35 @@
     
     toolItem1 = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(button1)];
     toolItem2 = [[UIBarButtonItem alloc] initWithTitle:@"Forward" style:UIBarButtonItemStylePlain target:self action:@selector(button2)];
-    UIBarButtonItem *toolItem3 = [[UIBarButtonItem alloc] initWithTitle:@"内容过滤" style:UIBarButtonItemStylePlain target:self action:@selector(button3)];
-    UIBarButtonItem *toolItem4 = [[UIBarButtonItem alloc] initWithTitle:@"纯文本" style:UIBarButtonItemStylePlain target:self action:@selector(button4)];
+    toolItem3 = [[UIBarButtonItem alloc] initWithTitle:@"开启过滤" style:UIBarButtonItemStylePlain target:self action:@selector(button4)];
+    toolItem4 = [[UIBarButtonItem alloc] initWithTitle:@"开启同源" style:UIBarButtonItemStylePlain target:self action:@selector(button5)];
     UIBarButtonItem *toolBarSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:self action:nil]; // 特殊的一个,用来自动计算宽度
     self.toolbarItems = @[toolBarSpace, toolItem1, toolBarSpace, toolItem2, toolBarSpace, toolItem3, toolBarSpace, toolItem4, toolBarSpace];
     [self.navigationController setToolbarHidden:YES animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
-    isSameOriginPolicy = [userDefaults objectForKey:kSameOriginPolicy];
+    [super viewWillAppear:animated];
+
+    // 导航栏bg
+    gestureView = [[UIView alloc] initWithFrame:CGRectMake((kScreenWidth - 150) / 2, -20, 150, 64)];
+    gestureView.backgroundColor = [UIColor clearColor];
+    [self.navigationController.navigationBar addSubview:gestureView];
     
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] init];
+    tapGesture.numberOfTapsRequired = 2;
+    tapGesture.numberOfTouchesRequired = 1;
+    [tapGesture addTarget:self action:@selector(setState)];
+    [gestureView addGestureRecognizer:tapGesture];
+    
+    // 放在最上面,否则点击事件没法触发
+    [self.navigationController.navigationBar bringSubviewToFront:gestureView];
+    
+    // 黑名单
     NSArray *sandboxpath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentsDirectory = [sandboxpath objectAtIndex:0];
     NSString *plistPath = [documentsDirectory stringByAppendingPathComponent:@"IPBlack.plist"];
-    blackIPArray = [[NSArray alloc] initWithContentsOfFile:plistPath];
+    blackIPArray = (NSMutableArray *)[[NSArray alloc] initWithContentsOfFile:plistPath];
     if (blackIPArray == nil) {
         blackIPArray = [[NSMutableArray alloc] init];
     }
@@ -166,15 +181,38 @@
     }
 }
 
-// 清空广告、图片
+// 刷新
 - (void)button3 {
-    count = 0;
-    timer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(contentFilter) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    [_webView reload];
+}
+
+// 开启过滤: 清空广告、图片
+- (void)button4 {
+    isFilter = !isFilter;
+    if (isFilter) {
+        [self showStringHUD:@"内容过滤已开启" second:1.5];
+        [toolItem3 setTitle:@"关闭过滤"];
+        [self contentFilter];
+    } else {
+        [self showStringHUD:@"内容过滤已关闭" second:1.5];
+        [toolItem3 setTitle:@"开启过滤"];
+    }
+}
+
+// 开启同源: 同源策略
+- (void)button5 {
+    isSameOriginPolicy = !isSameOriginPolicy;
+    if (isSameOriginPolicy) {
+        [self showStringHUD:@"同源策略已开启" second:1.5];
+        [toolItem4 setTitle:@"关闭同源"];
+    } else {
+        [self showStringHUD:@"同源策略已关闭" second:1.5];
+        [toolItem4 setTitle:@"开启同源"];
+    }
 }
 
 // 纯文本
-- (void)button4 {
+- (void)button6 {
     // 显示纯文本
     NSString *js1 = @"document.write(document.body.innerText)";
     [_webView stringByEvaluatingJavaScriptFromString:js1];
@@ -186,13 +224,8 @@
     [_webView stringByEvaluatingJavaScriptFromString:js2];
 }
 
-// 刷新
-- (void)button5 {
-    [_webView reload];
-}
-
 // 黑名单
-- (void)button6 {
+- (void)button7 {
     NSString *str = [NSString stringWithFormat:@"确定将当前站点 [%@] 加入黑名单？", currentURL.host];
     UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:nil message:str preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -225,6 +258,7 @@
     [self presentViewController:alertVC animated:YES completion:nil];
 }
 
+#pragma mark Events
 - (void)naviBarChange:(NSNotification *)notify {
     NSDictionary *dict = notify.userInfo;
     if ([dict[@"isHidden"] isEqualToString: @"1"]) {
@@ -244,19 +278,42 @@
     }
 }
 
+- (void)setState {
+    UIAlertController *alertVC = [UIAlertController alertControllerWithTitle:@"隐藏功能" message:@"惊不惊喜！意不意外！！！" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
+    }];
+    [alertVC addAction:cancelAction];
+    
+    UIAlertAction *okAction1 = [UIAlertAction actionWithTitle:@"加入黑名单" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self button7];
+    }];
+    [alertVC addAction:okAction1];
+    
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"纯文本" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [self button6];
+    }];
+    [alertVC addAction:okAction2];
+    
+    [self presentViewController:alertVC animated:YES completion:nil];
+}
+
 #pragma mark UIWebViewDelegate
 - (BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
 {
+    NSLog(@"域名: %@", request.URL.host);
     NSLog(@"路径: %@", request.URL.path);
-    NSLog(@"完整的URL字符串: %@", request.URL.absoluteString);
+    NSLog(@"完整的URL: %@", request.URL.absoluteString);
     
-    currentURL = request.URL;
-    
-    // 注意
-    // 同源策略,暂时没有实现
-    if (isSameOriginPolicy.integerValue) {
-
+    // 同源
+    if (isSameOriginPolicy) {
+        if (![currentURL.host isEqualToString:request.URL.host]) {
+            NSLog(@"域名: %@ 禁止跳转", request.URL.host);
+            return NO;
+        }
     }
+    currentURL = request.URL;
     // 黑名单
     if ([blackIPArray containsObject:currentURL.host]) {
         return NO;
@@ -271,19 +328,17 @@
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
     NSLog(@"webViewDidFinishLoad");
-    errorCount = 0;
     [self hideAllHUD];
     [self contentSetup];
+    if (isFilter) {
+        [self contentFilter];
+    }
 }
 
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     NSLog(@"didFailLoadWithError: %@", error.localizedDescription);
-    NSString *msg = [NSString stringWithFormat:@"加载失败: %@", error.localizedDescription];
-    [self showStringHUD:msg second:2];
-    if (errorCount < 3) {
-        errorCount++;
-        [webView reload];
-    }
+//    NSString *msg = [NSString stringWithFormat:@"加载失败: %@", error.localizedDescription];
+//    [self showStringHUD:msg second:2];
 }
 
 #pragma mark UIScrollViewDelegate
@@ -291,7 +346,12 @@
     startContentOffset = scrollView.contentOffset;
 }
 
-// 在滚动的时候调用
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    if (isFilter) {
+        [self contentFilter];
+    }
+}
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 //    NSLog(@"%@", NSStringFromCGPoint(scrollView.contentOffset));
     if (startContentOffset.y > scrollView.contentOffset.y) { // 向下滑动
@@ -324,13 +384,6 @@
 }
 
 - (void)contentFilter {
-    if (count >= 3) {
-        [timer invalidate];
-        timer = nil;
-        return;
-    } else {
-        count++;
-    }
     NSMutableString *js = [NSMutableString string];
     // 删除页面上的广告悬浮框
     [js appendString:@"var array1 = document.getElementsByTagName('div');"];
