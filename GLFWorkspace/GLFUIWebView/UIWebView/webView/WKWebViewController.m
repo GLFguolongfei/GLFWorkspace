@@ -536,6 +536,12 @@
     [js appendString:@"    var element = array2[i];"];
     [js appendString:@"    element.remove();"];
     [js appendString:@"}"];
+    // 隐藏所有视频
+    [js appendString:@"var array3 = document.getElementsByTagName('video');"];
+    [js appendString:@"for (var i = 0; i < array3.length; i++) {"];
+    [js appendString:@"    var element = array3[i];"];
+    [js appendString:@"    element.remove();"];
+    [js appendString:@"}"];
     [_wkWebView evaluateJavaScript:js completionHandler:^(id _Nullable result, NSError * _Nullable error) {
         if (error) {
             NSLog(@"%@", error.localizedDescription);
