@@ -43,6 +43,11 @@
 
     [self configCamara];
     [self configCamaraButton];
+    
+//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 20)];
+//    view.backgroundColor = [UIColor blueColor];
+//    [self.view addSubview:view];
+//    [self.view bringSubviewToFront:view];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
