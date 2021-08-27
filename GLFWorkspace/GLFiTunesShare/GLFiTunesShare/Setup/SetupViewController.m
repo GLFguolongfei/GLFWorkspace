@@ -210,7 +210,7 @@
     }];
     [alertVC addAction:okAction1];
     
-    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"导入数据" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *okAction2 = [UIAlertAction actionWithTitle:@"导入导出" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         ImportExportViewController *vc = [[ImportExportViewController alloc] init];
         [self.navigationController pushViewController:vc animated:YES];
     }];

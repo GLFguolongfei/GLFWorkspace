@@ -135,6 +135,7 @@
         rootVC.moveModel = self.moveModel;
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:rootVC];
         navi.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        navi.modalPresentationStyle = UIModalPresentationFullScreen; // 适配 iOS 14.7, 之前默认是全屏, 现在不是了
         [self presentViewController:navi animated:YES completion:nil];
     } else if ([str isEqualToString:decodedStr]) {
         [ProjectManager sharedProjectManager].loginType = @"2";
@@ -204,6 +205,7 @@
         rootVC.moveModel = self.moveModel;
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:rootVC];
         navi.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        navi.modalPresentationStyle = UIModalPresentationFullScreen; // 适配 iOS 14.7, 之前默认是全屏, 现在不是了
         [self presentViewController:navi animated:YES completion:nil];
     }
 }

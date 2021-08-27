@@ -19,7 +19,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    [self setVCTitle:@"导入数据"];
+    [self setVCTitle:@"导入导出"];
 
     for (int i = 0; i < 4; i++) {
         CGFloat width = (kScreenWidth - 60) / 2;
@@ -31,9 +31,9 @@
         } else if (i == 1) {
             [button setTitle:@"导出至iCloud" forState:UIControlStateNormal];
         } else if (i == 2) {
-            [button setTitle:@"从Photos导入" forState:UIControlStateNormal];
+            [button setTitle:@"从Photos导入「未」" forState:UIControlStateNormal];
         } else if (i == 3) {
-            [button setTitle:@"导出至Photos" forState:UIControlStateNormal];
+            [button setTitle:@"导出至Photos「未」" forState:UIControlStateNormal];
         }
         [self.view addSubview:button];
         button.tag = 100 + i;
