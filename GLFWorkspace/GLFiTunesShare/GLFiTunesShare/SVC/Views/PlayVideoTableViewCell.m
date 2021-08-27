@@ -44,6 +44,7 @@
     // 3-创建AVPlayer
     player = [AVPlayer playerWithPlayerItem:playerItem];
     player.volume = 0.0; // 控制音量
+    player.muted = YES; // 是否静音
     CMTime dragedCMTime = CMTimeMake(0, 1);
     #if FirstTarget
         dragedCMTime = CMTimeMake(9, 1);

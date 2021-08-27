@@ -62,6 +62,7 @@
     NSString *mute = [[NSUserDefaults standardUserDefaults] valueForKey:kVoiceMute];
     if (mute.integerValue) {
         self.player.volume = 0.0; // 控制音量
+        self.player.muted = YES; // 是否静音
     } 
     // 4-添加AVPlayerLayer
     playerLayer = [AVPlayerLayer playerLayerWithPlayer:self.player];

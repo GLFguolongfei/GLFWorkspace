@@ -31,9 +31,9 @@
         } else if (i == 1) {
             [button setTitle:@"导出至iCloud" forState:UIControlStateNormal];
         } else if (i == 2) {
-            [button setTitle:@"从Photos导入「未」" forState:UIControlStateNormal];
+            [button setTitle:@"从Photos导入" forState:UIControlStateNormal];
         } else if (i == 3) {
-            [button setTitle:@"导出至Photos「未」" forState:UIControlStateNormal];
+            [button setTitle:@"导出至Photos" forState:UIControlStateNormal];
         }
         [self.view addSubview:button];
         button.tag = 100 + i;
@@ -41,6 +41,11 @@
         button.layer.cornerRadius = 5;
         button.layer.masksToBounds = YES;
     }
+    
+    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(20, 260, kScreenWidth - 40, 300)];
+    label.text = @"从iCloud导入 [ 需要证书支持，故没实现 ] \n导出至iCloud [ 需要证书支持，故没实现 ] \n从Photos导入 [ 暂未实现 ] \n导出至Photos [ 暂未实现 ] ";
+    label.numberOfLines = 0;
+    [self.view addSubview:label];
 }
 
 - (void)buttonAction:(id)sender {
