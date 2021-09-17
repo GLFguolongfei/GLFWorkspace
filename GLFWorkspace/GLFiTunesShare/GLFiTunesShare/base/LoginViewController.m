@@ -143,6 +143,7 @@
         DYViewController *dyVC = [[DYViewController alloc] init];
         UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:dyVC];
         navi.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+        navi.modalPresentationStyle = UIModalPresentationFullScreen; // 适配 iOS 14.7, 之前默认是全屏, 现在不是了
         [self presentViewController:navi animated:YES completion:nil];
     } else {
         if (str.length == 0) {
@@ -182,6 +183,7 @@
                     //     UIModalTransitionStyleCrossDissolve,     // 闪现
                     //     UIModalTransitionStylePartialCurl        // 翻页
                     navi.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+                    navi.modalPresentationStyle = UIModalPresentationFullScreen; // 适配 iOS 14.7, 之前默认是全屏, 现在不是了
                     [self presentViewController:navi animated:YES completion:nil];
                 });
             }

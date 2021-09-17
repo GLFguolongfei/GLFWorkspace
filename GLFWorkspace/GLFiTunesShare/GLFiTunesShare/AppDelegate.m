@@ -132,6 +132,7 @@
 #if FirstTarget
     MoveViewController *editVC = [[MoveViewController alloc] init];
     editVC.modelArray = @[model];
+    editVC.modalPresentationStyle = UIModalPresentationFullScreen; // 适配 iOS 14.7, 之前默认是全屏, 现在不是了
     [self.window.rootViewController presentViewController:editVC animated:YES completion:nil];
 #elif SecondTarget
     LoginViewController *loginVC = [[LoginViewController alloc] init];

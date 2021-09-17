@@ -72,6 +72,7 @@
     if (indexPath.row == 0) { // 数学图形
         MathViewController *VC = [[MathViewController alloc] init];
 //        [self.navigationController pushViewController:VC animated:YES];
+        VC.modalPresentationStyle = UIModalPresentationFullScreen; // 适配 iOS 14.7, 之前默认是全屏, 现在不是了
         [self presentViewController:VC animated:YES completion:^{
             
         }];

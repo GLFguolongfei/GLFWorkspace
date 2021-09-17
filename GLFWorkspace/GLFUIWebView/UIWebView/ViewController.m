@@ -332,6 +332,7 @@
         NSURL *url = [NSURL URLWithString:urlStr];
         SFSafariViewController *sfViewControllr = [[SFSafariViewController alloc] initWithURL:url];
         sfViewControllr.delegate = self;
+        sfViewControllr.modalPresentationStyle = UIModalPresentationFullScreen; // 适配 iOS 14.7, 之前默认是全屏, 现在不是了
         [self presentViewController:sfViewControllr animated:YES completion:^{
             
         }];
@@ -354,6 +355,7 @@
         NSURL *url = [NSURL URLWithString:urlStr];
         SFSafariViewController *sfViewControllr = [[SFSafariViewController alloc] initWithURL:url];
         sfViewControllr.delegate = self;
+        sfViewControllr.modalPresentationStyle = UIModalPresentationFullScreen; // 适配 iOS 14.7, 之前默认是全屏, 现在不是了
         [self presentViewController:sfViewControllr animated:YES completion:^{
             
         }];

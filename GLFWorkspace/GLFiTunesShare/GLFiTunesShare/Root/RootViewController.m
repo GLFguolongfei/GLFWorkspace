@@ -85,6 +85,7 @@
     if (self.moveModel) {
         MoveViewController *editVC = [[MoveViewController alloc] init];
         editVC.modelArray = @[self.moveModel];
+        editVC.modalPresentationStyle = UIModalPresentationFullScreen; // 适配 iOS 14.7, 之前默认是全屏, 现在不是了
         [self presentViewController:editVC animated:YES completion:nil];
         self.moveModel = nil;
     }
@@ -339,6 +340,7 @@
     
     MoveViewController *editVC = [[MoveViewController alloc] init];
     editVC.modelArray = editArray;
+    editVC.modalPresentationStyle = UIModalPresentationFullScreen; // 适配 iOS 14.7, 之前默认是全屏, 现在不是了
     [self presentViewController:editVC animated:YES completion:nil];
 }
 
@@ -649,6 +651,7 @@
             } else {
                 [self showStringHUD:@"不支持该种视频格式编辑" second:2];
             }
+            editVC.modalPresentationStyle = UIModalPresentationFullScreen; // 适配 iOS 14.7, 之前默认是全屏, 现在不是了
             [self presentViewController:editVC animated:YES completion:nil];
         }];
         [alertVC addAction:okAction3];
@@ -734,6 +737,7 @@
     }
     MoveViewController *editVC = [[MoveViewController alloc] init];
     editVC.modelArray = @[model];
+    editVC.modalPresentationStyle = UIModalPresentationFullScreen; // 适配 iOS 14.7, 之前默认是全屏, 现在不是了
     [self presentViewController:editVC animated:YES completion:nil];
 }
 
